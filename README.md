@@ -1,6 +1,6 @@
 #安裝步驟與push的github
 
--複製專案到自己電腦資料夾
+-複製專案到自己電腦資料夾 
 git clone https://github.com/pophoan/mfee44-final_project_esp.git
 
 -建立自己的開發分支 命名規則:自己的名字 ex:hong
