@@ -1,7 +1,7 @@
 import React from 'react'
 import CartFlow from '@/components/myCart/cartFlow/cartFlow'
 import ProductCart from '@/components/myCart/productCart'
-import CourseCart from '@/components/myCart/courseCart '
+import CourseCart from '@/components/myCart/courseCart'
 import OrderSummary from '@/components/myCart/orderSummary'
 
 export default function CartIndex() {

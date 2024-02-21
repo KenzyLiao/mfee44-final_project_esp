@@ -1,6 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
-import CourseCardItem from '@/components/myCart/courseCart /courseCard'
+import CourseCardItem from '@/components/myCart/courseCart/courseCard'
 import { IoIosArrowRoundBack } from 'react-icons/io'
 export default function CourseCart() {
   return (
