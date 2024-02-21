@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-import { Collapse } from 'react-bootstrap'
+
 import { HiOutlineTicket } from 'react-icons/hi2'
+
+import { CSSTransition } from 'react-transition-group'
 
 export default function CartCoupon() {
   const [selectedCouponID, setSelectedCouponID] = useState('none')
@@ -103,14 +105,19 @@ export default function CartCoupon() {
                 {coupon.Description}
               </label>
             </div>
-            <Collapse in={selectedCouponID === coupon.CouponID}>
+            <CSSTransition
+              in={selectedCouponID === coupon.CouponID}
+              timeout={300}
+              classNames="zoom"
+              unmountOnExit
+            >
               <div className="card-body text-h6 text-my-black">
                 <div>
                   有效期限：{coupon.ValidFrom} 至 {coupon.ValidTo}
                 </div>
                 <div>最低消費：NT${coupon.MinimumSpend.toFixed(2)}</div>
               </div>
-            </Collapse>
+            </CSSTransition>
           </div>
         ))}
       </div>
