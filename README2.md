@@ -12,6 +12,7 @@ git checkout main
 -將 github 的 main 分支更新到本地電腦的 main 分支
 git pull origin main
 
+
 步驟 3.切回自己的分支
 
 git checkout 你的名字
