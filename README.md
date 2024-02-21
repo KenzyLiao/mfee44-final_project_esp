@@ -16,7 +16,7 @@ git checkout -b 自己的名字
 
 ### 3. 推送到 GitHub（推送的是自己的分支）：
 ```bash
-git push -u orgin 自己分支名
+git push -u origin 自己分支名
 ```
 
 
