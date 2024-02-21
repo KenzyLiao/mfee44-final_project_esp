@@ -1,5 +1,6 @@
 import React from 'react'
 import ShippingRule from './shippingRule'
+import CartCouppon from '@/components/myCart/cartCoupon'
 
 export default function OrderSummary() {
   return (
@@ -22,6 +23,7 @@ export default function OrderSummary() {
           <div className="text-h6">NT$88,888</div>
         </div>
       </div>
+      <CartCouppon />
       <ShippingRule />
       <style jsx>{`
         .order-container {

@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 //樣式
 import '@/styles/globals.scss'
+import '@/styles/cart.scss'
 
 //後續載入context
 

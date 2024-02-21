@@ -72,6 +72,9 @@ export default function CartFlow({ activeStep }) {
               color: var(--my-black);
             }
           }
+          @media (max-width: 991px) {
+            display: none;
+          }
         }
 
         .title-icon {
