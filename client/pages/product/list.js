@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import Heart from '@/components/myProduct/heart-icon'
+import ProductFigure from '@/components/myProduct/productfigure'
+import { Figure } from 'react-bootstrap'
 export default function List() {
   // Toggle the side navigation
   useEffect(() => {
@@ -32,7 +34,7 @@ export default function List() {
       <div className="row mt-2 mb-3">
         <div className="col">
           <div className="d-flex align-items-center">
-            <span className="ps-3 text-h1 my-3">所有鋼筆</span>
+            <span className="ps-3 text-h1 my-3 ">所有鋼筆</span>
           </div>
           <div className="card-text d-flex justify-content-between align-items-center ms-3">
             <nav
@@ -44,7 +46,7 @@ export default function List() {
                 <li className="breadcrumb-item">
                   <a href="#">Home</a>
                 </li>
-                <li className="breadcrumb-item active" aria-current="page">
+                <li className="breadcrumb-item active " aria-current="page">
                   所有鋼筆
                 </li>
               </ol>
@@ -52,12 +54,12 @@ export default function List() {
             <div className="d-flex p-2 justify-content-end align-items-center">
               <div className="dropdown ms-3">
                 <button
-                  className="btn dropdown-toggle my-text-contents-CH"
+                  className="btn dropdown-toggle my-text-contents-CH rounded-pill shadow "
                   type="button"
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  排序依據
+                  排序依據&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 </button>
                 <ul className="dropdown-menu">
                   <li>
@@ -88,7 +90,7 @@ export default function List() {
           <div className="d-flex" id="wrapper">
             <div className="bg-white me-3" id="sidebar-wrapper">
               <div className="scroll">
-                <div className="cats">
+                <div className="cats" style={{ marginBottom: '100px' }}>
                   <div>
                     <button type="button" className="btn">
                       萬寶龍
@@ -105,6 +107,7 @@ export default function List() {
                     </button>
                   </div>
                 </div>
+                <hr />
 
                 <div
                   className="accordion accordion-flush"
@@ -128,9 +131,9 @@ export default function List() {
                       className="accordion-collapse collapse"
                     >
                       <div className="accordion-body px-1">
-                        <div className="form-check">
+                        <div className="form-check form-switch">
                           <input
-                            className="form-check-input"
+                            className="form-check-input rounded-circle"
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
@@ -142,9 +145,9 @@ export default function List() {
                             黃銅
                           </label>
                         </div>
-                        <div className="form-check">
+                        <div className="form-check form-switch">
                           <input
-                            className="form-check-input"
+                            className="form-check-input rounded-circle"
                             type="checkbox"
                             value=""
                             id="flexCheckChecked"
@@ -156,9 +159,9 @@ export default function List() {
                             塑膠
                           </label>
                         </div>
-                        <div className="form-check">
+                        <div className="form-check form-switch">
                           <input
-                            className="form-check-input"
+                            className="form-check-input rounded-circle"
                             type="checkbox"
                             value=""
                             id="flexCheckChecked"
@@ -191,9 +194,9 @@ export default function List() {
                       className="accordion-collapse collapse"
                     >
                       <div className="accordion-body px-1">
-                        <div className="form-check">
+                        <div className="form-check form-switch">
                           <input
-                            className="form-check-input"
+                            className="form-check-input rounded-circle"
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
@@ -205,9 +208,9 @@ export default function List() {
                             B
                           </label>
                         </div>
-                        <div className="form-check">
+                        <div className="form-check form-switch">
                           <input
-                            className="form-check-input"
+                            className="form-check-input rounded-circle"
                             type="checkbox"
                             value=""
                             id="flexCheckChecked"
@@ -219,15 +222,15 @@ export default function List() {
                             F
                           </label>
                         </div>
-                        <div className="form-check">
+                        <div className="form-check form-switch">
                           <input
-                            className="form-check-input"
+                            className="form-check-input rounded-circle"
                             type="checkbox"
                             value=""
                             id="flexCheckChecked"
                           />
                           <label
-                            className="form-check-label"
+                            className="form-check-label rounded-circle"
                             htmlFor="flexCheckChecked"
                           >
                             M
@@ -346,9 +349,9 @@ export default function List() {
                       className="accordion-collapse collapse"
                     >
                       <div className="accordion-body px-1">
-                        <div className="form-check">
+                        <div className="form-check form-switch">
                           <input
-                            className="form-check-input"
+                            className="form-check-input rounded-circle"
                             type="checkbox"
                             value=""
                             id="flexCheckDefault"
@@ -357,12 +360,12 @@ export default function List() {
                             className="form-check-label"
                             htmlFor="flexCheckDefault"
                           >
-                            $1,500以下
+                            $500以下
                           </label>
                         </div>
-                        <div className="form-check">
+                        <div className="form-check form-switch">
                           <input
-                            className="form-check-input"
+                            className="form-check-input rounded-circle"
                             type="checkbox"
                             value=""
                             id="flexCheckChecked"
@@ -371,12 +374,12 @@ export default function List() {
                             className="form-check-label"
                             htmlFor="flexCheckChecked"
                           >
-                            $1,500 - $3,000
+                            $500 - $2,000
                           </label>
                         </div>
-                        <div className="form-check">
+                        <div className="form-check form-switch">
                           <input
-                            className="form-check-input"
+                            className="form-check-input rounded-circle"
                             type="checkbox"
                             value=""
                             id="flexCheckChecked"
@@ -385,7 +388,7 @@ export default function List() {
                             className="form-check-label"
                             htmlFor="flexCheckChecked"
                           >
-                            $3,001 - $5,999
+                            $2,001以上
                           </label>
                         </div>
                       </div>
@@ -396,222 +399,49 @@ export default function List() {
             </div>
 
             <div id="page-content-wrapper">
-              <div className="container-fluid">
-                <div className="row row-cols-1 row-cols-md-3 g-4 row-cols-sm-2">
-                  <div className="col-6 col-sm-6 col-md-4">
-                    <div className="card w-350 no-border f-16">
-                      <img
-                        src="/images/product/list/p1-thumb.webp"
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body no-space-x">
-                        <p className="card-text note-text ">萬寶龍</p>
-                        <p className="card-text h5 ">萬寶龍鋼筆</p>
-                        <span className="text-my-notice">$1,990</span>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '3%',
-                            right: '5%',
-                          }}
-                        >
-                          <Heart />
-                        </div>
-                      </div>
-                    </div>
+              <div className="container">
+                <div className="row row-cols-2 row-cols-md-3 g-4 row-cols-sm-2">
+                  <div className="col">
+                    <ProductFigure />
                   </div>
                   <div className="col">
-                    <div className="card w-350 no-border f-16">
-                      <img
-                        src="/images/product/list/p1-thumb.webp"
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body no-space-x">
-                        <p className="card-text note-text ">萬寶龍</p>
-                        <p className="card-text h5 ">萬寶龍鋼筆</p>
-                        <span className="text-my-notice">$1,990</span>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '3%',
-                            right: '5%',
-                          }}
-                        >
-                          <Heart />
-                        </div>
-                      </div>
-                    </div>
+                    <ProductFigure />
                   </div>
                   <div className="col">
-                    <div className="card w-350 no-border f-16">
-                      <img
-                        src="/images/product/list/p1-thumb.webp"
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body no-space-x">
-                        <p className="card-text note-text ">萬寶龍</p>
-                        <p className="card-text h5 ">萬寶龍鋼筆</p>
-                        <span className="text-my-notice">$1,990</span>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '3%',
-                            right: '5%',
-                          }}
-                        >
-                          <Heart />
-                        </div>
-                      </div>
-                    </div>
+                    <ProductFigure />
                   </div>
                   <div className="col">
-                    <div className="card w-350 no-border f-16">
-                      <img
-                        src="/images/product/list/p1-thumb.webp"
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body no-space-x">
-                        <p className="card-text note-text ">萬寶龍</p>
-                        <p className="card-text h5 ">萬寶龍鋼筆</p>
-                        <span className="text-my-notice">$1,990</span>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '3%',
-                            right: '5%',
-                          }}
-                        >
-                          <Heart />
-                        </div>
-                      </div>
-                    </div>
+                    <ProductFigure />
                   </div>
                   <div className="col">
-                    <div className="card w-350 no-border f-16">
-                      <img
-                        src="/images/product/list/p1-thumb.webp"
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body no-space-x">
-                        <p className="card-text note-text ">萬寶龍</p>
-                        <p className="card-text h5 ">萬寶龍鋼筆</p>
-                        <span className="text-my-notice">$1,990</span>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '3%',
-                            right: '5%',
-                          }}
-                        >
-                          <Heart />
-                        </div>
-                      </div>
-                    </div>
+                    <ProductFigure />
                   </div>
                   <div className="col">
-                    <div className="card w-350 no-border f-16">
-                      <img
-                        src="/images/product/list/p1-thumb.webp"
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body no-space-x">
-                        <p className="card-text note-text ">萬寶龍</p>
-                        <p className="card-text h5 ">萬寶龍鋼筆</p>
-                        <span className="text-my-notice">$1,990</span>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '3%',
-                            right: '5%',
-                          }}
-                        >
-                          <Heart />
-                        </div>
-                      </div>
-                    </div>
+                    <ProductFigure />
                   </div>
                   <div className="col">
-                    <div className="card w-350 no-border f-16">
-                      <img
-                        src="/images/product/list/p1-thumb.webp"
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body no-space-x">
-                        <p className="card-text note-text ">萬寶龍</p>
-                        <p className="card-text h5 ">萬寶龍鋼筆</p>
-                        <span className="text-my-notice">$1,990</span>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '3%',
-                            right: '5%',
-                          }}
-                        >
-                          <Heart />
-                        </div>
-                      </div>
-                    </div>
+                    <ProductFigure />
                   </div>
                   <div className="col">
-                    <div className="card w-350 no-border f-16">
-                      <img
-                        src="/images/product/list/p1-thumb.webp"
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body no-space-x">
-                        <p className="card-text note-text ">萬寶龍</p>
-                        <p className="card-text h5 ">萬寶龍鋼筆</p>
-                        <span className="text-my-notice">$1,990</span>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '3%',
-                            right: '5%',
-                          }}
-                        >
-                          <Heart />
-                        </div>
-                      </div>
-                    </div>
+                    <ProductFigure />
                   </div>
                   <div className="col">
-                    <div className="card w-350 no-border f-16">
-                      <img
-                        src="/images/product/list/p1-thumb.webp"
-                        className="card-img-top"
-                        alt="..."
-                      />
-                      <div className="card-body no-space-x">
-                        <p className="card-text note-text ">萬寶龍</p>
-                        <p className="card-text h5 ">萬寶龍鋼筆</p>
-                        <span className="text-my-notice">$1,990</span>
-                        <div
-                          style={{
-                            position: 'absolute',
-                            top: '3%',
-                            right: '5%',
-                          }}
-                        >
-                          <Heart />
-                        </div>
-                      </div>
-                    </div>
+                    <ProductFigure />
+                  </div>
+                  <div className="col">
+                    <ProductFigure />
+                  </div>
+                  <div className="col">
+                    <ProductFigure />
+                  </div>
+                  <div className="col">
+                    <ProductFigure />
                   </div>
                 </div>
 
                 <div style={{ marginTop: '60px' }}>
-                
                   <hr style={{ margin: '20px auto' }} />
 
-                  
                   <nav
                     className="d-flex justify-content-center align-items-center"
                     aria-label="Page navigation example"
