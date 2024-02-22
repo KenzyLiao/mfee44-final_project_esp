@@ -1,5 +1,5 @@
 import React from 'react'
-import CardGroup from '@/components/course/card_group.js'
+import CardGroup from '@/components/course/card-group.js'
 import CardGroupTitle from '@/components/course/card-group-title.js'
 export default function CoursePage() {
   const data = [

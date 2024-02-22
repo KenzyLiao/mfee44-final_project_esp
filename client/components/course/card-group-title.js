@@ -10,7 +10,7 @@ function CardGroupTitle(props) {
           <h4>{props.title}</h4>
           <h5 class="text-primary">&nbsp;| {props.subTitle}</h5>
         </div>
-        <a href="#" className='text-decoration-none d-flex align-items-center text-primary'>查看更多<BsChevronRight className='mt-1'/></a>
+        <a href="./course/overview" className='text-decoration-none d-flex align-items-center text-primary'>查看更多<BsChevronRight className='mt-1'/></a>
       </div>
     </>
   );
