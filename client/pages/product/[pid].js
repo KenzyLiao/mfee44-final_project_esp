@@ -1,5 +1,5 @@
 import React from 'react'
-import Carousel from '@/components/myProduct/carousel'
+import Carousel from '@/components/myProduct/productcarousel'
 import FavIcon from '@/components/myProduct/heart-icon'
 import QuantityButton from '@/components/myProduct/quantitybutton'
 
@@ -78,51 +78,6 @@ export default function Detail() {
                       <li>尺寸:140 13.7 mm</li>
                       <li>體重:21.73 g</li>
                     </ul>
-                  </div>
-                </div>
-              </div>
-              <div className="accordion-item">
-                <h2 className="accordion-header">
-                  <button
-                    className="accordion-button collapsed"
-                    type="button"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#panelsStayOpen-collapseThree"
-                    aria-expanded="false"
-                    aria-controls="panelsStayOpen-collapseThree"
-                  >
-                    評價(370){'  '}
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                    <span className="star">&#9733;</span>
-                  </button>
-                </h2>
-                <div
-                  id="panelsStayOpen-collapseThree"
-                  className="accordion-collapse collapse"
-                >
-                  <div className="accordion-body px-1">
-                    <div className="commet">
-                      <div className="rating">
-                        <span className="star">&#9733;</span>
-                        <span className="star">&#9733;</span>
-                        <span className="star">&#9733;</span>
-                        <span className="star">&#9733;</span>
-                        <span className="star">&#9733;</span>
-                      </div>
-                      <p>great shoes overall Ella579458843 - 2023年6月19日</p>
-                      <p>
-                        overall one of my favorite shoes at the moment. go with
-                        any of my outfits, i can wear sweatpants with them or to
-                        a nice dinner with a dress. the only “problem” i have
-                        with them is that they’re difficult to break into even
-                        if you half size up, it took me a while to break into
-                        them. but overall i recommend these shoes if you just
-                        want some great shoes for any occasion.... 更多
-                      </p>
-                    </div>
                   </div>
                 </div>
               </div>

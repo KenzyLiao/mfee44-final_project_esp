@@ -1,8 +1,6 @@
-/* eslint-disable jsx-a11y/alt-text */
-/* eslint-disable @next/next/no-img-element */
 import { useState } from 'react'
-// Import Swiper React components
 import { Swiper, SwiperSlide } from 'swiper/react'
+import Image from 'next/image'
 
 // Import Swiper styles
 import 'swiper/css'
@@ -13,9 +11,6 @@ import 'swiper/css/thumbs'
 // import required modules
 import { Autoplay, FreeMode, Navigation, Thumbs } from 'swiper/modules'
 
-// 範例出處
-// https://swiperjs.com/demos#thumbs-gallery
-// https://codesandbox.io/s/k3cyyc
 export default function Carousel() {
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
 
@@ -37,19 +32,59 @@ export default function Carousel() {
         className="mySwiper2"
       >
         <SwiperSlide>
-          <img src="/product/images/product/slide/t1.jpg" />
+          <div style={{ width: '100%', height: '100%' }}>
+            <Image
+              src="/images/product/slide/t1.jpg"
+              alt="Slide 1"
+              layout="fill"
+              objectFit="contain"
+              objectPosition="center"
+            />
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img src="/product/images/product/slide/t1.jpg" />
+          <div style={{ width: '100%', height: '100%' }}>
+            <Image
+              src="/images/product/slide/t2.jpg"
+              alt="Slide 2"
+              layout="fill"
+              objectFit="contain"
+              objectPosition="center"
+            />
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img src="/product/images/product/slide/t1.jpg" />
+          <div style={{ width: '100%', height: '100%' }}>
+            <Image
+              src="/images/product/slide/t3.jpg"
+              alt="Slide 3"
+              layout="fill"
+              objectFit="contain"
+              objectPosition="center"
+            />
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img src="/product/images/product/slide/t1.jpg" />
+          <div style={{ width: '100%', height: '100%' }}>
+            <Image
+              src="/images/product/slide/t4.jpg"
+              alt="Slide 4"
+              layout="fill"
+              objectFit="contain"
+              objectPosition="center"
+            />
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img src="/product/images/product/slide/t1.jpg" />
+          <div style={{ width: '100%', height: '100%' }}>
+            <Image
+              src="/images/product/slide/t5.jpg"
+              alt="Slide 5"
+              layout="fill"
+              objectFit="contain"
+              objectPosition="center"
+            />
+          </div>
         </SwiperSlide>
       </Swiper>
       <Swiper
@@ -62,19 +97,59 @@ export default function Carousel() {
         className="mySwiper"
       >
         <SwiperSlide>
-          <img src="/product/images/product/slide/t1.jpg" />
+          <div style={{ width: '100%', height: '100%' }}>
+            <Image
+              src="/images/product/slide/t1.jpg"
+              alt="Thumbnail 1"
+              layout="fill"
+              objectFit="contain"
+              objectPosition="center"
+            />
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img src="/product/images/product/slide/t2.jpg" />
+          <div style={{ width: '100%', height: '100%' }}>
+            <Image
+              src="/images/product/slide/t2.jpg"
+              alt="Thumbnail 2"
+              layout="fill"
+              objectFit="contain"
+              objectPosition="center"
+            />
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img src="/product/images/product/slide/t3.jpg" />
+          <div style={{ width: '100%', height: '100%' }}>
+            <Image
+              src="/images/product/slide/t3.jpg"
+              alt="Thumbnail 3"
+              layout="fill"
+              objectFit="contain"
+              objectPosition="center"
+            />
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img src="/product/images/product/slide/t4.jpg" />
+          <div style={{ width: '100%', height: '100%' }}>
+            <Image
+              src="/images/product/slide/t4.jpg"
+              alt="Thumbnail 4"
+              layout="fill"
+              objectFit="contain"
+              objectPosition="center"
+            />
+          </div>
         </SwiperSlide>
         <SwiperSlide>
-          <img src="/product/images/product/slide/t5.jpg" />
+          <div style={{ width: '100%', height: '100%' }}>
+            <Image
+              src="/images/product/slide/t5.jpg"
+              alt="Thumbnail 5"
+              layout="fill"
+              objectFit="contain"
+              objectPosition="center"
+            />
+          </div>
         </SwiperSlide>
       </Swiper>
     </>
