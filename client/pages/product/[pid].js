@@ -2,6 +2,7 @@ import React from 'react'
 import Carousel from '@/components/myProduct/productcarousel'
 import FavIcon from '@/components/myProduct/heart-icon'
 import QuantityButton from '@/components/myProduct/quantitybutton'
+import ProductFigure from '@/components/myProduct/productfigure'
 
 export default function Detail() {
   return (
@@ -15,28 +16,39 @@ export default function Detail() {
             <li className="breadcrumb-item active" aria-current="page">
               所有鋼筆
             </li>
+            <li className="breadcrumb-item active" aria-current="page">
+              萬寶龍鋼筆
+            </li>
           </ol>
         </nav>
-        <div className="col-sm-7">
+        <div className="col-sm-7 my-3">
           <div className="position-sticky" style={{ top: '2rem' }}>
             <Carousel />
           </div>
         </div>
-        <div className="col-sm-5">
-          <h4 className="text-h4">萬寶龍</h4>
-          <h1 className="text-h1 py-3">萬寶龍鋼筆</h1>
-          <h3 className="text-h3 text-my-notice">NT $4,000</h3>
-          <div style={{ marginTop: '230px' }}>
-            <div className="d-flex justify-content-between align-items-center m-3">
-              <QuantityButton />
-              <span>
-                <FavIcon />
-                加入收藏
-              </span>
+        <div className="col-sm-5 my-3">
+          <div className="position-sticky" style={{ top: '2rem' }}>
+            <h4 className="text-h4">萬寶龍</h4>
+            <h1 className="text-h1 py-3">萬寶龍鋼筆</h1>
+            <h3 className="text-h3 text-my-notice">NT $4,000</h3>
+            <div style={{ marginTop: '5rem' }}>
+              <div
+                className="d-flex justify-content-between align-items-center m-3"
+                style={{ flexWrap: 'wrap' }}
+              >
+                <QuantityButton />
+                <span className="my-3">
+                  <FavIcon />
+                  <span className="ms-2">加入收藏</span>
+                </span>
+              </div>
+              <button className="btn btn-primary w-100 mb-3 rounded-pill">
+                加入購物車
+              </button>
+              <button className="btn btn-outline-primary w-100 rounded-pill">
+                立即購買
+              </button>
             </div>
-
-            <button className="btn btn-primary w-100 mb-3">加入購物車</button>
-            <button className="btn btn-outline-primary w-100">立即購買</button>
           </div>
         </div>
       </div>
@@ -87,72 +99,16 @@ export default function Detail() {
           <h3 style={{ margin: '100px auto 50px' }}>其他人還看了</h3>
           <div className="row my-3">
             <div className="col-sm-3">
-              <div className="card mx-2 border-0" style={{ width: '100%' }}>
-                <img
-                  src="/images/product/list/p1-thumb.webp"
-                  className="card-img-top"
-                  alt="Product 1"
-                />
-                <div className="card-body no-space-x">
-                  <p className="card-text note-text">萬寶龍</p>
-                  <p className="card-text h5">萬寶龍鋼筆</p>
-                  <span className="text-my-notice">$1,990</span>
-                  <div style={{ position: 'absolute', top: '3%', right: '5%' }}>
-                    <FavIcon />
-                  </div>
-                </div>
-              </div>
+              <ProductFigure />
             </div>
             <div className="col-sm-3">
-              <div className="card mx-2 border-0" style={{ width: '100%' }}>
-                <img
-                  src="/images/product/list/p1-thumb.webp"
-                  className="card-img-top"
-                  alt="Product 2"
-                />
-                <div className="card-body no-space-x">
-                  <p className="card-text note-text">萬寶龍</p>
-                  <p className="card-text h5">萬寶龍鋼筆</p>
-                  <span className="text-my-notice">$1,990</span>
-                  <div style={{ position: 'absolute', top: '3%', right: '5%' }}>
-                    <FavIcon />
-                  </div>
-                </div>
-              </div>
+              <ProductFigure />
             </div>
             <div className="col-sm-3">
-              <div className="card mx-2 border-0" style={{ width: '100%' }}>
-                <img
-                  src="/images/product/list/p1-thumb.webp"
-                  className="card-img-top"
-                  alt="Product 3"
-                />
-                <div className="card-body no-space-x">
-                  <p className="card-text note-text">萬寶龍</p>
-                  <p className="card-text h5">萬寶龍鋼筆</p>
-                  <span className="text-my-notice">$1,990</span>
-                  <div style={{ position: 'absolute', top: '3%', right: '5%' }}>
-                    <FavIcon />
-                  </div>
-                </div>
-              </div>
+              <ProductFigure />
             </div>
             <div className="col-sm-3">
-              <div className="card mx-2 border-0" style={{ width: '100%' }}>
-                <img
-                  src="/images/product/list/p1-thumb.webp"
-                  className="card-img-top"
-                  alt="Product 4"
-                />
-                <div className="card-body no-space-x">
-                  <p className="card-text note-text">萬寶龍</p>
-                  <p className="card-text h5">萬寶龍鋼筆</p>
-                  <span className="text-my-notice">$1,990</span>
-                  <div style={{ position: 'absolute', top: '3%', right: '5%' }}>
-                    <FavIcon />
-                  </div>
-                </div>
-              </div>
+              <ProductFigure />
             </div>
           </div>
         </div>
