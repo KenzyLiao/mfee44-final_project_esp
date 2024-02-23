@@ -1,34 +1,6 @@
 import { useEffect } from 'react'
-import Heart from '@/components/myProduct/heart-icon'
 import ProductFigure from '@/components/myProduct/productfigure'
-import { Figure } from 'react-bootstrap'
 export default function List() {
-  // Toggle the side navigation
-  useEffect(() => {
-    // fix next issue
-    if (typeof window !== 'undefined') {
-      const sidebarToggle = document.body.querySelector('#sidebarToggle')
-
-      if (sidebarToggle) {
-        // 在localStorage中儲存目前sidebar情況
-        if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-          document.body.classList.toggle('sb-sidenav-toggled')
-        }
-
-        sidebarToggle.addEventListener('click', (event) => {
-          event.preventDefault()
-
-          document.body.classList.toggle('sb-sidenav-toggled')
-
-          localStorage.setItem(
-            'sb|sidebar-toggle',
-            document.body.classList.contains('sb-sidenav-toggled')
-          )
-        })
-      }
-    }
-  }, [])
-
   return (
     <>
       <div className="row mt-2 mb-3">
@@ -42,14 +14,14 @@ export default function List() {
               aria-label="breadcrumb"
               style={{ marginLeft: '230px' }}
             >
-              <ol className="breadcrumb mb-0">
+              {/* <ol className="breadcrumb mb-0">
                 <li className="breadcrumb-item">
                   <a href="#">Home</a>
                 </li>
                 <li className="breadcrumb-item active " aria-current="page">
                   所有鋼筆
                 </li>
-              </ol>
+              </ol> */}
             </nav>
             <div className="d-flex p-2 justify-content-end align-items-center">
               <div className="dropdown ms-3">
@@ -86,8 +58,9 @@ export default function List() {
       </div>
 
       <div className="row">
-        <div className="col-md-16">
-          <div className="d-flex" id="wrapper">
+        {/* 左邊filter */}
+        <div className="col-md-3">
+          <div className="" id="wrapper">
             <div className="bg-white me-3" id="sidebar-wrapper">
               <div className="scroll">
                 <div className="cats" style={{ marginBottom: '100px' }}>
@@ -397,84 +370,86 @@ export default function List() {
                 </div>
               </div>
             </div>
-
-            <div id="page-content-wrapper">
-              <div className="container">
-                <div className="row row-cols-2 row-cols-md-3 g-4 row-cols-sm-2">
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
-                  <div className="col">
-                    <ProductFigure />
-                  </div>
+          </div>
+        </div>
+        {/* 右邊主商品欄位 */}
+        <div className="col-md-9">
+          <div id="page-content-wrapper">
+            <div className="container">
+              <div className="row row-cols-2 row-cols-md-3 g-4 row-cols-sm-2">
+                <div className="col">
+                  <ProductFigure />
                 </div>
-
-                <div style={{ marginTop: '60px' }}>
-                  <hr style={{ margin: '20px auto' }} />
-
-                  <nav
-                    className="d-flex justify-content-center align-items-center"
-                    aria-label="Page navigation example"
-                  >
-                    <ul className="pagination">
-                      <li className="page-item">
-                        <a className="page-link" href="#" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
-                        </a>
-                      </li>
-                      <li className="page-item">
-                        <a className="page-link" href="#">
-                          1
-                        </a>
-                      </li>
-                      <li className="page-item">
-                        <a className="page-link" href="#">
-                          2
-                        </a>
-                      </li>
-                      <li className="page-item">
-                        <a className="page-link" href="#">
-                          3
-                        </a>
-                      </li>
-                      <li className="page-item">
-                        <a className="page-link" href="#" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                        </a>
-                      </li>
-                    </ul>
-                  </nav>
+                <div className="col">
+                  <ProductFigure />
                 </div>
+                <div className="col">
+                  <ProductFigure />
+                </div>
+                <div className="col">
+                  <ProductFigure />
+                </div>
+                <div className="col">
+                  <ProductFigure />
+                </div>
+                <div className="col">
+                  <ProductFigure />
+                </div>
+                <div className="col">
+                  <ProductFigure />
+                </div>
+                <div className="col">
+                  <ProductFigure />
+                </div>
+                <div className="col">
+                  <ProductFigure />
+                </div>
+                <div className="col">
+                  <ProductFigure />
+                </div>
+                <div className="col">
+                  <ProductFigure />
+                </div>
+                <div className="col">
+                  <ProductFigure />
+                </div>
+              </div>
+
+              <div style={{ marginTop: '60px' }}>
+                <hr style={{ margin: '20px auto' }} />
+
+                <nav
+                  className="d-flex justify-content-center align-items-center"
+                  aria-label="Page navigation example"
+                >
+                  <ul className="pagination">
+                    <li className="page-item">
+                      <a className="page-link" href="#" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a className="page-link" href="#">
+                        1
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a className="page-link" href="#">
+                        2
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a className="page-link" href="#">
+                        3
+                      </a>
+                    </li>
+                    <li className="page-item">
+                      <a className="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                      </a>
+                    </li>
+                  </ul>
+                </nav>
               </div>
             </div>
           </div>
