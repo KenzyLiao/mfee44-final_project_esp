@@ -20,3 +20,7 @@ git checkout 你的名字
 步驟 4.用自己的分支去 merge 電腦上剛剛拉下來的 main 分支資料,就可以看到組長更新的 css 樣式在自己的分支
 
 git merge --no-ff -m "你的名字 main" main
+
+end
+
+//02/21更新 scss樣式
