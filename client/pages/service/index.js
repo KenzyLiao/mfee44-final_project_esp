@@ -7,9 +7,11 @@ import Search from '@/components/myService/search'
 import Map from '@/components/myService/map'
 import StoreInfo from '@/components/myService/storeInfo'
 
+
+
 export default function RepairAndServicePage() {
   useEffect(() => {
-    import('@/pages/service/serviceIndex.js')
+    import('@/utils/serviceTool/serviceIndex.js')
   }, [])
   return (
     <>
