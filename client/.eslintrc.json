@@ -33,7 +33,7 @@
     "next",
     "next/core-web-vitals",
     "prettier",
-    "next/babel"
+    
   ],
   "plugins": ["jsx-a11y", "react", "react-hooks", "prettier"],
   "rules": {
