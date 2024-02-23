@@ -1,6 +1,47 @@
-import { useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import ProductFigure from '@/components/myProduct/productfigure'
+import Slider from 'rc-slider'
+import 'rc-slider/assets/index.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 export default function List() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 768)
+    }
+
+    // 初始加载时触发一次检测
+    checkIsMobile()
+
+    // 监听窗口大小变化
+    window.addEventListener('resize', checkIsMobile)
+
+    // 清理函数
+    return () => {
+      window.removeEventListener('resize', checkIsMobile)
+    }
+  }, [])
+  const [priceRange, setPriceRange] = useState([0, 1000]) // 默认价格区间
+
+  const handlePriceChange = (value) => {
+    setPriceRange(value)
+  }
+
+  const [selectedColors, setSelectedColors] = useState([])
+
+  const toggleColorSelection = (color) => {
+    if (selectedColors.includes(color)) {
+      setSelectedColors(selectedColors.filter((c) => c !== color))
+    } else {
+      setSelectedColors([...selectedColors, color])
+    }
+  }
+
+  const getColorButtonClass = (color) => {
+    return `btn btn-circle ${selectedColors.includes(color) ? 'selected' : ''}`
+  }
   return (
     <>
       <div className="row mt-2 mb-3">
@@ -31,7 +72,7 @@ export default function List() {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  排序依據&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span style={{ marginRight: '40px' }}>排序依據</span>
                 </button>
                 <ul className="dropdown-menu">
                   <li>
@@ -60,21 +101,57 @@ export default function List() {
       <div className="row">
         {/* 左邊filter */}
         <div className="col-md-3">
-          <div className="" id="wrapper">
-            <div className="bg-white me-3" id="sidebar-wrapper">
-              <div className="scroll">
-                <div className="cats" style={{ marginBottom: '100px' }}>
-                  <div>
+          <div id="wrapper">
+            <div
+              className={`bg-white ${isMobile ? 'flex-row' : 'me-3'}`}
+              id="sidebar-wrapper"
+            >
+              <div className={`${isMobile ? 'scroll' : ''}`}>
+                <div
+                  className={`cats ${isMobile ? 'd-flex' : ''}`}
+                  style={{ marginBottom: '10px' }}
+                >
+                  <div className="me-2">
                     <button type="button" className="btn">
                       萬寶龍
                     </button>
                   </div>
-                  <div>
+                  <div className="me-2">
                     <button type="button" className="btn">
                       百樂
                     </button>
                   </div>
-                  <div>
+                  <div className="me-2">
+                    <button type="button" className="btn">
+                      sheaffer
+                    </button>
+                  </div>
+                  <div className="me-2">
+                    <button type="button" className="btn">
+                      sheaffer
+                    </button>
+                  </div>
+                  <div className="me-2">
+                    <button type="button" className="btn">
+                      sheaffer
+                    </button>
+                  </div>
+                  <div className="me-2">
+                    <button type="button" className="btn">
+                      sheaffer
+                    </button>
+                  </div>
+                  <div className="me-2">
+                    <button type="button" className="btn">
+                      sheaffer
+                    </button>
+                  </div>
+                  <div className="me-2">
+                    <button type="button" className="btn">
+                      sheaffer
+                    </button>
+                  </div>
+                  <div className="me-2">
                     <button type="button" className="btn">
                       sheaffer
                     </button>
@@ -236,9 +313,22 @@ export default function List() {
                               <div>
                                 <button
                                   type="button"
-                                  className="btn btn-purple btn-circle"
-                                  style={{ backgroundColor: 'purple' }}
-                                ></button>
+                                  className={getColorButtonClass('purple')}
+                                  style={{
+                                    backgroundColor: 'purple',
+                                    borderRadius: '50%',
+                                    width: '40px',
+                                    height: '40px',
+                                  }}
+                                  onClick={() => toggleColorSelection('purple')}
+                                >
+                                  {selectedColors.includes('purple') && (
+                                    <FontAwesomeIcon
+                                      icon={faCheck}
+                                      style={{ color: 'white' }}
+                                    />
+                                  )}
+                                </button>
                               </div>
                               <div className="color-f">紫色</div>
                             </div>
@@ -248,10 +338,24 @@ export default function List() {
                               <div>
                                 <button
                                   type="button"
-                                  className="btn btn-primary btn-circle"
-                                ></button>
+                                  className={getColorButtonClass('blue')}
+                                  style={{
+                                    backgroundColor: 'blue',
+                                    borderRadius: '50%',
+                                    width: '40px',
+                                    height: '40px',
+                                  }}
+                                  onClick={() => toggleColorSelection('blue')}
+                                >
+                                  {selectedColors.includes('blue') && (
+                                    <FontAwesomeIcon
+                                      icon={faCheck}
+                                      style={{ color: 'white' }}
+                                    />
+                                  )}
+                                </button>
                               </div>
-                              <div className="color-f">紫色</div>
+                              <div className="color-f">蓝色</div>
                             </div>
                           </div>
                           <div className="p-2">
@@ -259,45 +363,24 @@ export default function List() {
                               <div>
                                 <button
                                   type="button"
-                                  className="btn btn-primary btn-circle"
-                                ></button>
+                                  className={getColorButtonClass('green')}
+                                  style={{
+                                    backgroundColor: 'green',
+                                    borderRadius: '50%',
+                                    width: '40px',
+                                    height: '40px',
+                                  }}
+                                  onClick={() => toggleColorSelection('green')}
+                                >
+                                  {selectedColors.includes('green') && (
+                                    <FontAwesomeIcon
+                                      icon={faCheck}
+                                      style={{ color: 'white' }}
+                                    />
+                                  )}
+                                </button>
                               </div>
-                              <div className="color-f">紫色</div>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="d-flex flex-row justify-content-around mb-2">
-                          <div className="p-2">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className="btn btn-primary btn-circle"
-                                ></button>
-                              </div>
-                              <div className="color-f">紫色</div>
-                            </div>
-                          </div>
-                          <div className="p-2">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className="btn btn-primary btn-circle"
-                                ></button>
-                              </div>
-                              <div className="color-f">紫色</div>
-                            </div>
-                          </div>
-                          <div className="p-2">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className="btn btn-primary btn-circle"
-                                ></button>
-                              </div>
-                              <div className="color-f">紫色</div>
+                              <div className="color-f">绿色</div>
                             </div>
                           </div>
                         </div>
@@ -321,48 +404,18 @@ export default function List() {
                       id="panelsStayOpen-collapseThree"
                       className="accordion-collapse collapse"
                     >
-                      <div className="accordion-body px-1">
-                        <div className="form-check form-switch">
-                          <input
-                            className="form-check-input rounded-circle"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexCheckDefault"
-                          >
-                            $500以下
-                          </label>
-                        </div>
-                        <div className="form-check form-switch">
-                          <input
-                            className="form-check-input rounded-circle"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckChecked"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexCheckChecked"
-                          >
-                            $500 - $2,000
-                          </label>
-                        </div>
-                        <div className="form-check form-switch">
-                          <input
-                            className="form-check-input rounded-circle"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckChecked"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexCheckChecked"
-                          >
-                            $2,001以上
-                          </label>
+                      <div style={{ margin: '20px' }}>
+                        <Slider
+                          min={1}
+                          max={5000}
+                          step={100}
+                          range
+                          defaultValue={[0, 1000]}
+                          value={priceRange}
+                          onChange={handlePriceChange}
+                        />
+                        <div>
+                          Price Range: ${priceRange[0]} - ${priceRange[1]}
                         </div>
                       </div>
                     </div>
