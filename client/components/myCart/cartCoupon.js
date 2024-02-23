@@ -72,56 +72,71 @@ export default function CartCoupon() {
   return (
     <>
       <div className=" coupon-container">
-        <h3 className="text-h3 text-my-black d-flex align-content-center">
-          <HiOutlineTicket size="30px" color="#404040" />
-          <div className="ms-3">可用優惠券</div>
-        </h3>
-        <div className="mb-2">
-          <div className="text-h6 text-my-black card-header">
-            <label>
-              <input
-                type="radio"
-                value="none"
-                checked={selectedCouponID === 'none'}
-                onChange={handleRadioChange}
-                className="me-2"
-              />
-              不使用優惠券
-            </label>
-          </div>
-        </div>
-        {couponsData.map((coupon) => (
-          <div key={coupon.CouponID} className=" mb-2 card-header">
-            <div className=" text-h6 text-my-black">
+        <div>
+          <h3 className="text-h3 text-my-black d-flex align-content-center ">
+            <HiOutlineTicket size="30px" color="#404040" />
+            <div className="ms-3 ">可用優惠券</div>
+          </h3>
+          <div className="mb-2 ">
+            <div className="text-h6 text-my-black card-header">
               <label>
                 <input
                   type="radio"
-                  name="coupon"
-                  value={coupon.CouponID}
-                  checked={selectedCouponID === coupon.CouponID}
+                  value="none"
+                  checked={selectedCouponID === 'none'}
                   onChange={handleRadioChange}
                   className="me-2"
                 />
-                {coupon.Description}
+                不使用優惠券
               </label>
             </div>
-            <CSSTransition
-              in={selectedCouponID === coupon.CouponID}
-              timeout={300}
-              classNames="zoom"
-              unmountOnExit
-            >
-              <div className="card-body text-h6 text-my-black">
-                <div>
-                  有效期限：{coupon.ValidFrom} 至 {coupon.ValidTo}
-                </div>
-                <div>最低消費：NT${coupon.MinimumSpend.toFixed(2)}</div>
-              </div>
-            </CSSTransition>
           </div>
-        ))}
+          {couponsData.map((coupon) => (
+            <div key={coupon.CouponID} className=" mb-2 card-header ">
+              <div className=" text-h6 text-my-black">
+                <label>
+                  <input
+                    type="radio"
+                    name="coupon"
+                    value={coupon.CouponID}
+                    checked={selectedCouponID === coupon.CouponID}
+                    onChange={handleRadioChange}
+                    className="me-2"
+                  />
+                  {coupon.Description}
+                </label>
+              </div>
+              <CSSTransition
+                in={selectedCouponID === coupon.CouponID}
+                timeout={300}
+                classNames="zoom"
+                unmountOnExit
+              >
+                <div className="card-body text-h6 text-my-black">
+                  <div>
+                    有效期限：{coupon.ValidFrom} 至 {coupon.ValidTo}
+                  </div>
+                  <div>最低消費：NT${coupon.MinimumSpend.toFixed(2)}</div>
+                </div>
+              </CSSTransition>
+            </div>
+          ))}
+        </div>
       </div>
+
       <style jsx>{`
+        .coupon-container {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          border-bottom: 1px solid var(--my-white);
+          margin-top: 50px;
+          margin-inline: auto;
+          padding-bottom: 40px;
+          @media (max-width: 991px) {
+            letter-spacing: 0.2rem;
+          }
+        }
         .card-header input[type='radio'] {
           cursor: pointer;
         }
@@ -133,11 +148,6 @@ export default function CartCoupon() {
           height: auto;
           padding: 10px;
           border-radius: 10px;
-        }
-        .coupon-container {
-          border-bottom: 1px solid var(--my-white);
-          margin-top: 50px;
-          padding-bottom: 40px;
         }
       `}</style>
     </>

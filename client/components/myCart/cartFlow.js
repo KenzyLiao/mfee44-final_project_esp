@@ -1,9 +1,9 @@
 import React from 'react'
 import { MdArrowForwardIos } from 'react-icons/md'
 
-export default function CartFlow({ activeStep }) {
+export default function CartFlow({ activeStep = 1 }) {
   // 添加 activeStep 作为组件的 props
-  const steps = ['我的購物車', '收件人與運送資料', '檢視訂單', '付款']
+  const steps = ['我的購物車', '收件人與運送資料', '檢查訂單', '付款']
 
   return (
     <>
