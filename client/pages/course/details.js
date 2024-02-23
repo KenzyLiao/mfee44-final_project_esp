@@ -1,7 +1,8 @@
 import React from 'react'
 import CardGroup from '@/components/course/card-group.js'
 import FilterBar from '@/components/course/filter-bar'
-// import '@/styles/details.scss'
+import ReactPlayer from 'react-player'
+import { BsBookmarkCheckFill, BsFillGiftFill, BsFillStarFill, BsStarHalf, BsFillCartFill } from "react-icons/bs";
 
 export default function CoursePage() {
 
@@ -9,9 +10,12 @@ export default function CoursePage() {
     <>
       <div className="container">
         {/* 課程介紹影片跟簡介 start */}
-        <div className="course_detail d-flex">
+        <div className="course_detail d-md-flex">
           {/* 課程介紹影片 */}
-          <video src="/data/course/video/pexels_videos_1926295 (1080p).mp4" controls />
+          {/* <video src="https://www.youtube.com/watch?v=LXb3EKWsInQ" controls /> */}
+          <div className="video me-3" style={{width:'60%'}}>
+            <ReactPlayer width='100%' controls='true' url='video/01.mp4' />
+          </div>
           {/* 課程介紹 */}
           <div className="course_info justify-content-between d-flex flex-column">
             <div>
@@ -36,16 +40,16 @@ export default function CoursePage() {
             {/* 星、按鈕 */}
             <div className="d-flex justify-content-between">
               <div className="rank d-flex align-items-center">
-                <p className="m-0">4.8</p>
-                <i className="fas fa-star" />
-                <i className="fas fa-star" />
-                <i className="fas fa-star" />
-                <i className="fas fa-star" />
-                <i className="fas fa-star-half-alt" />
+                <p className="mb-0 me-1">4.5</p>
+                <BsFillStarFill />
+                <BsFillStarFill />
+                <BsFillStarFill />
+                <BsFillStarFill />
+                <BsStarHalf />
               </div>
               <div className="btn-group">
-                <a className="mx-3 text-decoration-none"><i className="fa-solid fa-bookmark" />收藏課程</a>
-                <a className="text-decoration-none"><i className="fa-solid fa-gift" />贈送禮物</a>
+                <a className="mx-3 text-decoration-none border1"><BsBookmarkCheckFill className='mb-1 me-2' />收藏課程</a>
+                <a className="text-decoration-none border1"><BsFillGiftFill className='mb-1 me-2 ' />贈送禮物</a>
               </div>
             </div>
           </div>
@@ -287,16 +291,133 @@ export default function CoursePage() {
               </div>
             </div></main>
           <aside className="col-md-3">
-            <div className="price">
+            <div className="price border1">
               <p className="text-h4">購買課程</p>
               <p className="text-h3">NT$1,200</p>
-              <div className>
-                <a href className="text-decoration-none buy-btn">立即購買</a>
-                <a href className="collect-btn"><i className="fa-solid fa-cart-shopping" /></a>
+              <div className='d-flex '>
+                <a href className="text-decoration-none buy-btn border1 me-2">立即購買</a>
+                <a href className="collect-btn border1 px-2"><BsFillCartFill /></a>
               </div>
             </div>
           </aside>
         </div>
       </div>
+      <style jsx>{`
+      h1 {
+        color: #7c7477;
+      }
+      .course_info {
+        width: 40%;
+        padding: 0;
+      }
+      video {
+        width: 60%;
+        margin-right: 20px;
+      }
+.teacher {
+  margin-bottom: 20px;
+
+  .teacher_img {
+    margin-right: 10px;
+
+    & img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+    }
+  }
+}
+.course_intro {
+  margin-top: 10px;
+}
+
+.btn-group {
+  & a {
+    border: 0.5px solid $primary;
+    padding: 0px 5px;
+
+    cursor: pointer;
+
+    & i {
+      margin-right: 5px;
+      color: $primary;
+    }
+  }
+
+}
+
+
+.price {
+  padding: 20px 10px;
+  border: 1px solid $primary;
+  position: sticky;
+  top: 120px;
+}
+
+.buy-btn {
+  padding: 5px 40px;
+  color: $my-white;
+  background-color: $primary;
+  border-radius: 20px;
+}
+
+.collect-btn {
+  border: 0.2px solid $primary;
+  padding: 5px 10px;
+  border-radius: 20px;
+}
+
+.course-sub-info {
+  display: flex;
+
+  .course-sub-info-item {
+    display: flex;
+    align-items: flex-start;
+    margin-right: 30px;
+
+    & i {
+      font-size: 40px;
+      margin-top: 10px;
+      margin-right: 5px;
+      color: $primary;
+    }
+  }
+}
+
+.news {
+
+  .date {
+    margin-right: 10px;
+  }
+
+  .date,
+  .text_label {
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .message {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+.text_fold {
+  color: $primary;
+}
+
+.teacher-info {
+  & img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+}
+.border1{
+  border: 1px solid #7c7477;
+}
+      `}</style>
     </>)
 }

@@ -40,4 +40,5 @@ yarn.lock
 /.temp/
 
 # course videos
-/data/course/video
+/public/course/video
+/public/course/image

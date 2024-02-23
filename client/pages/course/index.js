@@ -4,16 +4,16 @@ import CardGroupTitle from '@/components/course/card-group-title.js'
 export default function CoursePage() {
   const data = [
     {
-      title:"熱門課程",
-      subTitle:"每周優質推薦"
+      title:"我的課程",
+      subTitle:"新的一天持續學習"
     },
     {
       title:"興趣課程",
-      subTitle:"推薦您可能喜歡的課程"
+      subTitle:"推薦您可能喜歡"
     },
     {
-      title:"最新課程",
-      subTitle: "最新上架課程"
+      title:"熱門課程",
+      subTitle: "跟許多人一起學習"
     }
   ]
   return (<>
