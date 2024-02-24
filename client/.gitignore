@@ -38,3 +38,7 @@ next-env.d.ts
 package-lock.json
 yarn.lock
 /.temp/
+
+# course videos
+/public/course/video
+/public/course/image
