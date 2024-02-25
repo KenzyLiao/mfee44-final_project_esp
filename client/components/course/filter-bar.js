@@ -4,7 +4,7 @@ import { BsSearch } from "react-icons/bs";
 export default function FilterBar() {
   return(
     <>
-      <div className="filter m-2 d-flex align-items-center mb-4">
+      <div className="filter m-2 d-flex flex-column flex-md-row align-items-center mb-4">
         <div className="filter-class d-flex align-items-center me-4 text-h3">
           <button className="btn p-0 text-h3 text-primary">文字</button>
           <p className="mb-1 fs-5 text-h3 text-primary">&nbsp;|&nbsp;</p>
