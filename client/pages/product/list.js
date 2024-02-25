@@ -3,9 +3,22 @@ import ProductFigure from '@/components/myProduct/productfigure'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faSliders, faTimes } from '@fortawesome/free-solid-svg-icons'
+import Dialog from '@mui/material/Dialog'
+import DialogContent from '@mui/material/DialogContent'
+import Typography from '@mui/material/Typography'
+import Slide from '@mui/material/Slide'
+
 export default function List() {
   const [isMobile, setIsMobile] = useState(false)
+  const [open, setOpen] = useState(false)
+
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+  const handleSubmit = () => {
+    // 处理提交逻辑
+    setOpen(false) // 提交后关闭模态
+  }
 
   useEffect(() => {
     const checkIsMobile = () => {
@@ -45,6 +58,7 @@ export default function List() {
       selectedColors.includes(color) ? 'selected' : ''
     } ${isPressed ? 'pressed' : ''}`
   }
+
   return (
     <>
       <div className="row mt-2 mb-3">
@@ -67,36 +81,71 @@ export default function List() {
                 </li>
               </ol> */}
             </nav>
-            <div className="d-flex p-2 justify-content-end align-items-center">
-              <div className="dropdown ms-3">
-                <button
-                  className="btn dropdown-toggle my-text-contents-CH rounded-pill shadow "
-                  type="button"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  <span style={{ marginRight: '40px' }}>排序依據</span>
-                </button>
-                <ul className="dropdown-menu">
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      最新上架
-                    </a>
-                  </li>
+            {!isMobile && (
+              <div className="d-flex p-2 justify-content-end align-items-center">
+                <div className="dropdown ms-3">
+                  <button
+                    className="btn dropdown-toggle my-text-contents-CH rounded-pill shadow "
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                  >
+                    <span style={{ marginRight: '40px' }}>排序依據</span>
+                  </button>
+                  <ul className="dropdown-menu">
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        最新上架
+                      </a>
+                    </li>
 
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      價格：由高至低
-                    </a>
-                  </li>
-                  <li>
-                    <a className="dropdown-item" href="#">
-                      價格：由低至高
-                    </a>
-                  </li>
-                </ul>
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        價格：由高至低
+                      </a>
+                    </li>
+                    <li>
+                      <a className="dropdown-item" href="#">
+                        價格：由低至高
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
+            )}
+            {isMobile && (
+              <div className="d-flex p-2 justify-content-end align-items-center">
+                <button
+                  className="btn my-text-contents-CH rounded-pill shadow"
+                  onClick={handleOpen}
+                >
+                  <span style={{ marginRight: '10px' }}>篩選</span>
+                  <FontAwesomeIcon icon={faSliders} />
+                </button>
+                <Dialog
+                  open={open}
+                  onClose={handleClose}
+                  fullScreen
+                  TransitionComponent={Slide}
+                  TransitionProps={{
+                    direction: 'up',
+                  }}
+                >
+                  <DialogContent>
+                    <div className="d-flex justify-content-between mt-3">
+                      <Typography variant="h6">篩選</Typography>
+
+                      <button
+                        className="btn btn-secondary rounded-pill"
+                        onClick={handleClose}
+                      >
+                        <FontAwesomeIcon icon={faTimes} />
+                      </button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            )}
           </div>
         </div>
       </div>
