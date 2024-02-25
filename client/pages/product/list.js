@@ -12,7 +12,7 @@ import Slide from '@mui/material/Slide'
 export default function List() {
   const [isMobile, setIsMobile] = useState(false)
   const [open, setOpen] = useState(false)
-
+  const [showMore, setShowMore] = useState(false)
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleSubmit = () => {
@@ -122,6 +122,7 @@ export default function List() {
                   <span style={{ marginRight: '10px' }}>篩選</span>
                   <FontAwesomeIcon icon={faSliders} />
                 </button>
+
                 <Dialog
                   open={open}
                   onClose={handleClose}
@@ -133,7 +134,15 @@ export default function List() {
                 >
                   <DialogContent>
                     <div className="d-flex justify-content-between mt-3">
-                      <Typography variant="h6">篩選</Typography>
+                      <Typography
+                        variant="h6"
+                        style={{
+                          fontFamily: 'Noto Serif TC',
+                          fontWeight: 'bold',
+                        }}
+                      >
+                        篩選
+                      </Typography>
 
                       <button
                         className="btn btn-secondary rounded-pill"
@@ -142,7 +151,491 @@ export default function List() {
                         <FontAwesomeIcon icon={faTimes} />
                       </button>
                     </div>
+
+                    <div className="py-4">
+                      <span className="text-h3">排序依據</span>
+                      <div className="accordion-body px-1 mt-4 h6">
+                        <div className="form-check mb-2">
+                          <input
+                            className="form-check-input "
+                            type="radio"
+                            name="material"
+                            id="brass"
+                            value="brass"
+                          />
+                          <label className="form-check-label" htmlFor="brass">
+                            最新發布
+                          </label>
+                        </div>
+                        <div className="form-check mb-2">
+                          <input
+                            className="form-check-input "
+                            type="radio"
+                            name="material"
+                            id="plastic"
+                            value="plastic"
+                          />
+                          <label className="form-check-label" htmlFor="plastic">
+                            價格：由高到低
+                          </label>
+                        </div>
+                        <div className="form-check mb-2">
+                          <input
+                            className="form-check-input "
+                            type="radio"
+                            name="material"
+                            id="metal"
+                            value="metal"
+                          />
+                          <label className="form-check-label" htmlFor="metal">
+                            價格：由低到高
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="py-4">
+                      <span className="text-h3">材質</span>
+                      <div className="accordion-body px-1 mt-4 h6">
+                        <div className="form-check form-switch mb-2">
+                          <input
+                            className="form-check-input "
+                            type="checkbox"
+                            value=""
+                            id="flexCheckDefault"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="flexCheckDefault"
+                          >
+                            黃銅
+                          </label>
+                        </div>
+                        <div className="form-check form-switch mb-2">
+                          <input
+                            className="form-check-input "
+                            type="checkbox"
+                            value=""
+                            id="flexCheckChecked"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="flexCheckChecked"
+                          >
+                            塑膠
+                          </label>
+                        </div>
+                        <div className="form-check form-switch mb-2">
+                          <input
+                            className="form-check-input "
+                            type="checkbox"
+                            value=""
+                            id="flexCheckChecked"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="flexCheckChecked"
+                          >
+                            金屬
+                          </label>
+                        </div>
+                        {showMore && (
+                          <>
+                            <div className="form-check form-switch mb-2">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="flexCheckDefault2"
+                              />
+                              <label
+                                className="form-check-label"
+                                htmlFor="flexCheckDefault2"
+                              >
+                                木頭
+                              </label>
+                            </div>
+                            <div className="form-check form-switch mb-2">
+                              <input
+                                className="form-check-input"
+                                type="checkbox"
+                                value=""
+                                id="flexCheckChecked3"
+                              />
+                              <label
+                                className="form-check-label"
+                                htmlFor="flexCheckChecked3"
+                              >
+                                白鐵
+                              </label>
+                            </div>
+                            {/* 更多选项按钮 */}
+                            <button
+                              className="btn btn-link"
+                              
+                              onClick={() => setShowMore(false)}
+                            >
+                              - 收起
+                            </button>
+                          </>
+                        )}
+                        {/* 展开更多按钮 */}
+                        {!showMore && (
+                          <button
+                            className="btn btn-link"
+                            onClick={() => setShowMore(true)}
+                          >
+                            + 更多
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="py-4">
+                      <span className="text-h3">筆尖種類</span>
+                      <div className="accordion-body px-1 mt-4 h6">
+                        <div className="form-check form-switch mb-2">
+                          <input
+                            className="form-check-input "
+                            type="checkbox"
+                            value=""
+                            id="flexCheckDefault"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="flexCheckDefault"
+                          >
+                            B
+                          </label>
+                        </div>
+                        <div className="form-check form-switch mb-2">
+                          <input
+                            className="form-check-input "
+                            type="checkbox"
+                            value=""
+                            id="flexCheckChecked"
+                          />
+                          <label
+                            className="form-check-label"
+                            htmlFor="flexCheckChecked"
+                          >
+                            F
+                          </label>
+                        </div>
+                        <div className="form-check form-switch mb-2">
+                          <input
+                            className="form-check-input "
+                            type="checkbox"
+                            value=""
+                            id="flexCheckChecked"
+                          />
+                          <label
+                            className="form-check-label "
+                            htmlFor="flexCheckChecked"
+                          >
+                            M
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <hr />
+                    <div className="py-4">
+                      <span className="text-h3">顏色</span>
+
+                      <div className="d-flex flex-row justify-content-around mb-2 mt-4">
+                        {/* 紫色按钮 */}
+                        <div className="p-2">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'purple'
+                                )} btnColor`}
+                                style={{
+                                  backgroundColor: 'purple',
+                                }}
+                                onClick={() => toggleColorSelection('purple')}
+                              >
+                                {selectedColors.includes('purple') && (
+                                  <FontAwesomeIcon
+                                    icon={faCheck}
+                                    style={{ color: 'white' }}
+                                  />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">紫色</div>
+                          </div>
+                        </div>
+
+                        {/* 蓝色按钮 */}
+                        <div className="p-2">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'blue'
+                                )} btnColor`}
+                                style={{
+                                  backgroundColor: 'blue',
+                                }}
+                                onClick={() => toggleColorSelection('blue')}
+                              >
+                                {selectedColors.includes('blue') && (
+                                  <FontAwesomeIcon
+                                    icon={faCheck}
+                                    style={{ color: 'white' }}
+                                  />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">蓝色</div>
+                          </div>
+                        </div>
+
+                        {/* 绿色按钮 */}
+                        <div className="p-2">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'green'
+                                )} btnColor`}
+                                style={{
+                                  backgroundColor: 'green',
+                                }}
+                                onClick={() => toggleColorSelection('green')}
+                              >
+                                {selectedColors.includes('green') && (
+                                  <FontAwesomeIcon
+                                    icon={faCheck}
+                                    style={{ color: 'white' }}
+                                  />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">绿色</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="d-flex flex-row justify-content-around mb-2">
+                        {/* 红色按钮 */}
+                        <div className="p-2">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'red'
+                                )} btnColor`}
+                                style={{
+                                  backgroundColor: 'red',
+                                }}
+                                onClick={() => toggleColorSelection('red')}
+                              >
+                                {selectedColors.includes('red') && (
+                                  <FontAwesomeIcon
+                                    icon={faCheck}
+                                    style={{ color: 'white' }}
+                                  />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">红色</div>
+                          </div>
+                        </div>
+
+                        {/* 黄色按钮 */}
+                        <div className="p-2">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'yellow'
+                                )} btnColor`}
+                                style={{
+                                  backgroundColor: 'yellow',
+                                }}
+                                onClick={() => toggleColorSelection('yellow')}
+                              >
+                                {selectedColors.includes('yellow') && (
+                                  <FontAwesomeIcon
+                                    icon={faCheck}
+                                    style={{ color: 'white' }}
+                                  />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">黄色</div>
+                          </div>
+                        </div>
+
+                        {/* 橙色按钮 */}
+                        <div className="p-2 ">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'orange'
+                                )} btnColor`}
+                                style={{
+                                  backgroundColor: 'orange',
+                                }}
+                                onClick={() => toggleColorSelection('orange')}
+                              >
+                                {selectedColors.includes('orange') && (
+                                  <FontAwesomeIcon
+                                    icon={faCheck}
+                                    style={{ color: 'white' }}
+                                  />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">橙色</div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="d-flex flex-row justify-content-around mb-2">
+                        {/* 粉色按钮 */}
+                        <div className="p-2">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'pink'
+                                )} btnColor pressed`}
+                                style={{
+                                  backgroundColor: 'pink',
+                                }}
+                                onClick={() => toggleColorSelection('pink')}
+                              >
+                                {selectedColors.includes('pink') && (
+                                  <FontAwesomeIcon
+                                    icon={faCheck}
+                                    style={{ color: 'white' }}
+                                  />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">粉红色</div>
+                          </div>
+                        </div>
+
+                        {/* 青色按钮 */}
+                        <div className="p-2">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'cyan'
+                                )} btnColor`}
+                                style={{
+                                  backgroundColor: 'cyan',
+                                }}
+                                onClick={() => toggleColorSelection('cyan')}
+                              >
+                                {selectedColors.includes('cyan') && (
+                                  <FontAwesomeIcon
+                                    icon={faCheck}
+                                    style={{ color: 'white' }}
+                                  />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">青色</div>
+                          </div>
+                        </div>
+
+                        {/* 浅蓝色按钮 */}
+                        <div className="p-2">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'lightblue'
+                                )} btnColor`}
+                                style={{
+                                  backgroundColor: 'lightblue',
+                                }}
+                                onClick={() =>
+                                  toggleColorSelection('lightblue')
+                                }
+                              >
+                                {selectedColors.includes('lightblue') && (
+                                  <FontAwesomeIcon
+                                    icon={faCheck}
+                                    style={{ color: 'white' }}
+                                  />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">淡蓝色</div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="py-4">
+                      <div
+                        className="text-h3"
+                        data-bs-target="#panelsStayOpen-collapseThree"
+                      >
+                        價格範圍
+                      </div>
+
+                      <div id="panelsStayOpen-collapseThree">
+                        <div className="mt-5">
+                          <Slider
+                            min={1}
+                            max={5000}
+                            step={100}
+                            range
+                            defaultValue={[0, 1000]}
+                            value={priceRange}
+                            onChange={handlePriceChange}
+                          />
+                          <div>
+                            Price Range: ${priceRange[0]} - ${priceRange[1]}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </DialogContent>
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      margin: '20px',
+                      paddingTop: '30px',
+                      paddingBottom: '5px',
+                      borderTop: '2px solid #ccc',
+                    }}
+                  >
+                    <button
+                      className="btn btn-secondary rounded-pill"
+                      style={{ width: '48%' }}
+                      onClick={handleSubmit}
+                    >
+                      清除
+                    </button>
+                    <button
+                      className="btn btn-primary rounded-pill"
+                      style={{ width: '48%' }}
+                      onClick={handleSubmit}
+                    >
+                      提交
+                    </button>
+                  </div>
                 </Dialog>
               </div>
             )}
