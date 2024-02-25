@@ -9,7 +9,7 @@ export default function List() {
 
   useEffect(() => {
     const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 768)
+      setIsMobile(window.innerWidth <= 991)
     }
 
     // 初始加载时触发一次检测
@@ -103,7 +103,7 @@ export default function List() {
 
       <div className="row">
         {/* 左邊filter */}
-        <div className="col-md-3">
+        <div className="col-lg-3  col-md-12">
           <div id="wrapper">
             <div
               className={`bg-white ${isMobile ? 'flex-row' : 'me-3'}`}
@@ -111,16 +111,27 @@ export default function List() {
             >
               <div className={`${isMobile ? 'scroll' : ''}`}>
                 <div
-                  className={`cats ${isMobile ? 'd-flex' : ''}`}
-                  style={{ marginBottom: '10px' }}
+                  className={`cats ${isMobile ? 'd-flex ' : ''}`}
+                  style={{
+                    overflowX: isMobile ? 'auto' : 'visible',
+                    marginBottom: isMobile ? '50px' : '0px',
+                  }}
                 >
                   <div className="me-2">
-                    <button type="button" className="btn">
+                    <button
+                      type="button"
+                      className="btn"
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
                       萬寶龍
                     </button>
                   </div>
                   <div className="me-2">
-                    <button type="button" className="btn">
+                    <button
+                      type="button"
+                      className="btn"
+                      style={{ whiteSpace: 'nowrap' }}
+                    >
                       百樂
                     </button>
                   </div>
@@ -160,444 +171,453 @@ export default function List() {
                     </button>
                   </div>
                 </div>
-                <hr />
-
-                <div
-                  className="accordion accordion-flush"
-                  id="accordionFlushExample"
-                >
-                  <div className="accordion-item">
-                    <h2 className="accordion-header">
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        aria-expanded="false"
-                        data-bs-target="#panelsStayOpen-collapseOne"
-                        aria-controls="panelsStayOpen-collapseOne"
+                {!isMobile && <hr style={{ marginTop: '70px' }} />}
+                {!isMobile && (
+                  <div
+                    className="accordion accordion-flush"
+                    id="accordionFlushExample"
+                  >
+                    <div className="accordion-item">
+                      <h2 className="accordion-header">
+                        <button
+                          className="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          aria-expanded="false"
+                          data-bs-target="#panelsStayOpen-collapseOne"
+                          aria-controls="panelsStayOpen-collapseOne"
+                        >
+                          材質
+                        </button>
+                      </h2>
+                      <div
+                        id="panelsStayOpen-collapseOne"
+                        className="accordion-collapse collapse"
                       >
-                        材質
-                      </button>
-                    </h2>
-                    <div
-                      id="panelsStayOpen-collapseOne"
-                      className="accordion-collapse collapse"
-                    >
-                      <div className="accordion-body px-1">
-                        <div className="form-check form-switch">
-                          <input
-                            className="form-check-input rounded-circle"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexCheckDefault"
-                          >
-                            黃銅
-                          </label>
-                        </div>
-                        <div className="form-check form-switch">
-                          <input
-                            className="form-check-input rounded-circle"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckChecked"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexCheckChecked"
-                          >
-                            塑膠
-                          </label>
-                        </div>
-                        <div className="form-check form-switch">
-                          <input
-                            className="form-check-input rounded-circle"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckChecked"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexCheckChecked"
-                          >
-                            金屬
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="accordion-item">
-                    <h2 className="accordion-header">
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        aria-expanded="false"
-                        data-bs-target="#panelsStayOpen-collapseFour"
-                        aria-controls="panelsStayOpen-collapseFour"
-                      >
-                        筆尖種類
-                      </button>
-                    </h2>
-                    <div
-                      id="panelsStayOpen-collapseFour"
-                      className="accordion-collapse collapse"
-                    >
-                      <div className="accordion-body px-1">
-                        <div className="form-check form-switch">
-                          <input
-                            className="form-check-input rounded-circle"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckDefault"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexCheckDefault"
-                          >
-                            B
-                          </label>
-                        </div>
-                        <div className="form-check form-switch">
-                          <input
-                            className="form-check-input rounded-circle"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckChecked"
-                          />
-                          <label
-                            className="form-check-label"
-                            htmlFor="flexCheckChecked"
-                          >
-                            F
-                          </label>
-                        </div>
-                        <div className="form-check form-switch">
-                          <input
-                            className="form-check-input rounded-circle"
-                            type="checkbox"
-                            value=""
-                            id="flexCheckChecked"
-                          />
-                          <label
-                            className="form-check-label rounded-circle"
-                            htmlFor="flexCheckChecked"
-                          >
-                            M
-                          </label>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="accordion-item">
-                    <h2 className="accordion-header">
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseTwo"
-                        aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseTwo"
-                      >
-                        顏色
-                      </button>
-                    </h2>
-                    <div
-                      id="panelsStayOpen-collapseTwo"
-                      className="accordion-collapse collapse"
-                    >
-                      <div className="accordion-body px-1">
-                        <div className="d-flex flex-row justify-content-around mb-2">
-                          {/* 紫色按钮 */}
-                          <div className="p-2">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className={`${getColorButtonClass(
-                                    'purple'
-                                  )} btnColor`}
-                                  style={{
-                                    backgroundColor: 'purple',
-                                  }}
-                                  onClick={() => toggleColorSelection('purple')}
-                                >
-                                  {selectedColors.includes('purple') && (
-                                    <FontAwesomeIcon
-                                      icon={faCheck}
-                                      style={{ color: 'white' }}
-                                    />
-                                  )}
-                                </button>
-                              </div>
-                              <div className="color-f">紫色</div>
-                            </div>
+                        <div className="accordion-body px-1">
+                          <div className="form-check form-switch">
+                            <input
+                              className="form-check-input rounded-circle"
+                              type="checkbox"
+                              value=""
+                              id="flexCheckDefault"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="flexCheckDefault"
+                            >
+                              黃銅
+                            </label>
                           </div>
-
-                          {/* 蓝色按钮 */}
-                          <div className="p-2">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className={`${getColorButtonClass(
-                                    'blue'
-                                  )} btnColor`}
-                                  style={{
-                                    backgroundColor: 'blue',
-                                  }}
-                                  onClick={() => toggleColorSelection('blue')}
-                                >
-                                  {selectedColors.includes('blue') && (
-                                    <FontAwesomeIcon
-                                      icon={faCheck}
-                                      style={{ color: 'white' }}
-                                    />
-                                  )}
-                                </button>
-                              </div>
-                              <div className="color-f">蓝色</div>
-                            </div>
+                          <div className="form-check form-switch">
+                            <input
+                              className="form-check-input rounded-circle"
+                              type="checkbox"
+                              value=""
+                              id="flexCheckChecked"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="flexCheckChecked"
+                            >
+                              塑膠
+                            </label>
                           </div>
-
-                          {/* 绿色按钮 */}
-                          <div className="p-2">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className={`${getColorButtonClass(
-                                    'green'
-                                  )} btnColor`}
-                                  style={{
-                                    backgroundColor: 'green',
-                                  }}
-                                  onClick={() => toggleColorSelection('green')}
-                                >
-                                  {selectedColors.includes('green') && (
-                                    <FontAwesomeIcon
-                                      icon={faCheck}
-                                      style={{ color: 'white' }}
-                                    />
-                                  )}
-                                </button>
-                              </div>
-                              <div className="color-f">绿色</div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="d-flex flex-row justify-content-around mb-2">
-                          {/* 红色按钮 */}
-                          <div className="p-2">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className={`${getColorButtonClass(
-                                    'red'
-                                  )} btnColor`}
-                                  style={{
-                                    backgroundColor: 'red',
-                                  }}
-                                  onClick={() => toggleColorSelection('red')}
-                                >
-                                  {selectedColors.includes('red') && (
-                                    <FontAwesomeIcon
-                                      icon={faCheck}
-                                      style={{ color: 'white' }}
-                                    />
-                                  )}
-                                </button>
-                              </div>
-                              <div className="color-f">红色</div>
-                            </div>
-                          </div>
-
-                          {/* 黄色按钮 */}
-                          <div className="p-2">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className={`${getColorButtonClass(
-                                    'yellow'
-                                  )} btnColor`}
-                                  style={{
-                                    backgroundColor: 'yellow',
-                                  }}
-                                  onClick={() => toggleColorSelection('yellow')}
-                                >
-                                  {selectedColors.includes('yellow') && (
-                                    <FontAwesomeIcon
-                                      icon={faCheck}
-                                      style={{ color: 'white' }}
-                                    />
-                                  )}
-                                </button>
-                              </div>
-                              <div className="color-f">黄色</div>
-                            </div>
-                          </div>
-
-                          {/* 橙色按钮 */}
-                          <div className="p-2 ">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className={`${getColorButtonClass(
-                                    'orange'
-                                  )} btnColor`}
-                                  style={{
-                                    backgroundColor: 'orange',
-                                  }}
-                                  onClick={() => toggleColorSelection('orange')}
-                                >
-                                  {selectedColors.includes('orange') && (
-                                    <FontAwesomeIcon
-                                      icon={faCheck}
-                                      style={{ color: 'white' }}
-                                    />
-                                  )}
-                                </button>
-                              </div>
-                              <div className="color-f">橙色</div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="d-flex flex-row justify-content-around mb-2">
-                          {/* 粉色按钮 */}
-                          <div className="p-2">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className={`${getColorButtonClass(
-                                    'pink'
-                                  )} btnColor pressed`}
-                                  style={{
-                                    backgroundColor: 'pink',
-                                  }}
-                                  onClick={() => toggleColorSelection('pink')}
-                                >
-                                  {selectedColors.includes('pink') && (
-                                    <FontAwesomeIcon
-                                      icon={faCheck}
-                                      style={{ color: 'white' }}
-                                    />
-                                  )}
-                                </button>
-                              </div>
-                              <div className="color-f">粉红色</div>
-                            </div>
-                          </div>
-
-                          {/* 青色按钮 */}
-                          <div className="p-2">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className={`${getColorButtonClass(
-                                    'cyan'
-                                  )} btnColor`}
-                                  style={{
-                                    backgroundColor: 'cyan',
-                                  }}
-                                  onClick={() => toggleColorSelection('cyan')}
-                                >
-                                  {selectedColors.includes('cyan') && (
-                                    <FontAwesomeIcon
-                                      icon={faCheck}
-                                      style={{ color: 'white' }}
-                                    />
-                                  )}
-                                </button>
-                              </div>
-                              <div className="color-f">青色</div>
-                            </div>
-                          </div>
-
-                          {/* 浅蓝色按钮 */}
-                          <div className="p-2">
-                            <div className="d-flex flex-column">
-                              <div>
-                                <button
-                                  type="button"
-                                  className={`${getColorButtonClass(
-                                    'lightblue'
-                                  )} btnColor`}
-                                  style={{
-                                    backgroundColor: 'lightblue',
-                                  }}
-                                  onClick={() =>
-                                    toggleColorSelection('lightblue')
-                                  }
-                                >
-                                  {selectedColors.includes('lightblue') && (
-                                    <FontAwesomeIcon
-                                      icon={faCheck}
-                                      style={{ color: 'white' }}
-                                    />
-                                  )}
-                                </button>
-                              </div>
-                              <div className="color-f">淡蓝色</div>
-                            </div>
+                          <div className="form-check form-switch">
+                            <input
+                              className="form-check-input rounded-circle"
+                              type="checkbox"
+                              value=""
+                              id="flexCheckChecked"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="flexCheckChecked"
+                            >
+                              金屬
+                            </label>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
-
-                  <div className="accordion-item">
-                    <h2 className="accordion-header">
-                      <button
-                        className="accordion-button collapsed"
-                        type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#panelsStayOpen-collapseThree"
-                        aria-expanded="false"
-                        aria-controls="panelsStayOpen-collapseThree"
+                    <div className="accordion-item">
+                      <h2 className="accordion-header">
+                        <button
+                          className="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          aria-expanded="false"
+                          data-bs-target="#panelsStayOpen-collapseFour"
+                          aria-controls="panelsStayOpen-collapseFour"
+                        >
+                          筆尖種類
+                        </button>
+                      </h2>
+                      <div
+                        id="panelsStayOpen-collapseFour"
+                        className="accordion-collapse collapse"
                       >
-                        價格範圍
-                      </button>
-                    </h2>
-                    <div
-                      id="panelsStayOpen-collapseThree"
-                      className="accordion-collapse collapse"
-                    >
-                      <div style={{ margin: '20px' }}>
-                        <Slider
-                          min={1}
-                          max={5000}
-                          step={100}
-                          range
-                          defaultValue={[0, 1000]}
-                          value={priceRange}
-                          onChange={handlePriceChange}
-                        />
-                        <div>
-                          Price Range: ${priceRange[0]} - ${priceRange[1]}
+                        <div className="accordion-body px-1">
+                          <div className="form-check form-switch">
+                            <input
+                              className="form-check-input rounded-circle"
+                              type="checkbox"
+                              value=""
+                              id="flexCheckDefault"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="flexCheckDefault"
+                            >
+                              B
+                            </label>
+                          </div>
+                          <div className="form-check form-switch">
+                            <input
+                              className="form-check-input rounded-circle"
+                              type="checkbox"
+                              value=""
+                              id="flexCheckChecked"
+                            />
+                            <label
+                              className="form-check-label"
+                              htmlFor="flexCheckChecked"
+                            >
+                              F
+                            </label>
+                          </div>
+                          <div className="form-check form-switch">
+                            <input
+                              className="form-check-input rounded-circle"
+                              type="checkbox"
+                              value=""
+                              id="flexCheckChecked"
+                            />
+                            <label
+                              className="form-check-label rounded-circle"
+                              htmlFor="flexCheckChecked"
+                            >
+                              M
+                            </label>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="accordion-item">
+                      <h2 className="accordion-header">
+                        <button
+                          className="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#panelsStayOpen-collapseTwo"
+                          aria-expanded="false"
+                          aria-controls="panelsStayOpen-collapseTwo"
+                        >
+                          顏色
+                        </button>
+                      </h2>
+                      <div
+                        id="panelsStayOpen-collapseTwo"
+                        className="accordion-collapse collapse"
+                      >
+                        <div className="accordion-body px-1">
+                          <div className="d-flex flex-row justify-content-around mb-2">
+                            {/* 紫色按钮 */}
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'purple'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'purple',
+                                    }}
+                                    onClick={() =>
+                                      toggleColorSelection('purple')
+                                    }
+                                  >
+                                    {selectedColors.includes('purple') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">紫色</div>
+                              </div>
+                            </div>
+
+                            {/* 蓝色按钮 */}
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'blue'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'blue',
+                                    }}
+                                    onClick={() => toggleColorSelection('blue')}
+                                  >
+                                    {selectedColors.includes('blue') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">蓝色</div>
+                              </div>
+                            </div>
+
+                            {/* 绿色按钮 */}
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'green'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'green',
+                                    }}
+                                    onClick={() =>
+                                      toggleColorSelection('green')
+                                    }
+                                  >
+                                    {selectedColors.includes('green') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">绿色</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="d-flex flex-row justify-content-around mb-2">
+                            {/* 红色按钮 */}
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'red'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'red',
+                                    }}
+                                    onClick={() => toggleColorSelection('red')}
+                                  >
+                                    {selectedColors.includes('red') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">红色</div>
+                              </div>
+                            </div>
+
+                            {/* 黄色按钮 */}
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'yellow'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'yellow',
+                                    }}
+                                    onClick={() =>
+                                      toggleColorSelection('yellow')
+                                    }
+                                  >
+                                    {selectedColors.includes('yellow') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">黄色</div>
+                              </div>
+                            </div>
+
+                            {/* 橙色按钮 */}
+                            <div className="p-2 ">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'orange'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'orange',
+                                    }}
+                                    onClick={() =>
+                                      toggleColorSelection('orange')
+                                    }
+                                  >
+                                    {selectedColors.includes('orange') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">橙色</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="d-flex flex-row justify-content-around mb-2">
+                            {/* 粉色按钮 */}
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'pink'
+                                    )} btnColor pressed`}
+                                    style={{
+                                      backgroundColor: 'pink',
+                                    }}
+                                    onClick={() => toggleColorSelection('pink')}
+                                  >
+                                    {selectedColors.includes('pink') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">粉红色</div>
+                              </div>
+                            </div>
+
+                            {/* 青色按钮 */}
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'cyan'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'cyan',
+                                    }}
+                                    onClick={() => toggleColorSelection('cyan')}
+                                  >
+                                    {selectedColors.includes('cyan') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">青色</div>
+                              </div>
+                            </div>
+
+                            {/* 浅蓝色按钮 */}
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'lightblue'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'lightblue',
+                                    }}
+                                    onClick={() =>
+                                      toggleColorSelection('lightblue')
+                                    }
+                                  >
+                                    {selectedColors.includes('lightblue') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">淡蓝色</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="accordion-item">
+                      <h2 className="accordion-header">
+                        <button
+                          className="accordion-button collapsed"
+                          type="button"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#panelsStayOpen-collapseThree"
+                          aria-expanded="false"
+                          aria-controls="panelsStayOpen-collapseThree"
+                        >
+                          價格範圍
+                        </button>
+                      </h2>
+                      <div
+                        id="panelsStayOpen-collapseThree"
+                        className="accordion-collapse collapse"
+                      >
+                        <div style={{ margin: '20px' }}>
+                          <Slider
+                            min={1}
+                            max={5000}
+                            step={100}
+                            range
+                            defaultValue={[0, 1000]}
+                            value={priceRange}
+                            onChange={handlePriceChange}
+                          />
+                          <div>
+                            Price Range: ${priceRange[0]} - ${priceRange[1]}
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
         </div>
         {/* 右邊主商品欄位 */}
-        <div className="col-md-9">
+        <div className="col-lg-9 col-md-12">
           <div id="page-content-wrapper">
             <div className="container">
-              <div className="row row-cols-2 row-cols-md-3 g-4 row-cols-sm-2">
+              <div className="row row-cols-2 row-cols-lg-3 g-4 row-cols-md-2">
                 <div className="col">
                   <ProductFigure />
                 </div>
@@ -686,6 +706,27 @@ export default function List() {
 
         .btnColor:hover {
           opacity: 0.5;
+        }
+
+        /* 滚动条的样式 */
+        ::-webkit-scrollbar {
+          height: 3px; /* 滚动条宽度 */
+        }
+
+        /* 滚动条轨道 */
+        ::-webkit-scrollbar-track {
+          background: #f3f3f3; /* 轨道背景颜色 */
+        }
+
+        /* 滚动条滑块 */
+        ::-webkit-scrollbar-thumb {
+          background: #ff69b4; /* 滑块颜色 */
+          border-radius: 4px; /* 滑块圆角 */
+        }
+
+        /* 滚动条滑块悬停状态 */
+        ::-webkit-scrollbar-thumb:hover {
+          background: #ff1493; /* 滑块悬停时的颜色 */
         }
       `}</style>
     </>
