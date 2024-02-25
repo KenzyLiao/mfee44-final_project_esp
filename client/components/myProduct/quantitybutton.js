@@ -18,7 +18,7 @@ export default function QuantityButton() {
           box-shadow: 3px 3px 3px 0px rgba(255, 255, 255, 0.1) inset,
             -3px -3px 3px 0px rgba(0, 0, 0, 0.1) inset;
           display: flex;
-          gap: 20px;
+          gap: 45px;
           font-size: 16px;
           color: var(--my-black);
           font-weight: 900;

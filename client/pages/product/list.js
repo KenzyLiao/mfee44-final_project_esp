@@ -272,7 +272,6 @@ export default function List() {
                             {/* 更多选项按钮 */}
                             <button
                               className="btn btn-link"
-                              
                               onClick={() => setShowMore(false)}
                             >
                               - 收起

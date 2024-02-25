@@ -19,7 +19,7 @@ export default function Carousel() {
 
   return (
     <>
-      <div style={{ maxWidth: '500px', margin: '0 auto' }}>
+      <div style={{ maxWidth: '600px', margin: '0 auto' }}>
         <Swiper
           style={{
             '--swiper-navigation-color': 'gray',

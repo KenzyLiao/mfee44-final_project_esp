@@ -3,7 +3,7 @@ import Heart from './heart-icon' // 假设 FavIcon 组件位于同一目录下�
 
 const ProductFigure = () => {
   return (
-    <div className="card mx-2 border-0 shadow" style={{ width: '100%' }}>
+    <div className="card m-2 border-0 shadow" style={{ width: '100%' }}>
       <img
         src="/images/product/list/p1-thumb.jpg"
         className="card-img-top"
