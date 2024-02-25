@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useRef, useState } from 'react'
+import CourseCarousel from '@/components/course/course-carousel.js'
 import CardGroup from '@/components/course/card-group.js'
 import CardGroupTitle from '@/components/course/card-group-title.js'
 export default function CoursePage() {
@@ -16,9 +17,17 @@ export default function CoursePage() {
       subTitle: '跟許多人一起學習',
     },
   ]
+  // const prev = document.querySelector('.swiper-button-prev')
+  // prev.classList.add('text-primary')
+  // const next = document.querySelector('.swiper-button-next')
+  // next.classList.add('text-primary')
   return (
     <>
       <div>課程首頁</div>
+      <div className="mb-5">
+        <CourseCarousel />
+      </div>
+
       {data.map((item, idx) => (
         <div className="mb-5" key={idx}>
           <CardGroupTitle {...item} />

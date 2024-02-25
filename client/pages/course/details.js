@@ -1,11 +1,19 @@
 import React from 'react'
 import ReactPlayer from 'react-player'
+import New from '@/components/course/new'
+import Section from '@/components/course/section'
+import Accordion from 'react-bootstrap/Accordion'
 import {
   BsBookmarkCheckFill,
   BsFillGiftFill,
   BsFillStarFill,
   BsStarHalf,
   BsFillCartFill,
+  BsClockFill,
+  BsFillPlayCircleFill,
+  BsFillPeopleFill,
+  BsFillEyeFill,
+  BsListOl
 } from 'react-icons/bs'
 
 export default function CoursePage() {
@@ -16,11 +24,11 @@ export default function CoursePage() {
         <div className="course_detail d-md-flex">
           {/* 課程介紹影片 */}
           {/* <video src="https://www.youtube.com/watch?v=LXb3EKWsInQ" controls /> */}
-          <div className="video me-3" style={{ width: '60%' }}>
+          <div className="video me-4" style={{ width: '50%' }}>
             <ReactPlayer width="100%" controls="true" url="video/01.mp4" />
           </div>
           {/* 課程介紹 */}
-          <div className="course_info justify-content-between d-flex flex-column">
+          <div className="course_info justify-content-between d-flex flex-column " style={{ width: '50%' }}>
             <div>
               <div className="teacher d-flex align-items-center">
                 {/* 老師頭像 */}
@@ -71,32 +79,32 @@ export default function CoursePage() {
         <div className="row mt-5">
           <main className="col-md-9">
             {/* info */}
-            <div className=" mb-5">
+            <div className="mb-5">
               <p className="text-h2">關於課程{/*ㄣ*/}</p>
               <div className="course-sub-info">
-                <div className="course-sub-info-item">
-                  <i className="fa-solid fa-clock" />
+                <div className="course-sub-info-item d-flex align-items-center">
+                  <BsClockFill className='me-1 text-primary' style={{ width: "40px", fontSize: "50px" }} />
                   <div className="info">
                     <div className="label">課程時長</div>
                     <div className="value">2小時50分</div>
                   </div>
                 </div>
-                <div className="course-sub-info-item">
-                  <i className="fa-solid fa-circle-play" />
+                <div className="course-sub-info-item d-flex align-items-center">
+                  <BsFillPlayCircleFill className='me-1 text-primary' style={{ width: "40px", fontSize: "50px" }} />
                   <div className="info">
                     <div className="label">單元數</div>
                     <div className="value">2章18單元</div>
                   </div>
                 </div>
-                <div className="course-sub-info-item">
-                  <i className="fa-solid fa-users" />
+                <div className="course-sub-info-item d-flex align-items-center">
+                  <BsFillPeopleFill className='me-1 text-primary' style={{ width: "40px", fontSize: "50px" }} />
                   <div className="info">
                     <div className="label">課程總人數</div>
                     <div className="value">4085位同學</div>
                   </div>
                 </div>
-                <div className="course-sub-info-item">
-                  <i className="fa-solid fa-eye" />
+                <div className="course-sub-info-item d-flex align-items-center">
+                  <BsFillEyeFill className='me-1 text-primary' style={{ width: "40px", fontSize: "50px" }} />
                   <div className="info">
                     <div className="label">觀看次數</div>
                     <div className="value">不限觀看次數</div>
@@ -112,48 +120,18 @@ export default function CoursePage() {
                 <div className="text_fold">收起消息</div>
               </div>
               <div className>
-                <article className="new mb-3">
-                  <div className>
-                    <div className="d-flex">
-                      <div className="date ">2024-01-01</div>
-                      <div className="text_label">訊息標題</div>
-                    </div>
-                    <p className="message">
-                      訊息內容，為迎接即將於下週四 1 月 25
+                <New date='2024-01-01' title='訊息標題' message='訊息內容，為迎接即將於下週四 1 月 25
                       日起一連四天在南港展覽館 1 館盛大登場的「2024
                       台北國際電玩展」，主辦單位 TCA
-                      台北市電腦公會於今日（1/15）特別舉辦展前記者會，聯合傑仕登、Wemade、台灣大哥大、集英社遊戲、光榮特庫摩、madhead、萬代南夢宮娛樂、任天堂等八家主要參展廠商代表聯袂發表展出資訊。
-                    </p>
-                  </div>
-                </article>
-                <article className="new mb-3">
-                  <div className>
-                    <div className="d-flex">
-                      <div className="date ">2024-01-01</div>
-                      <div className="text_label">訊息標題</div>
-                    </div>
-                    <p className="message">
-                      訊息內容，為迎接即將於下週四 1 月 25
+                      台北市電腦公會於今日（1/15）特別舉辦展前記者會，聯合傑仕登、Wemade、台灣大哥大、集英社遊戲、光榮特庫摩、madhead、萬代南夢宮娛樂、任天堂等八家主要參展廠商代表聯袂發表展出資訊。'/>
+                <New date='2024-01-01' title='訊息標題' message='訊息內容，為迎接即將於下週四 1 月 25
                       日起一連四天在南港展覽館 1 館盛大登場的「2024
                       台北國際電玩展」，主辦單位 TCA
-                      台北市電腦公會於今日（1/15）特別舉辦展前記者會，聯合傑仕登、Wemade、台灣大哥大、集英社遊戲、光榮特庫摩、madhead、萬代南夢宮娛樂、任天堂等八家主要參展廠商代表聯袂發表展出資訊。
-                    </p>
-                  </div>
-                </article>
-                <article className="new mb-3">
-                  <div className>
-                    <div className="d-flex">
-                      <div className="date ">2024-01-01</div>
-                      <div className="text_label">訊息標題</div>
-                    </div>
-                    <p className="message">
-                      訊息內容，為迎接即將於下週四 1 月 25
+                      台北市電腦公會於今日（1/15）特別舉辦展前記者會，聯合傑仕登、Wemade、台灣大哥大、集英社遊戲、光榮特庫摩、madhead、萬代南夢宮娛樂、任天堂等八家主要參展廠商代表聯袂發表展出資訊。'/>
+                <New date='2024-01-01' title='訊息標題' message='訊息內容，為迎接即將於下週四 1 月 25
                       日起一連四天在南港展覽館 1 館盛大登場的「2024
                       台北國際電玩展」，主辦單位 TCA
-                      台北市電腦公會於今日（1/15）特別舉辦展前記者會，聯合傑仕登、Wemade、台灣大哥大、集英社遊戲、光榮特庫摩、madhead、萬代南夢宮娛樂、任天堂等八家主要參展廠商代表聯袂發表展出資訊。
-                    </p>
-                  </div>
-                </article>
+                      台北市電腦公會於今日（1/15）特別舉辦展前記者會，聯合傑仕登、Wemade、台灣大哥大、集英社遊戲、光榮特庫摩、madhead、萬代南夢宮娛樂、任天堂等八家主要參展廠商代表聯袂發表展出資訊。'/>
               </div>
             </div>
             {/* news end */}
@@ -210,108 +188,30 @@ export default function CoursePage() {
                 </div>
                 <div className="text_fold">收起內容</div>
               </div>
-              <div className="accordion" id="accordionExample">
-                <div className="accordion-item">
-                  <h2 className="accordion-header">
-                    <button
-                      className="accordion-button"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseOne"
-                      aria-expanded="true"
-                      aria-controls="collapseOne"
-                    >
-                      <p className="text-h3 m-0">單元一</p>
-                    </button>
-                  </h2>
-                  <div
-                    id="collapseOne"
-                    className="accordion-collapse collapse show"
-                    data-bs-parent="#accordionExample"
-                  >
-                    <div className="accordion-body">
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <p className="mx-2">01</p>
-                          <p>小節1</p>
-                        </div>
-                        <p>01:00</p>
-                      </div>
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <p className="mx-2">02</p>
-                          <p>小節2</p>
-                        </div>
-                        <p>01:10</p>
-                      </div>
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <p className="mx-2">03</p>
-                          <p>小節3</p>
-                        </div>
-                        <p>01:20</p>
-                      </div>
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <p className="mx-2">04</p>
-                          <p>小節4</p>
-                        </div>
-                        <p>01:30</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="accordion-item">
-                  <h2 className="accordion-header">
-                    <button
-                      className="accordion-button"
-                      type="button"
-                      data-bs-toggle="collapse"
-                      data-bs-target="#collapseTwo"
-                      aria-expanded="true"
-                      aria-controls="collapseTwo"
-                    >
-                      <p className="text-h3 m-0">單元二</p>
-                    </button>
-                  </h2>
-                  <div
-                    id="collapseTwo"
-                    className="accordion-collapse collapse show"
-                    data-bs-parent="#accordionExample"
-                  >
-                    <div className="accordion-body">
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <p className="mx-2">01</p>
-                          <p>小節1</p>
-                        </div>
-                        <p>01:00</p>
-                      </div>
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <p className="mx-2">02</p>
-                          <p>小節2</p>
-                        </div>
-                        <p>01:10</p>
-                      </div>
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <p className="mx-2">03</p>
-                          <p>小節3</p>
-                        </div>
-                        <p>01:20</p>
-                      </div>
-                      <div className="d-flex justify-content-between">
-                        <div className="d-flex">
-                          <p className="mx-2">04</p>
-                          <p>小節4</p>
-                        </div>
-                        <p>01:30</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <Accordion defaultActiveKey={['0']} alwaysOpen>
+              {Array.from({ length: 3 }).map((_, index) => {
+                return (
+                  <Accordion.Item key={index} eventKey={index.toString()}>
+                    <Accordion.Header>
+                      <BsListOl className='me-1'/>
+                      章節{index + 1}
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      {Array.from({ length: 5 }).map((_, index) => {
+                        return (
+                          <Section
+                            key={index}
+                            secNum={index + 1}
+                            secTitle={`小節 ${index + 1}`}
+                            secTime="00:00"
+                          />
+                        )
+                      })}
+                    </Accordion.Body>
+                  </Accordion.Item>
+                )
+              })}
+            </Accordion>
             </div>
             {/* unit overview end*/}
             {/* teacher */}
@@ -349,8 +249,8 @@ export default function CoursePage() {
                 <a href className="text-decoration-none buy-btn border1 me-2">
                   立即購買
                 </a>
-                <a href className="collect-btn border1 px-2">
-                  <BsFillCartFill />
+                <a href className="text-decoration-none collect-btn border1 px-2">
+                  <BsFillCartFill className='mb-1' /> 加入購物車
                 </a>
               </div>
             </div>
@@ -408,7 +308,7 @@ export default function CoursePage() {
         }
 
         .buy-btn {
-          padding: 5px 40px;
+          padding: 5px 20px;
           color: $my-white;
           background-color: $primary;
           border-radius: 20px;
