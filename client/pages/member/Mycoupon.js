@@ -8,7 +8,9 @@ const CouponPage = () => {
         <div className="coupon-content__title">我的優惠卷</div>
         <div className="coupon-content__list">
           {/* 可以使用 map 遍歷渲染 */}
-          <div className="coupon-content__item">優惠卷1</div>
+          <div className="coupon-content__item">
+
+          </div>
           {/*  */}
         </div>
       </div>
