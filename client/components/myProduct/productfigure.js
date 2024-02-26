@@ -10,9 +10,9 @@ const ProductFigure = () => {
         alt="Product 4"
       />
       <div className="card-body no-space-x">
-        <p className="card-text note-text">萬寶龍</p>
-        <p className="card-text h5">萬寶龍鋼筆</p>
-        <span className="text-my-notice">$1,990</span>
+        <p className="text-h6">MONTBLANC</p>
+        <p className="text-h3">萬寶龍鋼筆</p>
+        <span className="text-my-notice text-h4">$1,990</span>
         <div style={{ position: 'absolute', top: '3%', right: '5%' }}>
           <Heart />
         </div>
