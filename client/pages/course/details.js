@@ -76,9 +76,8 @@ export default function CoursePage() {
         </div>
         {/* 課程介紹影片跟簡介 end */}
         {/*  */}
-        
+
         <div className="row mt-5">
-        
           <main className="col-md-9">
             {/* info */}
             <div className="mb-5">

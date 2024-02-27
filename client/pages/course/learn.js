@@ -10,20 +10,29 @@ import {
   BsFillPeopleFill,
   BsFillEyeFill,
 } from 'react-icons/bs'
+import dynamic from 'next/dynamic';
+
+
 
 export default function LearnPage() {
+  const ReactPlayer = dynamic(
+    () => import('react-player'),
+    { ssr: false }  // 這將確保只在客戶端渲染
+  )
   const courseTitle = '現代書寫: 探索當代風格的手寫字藝術'
   return (
     <>
       <div className="container">
-        <h1 className="text-h1 d-flex justify-content-center mb-5">
+        <h1 className="text-h1 d-flex justify-content-center my-5">
           {courseTitle}
         </h1>
-        <div className="row">
-          <div className="video col-6">
+        <div className="row ">
+          {/* 播放器 */}
+          <div className="video col-xl-7 col-12 mb-5 mb-xl-0">
             <ReactPlayer width="100%" controls="true" url="video/01.mp4" />
           </div>
-          <div className="scrollable col-6">
+          {/* 章節選擇 */}
+          <div className="scrollable col-xl-5 col-12 mb-5 mb-xl-0">
             <Accordion defaultActiveKey={['0']} alwaysOpen>
               {Array.from({ length: 3 }).map((_, index) => {
                 return (
@@ -54,8 +63,8 @@ export default function LearnPage() {
           {/* info */}
           <div className="mb-5">
             <p className="text-h2">關於課程</p>
-            <div className="course-sub-info d-flex">
-              <div className="course-sub-info-item d-flex align-items-center">
+            <div className="course-sub-info d-flex flex-wrap">
+              <div className="course-sub-info-item d-flex align-items-center me-2">
                 <BsClockFill
                   className="me-1 text-primary"
                   style={{ width: '40px', fontSize: '50px' }}
@@ -65,7 +74,7 @@ export default function LearnPage() {
                   <div className="value">2小時50分</div>
                 </div>
               </div>
-              <div className="course-sub-info-item d-flex align-items-center">
+              <div className="course-sub-info-item d-flex align-items-center me-2">
                 <BsFillPlayCircleFill
                   className="me-1 text-primary"
                   style={{ width: '40px', fontSize: '50px' }}
@@ -75,7 +84,7 @@ export default function LearnPage() {
                   <div className="value">2章18單元</div>
                 </div>
               </div>
-              <div className="course-sub-info-item d-flex align-items-center">
+              <div className="course-sub-info-item d-flex align-items-center me-2">
                 <BsFillPeopleFill
                   className="me-1 text-primary"
                   style={{ width: '40px', fontSize: '50px' }}
@@ -85,7 +94,7 @@ export default function LearnPage() {
                   <div className="value">4085位同學</div>
                 </div>
               </div>
-              <div className="course-sub-info-item d-flex align-items-center">
+              <div className="course-sub-info-item d-flex align-items-center me-2">
                 <BsFillEyeFill
                   className="me-1 text-primary"
                   style={{ width: '40px', fontSize: '50px' }}

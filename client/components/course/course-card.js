@@ -53,18 +53,18 @@ export default function CourseCard(props) {
           {description}
         </Card.Text>
         <Card.Text className="d-flex flex-column flex-lg-row align-items-lg-center">
-          <div>
-            <BsFillStarFill style={{ padding: '5px', fontSize: '24px' }} />{' '}
+          <span>
+            <BsFillStarFill style={{ padding: '5px', fontSize: '24px' }} />
             {rankStarNum}
-          </div>
-          <div>
+          </span>
+          <span>
             <BsClockFill style={{ padding: '5px', fontSize: '24px' }} />
             {totalTime}
-          </div>
-          <div>
+          </span>
+          <span>
             <BsFillPeopleFill style={{ padding: '5px', fontSize: '24px' }} />
             {totalPeople}人
-          </div>
+          </span>
         </Card.Text>
         <Card.Text className="text-h3">NT${price}</Card.Text>
       </Card.Body>
