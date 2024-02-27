@@ -80,7 +80,13 @@ http://localhost:3000/style-guide 這個是我們當初 figma 建立的公用樣
 
 <img width="1183" alt="image" src="https://github.com/pophoan/mfee44-final_project_esp/assets/138667312/1d432f51-d875-463b-9b2c-324c3bcb7f71">
 
-### 5. 待補充..
+### 5. SCSS and CSS的 class(react叫className)命名規範
+請使用烤肉串命名法命名,烤肉串命名（Kebab case）是一種命名規範，常用於文件名稱、CSS類名、URL等。在烤肉串命名中，單詞之間使用連字符（-）來連接，所有字母都小寫。這種命名法的名稱來自於其外觀類似於串在烤肉串上的肉塊，每個單詞就像是串在一起的肉塊，而連字符（-）則是肉串之間的空隙。
+ex: cart-container or container-cart
 
+### 6. 資料庫欄位 命名規範
+資料庫欄位設計請使用 "蛇行命名（Snake case）"
+蛇行命名是一種在編程和文件命名中常見的命名規範，特點是單詞之間使用下劃線（_）來連接，且所有字母通常都小寫。這種命名方法因其外觀類似於蛇的蜿蜒前進，而得名蛇行命名。
 
+在資料庫設計中，蛇行命名被用於表名和字段名，以增強SQL查詢的可讀性。例如：user_id, account_balance。
 
