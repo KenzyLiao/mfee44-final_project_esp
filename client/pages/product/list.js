@@ -36,7 +36,7 @@ export default function List() {
       window.removeEventListener('resize', checkIsMobile)
     }
   }, [])
-  const [priceRange, setPriceRange] = useState([0, 1000]) // 默认价格区间
+  const [priceRange, setPriceRange] = useState([474, 40900]) // 默认价格区间
 
   const handlePriceChange = (value) => {
     setPriceRange(value)
@@ -441,21 +441,20 @@ export default function List() {
                       <span className="text-h3">顏色</span>
 
                       <div className="d-flex flex-row justify-content-around mb-2 mt-4">
-                        {/* 紫色按钮 */}
                         <div className="p-2">
                           <div className="d-flex flex-column">
                             <div>
                               <button
                                 type="button"
                                 className={`${getColorButtonClass(
-                                  'purple'
+                                  'black'
                                 )} btnColor`}
                                 style={{
-                                  backgroundColor: 'purple',
+                                  backgroundColor: 'black',
                                 }}
-                                onClick={() => toggleColorSelection('purple')}
+                                onClick={() => toggleColorSelection('black')}
                               >
-                                {selectedColors.includes('purple') && (
+                                {selectedColors.includes('black') && (
                                   <FontAwesomeIcon
                                     icon={faCheck}
                                     style={{ color: 'white' }}
@@ -463,51 +462,47 @@ export default function List() {
                                 )}
                               </button>
                             </div>
-                            <div className="color-f">紫色</div>
+                            <div className="color-f">亮黑</div>
                           </div>
                         </div>
 
-                        {/* 蓝色按钮 */}
                         <div className="p-2">
                           <div className="d-flex flex-column">
                             <div>
                               <button
                                 type="button"
                                 className={`${getColorButtonClass(
-                                  'blue'
+                                  'white'
                                 )} btnColor`}
                                 style={{
-                                  backgroundColor: 'blue',
+                                  backgroundColor: 'white',
+                                  border: '1px solid black',
                                 }}
-                                onClick={() => toggleColorSelection('blue')}
+                                onClick={() => toggleColorSelection('white')}
                               >
-                                {selectedColors.includes('blue') && (
-                                  <FontAwesomeIcon
-                                    icon={faCheck}
-                                    style={{ color: 'white' }}
-                                  />
+                                {selectedColors.includes('white') && (
+                                  <FontAwesomeIcon icon={faCheck} />
                                 )}
                               </button>
                             </div>
-                            <div className="color-f">蓝色</div>
+                            <div className="color-f">透白</div>
                           </div>
                         </div>
 
-                        {/* 绿色按钮 */}
                         <div className="p-2">
                           <div className="d-flex flex-column">
                             <div>
                               <button
                                 type="button"
                                 className={`${getColorButtonClass(
-                                  'green'
+                                  'gray'
                                 )} btnColor`}
                                 style={{
-                                  backgroundColor: 'green',
+                                  backgroundColor: 'gray',
                                 }}
-                                onClick={() => toggleColorSelection('green')}
+                                onClick={() => toggleColorSelection('gray')}
                               >
-                                {selectedColors.includes('green') && (
+                                {selectedColors.includes('gray') && (
                                   <FontAwesomeIcon
                                     icon={faCheck}
                                     style={{ color: 'white' }}
@@ -515,13 +510,12 @@ export default function List() {
                                 )}
                               </button>
                             </div>
-                            <div className="color-f">绿色</div>
+                            <div className="color-f">銀灰</div>
                           </div>
                         </div>
                       </div>
 
                       <div className="d-flex flex-row justify-content-around mb-2">
-                        {/* 红色按钮 */}
                         <div className="p-2">
                           <div className="d-flex flex-column">
                             <div>
@@ -543,25 +537,24 @@ export default function List() {
                                 )}
                               </button>
                             </div>
-                            <div className="color-f">红色</div>
+                            <div className="color-f">赤紅</div>
                           </div>
                         </div>
 
-                        {/* 黄色按钮 */}
                         <div className="p-2">
                           <div className="d-flex flex-column">
                             <div>
                               <button
                                 type="button"
                                 className={`${getColorButtonClass(
-                                  'yellow'
+                                  'blue'
                                 )} btnColor`}
                                 style={{
-                                  backgroundColor: 'yellow',
+                                  backgroundColor: 'blue',
                                 }}
-                                onClick={() => toggleColorSelection('yellow')}
+                                onClick={() => toggleColorSelection('blue')}
                               >
-                                {selectedColors.includes('yellow') && (
+                                {selectedColors.includes('blue') && (
                                   <FontAwesomeIcon
                                     icon={faCheck}
                                     style={{ color: 'white' }}
@@ -569,25 +562,24 @@ export default function List() {
                                 )}
                               </button>
                             </div>
-                            <div className="color-f">黄色</div>
+                            <div className="color-f">深藍</div>
                           </div>
                         </div>
 
-                        {/* 橙色按钮 */}
                         <div className="p-2 ">
                           <div className="d-flex flex-column">
                             <div>
                               <button
                                 type="button"
                                 className={`${getColorButtonClass(
-                                  'orange'
+                                  'brown'
                                 )} btnColor`}
                                 style={{
-                                  backgroundColor: 'orange',
+                                  backgroundColor: 'brown',
                                 }}
-                                onClick={() => toggleColorSelection('orange')}
+                                onClick={() => toggleColorSelection('brown')}
                               >
-                                {selectedColors.includes('orange') && (
+                                {selectedColors.includes('brown') && (
                                   <FontAwesomeIcon
                                     icon={faCheck}
                                     style={{ color: 'white' }}
@@ -595,13 +587,37 @@ export default function List() {
                                 )}
                               </button>
                             </div>
-                            <div className="color-f">橙色</div>
+                            <div className="color-f">棕色</div>
                           </div>
                         </div>
                       </div>
 
                       <div className="d-flex flex-row justify-content-around mb-2">
-                        {/* 粉色按钮 */}
+                        <div className="p-2">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'purple'
+                                )} btnColor pressed`}
+                                style={{
+                                  backgroundColor: 'purple',
+                                }}
+                                onClick={() => toggleColorSelection('purple')}
+                              >
+                                {selectedColors.includes('purple') && (
+                                  <FontAwesomeIcon
+                                    icon={faCheck}
+                                    style={{ color: 'white' }}
+                                  />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">深紫</div>
+                          </div>
+                        </div>
+
                         <div className="p-2">
                           <div className="d-flex flex-column">
                             <div>
@@ -609,39 +625,35 @@ export default function List() {
                                 type="button"
                                 className={`${getColorButtonClass(
                                   'pink'
-                                )} btnColor pressed`}
+                                )} btnColor`}
                                 style={{
                                   backgroundColor: 'pink',
                                 }}
                                 onClick={() => toggleColorSelection('pink')}
                               >
                                 {selectedColors.includes('pink') && (
-                                  <FontAwesomeIcon
-                                    icon={faCheck}
-                                    style={{ color: 'white' }}
-                                  />
+                                  <FontAwesomeIcon icon={faCheck} />
                                 )}
                               </button>
                             </div>
-                            <div className="color-f">粉红色</div>
+                            <div className="color-f">粉紅</div>
                           </div>
                         </div>
 
-                        {/* 青色按钮 */}
                         <div className="p-2">
                           <div className="d-flex flex-column">
                             <div>
                               <button
                                 type="button"
                                 className={`${getColorButtonClass(
-                                  'cyan'
+                                  'green'
                                 )} btnColor`}
                                 style={{
-                                  backgroundColor: 'cyan',
+                                  backgroundColor: 'green',
                                 }}
-                                onClick={() => toggleColorSelection('cyan')}
+                                onClick={() => toggleColorSelection('green')}
                               >
-                                {selectedColors.includes('cyan') && (
+                                {selectedColors.includes('green') && (
                                   <FontAwesomeIcon
                                     icon={faCheck}
                                     style={{ color: 'white' }}
@@ -649,27 +661,47 @@ export default function List() {
                                 )}
                               </button>
                             </div>
-                            <div className="color-f">青色</div>
+                            <div className="color-f">翠綠</div>
                           </div>
                         </div>
-
-                        {/* 浅蓝色按钮 */}
+                      </div>
+                      <div className="d-flex flex-row justify-content-around mb-2">
                         <div className="p-2">
                           <div className="d-flex flex-column">
                             <div>
                               <button
                                 type="button"
                                 className={`${getColorButtonClass(
-                                  'lightblue'
+                                  'yellow'
+                                )} btnColor pressed`}
+                                style={{
+                                  backgroundColor: 'yellow',
+                                }}
+                                onClick={() => toggleColorSelection('yellow')}
+                              >
+                                {selectedColors.includes('yellow') && (
+                                  <FontAwesomeIcon icon={faCheck} />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">亮黃</div>
+                          </div>
+                        </div>
+
+                        <div className="p-2">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'bronze'
                                 )} btnColor`}
                                 style={{
-                                  backgroundColor: 'lightblue',
+                                  backgroundColor: '#CD7F32',
                                 }}
-                                onClick={() =>
-                                  toggleColorSelection('lightblue')
-                                }
+                                onClick={() => toggleColorSelection('bronze')}
                               >
-                                {selectedColors.includes('lightblue') && (
+                                {selectedColors.includes('bronze') && (
                                   <FontAwesomeIcon
                                     icon={faCheck}
                                     style={{ color: 'white' }}
@@ -677,7 +709,29 @@ export default function List() {
                                 )}
                               </button>
                             </div>
-                            <div className="color-f">淡蓝色</div>
+                            <div className="color-f">青銅</div>
+                          </div>
+                        </div>
+
+                        <div className="p-2">
+                          <div className="d-flex flex-column">
+                            <div>
+                              <button
+                                type="button"
+                                className={`${getColorButtonClass(
+                                  'gold'
+                                )} btnColor`}
+                                style={{
+                                  backgroundColor: '#FFD700',
+                                }}
+                                onClick={() => toggleColorSelection('gold')}
+                              >
+                                {selectedColors.includes('gold') && (
+                                  <FontAwesomeIcon icon={faCheck} />
+                                )}
+                              </button>
+                            </div>
+                            <div className="color-f">黑金</div>
                           </div>
                         </div>
                       </div>
@@ -694,8 +748,8 @@ export default function List() {
                       <div id="panelsStayOpen-collapseThree">
                         <div className="mt-5">
                           <Slider
-                            min={1}
-                            max={5000}
+                            min={474}
+                            max={40900}
                             step={100}
                             range
                             defaultValue={[0, 1000]}
@@ -1107,25 +1161,24 @@ export default function List() {
                         id="panelsStayOpen-collapseTwo"
                         className="accordion-collapse collapse"
                       >
-                        <div className="accordion-body px-1">
-                          <div className="d-flex flex-row justify-content-around mb-2">
-                            {/* 紫色按钮 */}
+                        <div className="accordion-body px-1 ">
+                          <div className="d-flex flex-row justify-content-around mb-2 ">
                             <div className="p-2">
                               <div className="d-flex flex-column">
                                 <div>
                                   <button
                                     type="button"
                                     className={`${getColorButtonClass(
-                                      'purple'
+                                      'black'
                                     )} btnColor`}
                                     style={{
-                                      backgroundColor: 'purple',
+                                      backgroundColor: 'black',
                                     }}
                                     onClick={() =>
-                                      toggleColorSelection('purple')
+                                      toggleColorSelection('black')
                                     }
                                   >
-                                    {selectedColors.includes('purple') && (
+                                    {selectedColors.includes('black') && (
                                       <FontAwesomeIcon
                                         icon={faCheck}
                                         style={{ color: 'white' }}
@@ -1133,10 +1186,85 @@ export default function List() {
                                     )}
                                   </button>
                                 </div>
-                                <div className="color-f">紫色</div>
+                                <div className="color-f">亮黑</div>
                               </div>
                             </div>
-                            {/* 蓝色按钮 */}
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'white'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'white',
+                                      border: '1px solid black',
+                                    }}
+                                    onClick={() =>
+                                      toggleColorSelection('white')
+                                    }
+                                  >
+                                    {selectedColors.includes('white') && (
+                                      <FontAwesomeIcon icon={faCheck} />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">透白</div>
+                              </div>
+                            </div>
+
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'gray'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'gray',
+                                    }}
+                                    onClick={() => toggleColorSelection('gray')}
+                                  >
+                                    {selectedColors.includes('gray') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">銀灰</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="d-flex flex-row justify-content-around mb-2">
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'red'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'red',
+                                    }}
+                                    onClick={() => toggleColorSelection('red')}
+                                  >
+                                    {selectedColors.includes('red') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">赤紅</div>
+                              </div>
+                            </div>
+
                             <div className="p-2">
                               <div className="d-flex flex-column">
                                 <div>
@@ -1158,10 +1286,87 @@ export default function List() {
                                     )}
                                   </button>
                                 </div>
-                                <div className="color-f">蓝色</div>
+                                <div className="color-f">深藍</div>
                               </div>
                             </div>
-                            {/* 绿色按钮 */}
+
+                            <div className="p-2 ">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'brown'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'brown',
+                                    }}
+                                    onClick={() =>
+                                      toggleColorSelection('brown')
+                                    }
+                                  >
+                                    {selectedColors.includes('brown') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">棕色</div>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="d-flex flex-row justify-content-around mb-2">
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'purple'
+                                    )} btnColor pressed`}
+                                    style={{
+                                      backgroundColor: 'purple',
+                                    }}
+                                    onClick={() =>
+                                      toggleColorSelection('purple')
+                                    }
+                                  >
+                                    {selectedColors.includes('purple') && (
+                                      <FontAwesomeIcon
+                                        icon={faCheck}
+                                        style={{ color: 'white' }}
+                                      />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">深紫</div>
+                              </div>
+                            </div>
+
+                            <div className="p-2">
+                              <div className="d-flex flex-column">
+                                <div>
+                                  <button
+                                    type="button"
+                                    className={`${getColorButtonClass(
+                                      'pink'
+                                    )} btnColor`}
+                                    style={{
+                                      backgroundColor: 'pink',
+                                    }}
+                                    onClick={() => toggleColorSelection('pink')}
+                                  >
+                                    {selectedColors.includes('pink') && (
+                                      <FontAwesomeIcon icon={faCheck} />
+                                    )}
+                                  </button>
+                                </div>
+                                <div className="color-f">粉紅</div>
+                              </div>
+                            </div>
+
                             <div className="p-2">
                               <div className="d-flex flex-column">
                                 <div>
@@ -1185,37 +1390,12 @@ export default function List() {
                                     )}
                                   </button>
                                 </div>
-                                <div className="color-f">绿色</div>
+                                <div className="color-f">翠綠</div>
                               </div>
                             </div>
                           </div>
+
                           <div className="d-flex flex-row justify-content-around mb-2">
-                            {/* 红色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'red'
-                                    )} btnColor`}
-                                    style={{
-                                      backgroundColor: 'red',
-                                    }}
-                                    onClick={() => toggleColorSelection('red')}
-                                  >
-                                    {selectedColors.includes('red') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">红色</div>
-                              </div>
-                            </div>
-                            {/* 黄色按钮 */}
                             <div className="p-2">
                               <div className="d-flex flex-column">
                                 <div>
@@ -1223,7 +1403,7 @@ export default function List() {
                                     type="button"
                                     className={`${getColorButtonClass(
                                       'yellow'
-                                    )} btnColor`}
+                                    )} btnColor pressed`}
                                     style={{
                                       backgroundColor: 'yellow',
                                     }}
@@ -1232,33 +1412,30 @@ export default function List() {
                                     }
                                   >
                                     {selectedColors.includes('yellow') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
+                                      <FontAwesomeIcon icon={faCheck} />
                                     )}
                                   </button>
                                 </div>
-                                <div className="color-f">黄色</div>
+                                <div className="color-f">亮黃</div>
                               </div>
                             </div>
-                            {/* 橙色按钮 */}
-                            <div className="p-2 ">
+
+                            <div className="p-2">
                               <div className="d-flex flex-column">
                                 <div>
                                   <button
                                     type="button"
                                     className={`${getColorButtonClass(
-                                      'orange'
+                                      'bronze'
                                     )} btnColor`}
                                     style={{
-                                      backgroundColor: 'orange',
+                                      backgroundColor: '#CD7F32',
                                     }}
                                     onClick={() =>
-                                      toggleColorSelection('orange')
+                                      toggleColorSelection('bronze')
                                     }
                                   >
-                                    {selectedColors.includes('orange') && (
+                                    {selectedColors.includes('bronze') && (
                                       <FontAwesomeIcon
                                         icon={faCheck}
                                         style={{ color: 'white' }}
@@ -1266,402 +1443,28 @@ export default function List() {
                                     )}
                                   </button>
                                 </div>
-                                <div className="color-f">橙色</div>
+                                <div className="color-f">青銅</div>
                               </div>
                             </div>
-                          </div>
-                          <div className="d-flex flex-row justify-content-around mb-2">
-                            {/* 粉色按钮 */}
                             <div className="p-2">
                               <div className="d-flex flex-column">
                                 <div>
                                   <button
                                     type="button"
                                     className={`${getColorButtonClass(
-                                      'pink'
-                                    )} btnColor pressed`}
-                                    style={{
-                                      backgroundColor: 'pink',
-                                    }}
-                                    onClick={() => toggleColorSelection('pink')}
-                                  >
-                                    {selectedColors.includes('pink') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">粉红色</div>
-                              </div>
-                            </div>
-                            {/* 青色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'cyan'
+                                      'gold'
                                     )} btnColor`}
                                     style={{
-                                      backgroundColor: 'cyan',
+                                      backgroundColor: '#FFD700',
                                     }}
-                                    onClick={() => toggleColorSelection('cyan')}
+                                    onClick={() => toggleColorSelection('gold')}
                                   >
-                                    {selectedColors.includes('cyan') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
+                                    {selectedColors.includes('gold') && (
+                                      <FontAwesomeIcon icon={faCheck} />
                                     )}
                                   </button>
                                 </div>
-                                <div className="color-f">青色</div>
-                              </div>
-                            </div>
-                            {/* 浅蓝色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'lightblue'
-                                    )} btnColor`}
-                                    style={{
-                                      backgroundColor: 'lightblue',
-                                    }}
-                                    onClick={() =>
-                                      toggleColorSelection('lightblue')
-                                    }
-                                  >
-                                    {selectedColors.includes('lightblue') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">淡蓝色</div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="d-flex flex-row justify-content-around mb-2">
-                            {/* 粉色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'pink'
-                                    )} btnColor pressed`}
-                                    style={{
-                                      backgroundColor: 'pink',
-                                    }}
-                                    onClick={() => toggleColorSelection('pink')}
-                                  >
-                                    {selectedColors.includes('pink') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">粉红色</div>
-                              </div>
-                            </div>
-                            {/* 青色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'cyan'
-                                    )} btnColor`}
-                                    style={{
-                                      backgroundColor: 'cyan',
-                                    }}
-                                    onClick={() => toggleColorSelection('cyan')}
-                                  >
-                                    {selectedColors.includes('cyan') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">青色</div>
-                              </div>
-                            </div>
-                            {/* 浅蓝色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'lightblue'
-                                    )} btnColor`}
-                                    style={{
-                                      backgroundColor: 'lightblue',
-                                    }}
-                                    onClick={() =>
-                                      toggleColorSelection('lightblue')
-                                    }
-                                  >
-                                    {selectedColors.includes('lightblue') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">淡蓝色</div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="d-flex flex-row justify-content-around mb-2">
-                            {/* 粉色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'pink'
-                                    )} btnColor pressed`}
-                                    style={{
-                                      backgroundColor: 'pink',
-                                    }}
-                                    onClick={() => toggleColorSelection('pink')}
-                                  >
-                                    {selectedColors.includes('pink') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">粉红色</div>
-                              </div>
-                            </div>
-                            {/* 青色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'cyan'
-                                    )} btnColor`}
-                                    style={{
-                                      backgroundColor: 'cyan',
-                                    }}
-                                    onClick={() => toggleColorSelection('cyan')}
-                                  >
-                                    {selectedColors.includes('cyan') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">青色</div>
-                              </div>
-                            </div>
-                            {/* 浅蓝色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'lightblue'
-                                    )} btnColor`}
-                                    style={{
-                                      backgroundColor: 'lightblue',
-                                    }}
-                                    onClick={() =>
-                                      toggleColorSelection('lightblue')
-                                    }
-                                  >
-                                    {selectedColors.includes('lightblue') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">淡蓝色</div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="d-flex flex-row justify-content-around mb-2">
-                            {/* 粉色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'pink'
-                                    )} btnColor pressed`}
-                                    style={{
-                                      backgroundColor: 'pink',
-                                    }}
-                                    onClick={() => toggleColorSelection('pink')}
-                                  >
-                                    {selectedColors.includes('pink') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">粉红色</div>
-                              </div>
-                            </div>
-                            {/* 青色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'cyan'
-                                    )} btnColor`}
-                                    style={{
-                                      backgroundColor: 'cyan',
-                                    }}
-                                    onClick={() => toggleColorSelection('cyan')}
-                                  >
-                                    {selectedColors.includes('cyan') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">青色</div>
-                              </div>
-                            </div>
-                            {/* 浅蓝色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'lightblue'
-                                    )} btnColor`}
-                                    style={{
-                                      backgroundColor: 'lightblue',
-                                    }}
-                                    onClick={() =>
-                                      toggleColorSelection('lightblue')
-                                    }
-                                  >
-                                    {selectedColors.includes('lightblue') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">淡蓝色</div>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="d-flex flex-row justify-content-around mb-2">
-                            {/* 粉色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'pink'
-                                    )} btnColor pressed`}
-                                    style={{
-                                      backgroundColor: 'pink',
-                                    }}
-                                    onClick={() => toggleColorSelection('pink')}
-                                  >
-                                    {selectedColors.includes('pink') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">粉红色</div>
-                              </div>
-                            </div>
-                            {/* 青色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'cyan'
-                                    )} btnColor`}
-                                    style={{
-                                      backgroundColor: 'cyan',
-                                    }}
-                                    onClick={() => toggleColorSelection('cyan')}
-                                  >
-                                    {selectedColors.includes('cyan') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">青色</div>
-                              </div>
-                            </div>
-                            {/* 浅蓝色按钮 */}
-                            <div className="p-2">
-                              <div className="d-flex flex-column">
-                                <div>
-                                  <button
-                                    type="button"
-                                    className={`${getColorButtonClass(
-                                      'lightblue'
-                                    )} btnColor`}
-                                    style={{
-                                      backgroundColor: 'lightblue',
-                                    }}
-                                    onClick={() =>
-                                      toggleColorSelection('lightblue')
-                                    }
-                                  >
-                                    {selectedColors.includes('lightblue') && (
-                                      <FontAwesomeIcon
-                                        icon={faCheck}
-                                        style={{ color: 'white' }}
-                                      />
-                                    )}
-                                  </button>
-                                </div>
-                                <div className="color-f">淡蓝色</div>
+                                <div className="color-f">黑金</div>
                               </div>
                             </div>
                           </div>
@@ -1688,8 +1491,8 @@ export default function List() {
                       >
                         <div style={{ margin: '20px' }}>
                           <Slider
-                            min={1}
-                            max={5000}
+                            min={474}
+                            max={40900}
                             step={100}
                             range
                             defaultValue={[0, 1000]}
