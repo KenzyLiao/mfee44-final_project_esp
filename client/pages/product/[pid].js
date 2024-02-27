@@ -17,7 +17,7 @@ export default function Detail() {
               所有鋼筆
             </li>
             <li className="breadcrumb-item active" aria-current="page">
-              萬寶龍鋼筆
+              MONTBLANC
             </li>
           </ol>
         </nav>
@@ -28,15 +28,17 @@ export default function Detail() {
         </div>
         <div className="col-lg-5 my-3">
           <div className="position-sticky" style={{ top: '2rem' }}>
-            <div className="text-h4">萬寶龍</div>
-            <h1 className="text-h1 py-3">萬寶龍鋼筆</h1>
+            {/* <div className="text-h4">萬寶龍</div> */}
+            <h1 className="text-h2 py-3">
+              MONBLANC 萬寶龍大師傑作（大班）鍍玫瑰金鋼筆
+            </h1>
             <h3 className="text-h3 text-my-notice">NT $4,000</h3>
 
             <div className="mt-4 mx-2 my-text-contents-CH">
               <div>
-                尺寸
+                系列
                 <span className="ms-5 text-my-secondary">
-                  1200 x 30 x 5 毫米
+                  萬寶龍大師傑作（大班）
                 </span>
               </div>
 
@@ -46,6 +48,10 @@ export default function Detail() {
 
               <div>
                 顏色<span className="ms-5 text-my-secondary">黑棕</span>
+              </div>
+
+              <div>
+                筆尖<span className="ms-5 text-my-secondary">B</span>
               </div>
             </div>
 
@@ -155,7 +161,6 @@ export default function Detail() {
       >
         <div className="col-12 mb-4">
           <div className="d-inline-flex">
-            <ProductFigure />
             <ProductFigure />
             <ProductFigure />
             <ProductFigure />
