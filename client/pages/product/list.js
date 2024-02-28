@@ -36,13 +36,16 @@ export default function List() {
       window.removeEventListener('resize', checkIsMobile)
     }
   }, [])
+
   const [priceRange, setPriceRange] = useState([474, 40900]) // 默认价格区间
 
   const handlePriceChange = (value) => {
     setPriceRange(value)
   }
-
+  const [sortingOption, setSortingOption] = useState('newest')
   const [selectedColors, setSelectedColors] = useState([])
+  const [selectedMaterials, setSelectedMaterials] = useState([])
+  const [selectedNibs, setSelectedNibs] = useState([])
   const [isPressed] = useState(false)
 
   const toggleColorSelection = (color) => {
@@ -57,6 +60,34 @@ export default function List() {
     return `btn btn-circle ${
       selectedColors.includes(color) ? 'selected' : ''
     } ${isPressed ? 'pressed' : ''}`
+  }
+
+  const toggleMaterialSelection = (material) => {
+    if (selectedMaterials.includes(material)) {
+      setSelectedMaterials(selectedMaterials.filter((m) => m !== material))
+    } else {
+      setSelectedMaterials([...selectedMaterials, material])
+    }
+  }
+
+  const getMaterialCheckboxClass = (material) => {
+    return ` ${selectedMaterials.includes(material) ? 'selected' : ''} ${
+      isPressed ? 'pressed' : ''
+    }`
+  }
+
+  const toggleNibSelection = (nib) => {
+    if (selectedNibs.includes(nib)) {
+      setSelectedNibs(selectedNibs.filter((n) => n !== nib))
+    } else {
+      setSelectedNibs([...selectedNibs, nib])
+    }
+  }
+
+  const getNibCheckboxClass = (nib) => {
+    return ` ${selectedNibs.includes(nib) ? 'selected' : ''} ${
+      isPressed ? 'pressed' : ''
+    }`
   }
 
   return (
@@ -85,7 +116,7 @@ export default function List() {
               <div className="d-flex p-2 justify-content-end align-items-center">
                 <div className="dropdown ms-3">
                   <button
-                    className="btn dropdown-toggle my-text-contents-CH rounded-pill shadow "
+                    className="btn dropdown-toggle my-text-contents-CH rounded-pill shadow"
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
@@ -94,18 +125,35 @@ export default function List() {
                   </button>
                   <ul className="dropdown-menu">
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a
+                        className={`dropdown-item ${
+                          sortingOption === 'newest' ? 'active' : ''
+                        }`}
+                        href="#"
+                        onClick={() => setSortingOption('newest')}
+                      >
                         最新上架
                       </a>
                     </li>
-
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a
+                        className={`dropdown-item ${
+                          sortingOption === 'high-to-low' ? 'active' : ''
+                        }`}
+                        href="#"
+                        onClick={() => setSortingOption('high-to-low')}
+                      >
                         價格：由高至低
                       </a>
                     </li>
                     <li>
-                      <a className="dropdown-item" href="#">
+                      <a
+                        className={`dropdown-item ${
+                          sortingOption === 'low-to-high' ? 'active' : ''
+                        }`}
+                        href="#"
+                        onClick={() => setSortingOption('low-to-high')}
+                      >
                         價格：由低至高
                       </a>
                     </li>
@@ -157,37 +205,49 @@ export default function List() {
                       <div className="accordion-body px-1 mt-4 h6">
                         <div className="form-check mb-2">
                           <input
-                            className="form-check-input "
+                            className="form-check-input"
                             type="radio"
                             name="material"
-                            id="brass"
-                            value="brass"
+                            id="newest"
+                            value="newest"
+                            checked={sortingOption === 'newest'}
+                            onChange={() => setSortingOption('newest')}
                           />
-                          <label className="form-check-label" htmlFor="brass">
+                          <label className="form-check-label" htmlFor="newest">
                             最新發布
                           </label>
                         </div>
                         <div className="form-check mb-2">
                           <input
-                            className="form-check-input "
+                            className="form-check-input"
                             type="radio"
                             name="material"
-                            id="plastic"
-                            value="plastic"
+                            id="high-to-low"
+                            value="high-to-low"
+                            checked={sortingOption === 'high-to-low'}
+                            onChange={() => setSortingOption('high-to-low')}
                           />
-                          <label className="form-check-label" htmlFor="plastic">
+                          <label
+                            className="form-check-label"
+                            htmlFor="high-to-low"
+                          >
                             價格：由高到低
                           </label>
                         </div>
                         <div className="form-check mb-2">
                           <input
-                            className="form-check-input "
+                            className="form-check-input"
                             type="radio"
                             name="material"
-                            id="metal"
-                            value="metal"
+                            id="low-to-high"
+                            value="low-to-high"
+                            checked={sortingOption === 'low-to-high'}
+                            onChange={() => setSortingOption('low-to-high')}
                           />
-                          <label className="form-check-label" htmlFor="metal">
+                          <label
+                            className="form-check-label"
+                            htmlFor="low-to-high"
+                          >
                             價格：由低到高
                           </label>
                         </div>
@@ -199,57 +259,72 @@ export default function List() {
                       <div className="accordion-body px-1 mt-4 h6">
                         <div className="form-check form-switch mb-2">
                           <input
-                            className="form-check-input "
+                            className={`form-check-input ${getMaterialCheckboxClass(
+                              'brass'
+                            )}`}
                             type="checkbox"
                             value=""
-                            id="flexCheckDefault"
+                            id="flexCheckCheckedBrass"
+                            onChange={() => toggleMaterialSelection('brass')}
+                            checked={selectedMaterials.includes('brass')}
                           />
                           <label
                             className="form-check-label"
-                            htmlFor="flexCheckDefault"
+                            htmlFor="flexCheckCheckedBrass"
                           >
-                            黃銅
+                            黄銅
                           </label>
                         </div>
                         <div className="form-check form-switch mb-2">
                           <input
-                            className="form-check-input "
+                            className={`form-check-input ${getMaterialCheckboxClass(
+                              'resin'
+                            )}`}
                             type="checkbox"
                             value=""
-                            id="flexCheckChecked"
+                            id="flexCheckCheckedResin"
+                            onChange={() => toggleMaterialSelection('resin')}
+                            checked={selectedMaterials.includes('resin')}
                           />
                           <label
                             className="form-check-label"
-                            htmlFor="flexCheckChecked"
+                            htmlFor="flexCheckCheckedResin"
                           >
                             樹脂
                           </label>
                         </div>
                         <div className="form-check form-switch mb-2">
                           <input
-                            className="form-check-input "
+                            className={`form-check-input ${getMaterialCheckboxClass(
+                              'plastic'
+                            )}`}
                             type="checkbox"
                             value=""
-                            id="flexCheckChecked"
+                            id="flexCheckCheckedPlastic"
+                            onChange={() => toggleMaterialSelection('plastic')}
+                            checked={selectedMaterials.includes('plastic')}
                           />
                           <label
                             className="form-check-label"
-                            htmlFor="flexCheckChecked"
+                            htmlFor="flexCheckCheckedPlastic"
                           >
                             塑膠
                           </label>
                         </div>
-
                         <div className="form-check form-switch mb-2">
                           <input
-                            className="form-check-input"
+                            className={`form-check-input ${getMaterialCheckboxClass(
+                              'rubber'
+                            )}`}
                             type="checkbox"
                             value=""
-                            id="flexCheckDefault2"
+                            id="flexCheckCheckedRubber"
+                            onChange={() => toggleMaterialSelection('rubber')}
+                            checked={selectedMaterials.includes('rubber')}
                           />
                           <label
                             className="form-check-label"
-                            htmlFor="flexCheckDefault2"
+                            htmlFor="flexCheckCheckedRubber"
                           >
                             橡膠
                           </label>
@@ -258,84 +333,124 @@ export default function List() {
                           <>
                             <div className="form-check form-switch mb-2">
                               <input
-                                className="form-check-input"
+                                className={`form-check-input ${getMaterialCheckboxClass(
+                                  'metal'
+                                )}`}
                                 type="checkbox"
                                 value=""
-                                id="flexCheckChecked3"
+                                id="flexCheckCheckedMetal"
+                                onChange={() =>
+                                  toggleMaterialSelection('metal')
+                                }
+                                checked={selectedMaterials.includes('metal')}
                               />
                               <label
                                 className="form-check-label"
-                                htmlFor="flexCheckChecked3"
+                                htmlFor="flexCheckCheckedMetal"
                               >
                                 金屬
                               </label>
                             </div>
                             <div className="form-check form-switch mb-2">
                               <input
-                                className="form-check-input"
+                                className={`form-check-input ${getMaterialCheckboxClass(
+                                  'stainlessSteel'
+                                )}`}
                                 type="checkbox"
                                 value=""
-                                id="flexCheckChecked3"
+                                id="flexCheckCheckedStainlessSteel"
+                                onChange={() =>
+                                  toggleMaterialSelection('stainlessSteel')
+                                }
+                                checked={selectedMaterials.includes(
+                                  'stainlessSteel'
+                                )}
                               />
                               <label
                                 className="form-check-label"
-                                htmlFor="flexCheckChecked3"
+                                htmlFor="flexCheckCheckedStainlessSteel"
                               >
                                 不鏽鋼
                               </label>
                             </div>
                             <div className="form-check form-switch mb-2">
                               <input
-                                className="form-check-input"
+                                className={`form-check-input ${getMaterialCheckboxClass(
+                                  'wood'
+                                )}`}
                                 type="checkbox"
                                 value=""
-                                id="flexCheckChecked3"
+                                id="flexCheckCheckedWood"
+                                onChange={() => toggleMaterialSelection('wood')}
+                                checked={selectedMaterials.includes('wood')}
                               />
                               <label
                                 className="form-check-label"
-                                htmlFor="flexCheckChecked3"
+                                htmlFor="flexCheckCheckedWood"
                               >
                                 木頭
                               </label>
                             </div>
                             <div className="form-check form-switch mb-2">
                               <input
-                                className="form-check-input"
+                                className={`form-check-input ${getMaterialCheckboxClass(
+                                  'syntheticFiber'
+                                )}`}
                                 type="checkbox"
                                 value=""
-                                id="flexCheckChecked3"
+                                id="flexCheckCheckedSyntheticFiber"
+                                onChange={() =>
+                                  toggleMaterialSelection('syntheticFiber')
+                                }
+                                checked={selectedMaterials.includes(
+                                  'syntheticFiber'
+                                )}
                               />
                               <label
                                 className="form-check-label"
-                                htmlFor="flexCheckChecked3"
+                                htmlFor="flexCheckCheckedSyntheticFiber"
                               >
                                 人造纖維
                               </label>
                             </div>
                             <div className="form-check form-switch mb-2">
                               <input
-                                className="form-check-input"
+                                className={`form-check-input ${getMaterialCheckboxClass(
+                                  'aluminum'
+                                )}`}
                                 type="checkbox"
                                 value=""
-                                id="flexCheckChecked3"
+                                id="flexCheckCheckedAluminum"
+                                onChange={() =>
+                                  toggleMaterialSelection('aluminum')
+                                }
+                                checked={selectedMaterials.includes('aluminum')}
                               />
                               <label
                                 className="form-check-label"
-                                htmlFor="flexCheckChecked3"
+                                htmlFor="flexCheckCheckedAluminum"
                               >
                                 鋁
                               </label>
                             </div>
                             <div className="form-check form-switch mb-2">
                               <input
-                                className="form-check-input"
+                                className={`form-check-input ${getMaterialCheckboxClass(
+                                  'chromePlating'
+                                )}`}
                                 type="checkbox"
                                 value=""
-                                id="flexCheckChecked3"
+                                id="flexCheckCheckedChromePlating"
+                                onChange={() =>
+                                  toggleMaterialSelection('chromePlating')
+                                }
+                                checked={selectedMaterials.includes(
+                                  'chromePlating'
+                                )}
                               />
                               <label
                                 className="form-check-label"
-                                htmlFor="flexCheckChecked3"
+                                htmlFor="flexCheckCheckedChromePlating"
                               >
                                 鍍鉻
                               </label>
@@ -366,70 +481,94 @@ export default function List() {
                       <div className="accordion-body px-1 mt-4 h6">
                         <div className="form-check form-switch mb-2">
                           <input
-                            className="form-check-input "
+                            className={`form-check-input ${getNibCheckboxClass(
+                              'nibB'
+                            )}`}
                             type="checkbox"
                             value=""
-                            id="flexCheckDefault"
+                            id="flexCheckCheckedNibB"
+                            onChange={() => toggleNibSelection('nibB')}
+                            checked={selectedNibs.includes('nibB')}
                           />
                           <label
                             className="form-check-label"
-                            htmlFor="flexCheckDefault"
+                            htmlFor="flexCheckCheckedNibB"
                           >
                             B
                           </label>
                         </div>
+
                         <div className="form-check form-switch mb-2">
                           <input
-                            className="form-check-input "
+                            className={`form-check-input ${getNibCheckboxClass(
+                              'nibM'
+                            )}`}
                             type="checkbox"
                             value=""
-                            id="flexCheckChecked"
+                            id="flexCheckCheckedNibM"
+                            onChange={() => toggleNibSelection('nibM')}
+                            checked={selectedNibs.includes('nibM')}
                           />
                           <label
                             className="form-check-label"
-                            htmlFor="flexCheckChecked"
+                            htmlFor="flexCheckCheckedNibM"
                           >
                             M
                           </label>
                         </div>
+
                         <div className="form-check form-switch mb-2">
                           <input
-                            className="form-check-input "
+                            className={`form-check-input ${getNibCheckboxClass(
+                              'nibF'
+                            )}`}
                             type="checkbox"
                             value=""
-                            id="flexCheckChecked"
+                            id="flexCheckCheckedNibF"
+                            onChange={() => toggleNibSelection('nibF')}
+                            checked={selectedNibs.includes('nibF')}
                           />
                           <label
-                            className="form-check-label "
-                            htmlFor="flexCheckChecked"
+                            className="form-check-label"
+                            htmlFor="flexCheckCheckedNibF"
                           >
                             F
                           </label>
                         </div>
+
                         <div className="form-check form-switch mb-2">
                           <input
-                            className="form-check-input "
+                            className={`form-check-input ${getNibCheckboxClass(
+                              'nibEF'
+                            )}`}
                             type="checkbox"
                             value=""
-                            id="flexCheckChecked"
+                            id="flexCheckCheckedNibEF"
+                            onChange={() => toggleNibSelection('nibEF')}
+                            checked={selectedNibs.includes('nibEF')}
                           />
                           <label
-                            className="form-check-label "
-                            htmlFor="flexCheckChecked"
+                            className="form-check-label"
+                            htmlFor="flexCheckCheckedNibEF"
                           >
                             EF
                           </label>
                         </div>
+
                         <div className="form-check form-switch mb-2">
                           <input
-                            className="form-check-input "
+                            className={`form-check-input ${getNibCheckboxClass(
+                              'nibMF'
+                            )}`}
                             type="checkbox"
                             value=""
-                            id="flexCheckChecked"
+                            id="flexCheckCheckedNibMF"
+                            onChange={() => toggleNibSelection('nibMF')}
+                            checked={selectedNibs.includes('nibMF')}
                           />
                           <label
-                            className="form-check-label "
-                            htmlFor="flexCheckChecked"
+                            className="form-check-label"
+                            htmlFor="flexCheckCheckedNibMF"
                           >
                             MF
                           </label>
@@ -892,42 +1031,56 @@ export default function List() {
                         <div className="accordion-body px-1">
                           <div className="form-check form-switch">
                             <input
-                              className="form-check-input rounded-circle"
+                              className={`form-check-input ${getMaterialCheckboxClass(
+                                'brass'
+                              )}`}
                               type="checkbox"
                               value=""
-                              id="flexCheckDefault"
+                              id="flexCheckBrass"
+                              onChange={() => toggleMaterialSelection('brass')}
+                              checked={selectedMaterials.includes('brass')}
                             />
                             <label
                               className="form-check-label"
-                              htmlFor="flexCheckDefault"
+                              htmlFor="flexCheckBrass"
                             >
                               黃銅
                             </label>
                           </div>
                           <div className="form-check form-switch">
                             <input
-                              className="form-check-input rounded-circle"
+                              className={`form-check-input ${getMaterialCheckboxClass(
+                                'resin'
+                              )}`}
                               type="checkbox"
                               value=""
-                              id="flexCheckChecked"
+                              id="flexCheckResin"
+                              onChange={() => toggleMaterialSelection('resin')}
+                              checked={selectedMaterials.includes('resin')}
                             />
                             <label
                               className="form-check-label"
-                              htmlFor="flexCheckChecked"
+                              htmlFor="flexCheckResin"
                             >
                               樹脂
                             </label>
                           </div>
                           <div className="form-check form-switch">
                             <input
-                              className="form-check-input rounded-circle"
+                              className={`form-check-input ${getMaterialCheckboxClass(
+                                'plastic'
+                              )}`}
                               type="checkbox"
                               value=""
-                              id="flexCheckChecked"
+                              id="flexCheckPlastic"
+                              onChange={() =>
+                                toggleMaterialSelection('plastic')
+                              }
+                              checked={selectedMaterials.includes('plastic')}
                             />
                             <label
                               className="form-check-label"
-                              htmlFor="flexCheckChecked"
+                              htmlFor="flexCheckPlastic"
                             >
                               塑膠
                             </label>
@@ -935,14 +1088,18 @@ export default function List() {
 
                           <div className="form-check form-switch">
                             <input
-                              className="form-check-input rounded-circle"
+                              className={`form-check-input ${getMaterialCheckboxClass(
+                                'rubber'
+                              )}`}
                               type="checkbox"
                               value=""
-                              id="flexCheckChecked"
+                              id="flexCheckRubber"
+                              onChange={() => toggleMaterialSelection('rubber')}
+                              checked={selectedMaterials.includes('rubber')}
                             />
                             <label
                               className="form-check-label"
-                              htmlFor="flexCheckChecked"
+                              htmlFor="flexCheckRubber"
                             >
                               橡膠
                             </label>
@@ -951,84 +1108,128 @@ export default function List() {
                             <>
                               <div className="form-check form-switch">
                                 <input
-                                  className="form-check-input rounded-circle"
+                                  className={`form-check-input ${getMaterialCheckboxClass(
+                                    'metal'
+                                  )}`}
                                   type="checkbox"
                                   value=""
-                                  id="flexCheckChecked"
+                                  id="flexCheckMetal"
+                                  onChange={() =>
+                                    toggleMaterialSelection('metal')
+                                  }
+                                  checked={selectedMaterials.includes('metal')}
                                 />
                                 <label
                                   className="form-check-label"
-                                  htmlFor="flexCheckChecked"
+                                  htmlFor="flexCheckMetal"
                                 >
                                   金屬
                                 </label>
                               </div>
                               <div className="form-check form-switch">
                                 <input
-                                  className="form-check-input rounded-circle"
+                                  className={`form-check-input ${getMaterialCheckboxClass(
+                                    'stainlessSteel'
+                                  )}`}
                                   type="checkbox"
                                   value=""
-                                  id="flexCheckChecked"
+                                  id="flexCheckStainlessSteel"
+                                  onChange={() =>
+                                    toggleMaterialSelection('stainlessSteel')
+                                  }
+                                  checked={selectedMaterials.includes(
+                                    'stainlessSteel'
+                                  )}
                                 />
                                 <label
                                   className="form-check-label"
-                                  htmlFor="flexCheckChecked"
+                                  htmlFor="flexCheckStainlessSteel"
                                 >
                                   不銹鋼
                                 </label>
                               </div>
                               <div className="form-check form-switch">
                                 <input
-                                  className="form-check-input rounded-circle"
+                                  className={`form-check-input ${getMaterialCheckboxClass(
+                                    'wood'
+                                  )}`}
                                   type="checkbox"
                                   value=""
-                                  id="flexCheckChecked"
+                                  id="flexCheckWood"
+                                  onChange={() =>
+                                    toggleMaterialSelection('wood')
+                                  }
+                                  checked={selectedMaterials.includes('wood')}
                                 />
                                 <label
                                   className="form-check-label"
-                                  htmlFor="flexCheckChecked"
+                                  htmlFor="flexCheckWood"
                                 >
                                   木頭
                                 </label>
                               </div>
                               <div className="form-check form-switch">
                                 <input
-                                  className="form-check-input rounded-circle"
+                                  className={`form-check-input ${getMaterialCheckboxClass(
+                                    'syntheticFiber'
+                                  )}`}
                                   type="checkbox"
                                   value=""
-                                  id="flexCheckChecked"
+                                  id="flexCheckSyntheticFiber"
+                                  onChange={() =>
+                                    toggleMaterialSelection('syntheticFiber')
+                                  }
+                                  checked={selectedMaterials.includes(
+                                    'syntheticFiber'
+                                  )}
                                 />
                                 <label
                                   className="form-check-label"
-                                  htmlFor="flexCheckChecked"
+                                  htmlFor="flexCheckSyntheticFiber"
                                 >
                                   人造纖維
                                 </label>
                               </div>
                               <div className="form-check form-switch">
                                 <input
-                                  className="form-check-input rounded-circle"
+                                  className={`form-check-input ${getMaterialCheckboxClass(
+                                    'aluminum'
+                                  )}`}
                                   type="checkbox"
                                   value=""
-                                  id="flexCheckChecked"
+                                  id="flexCheckAluminum"
+                                  onChange={() =>
+                                    toggleMaterialSelection('aluminum')
+                                  }
+                                  checked={selectedMaterials.includes(
+                                    'aluminum'
+                                  )}
                                 />
                                 <label
                                   className="form-check-label"
-                                  htmlFor="flexCheckChecked"
+                                  htmlFor="flexCheckAluminum"
                                 >
                                   鋁
                                 </label>
                               </div>
                               <div className="form-check form-switch">
                                 <input
-                                  className="form-check-input rounded-circle"
+                                  className={`form-check-input ${getMaterialCheckboxClass(
+                                    'chromePlating'
+                                  )}`}
                                   type="checkbox"
                                   value=""
-                                  id="flexCheckChecked"
+                                  id="flexCheckChromePlating"
+                                  onChange={() =>
+                                    toggleMaterialSelection('chromePlating')
+                                  }
+                                  checked={selectedMaterials.includes(
+                                    'chromePlating'
+                                  )}
                                 />
                                 <label
                                   className="form-check-label"
-                                  htmlFor="flexCheckChecked"
+                                  htmlFor="flexCheckChromePlating"
                                 >
                                   鍍鉻
                                 </label>
@@ -1071,72 +1272,96 @@ export default function List() {
                         className="accordion-collapse collapse"
                       >
                         <div className="accordion-body px-1">
-                          <div className="form-check form-switch">
+                          <div className="form-check form-switch mb-2">
                             <input
-                              className="form-check-input rounded-circle"
+                              className={`form-check-input ${getNibCheckboxClass(
+                                'nibB'
+                              )}`}
                               type="checkbox"
                               value=""
-                              id="flexCheckDefault"
+                              id="flexCheckNibB"
+                              onChange={() => toggleNibSelection('nibB')}
+                              checked={selectedNibs.includes('nibB')}
                             />
                             <label
                               className="form-check-label"
-                              htmlFor="flexCheckDefault"
+                              htmlFor="flexCheckNibB"
                             >
                               B
                             </label>
                           </div>
-                          <div className="form-check form-switch">
+
+                          <div className="form-check form-switch mb-2">
                             <input
-                              className="form-check-input rounded-circle"
+                              className={`form-check-input ${getNibCheckboxClass(
+                                'nibM'
+                              )}`}
                               type="checkbox"
                               value=""
-                              id="flexCheckChecked"
+                              id="flexCheckNibM"
+                              onChange={() => toggleNibSelection('nibM')}
+                              checked={selectedNibs.includes('nibM')}
                             />
                             <label
                               className="form-check-label"
-                              htmlFor="flexCheckChecked"
+                              htmlFor="flexCheckNibM"
                             >
                               M
                             </label>
                           </div>
-                          <div className="form-check form-switch">
+
+                          <div className="form-check form-switch mb-2">
                             <input
-                              className="form-check-input rounded-circle"
+                              className={`form-check-input ${getNibCheckboxClass(
+                                'nibF'
+                              )}`}
                               type="checkbox"
                               value=""
-                              id="flexCheckChecked"
+                              id="flexCheckNibF"
+                              onChange={() => toggleNibSelection('nibF')}
+                              checked={selectedNibs.includes('nibF')}
                             />
                             <label
-                              className="form-check-label rounded-circle"
-                              htmlFor="flexCheckChecked"
+                              className="form-check-label"
+                              htmlFor="flexCheckNibF"
                             >
                               F
                             </label>
                           </div>
-                          <div className="form-check form-switch">
+
+                          <div className="form-check form-switch mb-2">
                             <input
-                              className="form-check-input rounded-circle"
+                              className={`form-check-input ${getNibCheckboxClass(
+                                'nibEF'
+                              )}`}
                               type="checkbox"
                               value=""
-                              id="flexCheckChecked"
+                              id="flexCheckNibEF"
+                              onChange={() => toggleNibSelection('nibEF')}
+                              checked={selectedNibs.includes('nibEF')}
                             />
                             <label
-                              className="form-check-label rounded-circle"
-                              htmlFor="flexCheckChecked"
+                              className="form-check-label"
+                              htmlFor="flexCheckNibEF"
                             >
                               EF
                             </label>
                           </div>
-                          <div className="form-check form-switch">
+
+                          <div className="form-check form-switch mb-2">
                             <input
-                              className="form-check-input rounded-circle"
+                              className={`form-check-input ${getNibCheckboxClass(
+                                'nibMF'
+                              )}`}
                               type="checkbox"
                               value=""
-                              id="flexCheckChecked"
+                              id="flexCheckNibMF"
+                              onChange={() => toggleNibSelection('nibMF')}
+                              checked={selectedNibs.includes('nibMF')}
                             />
                             <label
-                              className="form-check-label rounded-circle"
-                              htmlFor="flexCheckChecked"
+                              className="form-check-label"
+                              htmlFor="flexCheckNibMF"
                             >
                               MF
                             </label>
