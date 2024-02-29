@@ -1,8 +1,27 @@
 import React from 'react'
 import { MdArrowForwardIos } from 'react-icons/md'
+import { useRouter } from 'next/router'
 
-export default function CartFlow({ activeStep = 1 }) {
+export default function CartFlow() {
   // 添加 activeStep 作为组件的 props
+
+  const pathname = useRouter().pathname
+
+  let content
+  switch (pathname) {
+    case '/cart':
+      content = '我的購物車'
+      break
+    case '/cart/checkout':
+      content = '收件人與運送資料'
+      break
+    case '/cart/confirmation':
+      content = '檢查訂單'
+      break
+    default:
+      content = '未知頁面'
+  }
+
   const steps = ['我的購物車', '收件人與運送資料', '檢查訂單', '付款']
 
   return (
@@ -12,15 +31,13 @@ export default function CartFlow({ activeStep = 1 }) {
           <li key={index} className="text-h5">
             <div
               className={`text-my-white icon ${
-                index === activeStep ? 'active' : ''
+                content === step ? 'active' : ''
               }`}
             >
               {index + 1}
             </div>
             <span
-              className={`mx-4 icon-text ${
-                index === activeStep ? 'active' : ''
-              }`}
+              className={`mx-4 icon-text ${content === step ? 'active' : ''}`}
             >
               {step}
             </span>
@@ -34,7 +51,7 @@ export default function CartFlow({ activeStep = 1 }) {
       </ul>
       {steps.map(
         (step, index) =>
-          index === activeStep && (
+          content === step && (
             <div className="page-title d-flex align-items-center" key={index}>
               <div className="title-icon text-h2 d-flex justify-content-center align-items-center">
                 {index + 1}
@@ -72,7 +89,9 @@ export default function CartFlow({ activeStep = 1 }) {
               color: var(--my-black);
             }
           }
-          @media (max-width: 991px) {
+        }
+        @media (max-width: 991px) {
+          .cartflow-container {
             display: none;
           }
         }

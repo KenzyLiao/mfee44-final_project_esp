@@ -35,3 +35,21 @@
     animation: none !important;
   }
 }
+
+//購物車
+.button {
+  display: inline-block;
+  position: relative;
+  padding: 2px 5px;
+}
+
+.button-badge {
+  background-color: var(--my-notice);
+  border-radius: 2px;
+  color: var(--my-white);
+  padding: 1px 3px;
+  font-size: 10px;
+  position: absolute;
+  top: -3px;
+  right: -5px;
+}

@@ -16,7 +16,7 @@ export default function DefaultLayout({ title = '', children }) {
       <main className="flex-shrink-0 mt-3">
         <div className="container">
           {/* 麵包屑 還在考慮要不要用 */}
-          {/* <NextBreadCrumb isHomeIcon isChevron bgClass="" /> */}
+          <NextBreadCrumb isHomeIcon isChevron bgClass="" />
           {children}
         </div>
       </main>

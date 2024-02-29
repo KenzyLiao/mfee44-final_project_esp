@@ -109,7 +109,7 @@ export default function CartCoupon() {
               <CSSTransition
                 in={selectedCouponID === coupon.CouponID}
                 timeout={300}
-                classNames="zoom"
+                classNames="slide"
                 unmountOnExit
               >
                 <div className="card-body text-h6 text-my-black">

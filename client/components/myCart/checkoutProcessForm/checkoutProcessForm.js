@@ -1,6 +1,12 @@
 import React, { useState } from 'react'
 import { Form, Container, Collapse } from 'react-bootstrap'
 import styles from './checkoutProcessForm.module.scss'
+import Link from 'next/link'
+import { useRouter } from 'next/router'
+
+// icon
+import { IoIosArrowRoundBack } from 'react-icons/io'
+
 import {
   MdLocalShipping,
   MdPerson,
@@ -21,6 +27,8 @@ export default function CheckoutProcessForm() {
     mobileBarcode: '', //手機載具 當invoiceType為3時,才會有資料
     payType: '3',
   })
+
+  const router = useRouter()
 
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -46,16 +54,24 @@ export default function CheckoutProcessForm() {
   const handleSubmit = (e) => {
     e.preventDefault()
     console.log(formData) // 處理表單數據...
+    router.push('/cart/confirmation')
   }
 
   return (
     <>
-      {' '}
-      <Container className="my-5">
-        <h2 className="text-h4 text-my-black my-3 d-flex align-items-center">
-          <MdPerson className="me-2 text-my-black  " size="24px" />
-          收件人資料
-        </h2>
+      <Container className="my-5 ">
+        <div className="d-flex justify-content-between align-items-center">
+          <h2 className="text-h4 text-my-black my-3 d-flex align-items-center">
+            <MdPerson className="me-2 text-my-black  " size="24px" />
+            收件人資料
+          </h2>
+          <Link href="/cart">
+            <div className="d-flex align-items-center back-to-product-list ">
+              <IoIosArrowRoundBack className="" size="18px" />
+              返回購物車
+            </div>
+          </Link>
+        </div>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="formFirstName">
             <Form.Label className="text-h5 text-my-black">姓</Form.Label>
@@ -273,6 +289,9 @@ export default function CheckoutProcessForm() {
           weight: 100%;
           height: 100%;
           object-fit: cover;
+        }
+        .back-to-product-list {
+          border-bottom: 1px solid var(--my-black);
         }
       `}</style>
     </>
