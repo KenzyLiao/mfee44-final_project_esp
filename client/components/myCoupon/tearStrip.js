@@ -3,128 +3,72 @@ import React from 'react'
 export default function UserCoupon() {
   return (
     <>
-      <div className="coupon-container container">
-        <div className="coupon">
-          <div className="penbox">
-            <img src="/images/myCoupon/pen.jpg" alt="" />
-          </div>
-          <div className="coupon-text-wrapper">
-            <div className="coupon-content">
-              <div className="pp ">
-              <div className='text-h3'>
-              歡慶鋼筆盛典！全站優惠卷限時放送</div>
-                <p className="couponmind text-p">
-                  親愛的筆友們，感謝您長期以來對我們鋼筆網站的支持與喜愛！
-                  為了慶祝這個特別的時刻，我們推出全站優惠卷，讓您在挑選心儀鋼筆時享受更多的折扣。
-                </p>
-              </div>
-              <div className='discount'>
-                <h2>85折</h2>
-              </div>
-            </div>
-            <div className="coupon-date">
-              <p>優惠券代碼有效期至：2024年12月31日</p>
-              <button className="claim-button">領取優惠</button>
+      
+       
+          <div className="coupon-background">
+            <img src="/images/myCoupon/coupon_background.png" alt="" />
+            <div className="text-container">
+              <h3>歡慶鋼筆盛典！</h3>
+              <p className="discount m-0">85折優惠！</p>
+              <p className="expiration m-0">有效期限：2024.12.31</p>
+              <a href="#" className="button">
+                領取優惠卷
+              </a>
             </div>
           </div>
-        </div>
-      </div>
+        
+     
+
       <style jsx>
         {`
-
-        .coupon-content {
-            display: flex;
-          }
-          body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            background-color: #f8f8f8;
-          }
-          p {
-            display: inline-block;
-            margin-bottom: 0;
-          }
-          .penbox {
-            width:160px;
-            height: 200px;
-            
-          }
-          .penbox img{
-            width:100%;
-            height:100%;
-            object-fit:cover;
-
-          }
-          .couponmind {
-          }
-          .coupon {
-            width:650px;
-            height:200px;
-            display: flex;
-            position: relative;
-            background-color: #fff;
-            border: 2px solid #dbdbdb;
-            /* border-radius: 8px; */
-            box-shadow: 0 0 10px rgba(121, 121, 121, 0.1);
-            /* padding: 20px; */
-            text-align: left;
-            /* margin-bottom: 10px; */
-          }
-
           
-
-          .coupon h2 {
-            color: #333;
-          }
-
-          .discount {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-width: 100px;
-          }
-
-          .pp {
-            font-size: 16px;
-            color: #666;
-            margin-bottom: 15px;
-            margin-top: 5px;
-            left: 10px;
-            /* 將文字向上移動 10px */
-            padding-left: 15px;
-          }
-
-          .coupon .code {
-            font-size: 20px;
-            color: #ff4500;
-            font-weight: bold;
-          }
-
-          .coupon img {
-            width: 100%;
-          }
-
-          .claim-button {
-            background-color: #cf3155;
-            color: white;
-            border: none;
-            padding: 10px 20px;
+          
+          .coupon-background {
             text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            cursor: pointer;
-            border-radius: 25px;
+            width: 350px;
+            height: 200px;
+            overflow: hidden;
+            display: flex; /* 使用 Flexbox */
+            position: relative;
+            justify-content: center; /* 水平置中 */
+            align-items: center; /* 垂直置中 */
+            & img {
+              position: absolute;
+              width: 100%;
+              object-fit: cover;
+            }
           }
-          .coupon-date {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+          .text-container {
+            position: absolute;
+            padding: 10px;
+            width: 100%;
+              object-fit: cover;
+
+            h1 {
+              font-size: 24px;
+              color: #333;
+            }
+            p {
+              color: #555;
+              margin-bottom: 10px;
+            }
+            .discount {
+              color: #e44d26;
+              font-size: 24px;
+              font-weight: bold;
+              margin-bottom: 10px;
+            }
+            .expiration {
+              color: #777;
+            }
+            .button {
+              display: inline-block;
+              padding: 5px 10px;
+              background-color: #e44d26;
+              color: #fff;
+              text-decoration: none;
+              border-radius: 5px;
+            }
           }
         `}
       </style>
