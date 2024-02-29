@@ -20,5 +20,5 @@ function handleMouseMove(event) {
   }
   
   // 标记是否已经进入区间的变量
-  let isEntered = false;
+  let isEntered = false;//原本是用let
 console.log("檢查用2");
