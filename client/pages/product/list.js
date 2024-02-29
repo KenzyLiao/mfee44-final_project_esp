@@ -36,8 +36,8 @@ export default function List() {
       window.removeEventListener('resize', checkIsMobile)
     }
   }, [])
-
-  const [priceRange, setPriceRange] = useState([474, 40900]) // 默认价格区间
+  const initialPriceRange = [474, 40900]
+  const [priceRange, setPriceRange] = useState(initialPriceRange) // 默认价格区间
 
   const handlePriceChange = (value) => {
     setPriceRange(value)
@@ -48,6 +48,12 @@ export default function List() {
   const [selectedNibs, setSelectedNibs] = useState([])
   const [isPressed] = useState(false)
 
+  const clearAllSelections = () => {
+    setSelectedColors([])
+    setSelectedMaterials([])
+    setSelectedNibs([])
+    setPriceRange(initialPriceRange)
+  }
   const toggleColorSelection = (color) => {
     if (selectedColors.includes(color)) {
       setSelectedColors(selectedColors.filter((c) => c !== color))
@@ -915,7 +921,7 @@ export default function List() {
                     <button
                       className="btn btn-secondary rounded-pill"
                       style={{ width: '48%' }}
-                      onClick={handleSubmit}
+                      onClick={clearAllSelections}
                     >
                       清除
                     </button>
