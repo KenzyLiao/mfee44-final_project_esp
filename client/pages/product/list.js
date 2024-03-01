@@ -1800,7 +1800,7 @@ export default function List() {
             </div>
           </div>
         </div>
-        <ScrollToTopButton/>
+        <ScrollToTopButton />
       </div>
       <style jsx>{`
         .btnColor {

@@ -8,7 +8,7 @@ const ProductFigure = ({ imageUrl, brand, name, price }) => {
         src={imageUrl}
         className="card-img-top"
         alt={name}
-        style={{ height: '300px', width: 'auto', objectFit: 'cover' }}
+        style={{ width: 'auto', height: '300px', objectFit: 'cover' }}
       />
       <div className="card-body no-space-x">
         <p className="text-h6">{brand}</p>

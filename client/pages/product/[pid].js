@@ -1,10 +1,17 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import Carousel from '@/components/myProduct/productcarousel'
 import FavIcon from '@/components/myProduct/heart-icon'
 import QuantityButton from '@/components/myProduct/quantitybutton'
 import ProductFigure from '@/components/myProduct/productfigure'
+import products from '@/data/myProduct.json'
 
 export default function Detail() {
+  const [displayedProducts, setDisplayedProducts] = useState([])
+
+  useEffect(() => {
+    // 設定要顯示的商品資料，這裡僅顯示前六個商品
+    setDisplayedProducts(products.slice(0, 6))
+  }, [])
   return (
     <>
       <div className="row mt-5">
@@ -161,12 +168,21 @@ export default function Detail() {
       >
         <div className="col-12 mb-4">
           <div className="d-inline-flex">
-            <ProductFigure />
-            <ProductFigure />
-            <ProductFigure />
-            <ProductFigure />
-            <ProductFigure />
-            <ProductFigure />
+            {displayedProducts.slice(0, 6).map((product) => (
+              <div
+                className="col"
+                key={product.id}
+                style={{ width: '250px', marginRight: '10px' }}
+              >
+                <ProductFigure
+                  key={product.id}
+                  imageUrl={product.imageUrl}
+                  brand={product.brand}
+                  name={product.name}
+                  price={product.price}
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>
