@@ -1,7 +1,13 @@
 import React from 'react'
 import UserCoupon from '@/components/myCoupon/tearStrip'
+import couponData from '@/data/coupon.json'
+import { useState } from 'react'
 
 const CouponPage = () => {
+  const[coupon,setCoupon]=useState(couponData)
+  console.log(coupon);
+
+
   return (
     <>
       <div className="coupon-container">
@@ -12,11 +18,24 @@ const CouponPage = () => {
             <div className="coupon-content__item">
               <div className="container">
                 <div className="row row-cols-lg-2">
-                  <div className="col px-5">
-                    <UserCoupon></UserCoupon>
+                  <div className="">
+                  
+                        {coupon.map((v, i) => {
+                          const { coupon_name,discount_value,end_at } = v
+                          return (
+                            <UserCoupon
+                              key={v.id}
+                              coupon_name={coupon_name}
+                              discount={discount_value}
+                              limit_time={end_at}        
+                            />
+                          )
+                        })}
+                    
+                   
                   </div>
                   <div className="col px-5">
-                    <UserCoupon></UserCoupon>
+                    {/* <UserCoupon></UserCoupon> */}
                   </div>
                 </div>
               </div>
@@ -25,6 +44,7 @@ const CouponPage = () => {
           </div>
         </div>
       </div>
+
       <style jsx>{`
         .coupon-container {
           background-color: #f6f5f3;

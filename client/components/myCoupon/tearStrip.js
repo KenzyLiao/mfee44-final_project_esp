@@ -1,24 +1,33 @@
 import React from 'react'
 
-export default function UserCoupon() {
+export default function UserCoupon({key,
+  coupon_name,
+  discount, 
+  limit_time}) {
+
+console.log(key);
   return (
     <>
-      
-       
-          <div className="coupon-background">
+       <div className="coupon-background" key={key}>
             <img src="/images/myCoupon/coupon_background.png" alt="" />
             <div className="text-container">
-              <h3>歡慶鋼筆盛典！</h3>
-              <p className="discount m-0">85折優惠！</p>
-              <p className="expiration m-0">有效期限：2024.12.31</p>
+              <h3>
+              {/* 歡慶鋼筆盛典！ */}
+              {coupon_name}
+              </h3>
+              <p className="discount m-0">
+              {/* 85折優惠！ */}
+              {discount}
+              </p>
+              <p className="expiration m-0">
+              {/* 有效期限：2024.12.31 */}
+              {limit_time}
+              </p>
               <a href="#" className="button">
-                領取優惠卷
+                使用優惠劵
               </a>
             </div>
           </div>
-        
-     
-
       <style jsx>
         {`
           
