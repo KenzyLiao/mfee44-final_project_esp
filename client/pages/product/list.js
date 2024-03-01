@@ -8,11 +8,15 @@ import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import Typography from '@mui/material/Typography'
 import Slide from '@mui/material/Slide'
+import Pagination from '@/components/myProduct/pagination'
+import products from '@/data/myProduct.json'
+import ScrollToTopButton from '@/components/myProduct/upbutton'
 
 export default function List() {
   const [isMobile, setIsMobile] = useState(false)
   const [open, setOpen] = useState(false)
   const [showMore, setShowMore] = useState(false)
+  // const [products, setProducts] = useState([])
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleSubmit = () => {
@@ -36,6 +40,17 @@ export default function List() {
       window.removeEventListener('resize', checkIsMobile)
     }
   }, [])
+
+  // useEffect(() => {
+  //   // 使用fetch从后端获取数据
+  //   fetch('/api/products')
+  //     .then((response) => response.json())
+  //     .then((data) => {
+  //       setProducts(data.products) // 将获取的产品数据保存到组件状态中
+  //     })
+  //     .catch((error) => console.error('Error fetching products:', error))
+  // }, [])
+
   const initialPriceRange = [474, 40900]
   const [priceRange, setPriceRange] = useState(initialPriceRange) // 默认价格区间
 
@@ -94,6 +109,18 @@ export default function List() {
     return ` ${selectedNibs.includes(nib) ? 'selected' : ''} ${
       isPressed ? 'pressed' : ''
     }`
+  }
+
+  const [currentPage, setCurrentPage] = useState(1)
+  const productsPerPage = 12
+  const totalPages = Math.ceil(products.length / productsPerPage)
+  const startIndex = (currentPage - 1) * productsPerPage
+  const endIndex = Math.min(startIndex + productsPerPage, products.length)
+  const displayedProducts = products.slice(startIndex, endIndex)
+  // 处理页码变化的函数
+  const handlePageChange = (page) => {
+    // 这里可以根据页码做一些处理，例如获取新的产品列表等
+    setCurrentPage(page)
   }
 
   return (
@@ -1747,83 +1774,33 @@ export default function List() {
           <div id="page-content-wrapper">
             <div className="container">
               <div className="row row-cols-2 row-cols-lg-3 g-4 row-cols-md-2">
-                <div className="col">
-                  <ProductFigure />
-                </div>
-                <div className="col">
-                  <ProductFigure />
-                </div>
-                <div className="col">
-                  <ProductFigure />
-                </div>
-                <div className="col">
-                  <ProductFigure />
-                </div>
-                <div className="col">
-                  <ProductFigure />
-                </div>
-                <div className="col">
-                  <ProductFigure />
-                </div>
-                <div className="col">
-                  <ProductFigure />
-                </div>
-                <div className="col">
-                  <ProductFigure />
-                </div>
-                <div className="col">
-                  <ProductFigure />
-                </div>
-                <div className="col">
-                  <ProductFigure />
-                </div>
-                <div className="col">
-                  <ProductFigure />
-                </div>
-                <div className="col">
-                  <ProductFigure />
-                </div>
+                {/* 循环渲染产品 */}
+                {displayedProducts.map((product) => (
+                  <div className="col" key={product.id}>
+                    <ProductFigure
+                      key={product.id}
+                      imageUrl={product.imageUrl}
+                      brand={product.brand}
+                      name={product.name}
+                      price={product.price}
+                    />
+                  </div>
+                ))}
               </div>
 
               <div style={{ marginTop: '60px' }}>
                 <hr style={{ margin: '20px auto' }} />
 
-                <nav
-                  className="d-flex justify-content-center align-items-center"
-                  aria-label="Page navigation example"
-                >
-                  <ul className="pagination">
-                    <li className="page-item">
-                      <a className="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a className="page-link" href="#">
-                        1
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a className="page-link" href="#">
-                        2
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a className="page-link" href="#">
-                        3
-                      </a>
-                    </li>
-                    <li className="page-item">
-                      <a className="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                      </a>
-                    </li>
-                  </ul>
-                </nav>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
               </div>
             </div>
           </div>
         </div>
+        <ScrollToTopButton/>
       </div>
       <style jsx>{`
         .btnColor {
