@@ -4,14 +4,15 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   if (totalPages <= 1) {
     return null
   }
+
   // 计算要显示的页码范围
-  let startPage = Math.max(1, currentPage - 2)
-  let endPage = Math.min(totalPages, startPage + 4)
+  let startPage = Math.max(1, currentPage - 1)
+  let endPage = Math.min(totalPages, startPage + 2)
 
   // 如果当前页码靠近末尾，则调整页码范围
-  if (endPage - startPage < 4) {
+  if (endPage - startPage < 2) {
     endPage = Math.min(totalPages, currentPage + 1)
-    startPage = Math.max(1, endPage - 4)
+    startPage = Math.max(1, endPage - 2)
   }
 
   // 生成页码列表
@@ -37,7 +38,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             aria-label="First"
             onClick={() => handlePageChange(1)}
           >
-            <span aria-hidden="true">First</span>
+            <span aria-hidden="true">&laquo;&laquo;</span>
           </a>
         </li>
         <li className={`page-item ${currentPage === 1 ? 'disabled' : ''}`}>
@@ -64,6 +65,22 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             </a>
           </li>
         ))}
+        {totalPages > 3 && endPage < totalPages && (
+          <li className="page-item disabled">
+            <span className="page-link">&hellip;</span>
+          </li>
+        )}
+        {totalPages > 3 && endPage < totalPages && (
+          <li className="page-item">
+            <a
+              className="page-link"
+              href="#"
+              onClick={() => handlePageChange(totalPages)}
+            >
+              {totalPages}
+            </a>
+          </li>
+        )}
         <li
           className={`page-item ${
             currentPage === totalPages ? 'disabled' : ''
@@ -89,7 +106,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
             aria-label="Last"
             onClick={() => handlePageChange(totalPages)}
           >
-            <span aria-hidden="true">Last</span>
+            <span aria-hidden="true">&raquo;&raquo;</span>
           </a>
         </li>
       </ul>

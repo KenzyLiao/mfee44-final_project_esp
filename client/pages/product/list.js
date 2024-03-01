@@ -1775,17 +1775,21 @@ export default function List() {
             <div className="container">
               <div className="row row-cols-2 row-cols-lg-3 g-4 row-cols-md-2">
                 {/* 循环渲染产品 */}
-                {displayedProducts.map((product) => (
-                  <div className="col" key={product.id}>
-                    <ProductFigure
-                      key={product.id}
-                      imageUrl={product.imageUrl}
-                      brand={product.brand}
-                      name={product.name}
-                      price={product.price}
-                    />
-                  </div>
-                ))}
+                {displayedProducts.length > 0 ? (
+                  displayedProducts.map((product) => (
+                    <div className="col" key={product.id}>
+                      <ProductFigure
+                        key={product.id}
+                        imageUrl={product.image}
+                        brand={product.brand}
+                        name={product.name}
+                        price={product.price}
+                      />
+                    </div>
+                  ))
+                ) : (
+                  <p>查无数据</p>
+                )}
               </div>
 
               <div style={{ marginTop: '60px' }}>
