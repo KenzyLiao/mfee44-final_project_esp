@@ -3,6 +3,8 @@ import ContactDiv from '@/components/myService/contactDiv'
 import Progress from '@/components/myService/progress'
 import AreaFilter from '@/components/myService/areaFilter'
 import TimeFilter from '@/components/myService/timeFilter'
+// import TimeRangePicker from '@/components/myService/TimeRangePicker'
+
 import Search from '@/components/myService/search'
 import Map from '@/components/myService/map'
 import StoreInfo from '@/components/myService/storeInfo'
@@ -80,6 +82,7 @@ export default function RepairAndServicePage() {
             closeTime={closeTime}
             setCloseTime={setCloseTime}
           />
+          {/* <TimeRangePicker /> 這元件有多餘的時間再搞(來自antd) */}
         </div>
         <div className="col-md-3 col-8 text-center my-2 search-width">
           <Search textSearch={textSearch} setTextSearch={setTextSearch} />
