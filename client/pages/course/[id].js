@@ -1,8 +1,11 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactPlayer from 'react-player'
 import New from '@/components/course/new'
 import Section from '@/components/course/section'
 import Accordion from 'react-bootstrap/Accordion'
+import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router'
+
 import {
   BsBookmarkCheckFill,
   BsFillGiftFill,
@@ -17,6 +20,50 @@ import {
 } from 'react-icons/bs'
 
 export default function CoursePage() {
+  const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
+  const router = useRouter()
+  const { id } = router.query
+
+  const [data, setData] = useState(null)
+  const [error, setError] = useState(null)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3005/api/myproduct/${id}`
+        )
+        const data = await response.json()
+        setData(data[0])
+      } catch (error) {
+        console.error('Error:', error)
+        setError(error)
+      }
+    }
+
+    fetchData()
+  }, [id]) // 更新依賴性陣列，當 id 變化時重新執行 useEffect
+
+  if (error) {
+    return <div>Error: {error.message}</div>
+  }
+
+  if (!data) {
+    return <div>Loading...</div>
+  }
+
+  const {
+    name,
+    price,
+    description,
+    image,
+    teacher_name,
+    teacher_image,
+    rank,
+    total_minute,
+    student_num,
+    teacher_introduction,
+  } = data
+
   return (
     <>
       <div className="container">
@@ -40,26 +87,24 @@ export default function CoursePage() {
                 </div>
                 {/* 老師名字 */}
                 <div className="teacher_info">
-                  <p className="text-h5 mb-0">陳曉明</p>
+                  <p className="text-h5 mb-0">{`${teacher_name}`}</p>
                 </div>
               </div>
               {/* 課程介紹 */}
               <div className="course_intro">
-                <p className="text-h3">現代書寫: 探索當代風格的手寫字藝術</p>
-                <p className="text-p">
-                  引領您走進創新手寫世界的課程，結合傳統技法與現代風格，啟發您創造獨特、現代的書寫藝術。在這個課程中，您將學習到豐富的字型設計、色彩運用、構圖技巧，並透過實作專案深化對當代書寫的理解。挑戰傳統界線，讓您的字藝展現個性與時尚。
-                </p>
+                <p className="text-h3">{name}</p>
+                <p className="text-p">{description}</p>
               </div>
             </div>
             {/* 星、按鈕 */}
             <div className="d-flex justify-content-between">
               <div className="rank d-flex align-items-center">
-                <p className="mb-0 me-1">4.5</p>
+                <p className="mb-0 me-1">{rank}</p>
                 <BsFillStarFill />
                 <BsFillStarFill />
                 <BsFillStarFill />
                 <BsFillStarFill />
-                <BsStarHalf />
+                <BsFillStarFill />
               </div>
               <div className="btn-group">
                 <a className="mx-3 text-decoration-none border1">
@@ -90,7 +135,7 @@ export default function CoursePage() {
                   />
                   <div className="info">
                     <div className="label">課程時長</div>
-                    <div className="value">2小時50分</div>
+                    <div className="value">{total_minute}分鐘</div>
                   </div>
                 </div>
                 <div className="course-sub-info-item d-flex align-items-center">
@@ -110,7 +155,7 @@ export default function CoursePage() {
                   />
                   <div className="info">
                     <div className="label">課程總人數</div>
-                    <div className="value">4085位同學</div>
+                    <div className="value">{student_num}位同學</div>
                   </div>
                 </div>
                 <div className="course-sub-info-item d-flex align-items-center">
@@ -254,14 +299,12 @@ export default function CoursePage() {
                       />
                     </div>
                     <div className="teacher-info-item-title-info d-flex align-items-center">
-                      <p className="text-h3 mb-0 mx-3">陳曉明</p>
+                      <p className="text-h3 mb-0 mx-3">{teacher_name}</p>
                     </div>
                   </div>
                 </div>
                 <div className="teacher-info-item-content">
-                  <p className="text-p">
-                    陳曉明，台灣書法家，畢業於國立台北藝術大學美術學系，曾任教於國立台北藝術大學美術學系，現為台北市立美術館館長。
-                  </p>
+                  <p className="text-p">{teacher_introduction}</p>
                 </div>
               </div>
             </div>
@@ -269,7 +312,9 @@ export default function CoursePage() {
           <aside className="col-md-3 mb-5 ">
             <div className="price border1">
               <p className="text-h4">購買課程</p>
-              <p className="text-h3">NT$1,200</p>
+              <p className="text-h3 text-my-notice">
+                NT${price.toLocaleString()}
+              </p>
               <div className="d-flex flex-column flex-xl-row">
                 <a className="text-decoration-none buy-btn border1 me-xl-2 mb-2 mb-xl-0">
                   立即購買

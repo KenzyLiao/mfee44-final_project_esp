@@ -6,14 +6,22 @@ const connection = await createConnection()
 router.get('/', async (req, res) => {
   const num = req.query.num || 3
   const [rows] = await connection.execute(
-    `SELECT * FROM product WHERE product_type = 2 LIMIT ${num}`
+    `SELECT product.*, course_product.*, course_category.category_name, course_teacher.name AS teacher_name
+    FROM product  
+    JOIN course_product ON product.id = course_product.product_id 
+    JOIN course_category ON course_product.category_id = course_category.id
+    JOIN course_teacher ON course_product.teacher_id = course_teacher.id
+    WHERE product.product_type = 2
+    AND product.valid = 1 
+    LIMIT ${num}`
   )
-
   res.send(rows)
 })
 
 router.get('/:id', async (req, res) => {
-  if (isNaN(req.params.id)) {
+  
+  
+  if (isNaN(Number(req.params.id))) {
     res.status(400).send({ message: 'Invalid ID' })
     return
   }
@@ -22,7 +30,14 @@ router.get('/:id', async (req, res) => {
     return
   }
   const [rows] = await connection.execute(
-    `SELECT * FROM product WHERE id = ${req.params.id}`
+    `SELECT product.*, course_product.*, course_category.category_name, course_teacher.name AS teacher_name, course_teacher.image AS teacher_image,course_teacher.introduction AS teacher_introduction
+    FROM product  
+    JOIN course_product ON product.id = course_product.product_id 
+    JOIN course_category ON course_product.category_id = course_category.id
+    JOIN course_teacher ON course_product.teacher_id = course_teacher.id
+    WHERE product.product_type = 2
+    AND product.valid = 1 
+    AND product.id = ${req.params.id}`
   )
   if (rows.length === 0) {
     res.status(404).send({ message: 'Course Not found' })

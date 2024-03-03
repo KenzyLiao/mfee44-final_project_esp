@@ -48,7 +48,6 @@ export default function CardGroup({ data }) {
   //   }
   // ]
   // console.log(data);
-  console.log(typeof data)
 
   return (
     <>

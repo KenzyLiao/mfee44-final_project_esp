@@ -4,7 +4,17 @@ import Card from 'react-bootstrap/Card'
 import { Link } from 'react-router-dom'
 import { BsFillStarFill, BsClockFill, BsFillPeopleFill } from 'react-icons/bs'
 
-export default function CourseCard({ id, name, price, description, image }) {
+export default function CourseCard({
+  id,
+  name,
+  price,
+  description,
+  image,
+  teacher_name,
+  rank,
+  total_minute,
+  student_num,
+}) {
   // const image = props.image
   // const title = props.title
   // const teacher = props.teacher
@@ -37,8 +47,7 @@ export default function CourseCard({ id, name, price, description, image }) {
           {name}
         </Card.Title>
         <Card.Subtitle className="mb-2 text-muted">
-          By
-          {/* <Link to="">{teacher}</Link> */}
+          <p>{`By ${teacher_name}`}</p>
         </Card.Subtitle>
         <Card.Text
           style={{
@@ -61,15 +70,15 @@ export default function CourseCard({ id, name, price, description, image }) {
                 marginRight: '5px',
               }}
             />
-            {/* {rankStarNum} */}
+            {rank}
           </span>
           <span>
             <BsClockFill style={{ padding: '5px', fontSize: '24px' }} />
-            {/* {totalTime} */}
+            {total_minute}分鐘
           </span>
           <span>
             <BsFillPeopleFill style={{ padding: '5px', fontSize: '24px' }} />
-            {/* {totalPeople}人 */}
+            {student_num}人
           </span>
         </Card.Text>
         <Card.Text className="text-h3 text-my-notice">${price}</Card.Text>
