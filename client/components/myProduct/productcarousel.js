@@ -1,21 +1,35 @@
-import { useState } from 'react'
-// Import Swiper React components
+import { useState, useMemo } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
-
-// Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/free-mode'
 import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
-
-// import required modules
 import { Autoplay, FreeMode, Navigation, Thumbs } from 'swiper/modules'
 
-// 範例出處
-// https://swiperjs.com/demos#thumbs-gallery
-// https://codesandbox.io/s/k3cyyc
-export default function Carousel() {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null)
+// 根据产品图片命名规则生成图片数组
+const getProductImages = (imageName) => {
+  // 提取基础名称
+  const baseName = imageName.split('-')[0];
+  const images = [];
+  for (let i = 1; i <= 4; i++) {
+    // 假设您最多有4张图片
+    images.push(`/images/myProduct/${baseName}-${i}.jpg`);
+  }
+  return images;
+};
+
+export default function Carousel({ products }) {
+  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+
+  // 使用 useMemo 缓存所有产品的图片数组
+  const allProductImages = useMemo(() => {
+    return products.map((product) => getProductImages(product.image)).flat();
+  }, [products]);
+
+  // 过滤只包含当前产品图片的数组
+  const currentProductImages = allProductImages.filter((image) =>
+    image.includes(products[0].image.split('-')[0])
+  );
 
   return (
     <>
@@ -35,36 +49,14 @@ export default function Carousel() {
           modules={[Autoplay, FreeMode, Navigation, Thumbs]}
           className="mySwiper2"
         >
-          <SwiperSlide>
-            <img
-              src="/images/product/slide/t1.jpg"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="/images/product/slide/t2.jpg"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="/images/product/slide/t3.jpg"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="/images/product/slide/t4.jpg"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="/images/product/slide/t5.jpg"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-            />
-          </SwiperSlide>
+          {currentProductImages.map((image, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={image}
+                style={{ maxWidth: '100%', maxHeight: '100%' }}
+              />
+            </SwiperSlide>
+          ))}
         </Swiper>
         <Swiper
           onSwiper={setThumbsSwiper}
@@ -75,38 +67,16 @@ export default function Carousel() {
           modules={[FreeMode, Navigation, Thumbs]}
           className="mySwiper"
         >
-          <SwiperSlide>
-            <img
-              src="/images/product/slide/t1.jpg"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="/images/product/slide/t2.jpg"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="/images/product/slide/t3.jpg"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="/images/product/slide/t4.jpg"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-            />
-          </SwiperSlide>
-          <SwiperSlide>
-            <img
-              src="/images/product/slide/t5.jpg"
-              style={{ maxWidth: '100%', maxHeight: '100%' }}
-            />
-          </SwiperSlide>
+          {currentProductImages.map((image, index) => (
+            <SwiperSlide key={index}>
+              <img
+                src={image}
+                style={{ maxWidth: '100%', maxHeight: '100%' }}
+              />
+            </SwiperSlide>
+          ))}
         </Swiper>
       </div>
     </>
-  )
+  );
 }

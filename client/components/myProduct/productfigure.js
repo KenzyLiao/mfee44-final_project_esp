@@ -13,10 +13,10 @@ const ProductFigure = ({ image, brand, name, price }) => {
         alt={name}
         style={{ width: 'auto', height: '300px', objectFit: 'cover' }}
       />
-      <div className="card-body no-space-x">
-        <p className="text-h6">{brand}</p>
-        <p className="text-h3">{name}</p>
-        <span className="text-my-notice text-h4">${formattedPrice}</span>
+      <div className="card-body no-space-x ">
+        <p className="text-h6 ">{brand}</p>
+        <p className="text-h3 ">{name}</p>
+        <span className="text-my-notice text-h4 ">${formattedPrice}</span>
         <div style={{ position: 'absolute', top: '3%', right: '5%' }}>
           <Heart />
         </div>

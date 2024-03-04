@@ -15,6 +15,7 @@ import nib from '@/data/myNib.json'
 import material from '@/data/myMaterial.json'
 import color from '@/data/myColor.json'
 import ScrollToTopButton from '@/components/myProduct/upbutton'
+import Link from 'next/link'
 
 export default function List() {
   const [isMobile, setIsMobile] = useState(false)
@@ -157,6 +158,11 @@ export default function List() {
     // 返回是否满足所有选择条件
     return isColorMatched && isNibMatched && isMaterialMatched && isPriceMatched
   })
+  useEffect(() => {
+    setCurrentPage(1) // 筛选条件变化时重置页码为第一页
+  }, [selectedColors, selectedNibs, selectedMaterials, priceRange])
+
+
 
   const displayedProducts = filteredProducts.slice(startIndex, endIndex)
 
@@ -661,6 +667,7 @@ export default function List() {
                   <div
                     className="accordion accordion-flush"
                     id="accordionFlushExample"
+                    style={{ marginBottom: '50px' }}
                   >
                     <div className="accordion-item">
                       <h2 className="accordion-header">
@@ -1024,13 +1031,18 @@ export default function List() {
                 {displayedProducts.length > 0 ? (
                   displayedProducts.map((product) => (
                     <div className="col" key={product.id}>
-                      <ProductFigure
-                        key={product.id}
-                        image={`/images/product/slide/${product.image}`}
-                        brand={product.brand}
-                        name={product.name}
-                        price={formatPrice(product.price)}
-                      />
+                      <Link
+                        href={`/product/${product.id}`}
+                        style={{ textDecoration: `none` }}
+                      >
+                        <ProductFigure
+                          key={product.id}
+                          image={`/images/myProduct/${product.image}`}
+                          brand={product.brand}
+                          name={product.name}
+                          price={formatPrice(product.price)}
+                        />
+                      </Link>
                     </div>
                   ))
                 ) : (
@@ -1063,7 +1075,7 @@ export default function List() {
         .btnColor:hover {
           opacity: 0.5;
         }
-
+               
         /* 滚动条的样式 */
         ::-webkit-scrollbar {
           height: 3px; /* 滚动条宽度 */

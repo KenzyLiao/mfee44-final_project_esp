@@ -7,7 +7,10 @@ import products from '@/data/myProduct.json'
 
 export default function Detail() {
   const [displayedProducts, setDisplayedProducts] = useState([])
-
+  const formatPrice = (price) => {
+    const numericPrice = parseFloat(price)
+    return numericPrice.toLocaleString()
+  }
   useEffect(() => {
     // 設定要顯示的商品資料，這裡僅顯示前六個商品
     setDisplayedProducts(products.slice(0, 6))
@@ -30,15 +33,13 @@ export default function Detail() {
         </nav> */}
         <div className="col-lg-7 my-3">
           <div className="position-sticky" style={{ top: '2rem' }}>
-            <Carousel />
+            <Carousel products={products} />
           </div>
         </div>
         <div className="col-lg-5 my-3">
           <div className="position-sticky" style={{ top: '2rem' }}>
             {/* <div className="text-h4">萬寶龍</div> */}
-            <h1 className="text-h2 py-3">
-              MONBLANC 萬寶龍大師傑作（大班）鍍玫瑰金鋼筆
-            </h1>
+            <h1 className="text-h2 py-3">{products[0].name}</h1>
             <h3 className="text-h3 text-my-notice">
               NT ${Number(products[0].price).toLocaleString()}
             </h3>
@@ -185,10 +186,10 @@ export default function Detail() {
               >
                 <ProductFigure
                   key={product.id}
-                  imageUrl={product.image}
+                  image={`/images/myProduct/${product.image}`}
                   brand={product.brand}
                   name={product.name}
-                  price={product.price}
+                  price={formatPrice(product.price)}
                 />
               </div>
             ))}
