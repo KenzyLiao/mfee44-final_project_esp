@@ -4,7 +4,7 @@ export default function TimeFilter() {
   return (
     <>
       <input className="choose-time" type="time" />
-      ~
+      to
       <input className="choose-time" type="time" />
       <style jsx>{`
         .choose-time {

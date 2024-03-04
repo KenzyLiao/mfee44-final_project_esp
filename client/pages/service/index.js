@@ -75,7 +75,7 @@ export default function RepairAndServicePage() {
             setSouth={setSouth}
           />
         </div>
-        <div className="col-md-3 col-8 text-center  my-2 d-flex justify-content-md-evenly justify-content-center">
+        <div className="col-md-3 col-8 text-center p-0 my-2 d-flex justify-content-md-evenly justify-content-center">
           <TimeFilter
             openTime={openTime}
             setOpenTime={setOpenTime}
