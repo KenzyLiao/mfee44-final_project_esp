@@ -1,12 +1,21 @@
-// myProduct.js
-
 import express from 'express'
-import sequelize from './../configs/db.js'
+import mysql from 'mysql2/promise.js' // 导入 mysql2/promise 模块
 
 const router = express.Router()
 
-router.get('/products', async (req, res) => {
+// 连接数据库的配置信息
+const dbConfig = {
+  host: '127.0.0.1',
+  user: 'mfee_final',
+  password: '12345',
+  database: 'mfee44_final_project',
+}
+
+router.get('/product/list', async (req, res) => {
   try {
+    // 使用 connect 方法连接数据库
+    const connection = await mysql.createConnection(dbConfig)
+
     const query = `
       SELECT 
         p.product_id, p.name, p.product_type, p.price, p.description, p.image, p.created_at, p.updated_at, p.valid,
@@ -23,7 +32,12 @@ router.get('/products', async (req, res) => {
         INNER JOIN nib AS n ON g.nib_id = n.nib_id
         INNER JOIN material AS m ON g.material_id = m.material_id
     `
-    const [rows] = await sequelize.execute(query)
+
+    const [rows] = await connection.execute(query)
+
+    // 关闭数据库连接
+    await connection.end()
+
     res.json(rows)
   } catch (error) {
     console.error('Error executing query:', error)
