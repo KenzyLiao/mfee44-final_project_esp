@@ -15,7 +15,7 @@ export default function Detail() {
   return (
     <>
       <div className="row mt-5">
-        <nav aria-label="breadcrumb">
+        {/* <nav aria-label="breadcrumb">
           <ol className="breadcrumb mb-0">
             <li className="breadcrumb-item">
               <a href="#">Home</a>
@@ -27,7 +27,7 @@ export default function Detail() {
               MONTBLANC
             </li>
           </ol>
-        </nav>
+        </nav> */}
         <div className="col-lg-7 my-3">
           <div className="position-sticky" style={{ top: '2rem' }}>
             <Carousel />
@@ -39,7 +39,9 @@ export default function Detail() {
             <h1 className="text-h2 py-3">
               MONBLANC 萬寶龍大師傑作（大班）鍍玫瑰金鋼筆
             </h1>
-            <h3 className="text-h3 text-my-notice">NT $4,000</h3>
+            <h3 className="text-h3 text-my-notice">
+              NT ${Number(products[0].price).toLocaleString()}
+            </h3>
 
             <div className="mt-4 mx-2 my-text-contents-CH">
               <div>
@@ -50,15 +52,24 @@ export default function Detail() {
               </div>
 
               <div>
-                材質<span className="ms-5 text-my-secondary">皮</span>
+                材質
+                <span className="ms-5 text-my-secondary">
+                  {products[0].material}
+                </span>
               </div>
 
               <div>
-                顏色<span className="ms-5 text-my-secondary">黑棕</span>
+                顏色
+                <span className="ms-5 text-my-secondary">
+                  {products[0].color}
+                </span>
               </div>
 
               <div>
-                筆尖<span className="ms-5 text-my-secondary">B</span>
+                筆尖
+                <span className="ms-5 text-my-secondary">
+                  {products[0].nib}
+                </span>
               </div>
             </div>
 
@@ -154,9 +165,7 @@ export default function Detail() {
           <div className="product-info my-5">
             <div className="text-h2">產品介紹</div>
             <p className="my-text-contents-CH ms-3 my-5">
-              萬寶龍大師傑作（大班）經典系列鍍金質鋼筆已成為萬寶龍設計的經典。筆蓋和筆身以黑色珍貴樹脂製作，鑲嵌白色萬寶龍標誌。三個鍍金質圓環壓印萬寶龍字樣，鍍金質筆夾飾有獨立編號，充分彰顯大師傑作（大班）經典系列鋼筆風格雋永的設計。這款鍍金質鋼筆配有活塞轉換器，可選用卡式墨水，手工製作14
-              K
-              金質筆尖綴以鍍銠鑲飾。為了能展現您的個人風格，萬寶龍為您提供免費雕刻名字或姓名字首服務。
+              {products[0].description}
             </p>
           </div>
         </div>
@@ -176,7 +185,7 @@ export default function Detail() {
               >
                 <ProductFigure
                   key={product.id}
-                  imageUrl={product.imageUrl}
+                  imageUrl={product.image}
                   brand={product.brand}
                   name={product.name}
                   price={product.price}

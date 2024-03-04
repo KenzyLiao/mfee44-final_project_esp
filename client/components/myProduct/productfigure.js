@@ -1,14 +1,14 @@
 import React from 'react'
 import Heart from './heart-icon' // 假设 FavIcon 组件位于同一目录下的 FavIcon.js 文件中
 
-const ProductFigure = ({ imageUrl, brand, name, price }) => {
+const ProductFigure = ({ image, brand, name, price }) => {
   // 格式化价格，添加千位分隔符
   const formattedPrice = price.toLocaleString()
 
   return (
     <div className="card m-2 border-0 shadow" style={{ width: '100%' }}>
       <img
-        src={imageUrl}
+        src={image}
         className="card-img-top"
         alt={name}
         style={{ width: 'auto', height: '300px', objectFit: 'cover' }}

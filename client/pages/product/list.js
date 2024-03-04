@@ -55,7 +55,8 @@ export default function List() {
   const initialPriceRange = [minPrice, maxPrice]
   const [priceRange, setPriceRange] = useState(initialPriceRange) // 默认价格区间
   const formatPrice = (price) => {
-    return price.toLocaleString()
+    const numericPrice = parseFloat(price)
+    return numericPrice.toLocaleString()
   }
   const handlePriceChange = (value) => {
     setPriceRange(value)
@@ -1025,7 +1026,7 @@ export default function List() {
                     <div className="col" key={product.id}>
                       <ProductFigure
                         key={product.id}
-                        imageUrl={product.image}
+                        image={`/images/product/slide/${product.image}`}
                         brand={product.brand}
                         name={product.name}
                         price={formatPrice(product.price)}
