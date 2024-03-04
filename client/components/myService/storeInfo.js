@@ -55,7 +55,7 @@ export default function StoreInfo({ storeData, setStoreData }) {
                 </li>
                 <li>
                   <IoTime />
-                  營業時間: {storeDetail.openingHours}
+                  營業時間: {storeDetail.opentime}~{storeDetail.closetime} (Mon-Fri)
                 </li>
               </ul>
             </div>

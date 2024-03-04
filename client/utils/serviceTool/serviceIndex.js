@@ -1,4 +1,3 @@
-console.log("未完成");
 window.addEventListener("mousemove",handleMouseMove)
 const hiddenContent = document.querySelector(".hiddenContent")
 const contentHeight = hiddenContent.scrollHeight;

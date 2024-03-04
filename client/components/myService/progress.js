@@ -16,7 +16,7 @@ export default function Progress({ loading, setLoading }) {
         .progress-loading {
           width: 0%;
           background-color: #ff0083;
-          animation: fillProgress 1s linear; /* 填充动画，持续 3 秒，线性变化 */
+          animation: fillProgress 0.6s linear; /* 填充动画，持续 0.6 秒，线性变化 */
         }
         @keyframes fillProgress {
           from {

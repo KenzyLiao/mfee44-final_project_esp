@@ -21,6 +21,7 @@ export default function AreaFilter({
           id="btn-check-n"
           checked={north}
           onChange={() => setNorth(!north)}
+          value={north}
         />
         <label className="btn px-0 btn-outline-primary" htmlFor="btn-check-n">
           北
@@ -37,6 +38,7 @@ export default function AreaFilter({
           id="btn-check-m"
           checked={middle}
           onChange={() => setMiddle(!middle)}
+          value={middle}
         />
         <label className="btn px-0 btn-outline-primary" htmlFor="btn-check-m">
           中
@@ -53,6 +55,7 @@ export default function AreaFilter({
           id="btn-check-s"
           checked={south}
           onChange={() => setSouth(!south)}
+          value={south}
         />
         <label className="btn px-0 btn-outline-primary" htmlFor="btn-check-s">
           南
