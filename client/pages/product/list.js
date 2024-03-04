@@ -49,6 +49,14 @@ export default function List() {
     // 这里模拟从后端获取产品数据
     setProducts(productsData)
   }, [])
+  // const [product, setproduct] = useState([])
+  // useEffect(() => {
+  //   fetch('http://localhost:3005/api/product/list')
+  //     .then((response) => response.json())
+  //     .then((product) => setproduct(product))
+  //     .catch((error) => console.error('Error:', error))
+  // }, [])
+  // console.log(product)
   const minPrice = Math.min(...productsData.map((product) => product.price))
   const maxPrice = Math.max(...productsData.map((product) => product.price))
 
