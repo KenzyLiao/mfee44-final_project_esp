@@ -20,12 +20,13 @@ import {
 } from 'react-icons/bs'
 
 export default function CoursePage() {
-  const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
+  // const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
   const router = useRouter()
   const { id } = router.query
 
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
+  const [isOpen, setIsOpen] = useState(true)
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -39,7 +40,6 @@ export default function CoursePage() {
         setError(error)
       }
     }
-
     fetchData()
   }, [id]) // 更新依賴性陣列，當 id 變化時重新執行 useEffect
 
@@ -50,7 +50,6 @@ export default function CoursePage() {
   if (!data) {
     return <div>Loading...</div>
   }
-
   const {
     name,
     price,
@@ -62,7 +61,23 @@ export default function CoursePage() {
     total_minute,
     student_num,
     teacher_introduction,
+    article,
+    units,
   } = data
+  const sub_units_num = units
+    .map((v) => v.sub_units.length)
+    .reduce((a, b) => a + b)
+
+  let min = 0
+  let sec = 0
+  units.forEach((unit) => {
+    unit.sub_units.forEach((sub_unit) => {
+      min += Number(sub_unit.video_len.split(':')[0])
+      sec += Number(sub_unit.video_len.split(':')[1])
+    })
+  })
+
+  const total_video_minute = min + Math.floor(sec / 60)
 
   return (
     <>
@@ -92,28 +107,27 @@ export default function CoursePage() {
               </div>
               {/* 課程介紹 */}
               <div className="course_intro">
-                <p className="text-h3">{name}</p>
-                <p className="text-p">{description}</p>
+                <p className="text-h2">{name}</p>
+                <p className="text-h5">{description}</p>
               </div>
             </div>
             {/* 星、按鈕 */}
             <div className="d-flex justify-content-between">
               <div className="rank d-flex align-items-center">
                 <p className="mb-0 me-1">{rank}</p>
+                {Array.from({ length: rank }).map((_, index) => {
+                  return <BsFillStarFill key={index} className="me-1" />
+                })}
+                {/* <BsFillStarFill />
                 <BsFillStarFill />
                 <BsFillStarFill />
                 <BsFillStarFill />
-                <BsFillStarFill />
-                <BsFillStarFill />
+                <BsFillStarFill /> */}
               </div>
               <div className="btn-group">
-                <a className="mx-3 text-decoration-none border1">
+                <a className=" text-decoration-none border1">
                   <BsBookmarkCheckFill className="mb-1 me-2" />
                   收藏課程
-                </a>
-                <a className="text-decoration-none border1">
-                  <BsFillGiftFill className="mb-1 me-2 " />
-                  贈送禮物
                 </a>
               </div>
             </div>
@@ -211,40 +225,10 @@ export default function CoursePage() {
                 <div className="text-h2">課程內容</div>
                 <div className="text_fold">收起內容</div>
               </div>
-              <div className="course_content_item">
-                <div className="course_content_item_title">
-                  <div className="text-h3">第一章: 書寫基礎</div>
-                  <div className="text-h5">共 5 單元</div>
-                </div>
-                <div className="course_content_item_content">
-                  <div className="course_content_item_content_item">
-                    <div className="text-h4">1.1 書寫基礎</div>
-                    <div className>課程內容說明</div>
-                  </div>
-                  <div className="course_content_item_content_item">
-                    <div className="text-h4">1.2 書寫基礎</div>
-                    <div className>課程內容說明</div>
-                  </div>
-                  <div className="course_content_item_content_item">
-                    <div className="text-h4">1.3 書寫基礎</div>
-                    <div className>課程內容說明</div>
-                  </div>
-                  <div className="course_content_item_content_item">
-                    <div className="text-h4">1.4 書寫基礎</div>
-                    <div className>課程內容說明</div>
-                  </div>
-                  <div className="course_content_item_content_item">
-                    <div className="text-h4">1.5 書寫基礎</div>
-                    <div className>課程內容說明</div>
-                  </div>
-                </div>
-              </div>
-              <div className="course_content_item">
-                <div className="course_content_item_title">
-                  <div className="text-h3">第二章: 書寫進階</div>
-                  <div className="text-h5">共 5 單元</div>
-                </div>
-              </div>
+              <div
+                className="course_content_item"
+                dangerouslySetInnerHTML={{ __html: article }}
+              ></div>
             </div>
             {/* course content end*/}
             {/* unit overview */}
@@ -253,27 +237,38 @@ export default function CoursePage() {
                 <div className="d-flex">
                   <div className="text-h2">單元一覽</div>
                   <div className="text-h5 mx-3 text-my-primary">
-                    共 18 單元|總時長127分鐘
+                    {`共 ${sub_units_num} 單元 | 總時長${total_video_minute}分鐘`}
                   </div>
                 </div>
-                <div className="text_fold">收起內容</div>
+                <div
+                  className="text_fold"
+                  onClick={() => setIsOpen(!isOpen)}
+                  onKeyDown={() => setIsOpen(!isOpen)}
+                  role="button"
+                  tabIndex={0}
+                >
+                  {isOpen ? '收起內容' : '展開內容'}
+                </div>
               </div>
-              <Accordion defaultActiveKey={['0']} alwaysOpen>
-                {Array.from({ length: 3 }).map((_, index) => {
+              <Accordion
+                activeKey={isOpen ? units.map((v, index) => String(index)) : []}
+                defaultActiveKey={units.map((v, index) => String(index))}
+              >
+                {units.map((v, index) => {
                   return (
                     <Accordion.Item key={index} eventKey={index.toString()}>
                       <Accordion.Header>
                         <BsListOl className="me-1" />
-                        章節{index + 1}
+                        {v.title}
                       </Accordion.Header>
                       <Accordion.Body>
-                        {Array.from({ length: 5 }).map((_, index) => {
+                        {v.sub_units.map((v, index) => {
                           return (
                             <Section
                               key={index}
                               secNum={index + 1}
-                              secTitle={`小節 ${index + 1}`}
-                              secTime="00:00"
+                              secTitle={`${v.title}`}
+                              secTime={`${v.video_len}`}
                             />
                           )
                         })}
@@ -316,9 +311,6 @@ export default function CoursePage() {
                 NT${price.toLocaleString()}
               </p>
               <div className="d-flex flex-column flex-xl-row">
-                <a className="text-decoration-none buy-btn border1 me-xl-2 mb-2 mb-xl-0">
-                  立即購買
-                </a>
                 <a className="text-decoration-none collect-btn border1 px-2">
                   <BsFillCartFill className="mb-1" /> 加入購物車
                 </a>

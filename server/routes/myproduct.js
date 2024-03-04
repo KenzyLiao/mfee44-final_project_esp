@@ -19,8 +19,6 @@ router.get('/', async (req, res) => {
 })
 
 router.get('/:id', async (req, res) => {
-  
-  
   if (isNaN(Number(req.params.id))) {
     res.status(400).send({ message: 'Invalid ID' })
     return
@@ -39,6 +37,16 @@ router.get('/:id', async (req, res) => {
     AND product.valid = 1 
     AND product.id = ${req.params.id}`
   )
+  const [rows2] = await connection.execute(
+    `SELECT * FROM course_units WHERE course_id = ${req.params.id}`
+  )
+  rows[0].units = rows2
+  for (const unit of rows[0].units) {
+    const [rows3] = await connection.execute(
+      `SELECT * FROM course_sub_units WHERE unit_id = ${unit.id}`
+    )
+    unit.sub_units = rows3
+  }
   if (rows.length === 0) {
     res.status(404).send({ message: 'Course Not found' })
     return
