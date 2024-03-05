@@ -127,7 +127,7 @@ export default function Confirmation() {
           <div className="my-5">
             <ShippingRule />
           </div>
-          <div onClick={goLinePay} className="my-button1 my-3 rwd-button">
+          <div onClick={creatOrder} className="my-button1 my-3 rwd-button">
             付款
           </div>
         </div>

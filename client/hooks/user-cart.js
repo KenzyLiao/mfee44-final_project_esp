@@ -157,7 +157,6 @@ export function CartProvider({ children }) {
     setSelectedCouponID(newSelectedCouponID)
     localStorage.setItem('selectedCouponID', newSelectedCouponID)
   }
-  console.log(selectCoupon)
 
   return (
     <CartContext.Provider
