@@ -5,6 +5,7 @@ import Section from '@/components/course/section'
 import Accordion from 'react-bootstrap/Accordion'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import { BsArrowDown, BsArrowUp } from 'react-icons/bs'
 
 import {
   BsBookmarkCheckFill,
@@ -27,6 +28,8 @@ export default function CoursePage() {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [isOpen, setIsOpen] = useState(true)
+  const [articleOpen, setArticleOpen] = useState(false)
+  const [openList, setOpenList] = useState([])
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -183,6 +186,7 @@ export default function CoursePage() {
               </div>
             </div>
             {/* info end */}
+
             {/* news */}
             <div className="news mb-5">
               <div className="d-flex justify-content-between mb-3">
@@ -217,18 +221,36 @@ export default function CoursePage() {
               </div>
             </div>
             {/* news end */}
+
             {/* course content */}
             <div className="course_content mb-5">
-              <div className="d-flex justify-content-between mb-3">
+              <div className="d-flex justify-content-between mb-4">
                 <div className="text-h2">課程內容</div>
-                <div className="text_fold">收起內容</div>
               </div>
               <div
-                className="course_content_item"
+                className={`${
+                  articleOpen
+                    ? 'course_content_item_open'
+                    : 'course_content_item_close'
+                }`}
                 dangerouslySetInnerHTML={{ __html: article }}
               ></div>
+              <div
+                className="text_fold d-flex justify-content-center"
+                onClick={() => setArticleOpen(!articleOpen)}
+                onKeyDown={() => setIsOpen(!articleOpen)}
+                role="button"
+                tabIndex={0}
+              >
+                {articleOpen ? (
+                  <BsArrowUp className="text-h2" />
+                ) : (
+                  <BsArrowDown className="text-h2" />
+                )}
+              </div>
             </div>
             {/* course content end*/}
+
             {/* unit overview */}
             <div className="unit-overview mb-5">
               <div className="d-flex justify-content-between mb-3">
@@ -240,22 +262,43 @@ export default function CoursePage() {
                 </div>
                 <div
                   className="text_fold"
-                  onClick={() => setIsOpen(!isOpen)}
+                  onClick={() => {
+                    setIsOpen(!isOpen)
+                    if (isOpen) {
+                      const itemList = units.map((v, index) => {
+                        return String(index)
+                      })
+                      setOpenList(itemList)
+                    } else {
+                      setOpenList([])
+                    }
+                    // console.log(openList)
+                  }}
                   onKeyDown={() => setIsOpen(!isOpen)}
                   role="button"
                   tabIndex={0}
                 >
-                  {isOpen ? '收起內容' : '展開內容'}
+                  {isOpen ? '展開內容' : '收起內容'}
                 </div>
               </div>
               <Accordion
-                activeKey={isOpen ? units.map((v, index) => String(index)) : []}
-                defaultActiveKey={units.map((v, index) => String(index))}
+                activeKey={openList.map((v) => v)}
+                defaultActiveKey={openList.map((v) => v)}
               >
                 {units.map((v, index) => {
                   return (
                     <Accordion.Item key={index} eventKey={index.toString()}>
-                      <Accordion.Header>
+                      <Accordion.Header
+                        onClick={() => {
+                          if (openList.includes(index.toString())) {
+                            setOpenList(
+                              openList.filter((v) => v !== index.toString())
+                            )
+                          } else {
+                            setOpenList([...openList, index.toString()])
+                          }
+                        }}
+                      >
                         <BsListOl className="me-1" />
                         {v.title}
                       </Accordion.Header>
@@ -277,12 +320,13 @@ export default function CoursePage() {
               </Accordion>
             </div>
             {/* unit overview end*/}
+
             {/* teacher */}
             <div className="teacher-info">
               <div className="d-flex justify-content-between mb-4">
                 <div className="text-h2">關於講師</div>
               </div>
-              <div className="teacher-info-item">
+              <div className="teacher-info-item mb-5">
                 <div className="teacher-info-item-title">
                   <div className="d-flex">
                     <div className="teacher-info-item-title-img">
@@ -301,6 +345,7 @@ export default function CoursePage() {
                 </div>
               </div>
             </div>
+            {/* teacher end */}
           </main>
           <aside className="col-md-3 mb-5 ">
             <div className="price border1">
@@ -404,6 +449,17 @@ export default function CoursePage() {
               margin-right: 5px;
               color: $primary;
             }
+          }
+        }
+        .course_content {
+          .course_content_item_close {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 8; /* 顯示行數 */
+            overflow: hidden;
+          }
+          .course_content_item_open {
+            display: block;
           }
         }
 
