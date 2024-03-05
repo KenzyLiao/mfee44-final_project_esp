@@ -17,7 +17,6 @@ export default function StoreInfo({ storeData, setStoreData }) {
     setIsHidden(true)
   }
 
-  // 3/1要map出資料
   return (
     <>
       <div>

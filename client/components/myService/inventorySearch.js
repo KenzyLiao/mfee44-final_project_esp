@@ -59,7 +59,7 @@ export default function InventorySearch() {
                   台北士林店
                 </div>
                 <div>
-                  {'{'}庫存充足/暫無庫存{'}'}
+                  庫存充足
                 </div>
               </li>
             </ul>
@@ -118,6 +118,9 @@ export default function InventorySearch() {
           .product-describe {
             display: none;
           }
+        }
+        #a1{
+          color:#ff0083
         }
       `}</style>
     </>

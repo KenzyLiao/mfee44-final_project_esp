@@ -72,11 +72,13 @@ export default function ContactDiv() {
         }
         .shape-ex1 {
           margin: 0 auto;
-          animation: fade 2s linear 1s 1, leftIn 2s linear 1s 1;
+          animation: fade 2s linear 1, leftIn 3s linear 1s 1;
+
         }
         .shape-ex2 {
           margin: 0 auto;
-          animation: fade 2s linear 1s 1, rightIn 2s linear 1s 1;
+          animation: fade 2s linear 1, rightIn 3s linear 1s 1;
+
         }
         @keyframes fade {
           from {

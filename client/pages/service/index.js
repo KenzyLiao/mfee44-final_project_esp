@@ -17,9 +17,9 @@ export default function RepairAndServicePage() {
   const [north, setNorth] = useState(true) //北
   const [middle, setMiddle] = useState(true) //中
   const [south, setSouth] = useState(true) //南
-  const [openTime, setOpenTime] = useState("") //開店時間
-  const [closeTime, setCloseTime] = useState("") //閉店時間
-  const [textSearch, setTextSearch] = useState("") //關鍵字輸入
+  const [openTime, setOpenTime] = useState('') //開店時間
+  const [closeTime, setCloseTime] = useState('') //閉店時間
+  const [textSearch, setTextSearch] = useState('') //關鍵字輸入
   const [geojsonData, setGeojsonData] = useState(null) //用於地圖區的資料
   const [storeData, setStoreData] = useState(null) //用於訊息區的資料
 
@@ -48,33 +48,31 @@ export default function RepairAndServicePage() {
         url += `textSearch=${textSearch}&`
       }
       //如果url最後一個字是"&"，則"&"會被自動清除
-      url = url.replace(/&$/, '');
+      url = url.replace(/&$/, '')
 
       fetch(url)
-      .then(res => {
-        return response.json();
-      })
-      .then(data => {
-        //要處理成一份json和一份geojson
-        setGeojsonData(data)
-        setStoreData(data)
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      })
+        .then((res) => {
+          return response.json()
+          
+          //這個function到時要放在監聽請求，有發送請求就執行這個function
+          const handleRequest = () => {
+            setLoading(true) // 发出请求时设置加载状态为 true
+            // 模拟请求
+            setTimeout(() => {
+              setLoading(false) // 模拟请求完成后，设置加载状态为 false
+            }, 1000) // 假设请求耗时 3 秒
+          }
+        })
+        .then((data) => {
+          //接回來後要處理成一份json和一份geojson
+          setGeojsonData(data)
+          setStoreData(data)
+        })
+        .catch((error) => {
+          console.error('Error fetching data:', error)
+        })
     }
-  }, [north,middle,south,openTime,closeTime,textSearch]) //有value改變時，就發請求
-
-
-  
-  //這個function到時要放在監聽請求，有發送請求就執行這個function
-  const handleRequest = () => {
-    setLoading(true) // 发出请求时设置加载状态为 true
-    // 模拟请求
-    setTimeout(() => {
-      setLoading(false) // 模拟请求完成后，设置加载状态为 false
-    }, 1000) // 假设请求耗时 3 秒
-  }
+  }, [north, middle, south, openTime, closeTime, textSearch]) //有value改變時，就發請求
 
   return (
     <>
@@ -85,8 +83,8 @@ export default function RepairAndServicePage() {
         </div>
       </section>
       <div className="row">
-        {/* 下方btn為測試用 */}
-        <button onClick={handleRequest}>发出请求</button>
+        {/* 下方btn為測試用
+        <button onClick={handleRequest}>发出请求</button> */}
 
         <Progress loading={loading} setLoading={setLoading} />
       </div>
@@ -136,7 +134,7 @@ export default function RepairAndServicePage() {
         .hiddenContent {
           height: 0;
           overflow: hidden;
-          transition: height 0.9s ease; /* 添加过渡效果 */
+          transition: height 0.8s ease; /* 添加过渡效果 */
         }
         .search-width {
           min-width: 300px;
