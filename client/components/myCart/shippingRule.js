@@ -55,17 +55,15 @@ export default function ShippingRule(props) {
         }
 
         .rule-body {
-           {
-            /* border-bottom: 1px solid var(--my-white); */
-          }
           display: flex;
           justify-content: space-between;
           align-items: center;
           gap: 20px;
-          color: #000;
+          color: var(--my-black);
           padding: 4px 80px 36px 0;
           transition: all 0.5s;
-          &:hover {
+          &:hover,
+          .rule-text:hover {
             color: var(--my-notice);
           }
         }
@@ -84,9 +82,6 @@ export default function ShippingRule(props) {
           flex-basis: 0%;
           flex-direction: column;
           transition: all 0.5s;
-          &:hover {
-            color: var(--my-notice);
-          }
         }
         @media (max-width: 991px) {
           .rule-text {

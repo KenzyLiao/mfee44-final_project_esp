@@ -1,36 +1,182 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { usePasswordValidation } from '@/components/member/usePasswordValidation'
+import { useEmailValidation } from '@/components/member/useEmailValidation'
 
 function RegistrationPage() {
+  const {
+    password,
+    showRules,
+    ruleChecks,
+    handlePasswordChange,
+    handleFocus,
+    handleBlur,
+  } = usePasswordValidation()
+  const {
+    email,
+    confirmEmail,
+    emailValid,
+    isEmailMatch,
+    handleEmailChange,
+    handleConfirmEmailChange,
+  } = useEmailValidation()
+  const [title, setTitle] = useState('')
+  const [lastname, setLastname] = useState('')
+  const [firstname, setFirstname] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+
+  const renderRuleCheck = (check, message) => {
+    return <li style={{ color: check ? 'green' : 'red' }}>{message}</li>
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setIsLoading(true)
+
+    if (!emailValid || !isEmailMatch) {
+      alert('請填寫有效的電子郵件且兩次輸入的郵箱必須相同。')
+      setIsLoading(false)
+      return
+    }
+
+    const registrationData = {
+      email,
+      password,
+      title,
+      lastname,
+      firstname,
+    }
+
+    try {
+      const response = await fetch('http://localhost:3001/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(registrationData),
+      })
+
+      const responseData = await response.json()
+      if (response.ok) {
+        window.location.href = `/member/AccountActivation?email=${email}`
+      } else {
+        console.error('Registration error:', responseData.message)
+        alert('註冊失敗，請重試。')
+      }
+    } catch (error) {
+      console.error('Network error:', error)
+      alert('網絡錯誤，請稍後重試。')
+    } finally {
+      setIsLoading(false) // 请求完成后，无论成功或失败，都将 isLoading 设置为 false
+    }
+  }
   return (
     <>
       <div className="signup-container">
         <div className="main-column">
           <div className="account-section">
-            <div className="registration-section">
+            <form className="registration-section" onSubmit={handleSubmit}>
               <div className="registration-title text-h2">建立個人帳號</div>
               <div className="login-info-part1">登入資料(1/3)</div>
               <div className="email-section">
-                <div className="email-label">登記電郵 *</div>
-                <div className="email-input"></div>
-                <div className="email-confirm-label">確認登記電郵 *</div>
-                <div className="email-confirm-input"></div>
+                <div className="email-label">電子郵件 *</div>
+                <input
+                  type="email"
+                  className="email-input"
+                  placeholder="name@example.com"
+                  value={email}
+                  onChange={(e) => handleEmailChange(e.target.value)}
+                  required
+                />
+                {!emailValid && (
+                  <div style={{ color: 'red' }}>請填寫有效的電子郵件</div>
+                )}
+                <div className="email-confirm-label">確認電子郵件 *</div>
+                <input
+                  type="email"
+                  className="email-confirm-input"
+                  placeholder="name@example.com"
+                  value={confirmEmail}
+                  onChange={(e) => handleConfirmEmailChange(e.target.value)}
+                  required
+                />
+                {!isEmailMatch && (
+                  <div style={{ color: 'red' }}>電子信箱有誤</div>
+                )}
               </div>
               <div className="login-info-part2">登入資料(2/3)</div>
               <div className="password-section">
                 <div className="password-label">密碼 *</div>
-                <div className="password-input"></div>
+                <input
+                  type="password"
+                  className="password-input"
+                  value={password}
+                  onChange={handlePasswordChange}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  required
+                />
+                {showRules && (
+                  <ul>
+                    {renderRuleCheck(
+                      ruleChecks.minLength,
+                      '密碼至少包含8個字符'
+                    )}
+                    {renderRuleCheck(ruleChecks.hasNumber, '至少包含一個數字')}
+                    {renderRuleCheck(
+                      ruleChecks.hasUppercase,
+                      '至少包含一個大寫字母'
+                    )}
+                    {renderRuleCheck(
+                      ruleChecks.hasLowercase,
+                      '至少包含一個小寫字母'
+                    )}
+                  </ul>
+                )}
               </div>
               <div className="personal-info">您的個人資料</div>
               <div className="personal-info-section">
                 <div className="title-label">稱謂 *</div>
-                <div className="title-input"></div>
-                <div className="lastname-label">姓氏 *</div>
-                <div className="lastname-input"></div>
-                <div className="firstname-label">名字 *</div>
-                <div className="firstname-input"></div>
+                <select
+                  id="title"
+                  className="title-input"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  required
+                >
+                  <option value="" disabled>
+                    選擇稱謂
+                  </option>
+                  <option value="mr">男士</option>
+                  <option value="ms">女士</option>
+                  <option value="preferNotToSay">不方便透露</option>
+                </select>
+                <div className="firstname-label">姓氏 *</div>
+                <input
+                  type="text"
+                  id="firstname"
+                  className="firstname-input"
+                  value={firstname}
+                  onChange={(e) => setFirstname(e.target.value)}
+                  required
+                />
+                <div className="lastname-label">名字 *</div>
+                <input
+                  type="text"
+                  id="lastname"
+                  className="lastname-input"
+                  value={lastname}
+                  onChange={(e) => setLastname(e.target.value)}
+                  required
+                />
               </div>
-              <div className="next-section">下一部分</div>
-            </div>
+              <button
+                type="submit"
+                className="next-section"
+                disabled={isLoading}
+              >
+                {isLoading ? '提交中...' : '下一部分'}
+              </button>
+            </form>
           </div>
         </div>
         <div className="side-column">
@@ -192,18 +338,19 @@ function RegistrationPage() {
           font-weight: 300;
           text-transform: uppercase;
           line-height: 178%;
-          padding: 44px 32px;
+          padding: 22px 32px;
         }
 
         @media (max-width: 991px) {
           .email-section {
             max-width: 100%;
-            padding: 0 20px;
+            padding: 10px 20px;
           }
         }
 
         .email-label {
           font-family: Inter, sans-serif;
+          padding-top: 5px;
         }
 
         @media (max-width: 991px) {
@@ -215,8 +362,9 @@ function RegistrationPage() {
         .email-input {
           border: 1px solid #eae8e4;
           background-color: #fff;
-          margin-top: 10px;
+          margin: 10px 0px;
           height: 48px;
+          padding-left: 10px;
         }
 
         @media (max-width: 991px) {
@@ -227,13 +375,13 @@ function RegistrationPage() {
 
         .email-confirm-label {
           font-family: Inter, sans-serif;
-          margin-top: 42px;
+          margin-top: 12px;
         }
 
         @media (max-width: 991px) {
           .email-confirm-label {
             max-width: 100%;
-            margin-top: 40px;
+            margin-top: 10px;
           }
         }
 
@@ -241,7 +389,8 @@ function RegistrationPage() {
           border: 1px solid #eae8e4;
           background-color: #fff;
           height: 48px;
-          margin: 10px 0 18px;
+          margin: 10px 0 5px;
+          padding-left: 10px;
         }
 
         @media (max-width: 991px) {
@@ -285,6 +434,7 @@ function RegistrationPage() {
 
         .password-label {
           font-family: Inter, sans-serif;
+          padding-top: 10px;
         }
 
         @media (max-width: 991px) {
@@ -298,11 +448,13 @@ function RegistrationPage() {
           background-color: #fff;
           margin-top: 10px;
           height: 48px;
+          padding-left: 10px;
         }
 
         @media (max-width: 991px) {
           .password-input {
             max-width: 100%;
+            margin-bottom: 20px;
           }
         }
 
@@ -354,6 +506,7 @@ function RegistrationPage() {
           background-color: #fff;
           margin-top: 10px;
           height: 48px;
+          padding-left: 10px;
         }
 
         @media (max-width: 991px) {
@@ -379,6 +532,7 @@ function RegistrationPage() {
           background-color: #fff;
           margin-top: 10px;
           height: 48px;
+          padding-left: 10px;
         }
 
         @media (max-width: 991px) {
@@ -404,6 +558,7 @@ function RegistrationPage() {
           background-color: #fff;
           height: 48px;
           margin: 10px 0 23px;
+          padding-left: 10px;
         }
 
         @media (max-width: 991px) {
@@ -429,8 +584,7 @@ function RegistrationPage() {
 
         @media (max-width: 991px) {
           .next-section {
-            white-space: initial;
-            padding: 0 20px;
+            margin-bottom: 20px;
           }
         }
 
@@ -444,7 +598,10 @@ function RegistrationPage() {
 
         @media (max-width: 991px) {
           .side-column {
-            width: 100%;
+             {
+              /* width: 100%; */
+            }
+            display: none;
           }
         }
 

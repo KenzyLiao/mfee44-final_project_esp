@@ -35,5 +35,7 @@ export const pathsLocaleMap = {
   'user':'會員',
   'course':'課程',
   'service':'維修與服務',
+  'confirmation':'檢查訂單',
+  'checkout':'收件人與運送資料'
 }
 /* eslint-enable */

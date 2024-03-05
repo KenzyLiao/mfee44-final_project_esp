@@ -15,16 +15,19 @@ export default function Header() {
   //取得當前網址路徑
   const router = useRouter()
   const currentRoute = router.pathname
-  console.log(currentRoute)
 
   // 控制Off
   const [show, setShow] = useState(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
+
   return (
     <>
       <header>
-        <nav className="navbar navbar-expand-lg fixed-top navbar-light bg-light">
+        <nav
+          className="navbar navbar-expand-lg fixed-top navbar-light bg-light"
+          id="header-nav"
+        >
           <div className="container-fluid">
             <Link className="navbar-brand" href="/">
               <Image
