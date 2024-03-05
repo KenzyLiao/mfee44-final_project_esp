@@ -23,7 +23,7 @@ export default function Confirmation() {
 
   const [formData, setFormData] = useState({})
 
-  //linePay
+  //linePay資料使用
   const [linePayOrder, setLinePayOrder] = useState({})
 
   useEffect(() => {
@@ -47,10 +47,7 @@ export default function Confirmation() {
     localStorage.setItem('checkout_info', JSON.stringify(formData))
   }, [formData])
 
-  // 導向至LINE Pay付款頁面 (未完成)
-  const goLinePay = () => {}
-
-  //建立訂單到server,packages與order id由server產生
+  /* 後端請求建立訂單 建立訂單到server,packages與order id由server產生 */
   const creatOrder = async () => {
     // products將會組合在packages屬性之下
     try {
@@ -84,6 +81,14 @@ export default function Confirmation() {
       return data // 返回数据以便进一步处理
     } catch (error) {
       console.error('創建訂單失敗', error)
+    }
+  }
+
+  /* 向後端請求付款  導向至LINE Pay付款頁面 (未完成)*/
+
+  const goLinePay = () => {
+    if (window.confirm('請確認導向至LINE PAY進行付款嗎？')) {
+      alert('開始line pay!')
     }
   }
 
@@ -122,7 +127,7 @@ export default function Confirmation() {
           <div className="my-5">
             <ShippingRule />
           </div>
-          <div onClick={creatOrder} className="my-button1 my-3 rwd-button">
+          <div onClick={goLinePay} className="my-button1 my-3 rwd-button">
             付款
           </div>
         </div>
