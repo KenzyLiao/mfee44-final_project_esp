@@ -1,46 +1,43 @@
 import React from 'react'
-import UserCoupon from '@/components/myCoupon/tearStrip'
+import UserCoupon from '@/components/myCoupon/UserCoupon'
 import couponData from '@/data/coupon.json'
 import { useState } from 'react'
 
 const CouponPage = () => {
-  const[coupon,setCoupon]=useState(couponData)
-  console.log(coupon);
-
+  const [coupon, setCoupon] = useState(couponData)
+  console.log(coupon)
 
   return (
     <>
       <div className="coupon-container">
         <div className="coupon-content">
-          <div className="coupon-content__title">我的優惠卷</div>
+          <div className="coupon-content__title">我的優惠劵</div>
           <div className="coupon-content__list">
             {/* 可以使用 map 遍歷渲染 */}
             <div className="coupon-content__item">
               <div className="container">
                 <div className="row row-cols-lg-2">
-                  <div className="">
+                  <div className='col-4 col-sm-12'>
+                    {coupon.map((v, i) => {
+                      const { coupon_name,  end_at,discount_title } = v
+
+
+                      return (
+                        <UserCoupon
+                          key={v.id}
+                          coupon_name={coupon_name}
+                          discount={discount_title}
+                          limit_time={end_at}
+                        />
+                      )
+                    })}
+                  </div>
                   
-                        {coupon.map((v, i) => {
-                          const { coupon_name,discount_value,end_at } = v
-                          return (
-                            <UserCoupon
-                              key={v.id}
-                              coupon_name={coupon_name}
-                              discount={discount_value}
-                              limit_time={end_at}        
-                            />
-                          )
-                        })}
-                    
-                   
-                  </div>
-                  <div className="col px-5">
-                    {/* <UserCoupon></UserCoupon> */}
-                  </div>
+                  
                 </div>
               </div>
             </div>
-            {/*  */}
+           
           </div>
         </div>
       </div>

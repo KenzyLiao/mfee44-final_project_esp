@@ -24,7 +24,7 @@ console.log(key);
               {limit_time}
               </p>
               <a href="#" className="button">
-                使用優惠劵
+                開始購物
               </a>
             </div>
           </div>
