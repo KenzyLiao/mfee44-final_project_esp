@@ -92,7 +92,7 @@ export default function NextBreadCrumb({
   return (
     <nav aria-label="breadcrumb" style={{ lineHeight: '32px' }}>
       <ol
-        className={`breadcrumb px-3 py-1 ${bgClass} rounded-3 ${
+        className={`breadcrumb px-3 py-1  ${bgClass} rounded-3 ${
           isChevron ? styles['breadcrumb-chevron'] : ''
         }`}
       >
@@ -104,7 +104,7 @@ export default function NextBreadCrumb({
           >
             <Link
               href="/"
-              className="link-body-emphasis fw-semibold text-decoration-none"
+              className="link-body-emphasis fw-semibold text-decoration-none "
             >
               {!isHomeIcon ? pathsLocaleMap['home'] : homeIcon}
             </Link>
