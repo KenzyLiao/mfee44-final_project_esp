@@ -21,6 +21,9 @@
     },
     "emmet.syntaxProfiles": {
       "javascript": "jsx"
+    },
+    "[javascript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
     }
   }
   
