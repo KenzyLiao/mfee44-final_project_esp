@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import ReactPlayer from 'react-player'
 import Accordion from 'react-bootstrap/Accordion'
 import Section from '@/components/course/section'
@@ -9,23 +9,60 @@ import {
   BsFillPlayCircleFill,
   BsFillPeopleFill,
   BsFillEyeFill,
+  BsArrowDown,
+  BsArrowUp,
 } from 'react-icons/bs'
-import dynamic from 'next/dynamic';
-
-
+import dynamic from 'next/dynamic'
 
 export default function LearnPage() {
   const ReactPlayer = dynamic(
     () => import('react-player'),
-    { ssr: false }  // 這將確保只在客戶端渲染
+    { ssr: false } // 這將確保只在客戶端渲染
   )
-  const courseTitle = '現代書寫: 探索當代風格的手寫字藝術'
+
+  const id = 214
+  const [data, setData] = useState(null)
+  const [error, setError] = useState(null)
+  const [articleOpen, setArticleOpen] = useState(false)
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:3005/api/course/${id}`)
+        const data = await response.json()
+        setData(data[0])
+      } catch (error) {
+        console.error('Error:', error)
+        setError(error)
+      }
+    }
+    fetchData()
+  }, [id]) // 更新依賴性陣列，當 id 變化時重新執行 useEffect
+  if (error) {
+    return <div>Error: {error.message}</div>
+  }
+
+  if (!data) {
+    return <div>Loading...</div>
+  }
+  const {
+    name,
+    price,
+    description,
+    image,
+    teacher_name,
+    teacher_image,
+    rank,
+    total_minute,
+    student_num,
+    teacher_introduction,
+    article,
+    units,
+  } = data
+
   return (
     <>
       <div className="container">
-        <h1 className="text-h1 d-flex justify-content-center my-5">
-          {courseTitle}
-        </h1>
+        <h1 className="text-h1 d-flex justify-content-center my-5">{name}</h1>
         <div className="row ">
           {/* 播放器 */}
           <div className="video col-xl-7 col-12 mb-5 mb-xl-0">
@@ -33,22 +70,22 @@ export default function LearnPage() {
           </div>
           {/* 章節選擇 */}
           <div className="scrollable col-xl-5 col-12 mb-5 mb-xl-0">
-            <Accordion defaultActiveKey={['0']} alwaysOpen>
-              {Array.from({ length: 3 }).map((_, index) => {
+            <Accordion defaultActiveKey={[]} alwaysOpen>
+              {units.map((v, index) => {
                 return (
                   <Accordion.Item key={index} eventKey={index.toString()}>
                     <Accordion.Header>
                       <BsListOl className="me-1" />
-                      章節{index + 1}
+                      {v.title}
                     </Accordion.Header>
                     <Accordion.Body>
-                      {Array.from({ length: 5 }).map((_, index) => {
+                      {v.sub_units.map((v, index) => {
                         return (
                           <Section
                             key={index}
                             secNum={index + 1}
-                            secTitle={`小節 ${index + 1}`}
-                            secTime="00:00"
+                            secTitle={`${v.title}`}
+                            secTime={`${v.video_len}`}
                           />
                         )
                       })}
@@ -62,19 +99,19 @@ export default function LearnPage() {
         <div>
           {/* info */}
           <div className="mb-5">
-            <p className="text-h2">關於課程</p>
-            <div className="course-sub-info d-flex flex-wrap">
-              <div className="course-sub-info-item d-flex align-items-center me-2">
+            <p className="text-h2">關於課程{/*ㄣ*/}</p>
+            <div className="course-sub-info">
+              <div className="course-sub-info-item d-flex align-items-center">
                 <BsClockFill
                   className="me-1 text-primary"
                   style={{ width: '40px', fontSize: '50px' }}
                 />
                 <div className="info">
                   <div className="label">課程時長</div>
-                  <div className="value">2小時50分</div>
+                  <div className="value">{total_minute}分鐘</div>
                 </div>
               </div>
-              <div className="course-sub-info-item d-flex align-items-center me-2">
+              <div className="course-sub-info-item d-flex align-items-center">
                 <BsFillPlayCircleFill
                   className="me-1 text-primary"
                   style={{ width: '40px', fontSize: '50px' }}
@@ -84,17 +121,17 @@ export default function LearnPage() {
                   <div className="value">2章18單元</div>
                 </div>
               </div>
-              <div className="course-sub-info-item d-flex align-items-center me-2">
+              <div className="course-sub-info-item d-flex align-items-center">
                 <BsFillPeopleFill
                   className="me-1 text-primary"
                   style={{ width: '40px', fontSize: '50px' }}
                 />
                 <div className="info">
                   <div className="label">課程總人數</div>
-                  <div className="value">4085位同學</div>
+                  <div className="value">{student_num}位同學</div>
                 </div>
               </div>
-              <div className="course-sub-info-item d-flex align-items-center me-2">
+              <div className="course-sub-info-item d-flex align-items-center">
                 <BsFillEyeFill
                   className="me-1 text-primary"
                   style={{ width: '40px', fontSize: '50px' }}
@@ -145,43 +182,29 @@ export default function LearnPage() {
 
           {/* course content */}
           <div className="course_content mb-5">
-            <div className="d-flex justify-content-between mb-3">
+            <div className="d-flex justify-content-between mb-4">
               <div className="text-h2">課程內容</div>
-              <div className="text_fold">收起內容</div>
             </div>
-            <div className="course_content_item">
-              <div className="course_content_item_title">
-                <div className="text-h3">第一章: 書寫基礎</div>
-                <div className="text-h5">共 5 單元</div>
-              </div>
-              <div className="course_content_item_content">
-                <div className="course_content_item_content_item">
-                  <div className="text-h4">1.1 書寫基礎</div>
-                  <div className>課程內容說明</div>
-                </div>
-                <div className="course_content_item_content_item">
-                  <div className="text-h4">1.2 書寫基礎</div>
-                  <div className>課程內容說明</div>
-                </div>
-                <div className="course_content_item_content_item">
-                  <div className="text-h4">1.3 書寫基礎</div>
-                  <div className>課程內容說明</div>
-                </div>
-                <div className="course_content_item_content_item">
-                  <div className="text-h4">1.4 書寫基礎</div>
-                  <div className>課程內容說明</div>
-                </div>
-                <div className="course_content_item_content_item">
-                  <div className="text-h4">1.5 書寫基礎</div>
-                  <div className>課程內容說明</div>
-                </div>
-              </div>
-            </div>
-            <div className="course_content_item">
-              <div className="course_content_item_title">
-                <div className="text-h3">第二章: 書寫進階</div>
-                <div className="text-h5">共 5 單元</div>
-              </div>
+            <div
+              className={`${
+                articleOpen
+                  ? 'course_content_item_open'
+                  : 'course_content_item_close'
+              }`}
+              dangerouslySetInnerHTML={{ __html: article }}
+            ></div>
+            <div
+              className="text_fold d-flex justify-content-center"
+              onClick={() => setArticleOpen(!articleOpen)}
+              onKeyDown={() => setArticleOpen(!articleOpen)}
+              role="button"
+              tabIndex={0}
+            >
+              {articleOpen ? (
+                <BsArrowUp className="text-h2" />
+              ) : (
+                <BsArrowDown className="text-h2" />
+              )}
             </div>
           </div>
           {/* course content end*/}
@@ -225,6 +248,35 @@ export default function LearnPage() {
             width: 50px;
             height: 50px;
             border-radius: 50%;
+          }
+        }
+        .course-sub-info {
+          display: flex;
+          @media (max-width: 992px) {
+            flex-wrap: wrap;
+          }
+          .course-sub-info-item {
+            display: flex;
+            align-items: flex-start;
+            margin-right: 30px;
+
+            & i {
+              font-size: 40px;
+              margin-top: 10px;
+              margin-right: 5px;
+              color: $primary;
+            }
+          }
+        }
+        .course_content {
+          .course_content_item_close {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 8; /* 顯示行數 */
+            overflow: hidden;
+          }
+          .course_content_item_open {
+            display: block;
           }
         }
       `}</style>

@@ -238,7 +238,7 @@ export default function CoursePage() {
               <div
                 className="text_fold d-flex justify-content-center"
                 onClick={() => setArticleOpen(!articleOpen)}
-                onKeyDown={() => setIsOpen(!articleOpen)}
+                onKeyDown={() => setArticleOpen(!articleOpen)}
                 role="button"
                 tabIndex={0}
               >
