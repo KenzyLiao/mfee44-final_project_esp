@@ -100,15 +100,15 @@ $s: 9px;
 }
 .text-h2 {
   font-size: $h2;
-  font-weight: 900;
+  font-weight: 700;
 }
 .text-h3 {
   font-size: $h3;
-  font-weight: 900;
+  font-weight: 700;
 }
 .text-h4 {
   font-size: $h4;
-  font-weight: 900;
+  font-weight: 700;
 }
 .text-h5 {
   font-size: $h5;
@@ -141,7 +141,7 @@ $my-black: #404040;
 $my-white: #f1f1ee;
 $my-gray: #929292;
 
-// Color for css
+// for css
 :root {
   --my-primary: #7c7477;
   --my-secondary: #7c7c74;
@@ -230,20 +230,15 @@ $my-gray: #929292;
 //button
 .my-button1 {
   display: flex;
-  width: 163.5px;
-  height: 34.5px;
   padding: 8.25px 0px 9.25px 0px;
   justify-content: center;
   align-items: center;
   flex-shrink: 0;
-
   border-radius: 37.5px;
   background-color: $my-primary;
-
   font-size: $h6;
   font-weight: 400;
   color: $my-white;
-
   cursor: pointer;
 
   &:hover {

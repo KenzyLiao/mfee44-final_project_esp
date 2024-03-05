@@ -1,26 +1,37 @@
-##如何讓自己的分支更新最新的分支資料
+# 更新分支指南
 
-需求：假設組長更新了 css 樣式在 global.scss 上並且更新到 github 專案的 dev 分支，其他組員要去更新這個最新的 glogal.scss 在自己的分支上去開發專案。
+假設當技術長或組長在`global.scss`或其他公共檔案上進行更新，並推送到GitHub專案的`main`分支時，請按照以下步驟更新你的分支以包含這些最新的更改。
 
-步驟 1.先將自己的分支專案進行版控
+## 步驟 1: 版控你的分支專案
 
-步驟 2.切換分支回 main 分支,並拉取 github 的最新 main 分支到自己電腦裡
+確保你的分支專案已經進行了版控。
 
--切回 main 分支
+## 步驟 2: 切換分支並拉取最新的`main`分支
+
+首先，切換回`main`分支並同步GitHub上的最新更改到你的本地`main`分支。
+
+```bash
+# 切換到 main 分支
 git checkout main
 
--將 github 的 main 分支更新到本地電腦的 main 分支
+# 從 GitHub 拉取最新的 main 分支
 git pull origin main
 
+```
+## 步驟 3: 切換回你的分支
 
-步驟 3.切回自己的分支
+切換回你自己的分支以進行開發。
 
+```bash
 git checkout 你的名字
 
-步驟 4.用自己的分支去 merge 電腦上剛剛拉下來的 main 分支資料,就可以看到組長更新的 css 樣式在自己的分支
+```
 
-git merge --no-ff -m "你的名字 main" main
+## 步驟 4: 合併main分支到你的分支
 
-end
+最後，合併main分支到你的分支，這樣你就可以在你的分支中看到最新的更改了。
 
-//02/21更新 scss樣式
+```bash
+git merge --no-ff -m "合併 main 到 你的名字" main
+
+```
