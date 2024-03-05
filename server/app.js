@@ -6,7 +6,6 @@ import express from 'express'
 import logger from 'morgan'
 import path from 'path'
 import session from 'express-session'
-import myProductRouter from './routes/myProduct.js'
 
 // 使用檔案的session store，存在sessions資料夾
 import sessionFileStore from 'session-file-store'
@@ -37,7 +36,7 @@ app.use(
 // 視圖引擎設定
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'pug')
-app.use('/api', myProductRouter)
+
 // 記錄HTTP要求
 app.use(logger('dev'))
 // 剖析 POST 與 PUT 要求的JSON格式資料
@@ -64,16 +63,16 @@ app.use(
 )
 
 // 載入routes中的各路由檔案，並套用api路由 START
-// const apiPath = '/api' // 預設路由
-// const routePath = path.join(__dirname, 'routes')
-// const filenames = await fs.promises.readdir(routePath)
+const apiPath = '/api' // 預設路由
+const routePath = path.join(__dirname, 'routes')
+const filenames = await fs.promises.readdir(routePath)
 
-// for (const filename of filenames) {
-//   const item = await import(pathToFileURL(path.join(routePath, filename)))
-//   const slug = filename.split('.')[0]
-//   app.use(`${apiPath}/${slug === 'index' ? '' : slug}`, item.default)
-// }
-// // 載入routes中的各路由檔案，並套用api路由 END
+for (const filename of filenames) {
+  const item = await import(pathToFileURL(path.join(routePath, filename)))
+  const slug = filename.split('.')[0]
+  app.use(`${apiPath}/${slug === 'index' ? '' : slug}`, item.default)
+}
+// 載入routes中的各路由檔案，並套用api路由 END
 
 // 捕抓404錯誤處理
 app.use(function (req, res, next) {
