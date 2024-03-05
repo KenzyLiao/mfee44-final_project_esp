@@ -8,7 +8,6 @@ import ShippingRule from '@/components/myCart/shippingRule'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
-
 //勾子context
 import { useCart } from '@/hooks/user-cart'
 
@@ -16,7 +15,7 @@ export default function CartIndex() {
   /* cart */
   //   const [cart, setCart] = useState([])
 
-  //   //初始化 localstorage資料提取到cart 若無資料就是[]
+  //   //初始化 localstorage資料提取到cart 若無資料就是 []
   //   useEffect(() => {
   //     if (localStorage.getItem('cart')) {
   //       const clientCart = JSON.parse(localStorage.getItem('cart'))
@@ -94,65 +93,60 @@ export default function CartIndex() {
   // //計算總金額 （扣掉優惠卷與運費） -未完成優惠卷邏輯
   // const totalPrice =cart.reduce((acc, v) => acc + v.qty * v.price, 0)
 
+  /*  處理優惠卷 */
+  //   const [selectedCouponID, setSelectedCouponID] = useState('none')
+  //   const [coupons,setCoupons]=useState([])
+  //   const [selectCoupon, setSelectCoupon] = useState({
+  //     CouponID: 'none',
+  //     Description: '無',
+  //     ValidFrom: '',
+  //     ValidTo: '',
+  //     MinimumSpend: 0,
+  //     DiscountType: '',
+  //     DiscountValue: 0,
+  //     UsageLimit: 0,
+  //     UsedCount: 0,
+  //   })
 
-/*  處理優惠卷 */
-//   const [selectedCouponID, setSelectedCouponID] = useState('none')
-//   const [coupons,setCoupons]=useState([])
-//   const [selectCoupon, setSelectCoupon] = useState({
-//     CouponID: 'none',
-//     Description: '無',
-//     ValidFrom: '',
-//     ValidTo: '',
-//     MinimumSpend: 0,
-//     DiscountType: '',
-//     DiscountValue: 0,
-//     UsageLimit: 0,
-//     UsedCount: 0,
-//   })
+  //   coupons
 
-//   coupons
+  // useEffect(()=>{
+  //   const newcouponsData= couponsData
+  //   if(newcouponsData){
+  //     setCoupons(newcouponsData)
+  //   }
+  // },[])
 
-  
-  
-// useEffect(()=>{
-//   const newcouponsData= couponsData
-//   if(newcouponsData){
-//     setCoupons(newcouponsData)
-//   }
-// },[])
+  //   useEffect(() => {
+  //     handleSelectCoupon(coupons,selectedCouponID)
+  //   }, [coupons,selectedCouponID])
 
-  
-//   useEffect(() => {
-//     handleSelectCoupon(coupons,selectedCouponID)
-//   }, [coupons,selectedCouponID])
+  //   const handleSelectCoupon = (couponArray,coupon_code) => {
+  //     const [newSelectCoupon] = couponArray.filter(
+  //       (v) => coupon_code === v.coupon_code
+  //     )
 
-//   const handleSelectCoupon = (couponArray,coupon_code) => {
-//     const [newSelectCoupon] = couponArray.filter(
-//       (v) => coupon_code === v.coupon_code
-//     )
-    
-//     if (newSelectCoupon) {
-//       setSelectCoupon(newSelectCoupon)
-//     } else {
-//       setSelectCoupon([{
-//         CouponID: 'none',
-//         Description: '無',
-//         ValidFrom: '',
-//         ValidTo: '',
-//         MinimumSpend: 0,
-//         DiscountType: '',
-//         DiscountValue: 0,
-//         UsageLimit: 0,
-//         UsedCount: 0,
-//       }])
-//     }
-//   }
+  //     if (newSelectCoupon) {
+  //       setSelectCoupon(newSelectCoupon)
+  //     } else {
+  //       setSelectCoupon([{
+  //         CouponID: 'none',
+  //         Description: '無',
+  //         ValidFrom: '',
+  //         ValidTo: '',
+  //         MinimumSpend: 0,
+  //         DiscountType: '',
+  //         DiscountValue: 0,
+  //         UsageLimit: 0,
+  //         UsedCount: 0,
+  //       }])
+  //     }
+  //   }
 
-//   //回調函數 從子元件傳過來選擇的優惠卷id
-//   const handleRadioChange = (e) => {
-//     setSelectedCouponID(e.target.value)
-//   }
-
+  //   //回調函數 從子元件傳過來選擇的優惠卷id
+  //   const handleRadioChange = (e) => {
+  //     setSelectedCouponID(e.target.value)
+  //   }
 
   const {
     // 購物車
@@ -169,8 +163,7 @@ export default function CartIndex() {
     coupons,
     selectCoupon,
     selectedCouponID,
-    handleRadioChange
-
+    handleRadioChange,
   } = useCart()
 
   const router = useRouter()
@@ -182,11 +175,6 @@ export default function CartIndex() {
     }
     router.push('/cart/checkout')
   }
-
-
-  
-  
-  
 
   return (
     <>
