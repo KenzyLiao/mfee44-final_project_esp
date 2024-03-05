@@ -20,7 +20,7 @@ export default function CoursePage() {
   ]
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://localhost:3005/api/myproduct/')
+    fetch('http://localhost:3005/api/course/')
       .then((response) => response.json())
       .then((data) => setData(data))
       .catch((error) => console.error('Error:', error))

@@ -30,9 +30,7 @@ export default function CoursePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:3005/api/myproduct/${id}`
-        )
+        const response = await fetch(`http://localhost:3005/api/course/${id}`)
         const data = await response.json()
         setData(data[0])
       } catch (error) {
