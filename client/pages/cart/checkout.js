@@ -9,8 +9,14 @@ import ShippingRule from '@/components/myCart/shippingRule'
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
 export default function Checkout() {
-  const { rawTotalPrice, totalPrice, cartCourse, cartGeneral, formatPrice } =
-    useCart()
+  const {
+    rawTotalPrice,
+    totalPrice,
+    cartCourse,
+    cartGeneral,
+    formatPrice,
+    selectCoupon,
+  } = useCart()
 
   return (
     <>

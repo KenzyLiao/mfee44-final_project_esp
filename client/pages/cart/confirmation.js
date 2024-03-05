@@ -1,27 +1,104 @@
-import React from 'react'
+import React, { useState, useEffect, use } from 'react'
 import CartFlow from '@/components/myCart/cartFlow'
 import OrderSummary from '@/components/myCart/orderSummary'
 import SmallProductCart from '@/components/myCart/smallProductCart'
 import SmallCourseCart from '@/components/myCart/smallCourseCart'
 import OrderConfirmList from '@/components/myCart/orderConfirmList'
 import ShippingRule from '@/components/myCart/shippingRule'
+import Link from 'next/link'
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
 
 export default function Confirmation() {
-  const { rawTotalPrice, totalPrice, cartCourse, cartGeneral, formatPrice } =
-    useCart()
+  const {
+    cart,
+    rawTotalPrice,
+    totalPrice,
+    cartCourse,
+    cartGeneral,
+    formatPrice,
+    selectCoupon,
+  } = useCart()
+
+  const [formData, setFormData] = useState({})
+
+  //linePay
+  const [linePayOrder, setLinePayOrder] = useState({})
+
+  useEffect(() => {
+    // 從 localStorage 中恢復結帳資訊，這保證了代碼只在客戶端執行
+    const clientCheckoutInfo =
+      JSON.parse(localStorage.getItem('checkout_info')) || {}
+    setFormData(clientCheckoutInfo)
+  }, [])
+
+  useEffect(() => {
+    // 監聽 selectCoupon 的變化，僅更新優惠券資訊，同時保留其他 formData 資訊
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      coupon_id: selectCoupon.id || '',
+      coupon_name: selectCoupon.coupon_name || '無',
+    }))
+  }, [selectCoupon])
+
+  useEffect(() => {
+    // 當 formData 更新時，將其保存到 localStorage
+    localStorage.setItem('checkout_info', JSON.stringify(formData))
+  }, [formData])
+
+  // 導向至LINE Pay付款頁面 (未完成)
+  const goLinePay = () => {}
+
+  //建立訂單到server,packages與order id由server產生
+  const creatOrder = async () => {
+    // products將會組合在packages屬性之下
+    try {
+      const res = await fetch(
+        'http://localhost:3005/api/line-pay-first/creatOrder',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: cart.reduce((acc, v) => acc + v.qty * v.price, 0),
+            products: cart.map((v) => ({
+              id: v.id,
+              name: v.name,
+              quantity: v.qty,
+              price: v.price,
+            })),
+            formData,
+            cart,
+          }),
+        }
+      )
+
+      const data = await res.json() //解析回傳的json檔案
+      console.log(data) // /訂單物件格式(line-pay專用)
+      if (data.status === 'success') {
+        setLinePayOrder(data.data.order)
+        // toast.success('已成功建立訂單')
+      }
+      return data // 返回数据以便进一步处理
+    } catch (error) {
+      console.error('創建訂單失敗', error)
+    }
+  }
+
   return (
     <>
       <div className="row">
         {/* 左邊 */}
         <div className="col-lg-7">
           <div className="mt-5">
-            <OrderConfirmList />
-            <div className="back-button col-lg-4 ms-auto mt-5">
-              返回資料修改
-            </div>
+            <OrderConfirmList formData={formData} selectCoupon={selectCoupon} />
+            <Link href={'/cart/checkout?checkout_info=true'}>
+              <div className="back-button col-lg-4 ms-auto mt-5">
+                返回資料修改
+              </div>
+            </Link>
           </div>
         </div>
         {/* 右邊 */}
@@ -45,7 +122,9 @@ export default function Confirmation() {
           <div className="my-5">
             <ShippingRule />
           </div>
-          <div className="my-button1 my-3 rwd-button">付款</div>
+          <div onClick={creatOrder} className="my-button1 my-3 rwd-button">
+            付款
+          </div>
         </div>
       </div>
       <style jsx>{`

@@ -1,4 +1,9 @@
 import { createContext, useState, useContext, useEffect } from 'react'
+
+/* 資料庫資料 */
+//優惠卷
+import couponsData from '@/data/coupon.json'
+
 //1.建立與導出
 export const CartContext = createContext(null)
 // 協助全站(_app.js)裡套用Provider的元件，集中要使用的狀態
@@ -94,9 +99,70 @@ export function CartProvider({ children }) {
     return formatter.format(price)
   }
 
+  /* 處理優惠卷 */
+
+  const [coupons, setCoupons] = useState([])
+  const [selectedCouponID, setSelectedCouponID] = useState('none')
+  const [selectCoupon, setSelectCoupon] = useState({})
+
+  //處理資料庫過來的優惠卷資料
+  useEffect(() => {
+    const fetchData = async () => {
+      const newcouponsData = await couponsData
+      if (newcouponsData) {
+        setCoupons(newcouponsData)
+      }
+    }
+    fetchData()
+  }, [])
+
+  //初始化 localstorage資料提取到selectCoupon
+  useEffect(() => {
+    if (localStorage.getItem('selectedCouponID')) {
+      const clientSelectedCouponID =
+        localStorage.getItem('selectedCouponID') || 'none'
+      setSelectedCouponID(clientSelectedCouponID)
+    }
+  }, [])
+
+  useEffect(() => {
+    handleSelectCoupon(coupons, selectedCouponID)
+  }, [selectedCouponID, coupons])
+
+  const handleSelectCoupon = (coupponsArray, coupon_code) => {
+    const [newSelectCoupon] = coupponsArray.filter(
+      (v) => coupon_code === v.coupon_code
+    )
+
+    if (newSelectCoupon) {
+      setSelectCoupon(newSelectCoupon)
+    } else {
+      setSelectCoupon({
+        coupon_code: 'none',
+        coupon_name: '無',
+        ValidFrom: '',
+        ValidTo: '',
+        MinimumSpend: 0,
+        DiscountType: '',
+        DiscountValue: 0,
+        UsageLimit: 0,
+        UsedCount: 0,
+      })
+    }
+  }
+
+  const handleRadioChange = (e) => {
+    // 更新选中的优惠券ID状态，并保存到localStorage
+    const newSelectedCouponID = e.target.value
+    setSelectedCouponID(newSelectedCouponID)
+    localStorage.setItem('selectedCouponID', newSelectedCouponID)
+  }
+  console.log(selectCoupon)
+
   return (
     <CartContext.Provider
       value={{
+        // 購物車
         cart,
         removeCartItem,
         increment,
@@ -108,6 +174,12 @@ export function CartProvider({ children }) {
         cartCourse,
         cartGeneral,
         totalItems,
+        // 優惠卷
+        coupons,
+        selectedCouponID,
+        selectCoupon,
+        handleSelectCoupon,
+        handleRadioChange,
       }}
       //用value屬性傳入共享用狀態(state)
     >
