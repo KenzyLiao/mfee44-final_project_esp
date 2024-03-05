@@ -3,11 +3,11 @@ import React from 'react'
 export default function TimeFilter() {
   return (
     <>
-      <input className="chooseTime" type="time" />
-      ~
-      <input className="chooseTime" type="time" />
+      <input className="choose-time" type="time" />
+      to
+      <input className="choose-time" type="time" />
       <style jsx>{`
-        .chooseTime {
+        .choose-time {
           min-width: 126px;
         }
       `}</style>
