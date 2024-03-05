@@ -41,6 +41,10 @@ const menuItems = [
     id: 5,
     label: '維修與服務',
     href: '/service',
+    children: [
+      { id: 51, label: '服務據點', href: '/service' },
+      { id: 52, label: '線上預約', href: '/service/support' },
+    ],
   },
   {
     id: 6,

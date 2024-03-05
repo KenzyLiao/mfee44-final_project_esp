@@ -34,6 +34,6 @@ export const pathsLocaleMap = {
   'test':'測試',
   'user':'會員',
   'course':'課程',
-  'service':'維修與服務'
+  'service':'維修與服務',
 }
 /* eslint-enable */
