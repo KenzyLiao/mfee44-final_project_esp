@@ -228,13 +228,14 @@ router.get('/reserve', async (req, res) => {
 
       // 導向到付款頁面， line pay回應後會帶有info.paymentUrl.web為付款網址
       //postman測試中 173可能會刪掉
-      if (linePayResponse) {
-        console.log('請求linpay付款成功')
-        return res.json({
-          status: 'sucess',
-          message: linePayResponse.body.info.paymentUrl.web,
-        })
-      }
+      // if (linePayResponse) {
+      //   console.log('請求linpay付款成功')
+      //   return res.json({
+      //     status: 'success',
+      //     message: linePayResponse.body.info.paymentUrl.web,
+      //   })
+      // }
+      console.log(linePayResponse.body.info.paymentUrl.web)
 
       res.redirect(linePayResponse.body.info.paymentUrl.web)
     } catch (err) {
