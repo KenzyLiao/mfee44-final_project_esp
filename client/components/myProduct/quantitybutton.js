@@ -1,13 +1,29 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function QuantityButton() {
+  const [quantity, setQuantity] = useState(1)
+
+  const decreaseQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1)
+    }
+  }
+
+  const increaseQuantity = () => {
+    setQuantity(quantity + 1)
+  }
+
   return (
     <>
       <div className="d-flex justify-content-between align-items-center">
         <div className="quantity-selector">
-          <button className="btn">-</button>
-          <div className="my-auto">1</div>
-          <button className="btn">+</button>
+          <button className="btn" onClick={decreaseQuantity}>
+            -
+          </button>
+          <div className="my-auto">{quantity}</div>
+          <button className="btn" onClick={increaseQuantity}>
+            +
+          </button>
         </div>
       </div>
       <style jsx>{`
@@ -18,7 +34,7 @@ export default function QuantityButton() {
           box-shadow: 3px 3px 3px 0px rgba(255, 255, 255, 0.1) inset,
             -3px -3px 3px 0px rgba(0, 0, 0, 0.1) inset;
           display: flex;
-          gap: 20px;
+          gap: 45px;
           font-size: 16px;
           color: var(--my-black);
           font-weight: 900;
