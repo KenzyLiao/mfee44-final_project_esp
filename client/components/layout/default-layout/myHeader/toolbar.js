@@ -1,8 +1,10 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import styles from './toolbar.module.scss'
+import { useCart } from '@/hooks/user-cart'
 
 export default function Toolbar({ handleShow }) {
+  const { totalItems } = useCart()
   return (
     <ul className="navbar-nav pe-2 ms-auto">
       <li className="nav-item">
@@ -12,8 +14,11 @@ export default function Toolbar({ handleShow }) {
           role="button"
           title="購物車"
         >
-          <i className="bi bi-cart-fill"></i>
-          <p className="d-none d-md-inline d-lg-none"> 購物車</p>
+          <div className={styles['button']}>
+            <i className="bi bi-cart-fill"></i>
+            <span className={styles['button-badge']}>{totalItems}</span>
+            <p className="d-none d-md-inline d-lg-none"> 購物車</p>
+          </div>
         </Link>
       </li>
       <li

@@ -22,18 +22,22 @@
 
 //滑動
 .slide-enter {
-  transform: translateX(-20%);
+  transform: translateX(-10%);
+  opacity: 0.5;
 }
 .slide-enter-active {
   transform: translateX(0);
-  transition: transform 300ms ease-in-out;
+  opacity: 1;
+  transition: all 300ms ease-in-out;
 }
 .slide-exit {
   transform: translateX(0);
+  opacity: 0.5;
 }
 .slide-exit-active {
-  transform: translateX(-20%);
-  transition: transform 300ms ease-in-out;
+  transform: translateX(-10%);
+  opacity: 0;
+  transition: all 300ms ease-in-out;
 }
 
 //漸入漸出
@@ -42,6 +46,7 @@
 }
 .fade-enter-active {
   opacity: 1;
+
   transition: opacity 300ms ease-in;
 }
 .fade-exit {
@@ -49,5 +54,19 @@
 }
 .fade-exit-active {
   opacity: 0;
+
   transition: opacity 300ms ease-in;
+}
+
+//swiper
+
+.swiper-slide img {
+  width: 100%; /* 图片宽度填满容器 */
+  height: 100%; /* 图片高度填满容器 */
+  object-fit: cover; /* 裁剪并保持比例 */
+}
+
+.swiper-slide {
+  background-size: cover; /* 覆盖整个容器，保持比例 */
+  background-position: center; /* 居中显示 */
 }

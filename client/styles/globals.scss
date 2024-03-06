@@ -75,6 +75,9 @@ body {
   line-height: 200%;
   letter-spacing: 2px;
 }
+a {
+  text-decoration: none;
+}
 
 .form-member {
   max-width: 330px;
@@ -141,7 +144,7 @@ $my-black: #404040;
 $my-white: #f1f1ee;
 $my-gray: #929292;
 
-// for css
+// for css use
 :root {
   --my-primary: #7c7477;
   --my-secondary: #7c7c74;
@@ -256,9 +259,55 @@ $my-gray: #929292;
     color: $my-primary;
   }
 }
+
+.my-button2 {
+  display: flex;
+  padding: 8.25px 0px 9.25px 0px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 37.5px;
+  border: 1.125px solid var(--primary, #7c7477);
+  font-size: $h6;
+  font-weight: 400;
+  color: $my-primary;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $my-primary;
+    border-radius: 37.5px;
+
+    color: $my-white;
+  }
+}
+
+.my-button3 {
+  display: flex;
+  padding: 8.25px 0px 9.25px 0px;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 37.5px;
+  border: 1.125px solid var(--my-white);
+  font-size: $h6;
+  font-weight: 400;
+  color: $my-white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $my-white;
+    border-radius: 37.5px;
+    color: $my-black;
+  }
+}
 //盒子陰影
 .box-shadow {
   box-shadow: 1px 1px 6.7px 0px rgba(0, 0, 0, 0.35);
+}
+// 玻璃霧面材質
+.glass-texture {
+  background-color: rgba(241, 241, 238, 0.85);
+  backdrop-filter: blur(5px);
 }
 
 // below is test only
