@@ -86,7 +86,7 @@ export default function Confirmation() {
     }
   }
 
-  /* 向後端請求付款  導向至LINE Pay付款頁面 (未完成)*/
+  /* 向後端請求付款  導向至LINE Pay付款頁面 (未完成!)*/
 
   const goLinePay = async (orderId) => {
     if (window.confirm('請確認導向至LINE PAY進行付款嗎？')) {
