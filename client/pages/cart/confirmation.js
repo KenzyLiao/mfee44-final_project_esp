@@ -25,6 +25,7 @@ export default function Confirmation() {
 
   //linePay資料使用
   const [linePayOrder, setLinePayOrder] = useState({})
+  console.log(linePayOrder)
 
   useEffect(() => {
     // 從 localStorage 中恢復結帳資訊，這保證了代碼只在客戶端執行
@@ -81,14 +82,25 @@ export default function Confirmation() {
       return data // 返回数据以便进一步处理
     } catch (error) {
       console.error('創建訂單失敗', error)
+      return { status: 'error' } //明確返回一個錯誤狀態,好讓付款函數可以透過狀態判定才去執行,解決延遲問題
     }
   }
 
-  /* 向後端請求付款  導向至LINE Pay付款頁面 (未完成)*/
+  /* 向後端請求付款  導向至LINE Pay付款頁面 (未完成!)*/
 
-  const goLinePay = () => {
+  const goLinePay = async (orderId) => {
     if (window.confirm('請確認導向至LINE PAY進行付款嗎？')) {
-      alert('開始line pay!')
+      window.location.href = `http://localhost:3005/api/line-pay-first/reserve?orderId=${orderId}`
+    }
+  }
+
+  const creatOrderAndPay = async () => {
+    const orderResponse = await creatOrder()
+    if (orderResponse.status === 'success') {
+      console.log(orderResponse.data.order.orderId)
+      goLinePay(orderResponse.data.order.orderId)
+    } else {
+      alert('訂單創建失敗,請稍後再重試')
     }
   }
 
@@ -127,7 +139,10 @@ export default function Confirmation() {
           <div className="my-5">
             <ShippingRule />
           </div>
-          <div onClick={creatOrder} className="my-button1 my-3 rwd-button">
+          <div
+            onClick={creatOrderAndPay}
+            className="my-button1 my-3 rwd-button"
+          >
             付款
           </div>
         </div>
