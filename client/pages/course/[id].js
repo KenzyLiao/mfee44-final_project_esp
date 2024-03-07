@@ -88,7 +88,12 @@ export default function CoursePage() {
           {/* 課程介紹影片 */}
           {/* <video src="https://www.youtube.com/watch?v=LXb3EKWsInQ" controls /> */}
           <div className="video me-lg-4 mb-4 mb-xl-0">
-            <ReactPlayer width="100%" controls="true" url="video/01.mp4" />
+            <ReactPlayer
+              width="100%"
+              height="100%"
+              controls="true"
+              url="video/01.mp4"
+            />
           </div>
           {/* 課程介紹 */}
           <div className="course_info justify-content-between d-flex flex-column ">
