@@ -16,11 +16,10 @@ const CouponPage = () => {
             {/* 可以使用 map 遍歷渲染 */}
             <div className="coupon-content__item">
               <div className="container">
-                <div className="row row-cols-lg-2">
-                  <div className='col-4 col-sm-12'>
+                <div className="row row-cols-lg-3">
+                 
                     {coupon.map((v, i) => {
-                      const { coupon_name,  end_at,discount_title } = v
-
+                      const { coupon_name, end_at, discount_title } = v
 
                       return (
                         <UserCoupon
@@ -31,13 +30,10 @@ const CouponPage = () => {
                         />
                       )
                     })}
-                  </div>
-                  
-                  
+
                 </div>
               </div>
             </div>
-           
           </div>
         </div>
       </div>
