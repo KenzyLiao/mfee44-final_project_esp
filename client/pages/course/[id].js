@@ -160,7 +160,7 @@ export default function CoursePage() {
                   />
                   <div className="info">
                     <div className="label">單元數</div>
-                    <div className="value">2章18單元</div>
+                    <div className="value">{`${units.length}章${sub_units_num}單元`}</div>
                   </div>
                 </div>
                 <div className="course-sub-info-item d-flex align-items-center">
@@ -354,7 +354,7 @@ export default function CoursePage() {
                 NT${price.toLocaleString()}
               </p>
               <div className="d-flex flex-column flex-xl-row">
-                <a className="text-decoration-none collect-btn border1 px-2">
+                <a className="text-decoration-none collect-btn border1 px-2 text-center">
                   <BsFillCartFill className="mb-1" /> 加入購物車
                 </a>
               </div>

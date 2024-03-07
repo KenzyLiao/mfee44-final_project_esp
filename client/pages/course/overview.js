@@ -5,10 +5,18 @@ import FilterBar from '@/components/course/filter-bar'
 export default function CoursePage() {
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://localhost:3005/api/myproduct/')
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.error('Error:', error))
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3005/api/course/')
+        const data = await response.json()
+        setData(data)
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    }
+
+    fetchData()
+    console.log('data', data)
   }, [])
   return (
     <>
