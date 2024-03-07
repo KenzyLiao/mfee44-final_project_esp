@@ -18,11 +18,14 @@ export default function CoursePage() {
     }
 
     fetchData()
-    console.log('data', data)
   }, [])
+  console.log(filterState)
   return (
     <>
-      <FilterBar filterType={filterType} filterState={filterState} />
+      <FilterBar
+        setFilterType={setFilterType}
+        setFilterState={setFilterState}
+      />
       {Array.from({ length: 5 }).map((_, i) => (
         <div className="mb-5" key={i}>
           <CardGroup data={data} />
