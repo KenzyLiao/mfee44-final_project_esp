@@ -46,7 +46,7 @@ export default function List() {
     }
   }, [])
   useEffect(() => {
-    fetch('http://localhost:3005/api/product/list')
+    fetch('http://localhost:3005/api/myProduct')
       .then((response) => response.json())
       .then((product) => setProduct(product))
       .catch((error) => console.error('Error:', error))
@@ -121,16 +121,16 @@ export default function List() {
 
   const [currentPage, setCurrentPage] = useState(1)
   const productsPerPage = 12
-  const totalPages = Math.ceil(products.length / productsPerPage)
+  const totalPages = Math.ceil(product.length / productsPerPage)
   const startIndex = (currentPage - 1) * productsPerPage
-  const endIndex = Math.min(startIndex + productsPerPage, products.length)
+  const endIndex = Math.min(startIndex + productsPerPage, product.length)
 
   // 处理页码变化的函数
   const handlePageChange = (page) => {
     // 这里可以根据页码做一些处理，例如获取新的产品列表等
     setCurrentPage(page)
   }
-  const filteredProducts = products.filter((product) => {
+  const filteredProducts = product.filter((product) => {
     // 如果没有选择，则显示所有产品
     if (
       selectedColors.length === 0 &&
@@ -1041,7 +1041,7 @@ export default function List() {
                         <ProductFigure
                           key={product.id}
                           image={`/images/myProduct/${product.image}`}
-                          brand={product.brand}
+                          brand={product.brand_name}
                           name={product.name}
                           price={formatPrice(product.price)}
                         />
