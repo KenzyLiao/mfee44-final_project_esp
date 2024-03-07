@@ -3,6 +3,8 @@ import CardGroup from '@/components/course/card-group.js'
 import FilterBar from '@/components/course/filter-bar'
 
 export default function CoursePage() {
+  const [filterType, setFilterType] = useState('')
+  const [filterState, setFilterState] = useState('')
   const [data, setData] = useState([])
   useEffect(() => {
     const fetchData = async () => {
@@ -20,7 +22,7 @@ export default function CoursePage() {
   }, [])
   return (
     <>
-      <FilterBar />
+      <FilterBar filterType={filterType} filterState={filterState} />
       {Array.from({ length: 5 }).map((_, i) => (
         <div className="mb-5" key={i}>
           <CardGroup data={data} />
