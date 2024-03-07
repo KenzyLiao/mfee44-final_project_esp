@@ -1,6 +1,6 @@
 import React from 'react'
 import UserCoupon from '@/components/myCoupon/UserCoupon'
-import couponData from '@/data/coupon.json'
+import couponData from '@/data/ianCoupon.json'
 import { useState } from 'react'
 
 const CouponPage = () => {
@@ -16,8 +16,8 @@ const CouponPage = () => {
             {/* 可以使用 map 遍歷渲染 */}
             <div className="coupon-content__item">
               <div className="container">
-                <div className="row row-cols-lg-3">
-                 
+                <div className="row row-cols-lg-2">
+                  <div className='col-4 col-sm-12'>
                     {coupon.map((v, i) => {
                       const { coupon_name, end_at, discount_title } = v
 
@@ -30,7 +30,9 @@ const CouponPage = () => {
                         />
                       )
                     })}
-
+                  </div>
+                  
+                  
                 </div>
               </div>
             </div>

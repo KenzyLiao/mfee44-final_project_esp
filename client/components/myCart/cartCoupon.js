@@ -4,71 +4,11 @@ import { HiOutlineTicket } from 'react-icons/hi2'
 
 import { CSSTransition } from 'react-transition-group'
 
-export default function CartCoupon() {
-  const [selectedCouponID, setSelectedCouponID] = useState('none')
-
-  const couponsData = [
-    {
-      CouponID: 'PEN001',
-      Description: '鋼筆週 - 所有鋼筆類商品8折',
-      ValidFrom: '2024-04-01',
-      ValidTo: '2024-04-07',
-      MinimumSpend: 50.0,
-      DiscountType: '百分比',
-      DiscountValue: 20,
-      UsageLimit: 200,
-      UsedCount: 0,
-    },
-    {
-      CouponID: 'PEN002',
-      Description: '購買任何兩支鋼筆送墨水一瓶',
-      ValidFrom: '2024-05-01',
-      ValidTo: '2024-05-31',
-      MinimumSpend: 100.0,
-      DiscountType: '贈品',
-      DiscountValue: 1,
-      UsageLimit: 100,
-      UsedCount: 0,
-    },
-    {
-      CouponID: 'PEN003',
-      Description: '首次購買鋼筆享受9折優惠',
-      ValidFrom: '2024-06-01',
-      ValidTo: '2024-06-30',
-      MinimumSpend: 0.0,
-      DiscountType: '百分比',
-      DiscountValue: 10,
-      UsageLimit: 300,
-      UsedCount: 0,
-    },
-    {
-      CouponID: 'PEN004',
-      Description: '高級鋼筆專場 - 滿500減50',
-      ValidFrom: '2024-07-01',
-      ValidTo: '2024-07-31',
-      MinimumSpend: 500.0,
-      DiscountType: '固定金額',
-      DiscountValue: 50,
-      UsageLimit: 150,
-      UsedCount: 0,
-    },
-    {
-      CouponID: 'PEN005',
-      Description: '鋼筆配件週 - 配件類商品滿100減20',
-      ValidFrom: '2024-08-01',
-      ValidTo: '2024-08-07',
-      MinimumSpend: 100.0,
-      DiscountType: '固定金額',
-      DiscountValue: 20,
-      UsageLimit: 250,
-      UsedCount: 0,
-    },
-  ]
-
-  const handleRadioChange = (event) => {
-    setSelectedCouponID(event.target.value)
-  }
-
+export default function CartCoupon({
+  coupons = [],
+  handleRadioChange = () => {},
+  selectedCouponID = '',
+}) {
   return (
     <>
       <div className=" coupon-container">
@@ -91,25 +31,25 @@ export default function CartCoupon() {
               </label>
             </div>
           </div>
-          {couponsData.map((coupon) => (
-            <div key={coupon.CouponID} className=" mb-2 card-header ">
+          {coupons.map((coupon) => (
+            <div key={coupon.coupon_code} className=" mb-2 card-header ">
               <div className=" text-h6 text-my-black">
                 <label>
                   <input
                     type="radio"
                     name="coupon"
-                    value={coupon.CouponID}
-                    checked={selectedCouponID === coupon.CouponID}
+                    value={coupon.coupon_code}
+                    checked={selectedCouponID === coupon.coupon_code}
                     onChange={handleRadioChange}
                     className="me-2"
                   />
-                  {coupon.Description}
+                  {coupon.coupon_name}
                 </label>
               </div>
               <CSSTransition
-                in={selectedCouponID === coupon.CouponID}
+                in={selectedCouponID === coupon.coupon_code}
                 timeout={300}
-                classNames="zoom"
+                classNames="slide"
                 unmountOnExit
               >
                 <div className="card-body text-h6 text-my-black">

@@ -8,7 +8,7 @@ import {
 
 import { HiOutlineTicket } from 'react-icons/hi2'
 
-export default function OrderConfirmList() {
+export default function OrderConfirmList({ formData = {}, selectCoupon = {} }) {
   return (
     <div className="container my-4">
       <div className="card shadow-sm mb-4 border-0 rounded-lg">
@@ -21,16 +21,16 @@ export default function OrderConfirmList() {
         <ul className="list-group">
           <li className="list-group-item border-0 text-h5 text-my-balck">
             <span className="">姓名：</span>
-            <span className="firstname ">王</span>{' '}
-            <span className="lastname ">小明</span>
+            <span className="firstname ">{formData.firstName}</span>{' '}
+            <span className="lastname ">{formData.lastName}</span>
           </li>
           <li className="list-group-item border-0 text-h5 text-my-balck ">
             <span>電子郵件：</span>
-            <span className="email">test123@mail.com</span>
+            <span className="email">{formData.email}</span>
           </li>
           <li className="list-group-item border-0 text-h5 text-my-balck">
             <span>手機號碼：</span>
-            <span className="mobile">0987654321</span>
+            <span className="mobile">{formData.mobilePhone}</span>
           </li>
         </ul>
       </div>
@@ -45,15 +45,15 @@ export default function OrderConfirmList() {
         <ul className="list-group ">
           <li className="list-group-item border-0 text-h5 text-my-balck">
             <span>城市：</span>
-            <span className="country">桃園市</span>
+            <span className="country">{formData.country}</span>
           </li>
           <li className="list-group-item border-0 text-h5 text-my-balck">
             <span>區域：</span>
-            <span className="township">中壢區</span>
+            <span className="township">{formData.township}</span>
           </li>
           <li className="list-group-item border-0 text-h5 text-my-balck">
             <span>地址：</span>
-            <span className="address">新生路二段421號</span>
+            <span className="address">{formData.address}</span>
           </li>
         </ul>
       </div>
@@ -68,7 +68,7 @@ export default function OrderConfirmList() {
         <div className="card-body">
           <div className="card-text text-h5 text-my-balck">
             <span>優惠卷名稱：</span>
-            <span className="coupon-name">折抵運費888</span>
+            <span className="coupon-name">{selectCoupon.coupon_name}</span>
           </div>
         </div>
       </div>
@@ -83,8 +83,22 @@ export default function OrderConfirmList() {
         <div className="card-body">
           <div className="card-text text-h5 text-my-balck">
             <span>發票類型-</span>
-            <span className="invoiceType">手機條碼載具：</span>
-            <span className="mobileBarcode">/545142S</span>
+            {formData.invoiceType === '3' ? (
+              <>
+                <span className="invoiceType">手機條碼載具：</span>
+                <span className="mobileBarcode">{formData.mobileBarcode}</span>
+              </>
+            ) : null}
+            {formData.invoiceType === '2' ? (
+              <>
+                <span className="invoiceType">雲端發票-捐贈</span>
+              </>
+            ) : null}
+            {formData.invoiceType === '1' ? (
+              <>
+                <span className="invoiceType">非營業人電子發票</span>
+              </>
+            ) : null}
           </div>
         </div>
       </div>
@@ -99,7 +113,7 @@ export default function OrderConfirmList() {
         <div className="card-body">
           <div className="card-text text-h5 text-my-balck">
             <span>支付方式：</span>
-            <span className="payType ">綠界付款</span>
+            <span className="payType ">{formData.payType}</span>
           </div>
         </div>
       </div>

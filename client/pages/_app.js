@@ -4,6 +4,8 @@ import '@/styles/globals.scss'
 import '@/styles/cart.scss'
 
 //後續載入context
+//購物車專用的Provider
+import { CartProvider } from '@/hooks/user-cart'
 
 import DefaultLayout from '@/components/layout/default-layout'
 
@@ -18,5 +20,5 @@ export default function MyApp({ Component, pageProps }) {
   const getLayout =
     Component.getLayout || ((page) => <DefaultLayout>{page}</DefaultLayout>)
 
-  return getLayout(<Component {...pageProps} />)
+  return <CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
 }
