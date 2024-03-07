@@ -21,7 +21,7 @@ export default function List() {
   const [isMobile, setIsMobile] = useState(false)
   const [open, setOpen] = useState(false)
   const [showMore, setShowMore] = useState(false)
-  const [products, setProducts] = useState([])
+  const [product, setProduct] = useState([])
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleSubmit = () => {
@@ -46,17 +46,12 @@ export default function List() {
     }
   }, [])
   useEffect(() => {
-    // 这里模拟从后端获取产品数据
-    setProducts(productsData)
+    fetch('http://localhost:3005/api/product/list')
+      .then((response) => response.json())
+      .then((product) => setProduct(product))
+      .catch((error) => console.error('Error:', error))
   }, [])
-  // const [product, setproduct] = useState([])
-  // useEffect(() => {
-  //   fetch('http://localhost:3005/api/product/list')
-  //     .then((response) => response.json())
-  //     .then((product) => setproduct(product))
-  //     .catch((error) => console.error('Error:', error))
-  // }, [])
-  // console.log(product)
+  console.log(product)
   const minPrice = Math.min(...productsData.map((product) => product.price))
   const maxPrice = Math.max(...productsData.map((product) => product.price))
 
