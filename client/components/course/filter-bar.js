@@ -1,82 +1,89 @@
 import { BsChevronRight } from 'react-icons/bs'
 import { BsSearch } from 'react-icons/bs'
+import Link from 'next/link'
 
 export default function FilterBar({ setFilterType, setFilterState }) {
   let filterType = ''
   let filterState = ''
 
   const handleFilterType = (e) => {
-    let textBtn = document.querySelector('.handwriting')
-    let paintingBtn = document.querySelector('.painting')
+    let text = document.querySelector('.handwriting')
+    let painting = document.querySelector('.painting')
     filterType = e.target.innerText
     setFilterType(filterType)
-    console.log(filterType)
     if (filterType === '文字') {
-      textBtn.classList.add('btn-active')
-      paintingBtn.classList.remove('btn-active')
+      text.classList.add('btn-active')
+      painting.classList.remove('btn-active')
     } else {
-      paintingBtn.classList.add('btn-active')
-      textBtn.classList.remove('btn-active')
+      painting.classList.add('btn-active')
+      text.classList.remove('btn-active')
     }
   }
   const handleFilterState = (e) => {
-    let hotBtn = document.querySelector('.hot')
-    let peopleBtn = document.querySelector('.people')
-    let timeBtn = document.querySelector('.time')
+    let hot = document.querySelector('.hot')
+    let price = document.querySelector('.price')
+    let time = document.querySelector('.time')
     filterState = e.target.innerText
     setFilterState(filterState)
     if (filterState === '最熱門') {
-      hotBtn.classList.add('btn-active')
-      peopleBtn.classList.remove('btn-active')
-      timeBtn.classList.remove('btn-active')
-    } else if (filterState === '依人數') {
-      peopleBtn.classList.add('btn-active')
-      hotBtn.classList.remove('btn-active')
-      timeBtn.classList.remove('btn-active')
+      hot.classList.add('btn-active')
+      price.classList.remove('btn-active')
+      time.classList.remove('btn-active')
+    } else if (filterState === '依價格') {
+      price.classList.add('btn-active')
+      hot.classList.remove('btn-active')
+      time.classList.remove('btn-active')
     } else {
-      timeBtn.classList.add('btn-active')
-      hotBtn.classList.remove('btn-active')
-      peopleBtn.classList.remove('btn-active')
+      time.classList.add('btn-active')
+      hot.classList.remove('btn-active')
+      price.classList.remove('btn-active')
     }
   }
   return (
     <>
       <div className="filter my-2 d-flex flex-column flex-md-row align-items-center mb-4">
         <div className="filter-class d-flex align-items-center me-4 text-h3">
-          <button
-            className={`btn p-0 text-h3 handwriting`}
+          <Link
+            href="http://localhost:3000/course/overview?type=1"
             onClick={handleFilterType}
           >
-            文字
-          </button>
+            <span className="handwriting">文字</span>
+          </Link>
           <p className="mb-1 fs-5 text-h3">&nbsp;|&nbsp;</p>
-          <button
-            className="btn p-0 text-h3 painting"
+          <Link
+            href="http://localhost:3000/course/overview?type=2"
             onClick={handleFilterType}
           >
-            繪畫
-          </button>
+            <span className="painting">繪畫</span>
+          </Link>
         </div>
         <div className="filter-state d-flex align-items-center me-4">
-          <button className="btn p-0 text-h3 hot" onClick={handleFilterState}>
-            最熱門
-          </button>
-          <p className="mb-1 fs-5 text-h3">&nbsp;|&nbsp;</p>
-          <button
-            className="btn p-0 text-h3 people"
+          <Link
+            href="http://localhost:3000/course/overview?state=1"
             onClick={handleFilterState}
           >
-            依人數
-          </button>
+            <span className="hot text-h3">最熱門</span>
+          </Link>
           <p className="mb-1 fs-5 text-h3">&nbsp;|&nbsp;</p>
-          <button className="btn p-0 text-h3 time" onClick={handleFilterState}>
-            依時間
-          </button>
+          <Link
+            href="http://localhost:3000/course/overview?state=2"
+            onClick={handleFilterState}
+          >
+            <span className="price text-h3">依價格</span>
+          </Link>
+          <p className="mb-1 fs-5 text-h3">&nbsp;|&nbsp;</p>
+          <Link
+            href="http://localhost:3000/course/overview?state=3"
+            onClick={handleFilterState}
+          >
+            <span className="time text-h3">依時間</span>
+          </Link>
         </div>
         <div className="search d-flex align-items-center">
           <BsSearch className="text-h3 me-2" />
           <input type="text " />
         </div>
+        <div></div>
       </div>
       <style jsx>{`
         .btn,

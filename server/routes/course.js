@@ -3,8 +3,35 @@ import mydb from '../configs/mydb.js'
 const router = express.Router()
 
 router.get('/overview', async (req, res) => {
+  const type = req.query.type || null
+  const state = req.query.state || null
+  console.log('state:', typeof state)
+
+  const baseSQL = `
+  SELECT product.*, course_product.*, course_category.category_name, course_teacher.name AS teacher_name
+  FROM product
+  JOIN course_product ON product.id = course_product.product_id
+  JOIN course_category ON course_product.category_id = course_category.id
+  JOIN course_teacher ON course_product.teacher_id = course_teacher.id
+  WHERE product.valid = 1
+  
+  `
+  let finalSQL = ''
+  finalSQL = baseSQL
+  if (type) {
+    finalSQL += ` AND category_id = ${type}`
+  }
+  if (state === '1') {
+    finalSQL += `ORDER BY student_num DESC`
+  } else if (state === '2') {
+    finalSQL += `ORDER BY price`
+  } else if (state === '3') {
+    finalSQL += `ORDER BY created_at DESC`
+  }
+  console.log('finalSQL:', finalSQL)
+
   try {
-    const [results] = await mydb.execute(`SELECT * from product `)
+    const [results] = await mydb.execute(finalSQL)
 
     res.send(results)
   } catch (err) {
