@@ -42,7 +42,7 @@ export default function EcpayShipment() {
 
   return (
     <div>
-      <button onClick={handleSubmit}>Load Ecpay Shipment Form</button>
+      <button onClick={handleSubmit}>選擇門市</button>
       {/* 使用dangerouslySetInnerHTML顯示綠界的HTML表單 */}
       <div dangerouslySetInnerHTML={{ __html: formHtml }} />
     </div>

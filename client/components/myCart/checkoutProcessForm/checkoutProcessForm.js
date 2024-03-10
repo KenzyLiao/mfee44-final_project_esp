@@ -8,6 +8,8 @@ import { countries, townships, postcodes } from '@/data/data-townships'
 // icon
 import { IoIosArrowRoundBack, IoIosFiling } from 'react-icons/io'
 
+import EcpayShipment from '../ecPayShippment'
+
 import {
   MdLocalShipping,
   MdPerson,
@@ -149,6 +151,7 @@ export default function CheckoutProcessForm() {
                 checked={formData.shipping === '宅配'}
               />
             </div>
+            <EcpayShipment />
             <div className="icon-box d-flex mt-4">
               <Form.Check
                 className={`text-h5 text-my-black ${styles['form-check']} `}
@@ -158,7 +161,7 @@ export default function CheckoutProcessForm() {
                 id="shippingType2"
                 value="7-11"
                 onChange={handleChange}
-                checked={formData.payType === '7-11'}
+                checked={formData.shipping === '7-11'}
               />
             </div>
           </Form.Group>

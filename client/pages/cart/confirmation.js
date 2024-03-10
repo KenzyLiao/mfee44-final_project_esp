@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import CartFlow from '@/components/myCart/cartFlow'
+
 import OrderSummary from '@/components/myCart/orderSummary'
 import SmallProductCart from '@/components/myCart/smallProductCart'
 import SmallCourseCart from '@/components/myCart/smallCourseCart'
 import OrderConfirmList from '@/components/myCart/orderConfirmList'
 import ShippingRule from '@/components/myCart/shippingRule'
 import Link from 'next/link'
+import toast, { Toaster } from 'react-hot-toast'
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
@@ -77,7 +78,6 @@ export default function Confirmation() {
       console.log(data) // /訂單物件格式(line-pay專用)
       if (data.status === 'success') {
         setLinePayOrder(data.data.order)
-        // toast.success('已成功建立訂單')
       }
       return data // 返回数据以便进一步处理
     } catch (error) {
@@ -87,20 +87,24 @@ export default function Confirmation() {
   }
 
   /* 向後端請求付款  導向至LINE Pay付款頁面 (未完成!)*/
-
   const goLinePay = async (orderId) => {
     if (window.confirm('請確認導向至LINE PAY進行付款嗎？')) {
       window.location.href = `http://localhost:3005/api/line-pay-first/reserve?orderId=${orderId}`
     }
   }
 
+  //點擊付款行為＝創建訂單+請求linePay API
   const creatOrderAndPay = async () => {
     const orderResponse = await creatOrder()
     if (orderResponse.status === 'success') {
-      console.log(orderResponse.data.order.orderId)
-      goLinePay(orderResponse.data.order.orderId)
+      await toast.success('已成功建立訂單')
+      setTimeout(() => {
+        goLinePay(orderResponse.data.order.orderId)
+      }, 1500)
     } else {
-      alert('訂單創建失敗,請稍後再重試')
+      toast.error('訂單創建失敗,請稍後再重試', {
+        duration: 3000,
+      })
     }
   }
 
@@ -128,6 +132,7 @@ export default function Confirmation() {
               totalPrice={totalPrice}
               rawTotalPrice={rawTotalPrice}
               formatPrice={formatPrice}
+              creatOrderAndPay={creatOrderAndPay}
             />
           </div>
           <div className="text-h4 mb-4">我的購物車</div>
@@ -146,6 +151,7 @@ export default function Confirmation() {
             付款
           </div>
         </div>
+        <Toaster />
       </div>
       <style jsx>{`
         .rwd-button {

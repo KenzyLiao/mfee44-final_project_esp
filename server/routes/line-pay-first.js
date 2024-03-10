@@ -235,7 +235,7 @@ router.get('/reserve', async (req, res) => {
       //     message: linePayResponse.body.info.paymentUrl.web,
       //   })
       // }
-      console.log(linePayResponse.body.info.paymentUrl.web)
+      // console.log(linePayResponse.body.info.paymentUrl.web)
 
       res.redirect(linePayResponse.body.info.paymentUrl.web)
     } catch (err) {

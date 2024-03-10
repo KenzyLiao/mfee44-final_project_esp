@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 
+
 export default function OrderSummary({
   text = '下一步',
   boolean = true,
@@ -8,6 +9,7 @@ export default function OrderSummary({
   totalPrice = 0,
   formatPrice = () => {},
   handleNextSteap = () => {},
+  creatOrderAndPay = () => {},
 }) {
   return (
     <>
@@ -32,7 +34,10 @@ export default function OrderSummary({
 
         <div
           onClick={() => {
+            //checkout頁面
             handleNextSteap()
+            //confiramation頁面使用
+            creatOrderAndPay()
           }}
           className="col-md-8 my-4 mx-auto my-button1 pc-button show "
         >
