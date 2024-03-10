@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react'
 
 const MemberProfile = () => {
-  const [users, setUsers] = useState(null)
+  // 初始化用户数据结构
+  const [user, setUser] = useState({
+    title: '',
+    firstname: '',
+    lastname: '',
+    email: '', // 根据需要添加更多字段
+  })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const fetchUserData = async () => {
+      setLoading(true)
       try {
         const token = localStorage.getItem('token')
-        const response = await fetch('/api/users', {
+        const response = await fetch('http://localhost:3001/api/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -19,15 +26,21 @@ const MemberProfile = () => {
         }
 
         const data = await response.json()
-        setUsers(data)
+        setUser(data) // 假设返回的data直接是用户对象
       } catch (error) {
         console.error('Failed to fetch user data', error)
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     }
 
     fetchUserData()
   }, [])
+
+  // 处理称谓更改
+  const handleTitleChange = (event) => {
+    setUser({ ...user, title: event.target.value })
+  }
 
   if (loading) return <div>Loading...</div>
 
@@ -44,18 +57,40 @@ const MemberProfile = () => {
                   <div className="header-title">個人資料</div>
                   <div className="personal-info">
                     <div className="field-title">稱謂*</div>
-                    <select className="input-title">
+                    <select
+                      className="input-title"
+                      value={user.title}
+                      onChange={handleTitleChange}
+                    >
                       <option value="mr">先生</option>
                       <option value="ms">女士</option>
                       <option value="preferNotToSay">不願透露</option>
                     </select>
                     <div className="field-firstname">姓氏*</div>
-                    <input type="text" className="input-firstname" />
+                    <input
+                      type="text"
+                      name="firstname"
+                      className="input-firstname"
+                      value={user.firstname}
+                      // onChange={handleChange}
+                    />
 
                     <div className="field-lastname">名字*</div>
-                    <input type="text" className="input-lastname" />
+                    <input
+                      type="text"
+                      name="lastname"
+                      className="input-lastname"
+                      value={user.lastname}
+                      // onChange={handleChange}
+                    />
                     <div className="field-email">電子郵件</div>
-                    <div className="input-email"></div>
+                    <input
+                      type="text"
+                      name="email"
+                      className="input-email"
+                      value={user.email}
+                      readOnly // 电子邮件字段通常不允许用户更改
+                    />
                     <div className="field-password">密碼</div>
                     <button className="change-password">更改</button>
                     <div className="field-birthday">出生日期</div>
