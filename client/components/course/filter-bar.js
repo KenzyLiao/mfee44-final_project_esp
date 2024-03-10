@@ -133,7 +133,7 @@ export default function FilterBar({ filterProps, setFilterProps, router }) {
         <div className="search d-flex align-items-center">
           <span className="text-h3 text-primary me-1">搜尋:</span>
           <input type="text " className="searchText" onKeyUp={handleSearch} />
-          <Link
+          {/* <Link
             className="searchLink"
             href={
               'http://localhost:3000/course/overview?' +
@@ -143,7 +143,7 @@ export default function FilterBar({ filterProps, setFilterProps, router }) {
             }
           >
             <BsSearch className="text-h3 ms-2 text-primary" />
-          </Link>
+          </Link> */}
         </div>
         <div>
           {(filterType !== '' || filterState !== '' || filterSearch !== '') && (
