@@ -38,11 +38,11 @@ export default function CourseCard({
       />
       <Card.Body>
         <Card.Title
-          style={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-            whiteSpace: 'nowrap',
-          }}
+          // style={{
+          //   overflow: 'hidden',
+          //   textOverflow: 'ellipsis',
+          //   whiteSpace: 'nowrap',
+          // }}
         >
           {name}
         </Card.Title>
