@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react'
 
-export default function EcpayShipment() {
+export default function EcpayShipment({ shipping = '' }) {
   const [formHtml, setFormHtml] = useState('')
-  console.log(formHtml)
 
   useEffect(() => {
     if (formHtml) {
@@ -24,7 +23,7 @@ export default function EcpayShipment() {
             'Content-Type': 'application/json',
           },
           // 需要傳送的數據
-          body: JSON.stringify({}),
+          body: JSON.stringify({ shipping }),
         }
       )
       const data = await response.json()
@@ -42,9 +41,12 @@ export default function EcpayShipment() {
 
   return (
     <div>
-      <button onClick={handleSubmit}>選擇門市</button>
       {/* 使用dangerouslySetInnerHTML顯示綠界的HTML表單 */}
       <div dangerouslySetInnerHTML={{ __html: formHtml }} />
+
+      <button className="btn btn-primary my-3" onClick={handleSubmit}>
+        選擇門市
+      </button>
     </div>
   )
 }

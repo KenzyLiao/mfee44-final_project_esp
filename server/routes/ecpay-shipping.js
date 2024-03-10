@@ -15,7 +15,7 @@ function getCurrentTransactionTime() {
 
 /* 綠界門市地圖 */
 router.post('/ecpay-shippment', async (req, res) => {
-  console.log(req.body)
+  const shipping = req.body.shipping
 
   //建立廠商訂單編號
   const uuid = uuidv4().replace(/-/g, '')
@@ -25,7 +25,7 @@ router.post('/ecpay-shippment', async (req, res) => {
     ServerReplyURL:
       'https://49fe-114-34-93-75.ngrok-free.app/api/ecpay-shipping/selectedStoreInfo', // 物流狀況會通知到此URL
     LogisticsType: 'CVS',
-    LogisticsSubType: 'UNIMARTC2C',
+    LogisticsSubType: shipping,
     IsCollection: 'N',
     ExtraData: '',
     Device: '',
@@ -46,10 +46,10 @@ router.post('/ecpay-shippment', async (req, res) => {
 /* 接收用戶前台選的門市資料,並回傳給前端 */
 router.post(`/selectedStoreInfo`, (req, res) => {
   console.log(req.body)
-  const { CVSStoreID, CVSStoreName, CVSAddress } = req.body
+  const { LogisticsSubType, CVSStoreID, CVSStoreName, CVSAddress } = req.body
   // 假設這些資料需要經過適當的處理或編碼
   res.redirect(
-    `http://localhost:3000/cart/checkout?storeID=${CVSStoreID}&storeName=${CVSStoreName}&storeAddress=${CVSAddress}`
+    `http://localhost:3000/cart/checkout?storeType=${LogisticsSubType}&storeID=${CVSStoreID}&storeName=${CVSStoreName}&storeAddress=${CVSAddress}`
   )
 })
 

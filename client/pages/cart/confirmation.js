@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 
 import OrderSummary from '@/components/myCart/orderSummary'
 import SmallProductCart from '@/components/myCart/smallProductCart'
@@ -23,6 +24,8 @@ export default function Confirmation() {
   } = useCart()
 
   const [formData, setFormData] = useState({})
+
+  const router = useRouter()
 
   //linePay資料使用
   const [linePayOrder, setLinePayOrder] = useState({})
@@ -108,6 +111,21 @@ export default function Confirmation() {
     }
   }
 
+  //confirm 用戶付款成功後，跳轉回來的行為，
+  useEffect(() => {
+    if (router.isReady) {
+      console.log(router.query)
+      // http://localhost:3000/cart/confirmation?transactionId=2022112800733496610&orderId=da3b7389-1525-40e0-a139-52ff02a350a8
+      // 這裡要得到交易id，處理伺服器通知line pay已確認付款，為必要流程
+      // TODO: 除非為不需登入的交易，為提高安全性應檢查是否為會員登入狀態
+      const { transactionId, orderId } = router.query
+      if (!transactionId || !orderId) {
+        // 如果沒有帶transactionId或orderId時，導向至首頁(或其它頁)
+
+        return
+      }
+    }
+  }, [router.isReady, router.query])
   return (
     <>
       <div className="row">

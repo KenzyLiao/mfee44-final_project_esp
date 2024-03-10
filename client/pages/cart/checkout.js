@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import CartFlow from '@/components/myCart/cartFlow'
 import CheckoutProcessForm from '@/components/myCart/checkoutProcessForm/checkoutProcessForm'
+
 import OrderSummary from '@/components/myCart/orderSummary'
 import SmallProductCart from '@/components/myCart/smallProductCart'
 import SmallCourseCart from '@/components/myCart/smallCourseCart'
@@ -18,55 +19,11 @@ export default function Checkout() {
     selectCoupon,
   } = useCart()
 
-  // 宅配或門市的狀態
-  const [selection, setSelection] = useState('')
-
-  const handleChange = (e) => {
-    setSelection(e.target.value)
-  }
-
   return (
     <>
       <div className="row">
         {/* 左邊 */}
         <div className="col-lg-7">
-          <h2>選擇配送方式</h2>
-          <form>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="宅配"
-                  checked={selection === '宅配'}
-                  onChange={handleChange}
-                />
-                宅配
-              </label>
-            </div>
-            <div>
-              <label>
-                <input
-                  type="radio"
-                  value="門市"
-                  checked={selection === '門市'}
-                  onChange={handleChange}
-                />
-                門市
-              </label>
-            </div>
-          </form>
-          {selection === '宅配' && (
-            <div>
-              <h3>宅配內容</h3>
-              <p>這裡是宅配的相關資訊...</p>
-            </div>
-          )}
-          {selection === '門市' && (
-            <div>
-              <h3>門市內容</h3>
-              <p>這裡是選擇門市後的相關資訊...</p>
-            </div>
-          )}
           <CheckoutProcessForm />
         </div>
         {/* 右邊 */}
