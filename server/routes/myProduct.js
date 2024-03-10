@@ -22,14 +22,25 @@ router.get('/', async (req, res) => {
         INNER JOIN material AS m ON g.material_id = m.material_id
         INNER JOIN color AS c ON g.color_id = c.color_id
       ORDER BY p.id
-    `);
+    `)
 
-    res.send(products);
+    const [nibs] = await mydb.execute(`SELECT * FROM nib`)
+    const [colors] = await mydb.execute(`SELECT * FROM color`)
+    const [brands] = await mydb.execute(`SELECT * FROM brand`)
+    const [materials] = await mydb.execute(`SELECT * FROM material`)
+
+    res.send({
+      products: products,
+      nibs: nibs,
+      colors: colors,
+      brands: brands,
+      materials: materials,
+    })
   } catch (err) {
     // 发生错误时返回 500 错误
-    console.error('查詢資料錯誤:', err);
-    return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' });
+    console.error('查詢資料錯誤:', err)
+    return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
   }
-});
+})
 
 export default router

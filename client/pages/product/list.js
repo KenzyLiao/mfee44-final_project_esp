@@ -10,10 +10,6 @@ import Typography from '@mui/material/Typography'
 import Slide from '@mui/material/Slide'
 import Pagination from '@/components/myProduct/pagination'
 import productsData from '@/data/myProduct.json'
-import brand from '@/data/myBrand.json'
-import nib from '@/data/myNib.json'
-import material from '@/data/myMaterial.json'
-import color from '@/data/myColor.json'
 import ScrollToTopButton from '@/components/myProduct/upbutton'
 import Link from 'next/link'
 
@@ -22,6 +18,10 @@ export default function List() {
   const [open, setOpen] = useState(false)
   const [showMore, setShowMore] = useState(false)
   const [product, setProduct] = useState([])
+  const [nib, setNib] = useState([])
+  const [color, setColor] = useState([])
+  const [brand, setBrand] = useState([])
+  const [material, setMaterial] = useState([])
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleSubmit = () => {
@@ -40,18 +40,23 @@ export default function List() {
     // 监听窗口大小变化
     window.addEventListener('resize', checkIsMobile)
 
-    // 清理函数
+    // 在清理函数中移除事件监听器
     return () => {
       window.removeEventListener('resize', checkIsMobile)
     }
-  }, [])
+  }, [setIsMobile])
   useEffect(() => {
     fetch('http://localhost:3005/api/myProduct')
       .then((response) => response.json())
-      .then((product) => setProduct(product))
+      .then((data) => {
+        setProduct(data.products)
+        setNib(data.nibs)
+        setColor(data.colors)
+        setBrand(data.brands)
+        setMaterial(data.materials)
+      })
       .catch((error) => console.error('Error:', error))
   }, [])
-  console.log(product)
   const minPrice = Math.min(...productsData.map((product) => product.price))
   const maxPrice = Math.max(...productsData.map((product) => product.price))
 
@@ -143,16 +148,16 @@ export default function List() {
 
     // 检查产品的颜色是否在选择的颜色中
     const isColorMatched =
-      selectedColors.length === 0 || selectedColors.includes(product.color)
+      selectedColors.length === 0 || selectedColors.includes(product.color_name)
 
     // 检查产品的笔尖是否在选择的笔尖中
     const isNibMatched =
-      selectedNibs.length === 0 || selectedNibs.includes(product.nib)
+      selectedNibs.length === 0 || selectedNibs.includes(product.nib_name)
 
     // 检查产品的材质是否在选择的材质中
     const isMaterialMatched =
       selectedMaterials.length === 0 ||
-      selectedMaterials.includes(product.material)
+      selectedMaterials.includes(product.material_name)
 
     // 检查产品的价格是否在选择的价格范围内
     const isPriceMatched =
@@ -164,8 +169,6 @@ export default function List() {
   useEffect(() => {
     setCurrentPage(1) // 筛选条件变化时重置页码为第一页
   }, [selectedColors, selectedNibs, selectedMaterials, priceRange])
-
-
 
   const displayedProducts = filteredProducts.slice(startIndex, endIndex)
 
@@ -1078,7 +1081,7 @@ export default function List() {
         .btnColor:hover {
           opacity: 0.5;
         }
-               
+
         /* 滚动条的样式 */
         ::-webkit-scrollbar {
           height: 3px; /* 滚动条宽度 */
