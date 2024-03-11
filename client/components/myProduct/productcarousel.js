@@ -18,7 +18,7 @@ const getProductImages = (imageName) => {
   return images
 }
 
-export default function Carousel({ products }) {
+export default function Carousel({ products, pid }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
 
   // 使用 useMemo 缓存所有产品的图片数组
@@ -28,7 +28,7 @@ export default function Carousel({ products }) {
 
   // 过滤只包含当前产品图片的数组
   const currentProductImages = allProductImages.filter((image) =>
-    image.includes(products[0].image.split('-')[0])
+    image.includes(products[pid].image.split('-')[0])
   )
 
   return (
@@ -38,6 +38,7 @@ export default function Carousel({ products }) {
           style={{
             '--swiper-navigation-color': 'gray',
             '--swiper-pagination-color': '#fff',
+            maxHeight: '650px',
           }}
           autoplay={{
             delay: 2500,
@@ -66,6 +67,9 @@ export default function Carousel({ products }) {
           watchSlidesProgress={true}
           modules={[FreeMode, Navigation, Thumbs]}
           className="mySwiper"
+          style={{
+            maxHeight: '150px',
+          }}
         >
           {currentProductImages.map((image, index) => (
             <SwiperSlide key={index}>

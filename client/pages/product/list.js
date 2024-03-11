@@ -53,7 +53,6 @@ export default function List() {
         setColor(data.colors)
         setBrand(data.brands)
         setMaterial(data.materials)
-
       })
       .catch((error) => console.error('Error:', error))
   }, [])
@@ -71,8 +70,11 @@ export default function List() {
   const [selectedColors, setSelectedColors] = useState([])
   const [selectedMaterials, setSelectedMaterials] = useState([])
   const [selectedNibs, setSelectedNibs] = useState([])
+  const [selectedBrand, setSelectedBrand] = useState('')
   const [isPressed] = useState(false)
-
+  const handleBrandClick = (brandName) => {
+    setSelectedBrand(brandName)
+  }
   const clearAllSelections = () => {
     setSelectedColors([])
     setSelectedMaterials([])
@@ -139,9 +141,11 @@ export default function List() {
       selectedNibs.length === 0 &&
       selectedMaterials.length === 0 &&
       priceRange[0] === initialPriceRange[0] &&
-      priceRange[1] === initialPriceRange[1]
-    )
+      priceRange[1] === initialPriceRange[1] &&
+      selectedBrand === ''
+    ) {
       return true
+    }
 
     // 检查产品的颜色是否在选择的颜色中
     const isColorMatched =
@@ -160,9 +164,20 @@ export default function List() {
     const isPriceMatched =
       product.price >= priceRange[0] && product.price <= priceRange[1]
 
+    // 检查产品的品牌是否与选择的品牌匹配
+    const isBrandMatched =
+      selectedBrand === '' || selectedBrand === product.brand_name
+
     // 返回是否满足所有选择条件
-    return isColorMatched && isNibMatched && isMaterialMatched && isPriceMatched
+    return (
+      isColorMatched &&
+      isNibMatched &&
+      isMaterialMatched &&
+      isPriceMatched &&
+      isBrandMatched
+    )
   })
+
   useEffect(() => {
     setCurrentPage(1) // 筛选条件变化时重置页码为第一页
   }, [selectedColors, selectedNibs, selectedMaterials, priceRange])
@@ -659,7 +674,11 @@ export default function List() {
                 >
                   {brand.map((brandItem) => (
                     <div className="me-2" key={brandItem.brand_id}>
-                      <button type="button" className="btn">
+                      <button
+                        type="button"
+                        className="btn"
+                        onClick={() => handleBrandClick(brandItem.brand_name)}
+                      >
                         {brandItem.brand_name}
                       </button>
                     </div>
