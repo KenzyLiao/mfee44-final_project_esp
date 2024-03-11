@@ -13,7 +13,6 @@ export default function FilterBar({ filterProps, setFilterProps, router }) {
   // console.log('filterSearch:', filterSearch)
   // console.log('filterProps:', filterProps)
 
-  let urlQuery = filterProps
   const handleFilter = (e) => {
     let filterType = filterProps.filterType ? filterProps.filterType : ''
     let filterState = filterProps.filterState ? filterProps.filterState : ''

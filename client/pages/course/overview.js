@@ -33,8 +33,8 @@ export default function CoursePage() {
   // console.log('filterType:', filterProps.filterType)
   // console.log('filterState:', filterProps.filterState)
   // console.log('filterSearch:', filterProps.filterSearch)
-  console.log('filterProps', filterProps)
-  console.log('fetchUrl:', fetchUrl)
+  // console.log('filterProps', filterProps)
+  // console.log('fetchUrl:', fetchUrl)
 
   useEffect(() => {
     const fetchData = async () => {

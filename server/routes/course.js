@@ -1,7 +1,58 @@
 import express from 'express'
 import mydb from '../configs/mydb.js'
 import mysql from 'mysql2'
+import { ro } from '@faker-js/faker'
 const router = express.Router()
+
+router.get('/set_total_minute', async (req, res) => {
+  const [rows] = await mydb.execute(
+    `SELECT product.id, product.product_type,product.valid
+    FROM product 
+    WHERE product.product_type = 2
+    AND product.valid = 1 `
+  )
+  rows.forEach(async (row) => {
+    console.log('id', row.id)
+
+    const [rows2] = await mydb.execute(
+      `SELECT * FROM course_units WHERE course_id = ${row.id}`
+    )
+    let total_minute = 0
+    let total_second = 0
+    for (const unit of rows2) {
+      const [rows3] = await mydb.execute(
+        `SELECT * FROM course_sub_units WHERE unit_id = ${unit.id}`
+      )
+      for (const sub_unit of rows3) {
+        let min = Number(sub_unit.video_len.split(':')[0])
+        let sec = Number(sub_unit.video_len.split(':')[1])
+        total_minute += min
+        total_second += sec
+      }
+    }
+    total_minute += Math.floor(total_second / 60)
+    console.log('total_minute:', total_minute, 'total_second:', total_second)
+
+    row.total_minute = total_minute
+    // await mydb.execute(
+    //   `UPDATE product SET total_minute = ${total_minute} WHERE id = ${row.id}`
+    // )
+  })
+  // res.status(200).send({ message: 'success' })
+  // const [rows2] = await mydb.execute(`SELECT * FROM course_units`)
+  // rows[0].units = rows2
+  // for (const unit of rows[0].units) {
+  //   const [rows3] = await mydb.execute(
+  //     `SELECT * FROM course_sub_units WHERE unit_id = ${unit.id}`
+  //   )
+  //   unit.sub_units = rows3
+  // }
+  // if (rows.length === 0) {
+  //   res.status(404).send({ message: 'Course Not found' })
+  //   return
+  // }
+  res.status(200).send(rows)
+})
 
 router.get('/overview', async (req, res) => {
   const type = req.query.type || null

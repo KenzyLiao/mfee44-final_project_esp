@@ -5,6 +5,7 @@ import Section from '@/components/course/section'
 import Accordion from 'react-bootstrap/Accordion'
 import dynamic from 'next/dynamic'
 import { useRouter } from 'next/router'
+import Image from 'next/image'
 import { BsArrowDown, BsArrowUp } from 'react-icons/bs'
 
 import {
@@ -65,6 +66,7 @@ export default function CoursePage() {
     article,
     units,
   } = data
+
   const sub_units_num = units
     .map((v) => v.sub_units.length)
     .reduce((a, b) => a + b)
@@ -92,7 +94,7 @@ export default function CoursePage() {
               width="100%"
               height="100%"
               controls="true"
-              url="video/01.mp4"
+              url="http://localhost:3005/course/video/01.mp4"
             />
           </div>
           {/* 課程介紹 */}
@@ -101,9 +103,12 @@ export default function CoursePage() {
               <div className="teacher d-flex align-items-center">
                 {/* 老師頭像 */}
                 <div className="teacher_img">
-                  <img
-                    src="https://images.pexels.com/photos/36843/lion-panthera-leo-lioness-animal-world.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                    alt="teacher"
+                  <Image
+                    src={'http://localhost:3005/course/images/' + 'default.jpg'}
+                    width={30}
+                    height={30}
+                    style={{ borderRadius: '50%' }}
+                    alt="teacher image"
                   />
                 </div>
                 {/* 老師名字 */}
@@ -155,7 +160,7 @@ export default function CoursePage() {
                   />
                   <div className="info">
                     <div className="label">課程時長</div>
-                    <div className="value">{total_minute}分鐘</div>
+                    <div className="value">{total_video_minute}分鐘</div>
                   </div>
                 </div>
                 <div className="course-sub-info-item d-flex align-items-center">
@@ -261,7 +266,7 @@ export default function CoursePage() {
               <div className="d-flex justify-content-between mb-3">
                 <div className="d-flex">
                   <div className="text-h2">單元一覽</div>
-                  <div className="text-h5 mx-3 text-my-primary">
+                  <div className="text-h5 mx-3 text-my-primary d-none d-md-block">
                     {`共 ${sub_units_num} 單元 | 總時長${total_video_minute}分鐘`}
                   </div>
                 </div>
@@ -335,9 +340,14 @@ export default function CoursePage() {
                 <div className="teacher-info-item-title">
                   <div className="d-flex">
                     <div className="teacher-info-item-title-img">
-                      <img
-                        src="https://images.pexels.com/photos/36843/lion-panthera-leo-lioness-animal-world.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                        alt="teacher"
+                      <Image
+                        src={
+                          'http://localhost:3005/course/images/' + 'default.jpg'
+                        }
+                        width={50}
+                        height={50}
+                        style={{ borderRadius: '50%' }}
+                        alt="teacher image"
                       />
                     </div>
                     <div className="teacher-info-item-title-info d-flex align-items-center">
@@ -381,10 +391,10 @@ export default function CoursePage() {
         }
         @media (min-width: 992px) {
           .course_info {
-            width: 50%;
+            width: 45%;
           }
           .video {
-            width: 50%;
+            width: 55%;
           }
         }
         .teacher {
