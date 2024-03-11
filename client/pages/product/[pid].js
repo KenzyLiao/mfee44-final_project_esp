@@ -25,9 +25,23 @@ export default function Detail() {
   }, [])
 
   useEffect(() => {
-    // 設定要顯示的商品資料，這裡僅顯示前六個商品
-    setDisplayedProducts(products.slice(0, 6))
-  }, [products])
+    if (pid && products.length > 0) {
+      const selectedProduct = products.find(
+        (product) => product.product_id === parseInt(pid)
+      );
+  
+      if (selectedProduct) {
+        const currentProductBrand = selectedProduct.brand_name; // 根據選擇的產品ID取得品牌名稱
+        const sameBrandProducts = products.filter(
+          (product) => product.brand_name === currentProductBrand
+        ); // 過濾出相同品牌的商品
+        const filteredProducts = sameBrandProducts.slice(0, 6); // 取得相同品牌的前六個商品
+        setDisplayedProducts(filteredProducts); // 設定顯示的商品
+        setSelectedProduct(selectedProduct); // 設定選擇的產品
+      }
+    }
+  }, [pid, products]);
+  
 
   useEffect(() => {
     if (pid && products.length > 0) {
@@ -46,7 +60,7 @@ export default function Detail() {
   if (loading) {
     return <div>Loading...</div>
   }
-  const maxLength = 13
+  const maxLength = 11
   return (
     <>
       {selectedProduct && (
@@ -251,4 +265,5 @@ export default function Detail() {
       )}
     </>
   )
+  
 }

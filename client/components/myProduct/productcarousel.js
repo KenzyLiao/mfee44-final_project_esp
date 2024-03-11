@@ -9,27 +9,27 @@ import { Autoplay, FreeMode, Navigation, Thumbs } from 'swiper/modules'
 // 根据产品图片命名规则生成图片数组
 const getProductImages = (imageName) => {
   // 提取基础名称
-  const baseName = imageName.split('-')[0];
-  const images = [];
+  const baseName = imageName.split('-')[0]
+  const images = []
   for (let i = 1; i <= 4; i++) {
     // 假设您最多有4张图片
-    images.push(`/images/myProduct/${baseName}-${i}.jpg`);
+    images.push(`/images/myProduct/${baseName}-${i}.jpg`)
   }
-  return images;
-};
+  return images
+}
 
 export default function Carousel({ products }) {
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
+  const [thumbsSwiper, setThumbsSwiper] = useState(null)
 
   // 使用 useMemo 缓存所有产品的图片数组
   const allProductImages = useMemo(() => {
-    return products.map((product) => getProductImages(product.image)).flat();
-  }, [products]);
+    return products.map((product) => getProductImages(product.image)).flat()
+  }, [products])
 
   // 过滤只包含当前产品图片的数组
   const currentProductImages = allProductImages.filter((image) =>
     image.includes(products[0].image.split('-')[0])
-  );
+  )
 
   return (
     <>
@@ -78,5 +78,5 @@ export default function Carousel({ products }) {
         </Swiper>
       </div>
     </>
-  );
+  )
 }
