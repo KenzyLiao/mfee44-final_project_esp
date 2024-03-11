@@ -44,8 +44,9 @@ export default function List() {
       window.removeEventListener('resize', checkIsMobile)
     }
   }, [setIsMobile])
+  let fetchUrl = 'http://localhost:3005/api/myProduct?'
   useEffect(() => {
-    fetch('http://localhost:3005/api/myProduct')
+    fetch(fetchUrl)
       .then((response) => response.json())
       .then((data) => {
         setProduct(data.products)
@@ -55,7 +56,8 @@ export default function List() {
         setMaterial(data.materials)
       })
       .catch((error) => console.error('Error:', error))
-  }, [])
+  }, [fetchUrl])
+
   // 将最小和最大价格用于初始化价格范围
   const initialPriceRange = [1, 50000]
   const [priceRange, setPriceRange] = useState(initialPriceRange) // 默认价格区间
@@ -183,6 +185,22 @@ export default function List() {
   }, [selectedColors, selectedNibs, selectedMaterials, priceRange])
 
   const displayedProducts = filteredProducts.slice(startIndex, endIndex)
+
+  if (sortingOption === 'newest') {
+    fetchUrl += 'sort=newest'
+  }
+  if (selectedColors.length > 0) {
+    fetchUrl += `colors=${selectedColors}`
+  }
+  if (selectedBrand.length > 0) {
+    fetchUrl += `brands=${selectedBrand}`
+  }
+  if (selectedNibs.length > 0) {
+    fetchUrl += `nibs=${selectedNibs}`
+  }
+  if (selectedMaterials.length > 0) {
+    fetchUrl += `materials=${selectedMaterials}`
+  }
 
   return (
     <>

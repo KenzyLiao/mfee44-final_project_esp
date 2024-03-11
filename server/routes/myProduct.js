@@ -2,33 +2,65 @@ import express from 'express'
 import mydb from '##/configs/mydb.js'
 
 const router = express.Router()
+let sql = `SELECT 
+p.id AS product_id, p.name, p.product_type, p.price, p.description, p.image, p.updated_at,
+g.product_id, g.brand_id, g.nib_id, g.material_id, g.color_id, g.stock, g.series,
+b.brand_id, b.brand_name,
+n.nib_id, n.nib_name,
+m.material_id, m.material_name,
+c.color_id, c.color_name, c.color_bg
+FROM 
+product AS p
+INNER JOIN general_product AS g ON p.id = g.product_id
+INNER JOIN brand AS b ON g.brand_id = b.brand_id
+INNER JOIN nib AS n ON g.nib_id = n.nib_id
+INNER JOIN material AS m ON g.material_id = m.material_id
+INNER JOIN color AS c ON g.color_id = c.color_id
+WHERE product_type = 1`
 
 router.get('/', async (req, res) => {
   try {
     // 使用 Promise 包装数据库查询
-    const [products] = await mydb.execute(`
-      SELECT 
-        p.id AS product_id, p.name, p.product_type, p.price, p.description, p.image, p.updated_at,
-        g.product_id, g.brand_id, g.nib_id, g.material_id, g.color_id, g.stock, g.series,
-        b.brand_id, b.brand_name,
-        n.nib_id, n.nib_name,
-        m.material_id, m.material_name,
-        c.color_id, c.color_name, c.color_bg
-      FROM 
-        product AS p
-        INNER JOIN general_product AS g ON p.id = g.product_id
-        INNER JOIN brand AS b ON g.brand_id = b.brand_id
-        INNER JOIN nib AS n ON g.nib_id = n.nib_id
-        INNER JOIN material AS m ON g.material_id = m.material_id
-        INNER JOIN color AS c ON g.color_id = c.color_id
-      ORDER BY p.id
-    `)
+    const [products] = await mydb.execute(sql)
 
     const [nibs] = await mydb.execute(`SELECT * FROM nib`)
     const [colors] = await mydb.execute(`SELECT * FROM color`)
     const [brands] = await mydb.execute(`SELECT * FROM brand`)
     const [materials] = await mydb.execute(`SELECT * FROM material`)
 
+    if (req.query.sortingOption === 'newest') {
+      sql += ` ORDER BY p.updated_at DESC`
+    }
+
+    if (req.query.nibs) {
+      const nibs = req.query.nibs
+        .split(',')
+        .map((nib) => `"${nib}"`)
+        .join(',')
+      sql += ` AND nib_name IN (${nibs})`
+    }
+    if (req.query.colors) {
+      const colors = req.query.colors
+        .split(',')
+        .map((color) => `"${color}"`)
+        .join(',')
+      sql += ` AND color_name IN (${colors})`
+    }
+    if (req.query.brands) {
+      const brands = req.query.brands
+        .split(',')
+        .map((brand) => `"${brand}"`)
+        .join(',')
+      sql += ` AND brand_name IN (${brands})`
+    }
+    if (req.query.materials) {
+      const materials = req.query.materials
+        .split(',')
+        .map((material) => `"${material}"`)
+        .join(',')
+      sql += ` AND material_name IN (${materials})`
+    }
+    console.log(sql)
     res.send({
       products: products,
       nibs: nibs,
