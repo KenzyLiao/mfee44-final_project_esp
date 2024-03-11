@@ -37,7 +37,7 @@ export default function FilterBar({ filterProps, setFilterProps, router }) {
     setSearchText(searchText)
     setTimeout(() => {
       setFilterProps({ filterType, filterState, filterSearch: searchText })
-    }, 500)
+    }, 1000)
   }
 
   return (

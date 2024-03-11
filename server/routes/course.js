@@ -27,7 +27,7 @@ router.get('/overview', async (req, res) => {
   }
   if (search) {
     finalSQL += ` AND (product.name LIKE ? OR course_teacher.name LIKE ?)`
-    inserts.push('' + search + '', '' + search + '')
+    inserts.push('%' + search + '%', '%' + search + '%')
   }
 
   if (state === '1') {
