@@ -10,7 +10,7 @@ import { HiOutlineTicket } from 'react-icons/hi2'
 
 export default function OrderConfirmList({ formData = {}, selectCoupon = {} }) {
   const shippingTypeMapping = {
-    '': 'OK超商',
+    OKMARTC2C: 'OK超商',
     UNIMARTC2C: '統一超商',
     FAMIC2C: '全家超商',
   }

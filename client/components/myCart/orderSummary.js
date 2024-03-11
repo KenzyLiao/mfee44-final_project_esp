@@ -1,7 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
 
-
 export default function OrderSummary({
   text = '下一步',
   boolean = true,
@@ -10,6 +9,7 @@ export default function OrderSummary({
   formatPrice = () => {},
   handleNextSteap = () => {},
   creatOrderAndPay = () => {},
+  shippingFee = 0,
 }) {
   return (
     <>
@@ -20,7 +20,7 @@ export default function OrderSummary({
         </div>
         <div className=" d-flex justify-content-between my-2 text-my-black">
           <div className="text-h5">運費</div>
-          <div className="text-h6">{formatPrice(888)}</div>
+          <div className="text-h6">{formatPrice(shippingFee)}</div>
         </div>
         <div className="d-flex justify-content-between my-2 text-my-black">
           <div className="text-h5">優惠折扣</div>

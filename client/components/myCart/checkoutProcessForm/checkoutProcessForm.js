@@ -3,7 +3,7 @@ import { Form, Container, Collapse } from 'react-bootstrap'
 import styles from './checkoutProcessForm.module.scss'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { countries, townships, postcodes } from '@/data/data-townships'
+// import { countries, townships, postcodes } from '@/data/data-townships'
 
 // icon
 import { IoIosArrowRoundBack, IoIosFiling } from 'react-icons/io'
@@ -17,146 +17,153 @@ import {
   MdOutlinePayments,
 } from 'react-icons/md'
 
-export default function CheckoutProcessForm() {
+export default function CheckoutProcessForm({
+  handleChange = () => {},
+  handleSubmit = () => {},
+  formData = {},
+  countries = [],
+  townships = [],
+  postcodes = [],
+}) {
   //用來判定是從cart到checkout 還是 confirmation到checkout
-  const router = useRouter()
-  const [formData, setFormData] = useState({
-    shipping: '宅配', //默認宅配,後續新增7-11物流
-    shippingFee: '200',
-    firstName: '',
-    lastName: '',
-    email: '',
-    mobilePhone: '',
-    // 宅配信息
-    country: '',
-    township: '',
-    postcode: '',
-    address: '',
-    // 門市自取信息
-    storeID: '',
-    storeType: '',
-    storeName: '',
-    storeAddress: '',
-    // 共用信息
-    invoiceType: '2', //1非營業人電子發票 ２捐贈（默認）  3手機條碼
-    mobileBarcode: '', //手機載具 當invoiceType為3時,才會有資料
-    payType: 'LinePay', //支付類型
-  })
+  // const router = useRouter()
+  // const [formData, setFormData] = useState({
+  //   shipping: '宅配', //默認宅配,後續新增7-11物流
+  //   shippingFee: '200',
+  //   firstName: '',
+  //   lastName: '',
+  //   email: '',
+  //   mobilePhone: '',
+  //   // 宅配信息
+  //   country: '',
+  //   township: '',
+  //   postcode: '',
+  //   address: '',
+  //   // 門市自取信息
+  //   storeID: '',
+  //   storeType: '',
+  //   storeName: '',
+  //   storeAddress: '',
+  //   // 共用信息
+  //   invoiceType: '2', //1非營業人電子發票 ２捐贈（默認）  3手機條碼
+  //   mobileBarcode: '', //手機載具 當invoiceType為3時,才會有資料
+  //   payType: 'LinePay', //支付類型
+  // })
 
-  useEffect(() => {
-    // 從localStorage中取出之前保存的資料
+  // useEffect(() => {
+  //   // 從localStorage中取出之前保存的資料
 
-    const storedData = JSON.parse(localStorage.getItem('checkout_info'))
-    if (storedData) {
-      setFormData(storedData)
-    }
-  }, [])
+  //   const storedData = JSON.parse(localStorage.getItem('checkout_info'))
+  //   if (storedData) {
+  //     setFormData(storedData)
+  //   }
+  // }, [])
 
-  //將資料存到localstorage 保存
-  useEffect(() => {
-    localStorage.setItem('checkout_info', JSON.stringify(formData))
-  }, [formData])
+  // //將資料存到localstorage 保存
+  // useEffect(() => {
+  //   localStorage.setItem('checkout_info', JSON.stringify(formData))
+  // }, [formData])
 
-  //由於postcode是設置onlyread 導致onchange無法監聽 因此透過依賴變數方式去改變FormData.postcode
-  useEffect(() => {
-    if (formData.country && formData.township) {
-      const countryIndex = countries.indexOf(formData.country)
-      const townshipIndex = townships[countryIndex].indexOf(formData.township)
-      const newPostcode = postcodes[countryIndex][townshipIndex]
+  // //由於postcode是設置onlyread 導致onchange無法監聽 因此透過依賴變數方式去改變FormData.postcode
+  // useEffect(() => {
+  //   if (formData.country && formData.township) {
+  //     const countryIndex = countries.indexOf(formData.country)
+  //     const townshipIndex = townships[countryIndex].indexOf(formData.township)
+  //     const newPostcode = postcodes[countryIndex][townshipIndex]
 
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        postcode: newPostcode,
-      }))
-    }
-  }, [formData.country, formData.township])
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       postcode: newPostcode,
+  //     }))
+  //   }
+  // }, [formData.country, formData.township])
 
-  //處理門市資料
-  useEffect(() => {
-    // 確保組件加載完成後再讀取查詢參數
-    if (router.isReady) {
-      const { storeType, storeID, storeName, storeAddress } = router.query
+  // //處理門市資料
+  // useEffect(() => {
+  //   // 確保組件加載完成後再讀取查詢參數
+  //   if (router.isReady) {
+  //     const { storeType, storeID, storeName, storeAddress } = router.query
 
-      // 設置門市資訊到狀態，同時保留其他已有的狀態資料
-      setFormData((currentFormData) => ({
-        ...currentFormData, // 保留原有資料
-        shipping: storeType || currentFormData.shipping, // 更新storeID，如果不存在則保留原有值
-        storeID: storeID || currentFormData.storeID, // 更新storeID，如果不存在則保留原有值
-        storeName: storeName || currentFormData.storeName, // 更新storeName，如果不存在則保留原有值
-        storeAddress: storeAddress || currentFormData.storeAddress, // 更新storeAddress，如果不存在則保留原有值
-      }))
-    }
-  }, [router.isReady, router.query]) // 監聽router.query的變化
+  //     // 設置門市資訊到狀態，同時保留其他已有的狀態資料
+  //     setFormData((currentFormData) => ({
+  //       ...currentFormData, // 保留原有資料
+  //       shipping: storeType || currentFormData.shipping, // 更新storeID，如果不存在則保留原有值
+  //       storeID: storeID || currentFormData.storeID, // 更新storeID，如果不存在則保留原有值
+  //       storeName: storeName || currentFormData.storeName, // 更新storeName，如果不存在則保留原有值
+  //       storeAddress: storeAddress || currentFormData.storeAddress, // 更新storeAddress，如果不存在則保留原有值
+  //     }))
+  //   }
+  // }, [router.isReady, router.query]) // 監聽router.query的變化
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target
 
-    //當country選取時重置township&postcode
-    if (name === 'country') {
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-        township: '',
-        postcode: '',
-      }))
-    }
+  //   //當country選取時重置township&postcode
+  //   if (name === 'country') {
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       [name]: value,
+  //       township: '',
+  //       postcode: '',
+  //     }))
+  //   }
 
-    //當門市重新選取時重置
-    if (name === 'shipping') {
-      const isNotHomeDelivery = value !== '宅配'
-      const newShippingFee = isNotHomeDelivery ? '80' : '200'
+  //   //當門市重新選取時重置
+  //   if (name === 'shipping') {
+  //     const isNotHomeDelivery = value !== '宅配'
+  //     const newShippingFee = isNotHomeDelivery ? '80' : '200'
 
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        // 當更改運送方式時，根據選擇重置或保持門市資料
-        storeType: isNotHomeDelivery ? '' : prevFormData.storeType,
-        storeID: isNotHomeDelivery ? '' : prevFormData.storeID,
-        storeName: isNotHomeDelivery ? '' : prevFormData.storeName,
-        storeAddress: isNotHomeDelivery ? '' : prevFormData.storeAddress,
-        // 更新shipping值和運費
-        [name]: value,
-        shippingFee: newShippingFee,
-      }))
-    }
-    if (name === 'invoiceType') {
-      // 檢查是否正在更改發票類型
-      // 如果發票類型不是3，則將手機載具的資料設為空值
-      const mobileBarcodeValue = value === '3' ? formData.mobileBarcode : ''
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-        mobileBarcode: mobileBarcodeValue,
-      }))
-    } else {
-      // 對於其他情況，正常更新表單資料
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        [name]: value,
-      }))
-    }
-  }
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       // 當更改運送方式時，根據選擇重置或保持門市資料
+  //       storeType: isNotHomeDelivery ? '' : prevFormData.storeType,
+  //       storeID: isNotHomeDelivery ? '' : prevFormData.storeID,
+  //       storeName: isNotHomeDelivery ? '' : prevFormData.storeName,
+  //       storeAddress: isNotHomeDelivery ? '' : prevFormData.storeAddress,
+  //       // 更新shipping值和運費
+  //       [name]: value,
+  //       shippingFee: newShippingFee,
+  //     }))
+  //   }
+  //   if (name === 'invoiceType') {
+  //     // 檢查是否正在更改發票類型
+  //     // 如果發票類型不是3，則將手機載具的資料設為空值
+  //     const mobileBarcodeValue = value === '3' ? formData.mobileBarcode : ''
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       [name]: value,
+  //       mobileBarcode: mobileBarcodeValue,
+  //     }))
+  //   } else {
+  //     // 對於其他情況，正常更新表單資料
+  //     setFormData((prevFormData) => ({
+  //       ...prevFormData,
+  //       [name]: value,
+  //     }))
+  //   }
+  // }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    // 必填所有表格欄位
-    if (
-      !formData.firstName ||
-      !formData.lastName ||
-      !formData.email ||
-      !formData.mobilePhone
-    ) {
-      alert('請填寫所有資料')
-      return // 阻止提交
-    }
+  // const handleSubmit = (e) => {
+  //   e.preventDefault()
+  //   // 必填所有表格欄位
+  //   if (
+  //     !formData.firstName ||
+  //     !formData.lastName ||
+  //     !formData.email ||
+  //     !formData.mobilePhone
+  //   ) {
+  //     alert('請填寫所有資料')
+  //     return // 阻止提交
+  //   }
 
-    if (formData.invoiceType === '3' && !formData.mobileBarcode) {
-      alert('請填寫手機條碼')
-      return // 阻止提交
-    }
+  //   if (formData.invoiceType === '3' && !formData.mobileBarcode) {
+  //     alert('請填寫手機條碼')
+  //     return // 阻止提交
+  //   }
 
-    console.log(formData) // 處理表單數據...
-    router.push('/cart/confirmation')
-  }
+  //   console.log(formData) // 處理表單數據...
+  //   router.push('/cart/confirmation')
+  // }
 
   return (
     <>

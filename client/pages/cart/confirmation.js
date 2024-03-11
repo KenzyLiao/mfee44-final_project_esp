@@ -21,41 +21,76 @@ export default function Confirmation() {
     cartGeneral,
     formatPrice,
     selectCoupon,
+    formData,
   } = useCart()
-
-  const [formData, setFormData] = useState({})
-
-  const router = useRouter()
+  console.log(totalPrice)
 
   //linePay資料使用
   const [linePayOrder, setLinePayOrder] = useState({})
   console.log(linePayOrder)
+  const router = useRouter()
 
-  useEffect(() => {
-    // 從 localStorage 中恢復結帳資訊，這保證了代碼只在客戶端執行
-    const clientCheckoutInfo =
-      JSON.parse(localStorage.getItem('checkout_info')) || {}
-    setFormData(clientCheckoutInfo)
-  }, [])
+  // const [formData, setFormData] = useState({})
 
-  useEffect(() => {
-    // 監聽 selectCoupon 的變化，僅更新優惠券資訊，同時保留其他 formData 資訊
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      coupon_id: selectCoupon.id || '',
-      coupon_name: selectCoupon.coupon_name || '無',
-    }))
-  }, [selectCoupon])
+  // useEffect(() => {
+  //   // 從 localStorage 中恢復結帳資訊，這保證了代碼只在客戶端執行
+  //   const clientCheckoutInfo =
+  //     JSON.parse(localStorage.getItem('checkout_info')) || {}
+  //   setFormData(clientCheckoutInfo)
+  // }, [])
 
-  useEffect(() => {
-    // 當 formData 更新時，將其保存到 localStorage
-    localStorage.setItem('checkout_info', JSON.stringify(formData))
-  }, [formData])
+  // useEffect(() => {
+  //   // 監聽 selectCoupon 的變化，僅更新優惠券資訊，同時保留其他 formData 資訊
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     coupon_id: selectCoupon.id || null,
+  //     coupon_name: selectCoupon.coupon_name || '無',
+  //   }))
+  // }, [selectCoupon])
+
+  // useEffect(() => {
+  //   // 當 formData 更新時，將其保存到 localStorage
+  //   localStorage.setItem('checkout_info', JSON.stringify(formData))
+  // }, [formData])
 
   /* 後端請求建立訂單 建立訂單到server,packages與order id由server產生 */
   const creatOrder = async () => {
     // products將會組合在packages屬性之下
     try {
+      // 由於linepay不支持另外計算優惠卷與運費,因此我們要算出每樣商品處理完（優惠卷＋運費）後的單一價格 ;暫時不使用,改成打包成一筆資料
+      // const subtotal = cart.reduce(
+      //   (acc, item) => acc + item.price * item.qty,
+      //   0
+      // )
+      // const shippingFee = Number(formData.shippingFee) // 確保這是一個數字
+      // const finalTotalPrice = subtotal + shippingFee // 如果有其他折扣或費用，調整此行
+
+      // let adjustedTotal = 0 // 這將追踪調整後總價的累計
+      // const products = cart.map((item, index) => {
+      //   // 除了最後一項商品外，調整每項商品的價格
+      //   let adjustedPrice =
+      //     index === cart.length - 1
+      //       ? 0
+      //       : Math.round(
+      //           (finalTotalPrice * ((item.price * item.qty) / subtotal)) /
+      //             item.qty
+      //         )
+      //   if (index === cart.length - 1) {
+      //     // 對於最後一項商品，調整其價格以使總和精確符合 finalTotalPrice
+      //     adjustedPrice = Math.round(
+      //       (finalTotalPrice - adjustedTotal) / item.qty
+      //     )
+      //   } else {
+      //     adjustedTotal += adjustedPrice * item.qty // 向運行總計中添加
+      //   }
+      //   return {
+      //     id: item.id,
+      //     name: item.name,
+      //     quantity: item.qty,
+      //     price: adjustedPrice,
+      //   }
+      // })
+
       const res = await fetch(
         'http://localhost:3005/api/line-pay-first/creatOrder',
         {
@@ -64,13 +99,17 @@ export default function Confirmation() {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            amount: cart.reduce((acc, v) => acc + v.qty * v.price, 0),
-            products: cart.map((v) => ({
-              id: v.id,
-              name: v.name,
-              quantity: v.qty,
-              price: v.price,
-            })),
+            amount: totalPrice,
+            products: [
+              {
+                id: Date.now(),
+                name: '墨韻雅筆',
+                imageUrl:
+                  'https://live.staticflickr.com/65535/53580691499_b1dd0e8a55_o.jpg',
+                quantity: 1,
+                price: totalPrice,
+              },
+            ],
             formData,
             cart,
           }),
@@ -151,6 +190,7 @@ export default function Confirmation() {
               rawTotalPrice={rawTotalPrice}
               formatPrice={formatPrice}
               creatOrderAndPay={creatOrderAndPay}
+              shippingFee={formData.shippingFee}
             />
           </div>
           <div className="text-h4 mb-4">我的購物車</div>

@@ -23,7 +23,7 @@ router.post('/ecpay-shippment', async (req, res) => {
   let base_param = {
     MerchantTradeNo: uuid20, // 請帶20碼uid, ex: f0a0d7e9fae1bb72bc93
     ServerReplyURL:
-      'https://49fe-114-34-93-75.ngrok-free.app/api/ecpay-shipping/selectedStoreInfo', // 物流狀況會通知到此URL
+      'http://localhost:3005/api/ecpay-shipping/selectedStoreInfo', // 物流狀況會通知到此URL
     LogisticsType: 'CVS',
     LogisticsSubType: shipping,
     IsCollection: 'N',
@@ -61,33 +61,71 @@ router.post('/create-shipping-order', async (req, res) => {
   const transactionTime = getCurrentTransactionTime()
 
   //構造綠界ＡＰＩ請求數據
-  // 參數值為[PLEASE MODIFY]者，請在每次測試時給予獨特值
+  // c2c物流訂單
+  // let base_param = {
+  //   MerchantTradeNo: uuid20, // 請帶20碼uid, ex: f0a0d7e9fae1bb72bc93, 為aiocheckout時所產生的
+  //   MerchantTradeDate: transactionTime, // 請帶交易時間, ex: 2017/05/17 16:23:45, 為aiocheckout時所產生的
+  //   LogisticsType: 'CVS', //超商取貨：CVS 宅配:Home
+  //   LogisticsSubType: 'UNIMARTC2C', //四大超商物流UNIMART、FAMI、HILIFE、UNIMARTC2C、FAMIC2C、HILIFEC2C、OKMARTC2C  & 黑貓：TCAT
+  //   GoodsAmount: '200',
+  //   CollectionAmount: '200',
+  //   IsCollection: 'Y', //Ｙ:貨到付款  ,預設值為空:純配送
+  //   GoodsName: '墨韻雅筆',
+  //   SenderName: '墨韻雅筆',
+  //   SenderPhone: '29788833',
+  //   SenderCellPhone: '0912345678',
+  //   ReceiverName: '呆呆獸',
+  //   ReceiverPhone: '0229768888',
+  //   ReceiverCellPhone: '0912345678',
+  //   ReceiverEmail: 'tesy@gmail.com',
+  //   TradeDesc: '',
+  //   ServerReplyURL:
+  //     'https://fdaf-2001-b400-e3d3-10c8-7dd8-737f-2fc3-94cc.ngrok-free.app/api/ecpay-shipping/shipment-status-notification', // 物流狀況會通知到此URL,因本地測試無法收到,透過電腦終端設置ngrok轉發過來
+  //   ClientReplyURL: '',
+  //   LogisticsC2CReplyURL: 'http://localhost:3000/',
+  //   Remark: '',
+  //   PlatformID: '',
+  //   ReceiverStoreID: '131386', // 請帶收件人門市代號(統一):991182  測試商店代號(全家):001779 測試商店代號(萊爾富):2001、F227
+  //   ReturnStoreID: '',
+  // }
+
+  //宅配
   let base_param = {
     MerchantTradeNo: uuid20, // 請帶20碼uid, ex: f0a0d7e9fae1bb72bc93, 為aiocheckout時所產生的
     MerchantTradeDate: transactionTime, // 請帶交易時間, ex: 2017/05/17 16:23:45, 為aiocheckout時所產生的
-    LogisticsType: 'CVS',
-    LogisticsSubType: 'OKMARTC2C', //UNIMART、FAMI、HILIFE、UNIMARTC2C、FAMIC2C、HILIFEC2C、OKMARTC2C
-    GoodsAmount: '200',
-    CollectionAmount: '200',
-    IsCollection: '',
-    GoodsName: 'test',
+    LogisticsType: 'Home',
+    LogisticsSubType: 'TCAT', //黑貓
+    GoodsAmount: '10000', //商品價格 1元以上
+    CollectionAmount: 'N',
+    IsCollection: 'N',
+    GoodsName: '墨韻雅筆',
     SenderName: '墨韻雅筆',
     SenderPhone: '29788833',
     SenderCellPhone: '0912345678',
-    ReceiverName: '王小明',
-    ReceiverPhone: '0229768888',
+    ReceiverName: '呆呆獸',
+    ReceiverPhone: '',
     ReceiverCellPhone: '0912345678',
-    ReceiverEmail: 'tesy@gmail.com',
+    ReceiverEmail: '',
     TradeDesc: '',
     ServerReplyURL:
-      'https://49fe-114-34-93-75.ngrok-free.app/api/ecpay-shipping/shipment-status-notification', // 物流狀況會通知到此URL,因本地測試無法收到,透過電腦終端設置ngrok轉發過來
+      'https://fdaf-2001-b400-e3d3-10c8-7dd8-737f-2fc3-94cc.ngrok-free.app/api/ecpay-shipping/shipment-status-notification', // 物流狀況會通知到此URL
     ClientReplyURL: '',
     LogisticsC2CReplyURL: '',
     Remark: '',
     PlatformID: '',
-    ReceiverStoreID: '001328', // 請帶收件人門市代號(統一):991182  測試商店代號(全家):001779 測試商店代號(萊爾富):2001、F227
-    ReturnStoreID: '',
+    SenderZipCode: '115',
+    SenderAddress: '台北市南港區三重路19-1號6-1樓',
+    ReceiverZipCode: '115',
+    ReceiverAddress: '台北市南港區三重路19-1號6-1樓',
+    Temperature: '0001',
+    Distance: '00',
+    Specification: '0001',
+    ScheduledPickupTime: '4',
+    ScheduledDeliveryTime: '4',
+    ScheduledDeliveryDate: '',
+    PackageCount: '',
   }
+
   //綠界API
   let create = new ecpay_logistics()
 

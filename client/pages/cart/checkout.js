@@ -17,6 +17,12 @@ export default function Checkout() {
     cartGeneral,
     formatPrice,
     selectCoupon,
+    handleChange,
+    handleSubmit,
+    formData,
+    countries,
+    townships,
+    postcodes,
   } = useCart()
 
   return (
@@ -24,7 +30,14 @@ export default function Checkout() {
       <div className="row">
         {/* 左邊 */}
         <div className="col-lg-7">
-          <CheckoutProcessForm />
+          <CheckoutProcessForm
+            handleChange={handleChange}
+            handleSubmit={handleSubmit}
+            formData={formData}
+            countries={countries}
+            townships={townships}
+            postcodes={postcodes}
+          />
         </div>
         {/* 右邊 */}
         <div className="col-lg-1 "></div>
@@ -35,6 +48,7 @@ export default function Checkout() {
               totalPrice={totalPrice}
               rawTotalPrice={rawTotalPrice}
               formatPrice={formatPrice}
+              shippingFee={formData.shippingFee}
             />
           </div>
           <div className="text-h4 mb-4 ">我的購物車</div>
