@@ -185,7 +185,7 @@ export default function CheckoutProcessForm({
             <div className="icon-box d-flex mt-4">
               <Form.Check
                 className={`text-h5 text-my-black ${styles['form-check']} `}
-                label="宅配"
+                label="黑貓宅急便"
                 type="radio"
                 name="shipping"
                 id="shippingType1"

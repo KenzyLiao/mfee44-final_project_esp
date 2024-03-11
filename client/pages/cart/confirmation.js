@@ -23,7 +23,6 @@ export default function Confirmation() {
     selectCoupon,
     formData,
   } = useCart()
-  console.log(totalPrice)
 
   //linePay資料使用
   const [linePayOrder, setLinePayOrder] = useState({})
@@ -57,40 +56,6 @@ export default function Confirmation() {
   const creatOrder = async () => {
     // products將會組合在packages屬性之下
     try {
-      // 由於linepay不支持另外計算優惠卷與運費,因此我們要算出每樣商品處理完（優惠卷＋運費）後的單一價格 ;暫時不使用,改成打包成一筆資料
-      // const subtotal = cart.reduce(
-      //   (acc, item) => acc + item.price * item.qty,
-      //   0
-      // )
-      // const shippingFee = Number(formData.shippingFee) // 確保這是一個數字
-      // const finalTotalPrice = subtotal + shippingFee // 如果有其他折扣或費用，調整此行
-
-      // let adjustedTotal = 0 // 這將追踪調整後總價的累計
-      // const products = cart.map((item, index) => {
-      //   // 除了最後一項商品外，調整每項商品的價格
-      //   let adjustedPrice =
-      //     index === cart.length - 1
-      //       ? 0
-      //       : Math.round(
-      //           (finalTotalPrice * ((item.price * item.qty) / subtotal)) /
-      //             item.qty
-      //         )
-      //   if (index === cart.length - 1) {
-      //     // 對於最後一項商品，調整其價格以使總和精確符合 finalTotalPrice
-      //     adjustedPrice = Math.round(
-      //       (finalTotalPrice - adjustedTotal) / item.qty
-      //     )
-      //   } else {
-      //     adjustedTotal += adjustedPrice * item.qty // 向運行總計中添加
-      //   }
-      //   return {
-      //     id: item.id,
-      //     name: item.name,
-      //     quantity: item.qty,
-      //     price: adjustedPrice,
-      //   }
-      // })
-
       const res = await fetch(
         'http://localhost:3005/api/line-pay-first/creatOrder',
         {
@@ -121,14 +86,14 @@ export default function Confirmation() {
       if (data.status === 'success') {
         setLinePayOrder(data.data.order)
       }
-      return data // 返回数据以便进一步处理
+      return data // 
     } catch (error) {
       console.error('創建訂單失敗', error)
       return { status: 'error' } //明確返回一個錯誤狀態,好讓付款函數可以透過狀態判定才去執行,解決延遲問題
     }
   }
 
-  /* 向後端請求付款  導向至LINE Pay付款頁面 (未完成!)*/
+  /* 向後端請求付款  導向至LINE Pay付款頁面 */
   const goLinePay = async (orderId) => {
     if (window.confirm('請確認導向至LINE PAY進行付款嗎？')) {
       window.location.href = `http://localhost:3005/api/line-pay-first/reserve?orderId=${orderId}`
