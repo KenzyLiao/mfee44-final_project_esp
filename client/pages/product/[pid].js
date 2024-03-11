@@ -28,20 +28,29 @@ export default function Detail() {
     if (pid && products.length > 0) {
       const selectedProduct = products.find(
         (product) => product.product_id === parseInt(pid)
-      );
-  
+      )
+
       if (selectedProduct) {
-        const currentProductBrand = selectedProduct.brand_name; // 根據選擇的產品ID取得品牌名稱
+        const currentProductBrand = selectedProduct.brand_name // 根據選擇的產品ID取得品牌名稱
         const sameBrandProducts = products.filter(
           (product) => product.brand_name === currentProductBrand
-        ); // 過濾出相同品牌的商品
-        const filteredProducts = sameBrandProducts.slice(0, 6); // 取得相同品牌的前六個商品
-        setDisplayedProducts(filteredProducts); // 設定顯示的商品
-        setSelectedProduct(selectedProduct); // 設定選擇的產品
+        ) // 過濾出相同品牌的商品
+        const shuffledProducts = shuffleArray(sameBrandProducts) // 洗牌後的商品陣列
+        const randomProducts = shuffledProducts.slice(0, 6) // 取得洗牌後的前六個商品
+        setDisplayedProducts(randomProducts) // 設定顯示的商品
+        setSelectedProduct(selectedProduct) // 設定選擇的產品
       }
     }
-  }, [pid, products]);
-  
+  }, [pid, products])
+
+  // 洗牌函式
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1))
+      ;[array[i], array[j]] = [array[j], array[i]]
+    }
+    return array
+  }
 
   useEffect(() => {
     if (pid && products.length > 0) {
@@ -265,5 +274,4 @@ export default function Detail() {
       )}
     </>
   )
-  
 }
