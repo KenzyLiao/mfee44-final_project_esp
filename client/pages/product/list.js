@@ -1036,13 +1036,14 @@ export default function List() {
                 {/* 循环渲染产品 */}
                 {displayedProducts.length > 0 ? (
                   displayedProducts.map((product) => (
-                    <div className="col" key={product.id}>
+                    <div className="col" key={product.product_id}>
                       <Link
-                        href={`/product/${product.id}`}
+                        href={`/product/${product.product_id}`}
+                        as={`/product/${product.product_id}`}
                         style={{ textDecoration: `none` }}
                       >
                         <ProductFigure
-                          key={product.id}
+                          key={product.product_id}
                           image={`/images/myProduct/${product.image}`}
                           brand={product.brand_name}
                           name={product.name}
