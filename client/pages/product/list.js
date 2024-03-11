@@ -9,7 +9,6 @@ import DialogContent from '@mui/material/DialogContent'
 import Typography from '@mui/material/Typography'
 import Slide from '@mui/material/Slide'
 import Pagination from '@/components/myProduct/pagination'
-import productsData from '@/data/myProduct.json'
 import ScrollToTopButton from '@/components/myProduct/upbutton'
 import Link from 'next/link'
 
@@ -54,14 +53,12 @@ export default function List() {
         setColor(data.colors)
         setBrand(data.brands)
         setMaterial(data.materials)
+
       })
       .catch((error) => console.error('Error:', error))
   }, [])
-  const minPrice = Math.min(...productsData.map((product) => product.price))
-  const maxPrice = Math.max(...productsData.map((product) => product.price))
-
   // 将最小和最大价格用于初始化价格范围
-  const initialPriceRange = [minPrice, maxPrice]
+  const initialPriceRange = [1, 50000]
   const [priceRange, setPriceRange] = useState(initialPriceRange) // 默认价格区间
   const formatPrice = (price) => {
     const numericPrice = parseFloat(price)
@@ -596,11 +593,11 @@ export default function List() {
                       <div id="panelsStayOpen-collapseThree">
                         <div className="mt-5">
                           <Slider
-                            min={minPrice} // 使用动态计算的最小价格
-                            max={maxPrice} // 使用动态计算的最大价格
+                            min={1} // 使用动态计算的最小价格
+                            max={50000} // 使用动态计算的最大价格
                             step={100}
                             range
-                            defaultValue={[minPrice, maxPrice]} // 默认值设为动态计算的最小和最大价格
+                            defaultValue={[1, 50000]} // 默认值设为动态计算的最小和最大价格
                             value={priceRange}
                             onChange={handlePriceChange}
                           />
@@ -1007,11 +1004,11 @@ export default function List() {
                       >
                         <div style={{ margin: '20px' }}>
                           <Slider
-                            min={minPrice} // 使用动态计算的最小价格
-                            max={maxPrice} // 使用动态计算的最大价格
+                            min={1} // 使用动态计算的最小价格
+                            max={50000} // 使用动态计算的最大价格
                             step={100}
                             range
-                            defaultValue={[minPrice, maxPrice]} // 默认值设为动态计算的最小和最大价格
+                            defaultValue={[1, 50000]} // 默认值设为动态计算的最小和最大价格
                             value={priceRange}
                             onChange={handlePriceChange}
                           />
