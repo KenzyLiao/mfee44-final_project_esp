@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
 const MemberProfile = () => {
-  // 初始化用户数据结构
+  // 初始化用戶結構
   const [user, setUser] = useState({
     title: '',
     firstname: '',
     lastname: '',
-    email: '', // 根据需要添加更多字段
+    email: '', // 根據需要添加
   })
   const [loading, setLoading] = useState(true)
 
@@ -26,7 +26,7 @@ const MemberProfile = () => {
         }
 
         const data = await response.json()
-        setUser(data) // 假设返回的data直接是用户对象
+        setUser(data)
       } catch (error) {
         console.error('Failed to fetch user data', error)
       } finally {
@@ -282,6 +282,7 @@ const MemberProfile = () => {
           width: 528px;
           max-width: 100%;
           height: 48px;
+          padding: 0px 10px;
         }
         .field-lastname {
           color: #19110b;
@@ -300,6 +301,7 @@ const MemberProfile = () => {
           width: 528px;
           max-width: 100%;
           height: 48px;
+          padding: 0px 10px;
         }
         .field-email {
           color: #19110b;
@@ -318,6 +320,7 @@ const MemberProfile = () => {
           width: 528px;
           max-width: 100%;
           height: 48px;
+          padding: 0px 10px;
         }
         .field-password {
           color: #19110b;
