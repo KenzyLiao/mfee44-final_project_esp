@@ -1,7 +1,6 @@
 import express from 'express'
 import mydb from '../configs/mydb.js'
 import mysql from 'mysql2'
-import { ro } from '@faker-js/faker'
 const router = express.Router()
 
 router.get('/set_total_minute', async (req, res) => {
@@ -17,12 +16,14 @@ router.get('/set_total_minute', async (req, res) => {
     const [rows2] = await mydb.execute(
       `SELECT * FROM course_units WHERE course_id = ${row.id}`
     )
+    row.units = rows2
     let total_minute = 0
     let total_second = 0
     for (const unit of rows2) {
       const [rows3] = await mydb.execute(
         `SELECT * FROM course_sub_units WHERE unit_id = ${unit.id}`
       )
+      unit.sub_units = rows3
       for (const sub_unit of rows3) {
         let min = Number(sub_unit.video_len.split(':')[0])
         let sec = Number(sub_unit.video_len.split(':')[1])
@@ -31,26 +32,11 @@ router.get('/set_total_minute', async (req, res) => {
       }
     }
     total_minute += Math.floor(total_second / 60)
-    console.log('total_minute:', total_minute, 'total_second:', total_second)
-
     row.total_minute = total_minute
-    // await mydb.execute(
-    //   `UPDATE product SET total_minute = ${total_minute} WHERE id = ${row.id}`
-    // )
+    await mydb.execute(
+      `UPDATE course_product SET total_minute = ${total_minute} WHERE product_id = ${row.id}`
+    )
   })
-  // res.status(200).send({ message: 'success' })
-  // const [rows2] = await mydb.execute(`SELECT * FROM course_units`)
-  // rows[0].units = rows2
-  // for (const unit of rows[0].units) {
-  //   const [rows3] = await mydb.execute(
-  //     `SELECT * FROM course_sub_units WHERE unit_id = ${unit.id}`
-  //   )
-  //   unit.sub_units = rows3
-  // }
-  // if (rows.length === 0) {
-  //   res.status(404).send({ message: 'Course Not found' })
-  //   return
-  // }
   res.status(200).send(rows)
 })
 
@@ -132,11 +118,13 @@ router.get('/:id', async (req, res) => {
     return
   }
   const [rows] = await mydb.execute(
-    `SELECT product.*, course_product.*, course_category.category_name, course_teacher.name AS teacher_name, course_teacher.image AS teacher_image,course_teacher.introduction AS teacher_introduction
+    `SELECT product.*, course_product.*, course_category.category_name, course_teacher.name AS teacher_name, course_teacher.image AS teacher_image,course_teacher.introduction AS teacher_introduction,
+    course_news.title AS news_title, course_news.content AS news_content, course_news.date AS news_date
     FROM product  
     JOIN course_product ON product.id = course_product.product_id 
     JOIN course_category ON course_product.category_id = course_category.id
     JOIN course_teacher ON course_product.teacher_id = course_teacher.id
+    JOIN course_news ON course_product.product_id = course_news.course_id
     WHERE product.product_type = 2
     AND product.valid = 1 
     AND product.id = ${req.params.id}`
