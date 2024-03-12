@@ -1,4 +1,5 @@
 import React from 'react'
+import Link from 'next/link'
 
 export default function UserCoupon({ key, coupon_name, discount, limit_time }) {
   console.log(key)
@@ -20,9 +21,10 @@ export default function UserCoupon({ key, coupon_name, discount, limit_time }) {
               {/* 有效期限：2024.12.31 */}
               {limit_time}
             </p>
-            <a href="#" className="button">
+            <Link 
+            href={`/product/list`} className="button">
               開始購物
-            </a>
+            </Link>
           </div>
         </div>
       </div>
