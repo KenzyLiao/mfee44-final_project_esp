@@ -77,7 +77,7 @@ export default function Detail() {
           <div className="row mt-5">
             <div className="col-lg-7 my-3">
               <div className="position-sticky" style={{ top: '2rem' }}>
-                <Carousel products={products} pid={pid}/>
+                <Carousel products={products} pid={pid} />
               </div>
             </div>
             <div className="col-lg-5 my-3">

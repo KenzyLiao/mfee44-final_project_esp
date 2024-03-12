@@ -24,43 +24,12 @@ export default function List() {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleSubmit = () => {
-    // 处理提交逻辑
-    setOpen(false) // 提交后关闭模态
+    // 處理提交邏輯
+    setOpen(false) // 提交後關閉模態
   }
 
-  useEffect(() => {
-    const checkIsMobile = () => {
-      setIsMobile(window.innerWidth <= 991)
-    }
-
-    // 初始加载时触发一次检测
-    checkIsMobile()
-
-    // 监听窗口大小变化
-    window.addEventListener('resize', checkIsMobile)
-
-    // 在清理函数中移除事件监听器
-    return () => {
-      window.removeEventListener('resize', checkIsMobile)
-    }
-  }, [setIsMobile])
-  let fetchUrl = 'http://localhost:3005/api/myProduct?'
-  useEffect(() => {
-    fetch(fetchUrl)
-      .then((response) => response.json())
-      .then((data) => {
-        setProduct(data.products)
-        setNib(data.nibs)
-        setColor(data.colors)
-        setBrand(data.brands)
-        setMaterial(data.materials)
-      })
-      .catch((error) => console.error('Error:', error))
-  }, [fetchUrl])
-
-  // 将最小和最大价格用于初始化价格范围
   const initialPriceRange = [1, 50000]
-  const [priceRange, setPriceRange] = useState(initialPriceRange) // 默认价格区间
+  const [priceRange, setPriceRange] = useState(initialPriceRange) // 默認價格區間
   const formatPrice = (price) => {
     const numericPrice = parseFloat(price)
     return numericPrice.toLocaleString()
@@ -127,17 +96,17 @@ export default function List() {
 
   const [currentPage, setCurrentPage] = useState(1)
   const productsPerPage = 12
-  const totalPages = Math.ceil(product.length / productsPerPage)
+  const [totalPages, setTotalPages] = useState(0) // 總頁數
   const startIndex = (currentPage - 1) * productsPerPage
   const endIndex = Math.min(startIndex + productsPerPage, product.length)
 
-  // 处理页码变化的函数
+  // 處理頁碼變化的函數
   const handlePageChange = (page) => {
-    // 这里可以根据页码做一些处理，例如获取新的产品列表等
+    // 這裡可以根據頁碼做一些處理，例如獲取新的產品列表等
     setCurrentPage(page)
   }
   const filteredProducts = product.filter((product) => {
-    // 如果没有选择，则显示所有产品
+    // 如果沒有選擇，則顯示所有產品
     if (
       selectedColors.length === 0 &&
       selectedNibs.length === 0 &&
@@ -149,28 +118,28 @@ export default function List() {
       return true
     }
 
-    // 检查产品的颜色是否在选择的颜色中
+    // 檢查產品的顏色是否在選擇的顏色中
     const isColorMatched =
       selectedColors.length === 0 || selectedColors.includes(product.color_name)
 
-    // 检查产品的笔尖是否在选择的笔尖中
+    // 檢查產品的筆尖是否在選擇的筆尖中
     const isNibMatched =
       selectedNibs.length === 0 || selectedNibs.includes(product.nib_name)
 
-    // 检查产品的材质是否在选择的材质中
+    // 檢查產品的材質是否在選擇的材質中
     const isMaterialMatched =
       selectedMaterials.length === 0 ||
       selectedMaterials.includes(product.material_name)
 
-    // 检查产品的价格是否在选择的价格范围内
+    // 檢查產品的價格是否在選擇的價格範圍內
     const isPriceMatched =
       product.price >= priceRange[0] && product.price <= priceRange[1]
 
-    // 检查产品的品牌是否与选择的品牌匹配
+    // 檢查產品的品牌是否與選擇的品牌匹配
     const isBrandMatched =
       selectedBrand === '' || selectedBrand === product.brand_name
 
-    // 返回是否满足所有选择条件
+    // 返回是否滿足所有選擇條件
     return (
       isColorMatched &&
       isNibMatched &&
@@ -181,27 +150,81 @@ export default function List() {
   })
 
   useEffect(() => {
-    setCurrentPage(1) // 筛选条件变化时重置页码为第一页
+    setCurrentPage(1) // 篩選條件變化時重置頁碼為第一頁
   }, [selectedColors, selectedNibs, selectedMaterials, priceRange])
 
   const displayedProducts = filteredProducts.slice(startIndex, endIndex)
 
-  if (sortingOption === 'newest') {
-    fetchUrl += 'sort=newest'
-  }
-  if (selectedColors.length > 0) {
-    fetchUrl += `colors=${selectedColors}`
-  }
-  if (selectedBrand.length > 0) {
-    fetchUrl += `brands=${selectedBrand}`
-  }
-  if (selectedNibs.length > 0) {
-    fetchUrl += `nibs=${selectedNibs}`
-  }
-  if (selectedMaterials.length > 0) {
-    fetchUrl += `materials=${selectedMaterials}`
-  }
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 991)
+    }
 
+    // 初始加載時觸發一次檢測
+    checkIsMobile()
+
+    // 監聽窗口大小變化
+    window.addEventListener('resize', checkIsMobile)
+
+    // 在清理函數中移除事件監聽器
+    return () => {
+      window.removeEventListener('resize', checkIsMobile)
+    }
+  }, [setIsMobile])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      // 構建 fetchUrl
+      let updatedFetchUrl = 'http://localhost:3005/api/myProduct?'
+
+      // 根據排序選項添加對應的排序方式到 fetchUrl
+      if (sortingOption !== '') {
+        updatedFetchUrl += `sortingOption=${sortingOption}&`
+      }
+
+      // 加入其他篩選條件到 fetchUrl
+      if (selectedColors.length > 0) {
+        updatedFetchUrl += `colors=${selectedColors}&`
+      }
+      if (selectedBrand.length > 0) {
+        updatedFetchUrl += `brands=${selectedBrand}&`
+      }
+      if (selectedNibs.length > 0) {
+        updatedFetchUrl += `nibs=${selectedNibs}&`
+      }
+      if (selectedMaterials.length > 0) {
+        updatedFetchUrl += `materials=${selectedMaterials}&`
+      }
+
+      // 移除最後的 '&' 符號
+      updatedFetchUrl = updatedFetchUrl.slice(0, -1)
+
+      try {
+        const response = await fetch(updatedFetchUrl)
+        const data = await response.json()
+
+        // 更新狀態
+        setProduct(data.products)
+        setNib(data.nibs)
+        setColor(data.colors)
+        setBrand(data.brands)
+        setMaterial(data.materials)
+        setTotalPages(data.totalPages)
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    }
+
+    fetchData()
+  }, [
+    sortingOption,
+    selectedColors,
+    selectedBrand,
+    selectedNibs,
+    selectedMaterials,
+  ])
+
+  console.log(totalPages)
   return (
     <>
       <div className="row mt-2 mb-3">
@@ -233,7 +256,10 @@ export default function List() {
                           sortingOption === 'newest' ? 'active' : ''
                         }`}
                         href="#"
-                        onClick={() => setSortingOption('newest')}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setSortingOption('newest')
+                        }}
                       >
                         最新上架
                       </a>
@@ -244,7 +270,10 @@ export default function List() {
                           sortingOption === 'high-to-low' ? 'active' : ''
                         }`}
                         href="#"
-                        onClick={() => setSortingOption('high-to-low')}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setSortingOption('high-to-low')
+                        }}
                       >
                         價格：由高至低
                       </a>
@@ -255,7 +284,10 @@ export default function List() {
                           sortingOption === 'low-to-high' ? 'active' : ''
                         }`}
                         href="#"
-                        onClick={() => setSortingOption('low-to-high')}
+                        onClick={(e) => {
+                          e.preventDefault()
+                          setSortingOption('low-to-high')
+                        }}
                       >
                         價格：由低至高
                       </a>

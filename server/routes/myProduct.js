@@ -2,24 +2,33 @@ import express from 'express'
 import mydb from '##/configs/mydb.js'
 
 const router = express.Router()
-let sql = `SELECT 
-p.id AS product_id, p.name, p.product_type, p.price, p.description, p.image, p.updated_at,
-g.product_id, g.brand_id, g.nib_id, g.material_id, g.color_id, g.stock, g.series,
-b.brand_id, b.brand_name,
-n.nib_id, n.nib_name,
-m.material_id, m.material_name,
-c.color_id, c.color_name, c.color_bg
-FROM 
-product AS p
-INNER JOIN general_product AS g ON p.id = g.product_id
-INNER JOIN brand AS b ON g.brand_id = b.brand_id
-INNER JOIN nib AS n ON g.nib_id = n.nib_id
-INNER JOIN material AS m ON g.material_id = m.material_id
-INNER JOIN color AS c ON g.color_id = c.color_id
-WHERE product_type = 1`
 
 router.get('/', async (req, res) => {
   try {
+    let sql = `SELECT 
+      p.id AS product_id, p.name, p.product_type, p.price, p.description, p.image, p.updated_at,
+      g.product_id, g.brand_id, g.nib_id, g.material_id, g.color_id, g.stock, g.series,
+      b.brand_id, b.brand_name,
+      n.nib_id, n.nib_name,
+      m.material_id, m.material_name,
+      c.color_id, c.color_name, c.color_bg
+      FROM 
+      product AS p
+      INNER JOIN general_product AS g ON p.id = g.product_id
+      INNER JOIN brand AS b ON g.brand_id = b.brand_id
+      INNER JOIN nib AS n ON g.nib_id = n.nib_id
+      INNER JOIN material AS m ON g.material_id = m.material_id
+      INNER JOIN color AS c ON g.color_id = c.color_id
+      WHERE product_type = 1`
+    if (req.query.sortingOption === 'newest') {
+      sql += ` ORDER BY p.updated_at ASC`
+    }
+    if (req.query.sortingOption === 'low-to-high') {
+      sql += ` ORDER BY p.price ASC`
+    }
+    if (req.query.sortingOption === 'high-to-low') {
+      sql += ` ORDER BY p.price DESC`
+    }
     // 使用 Promise 包装数据库查询
     const [products] = await mydb.execute(sql)
 
@@ -27,10 +36,9 @@ router.get('/', async (req, res) => {
     const [colors] = await mydb.execute(`SELECT * FROM color`)
     const [brands] = await mydb.execute(`SELECT * FROM brand`)
     const [materials] = await mydb.execute(`SELECT * FROM material`)
-
-    if (req.query.sortingOption === 'newest') {
-      sql += ` ORDER BY p.updated_at DESC`
-    }
+    const productsPerPage = 12
+    const totalPages = Math.ceil(products.length / productsPerPage)
+    console.log(totalPages)
 
     if (req.query.nibs) {
       const nibs = req.query.nibs
@@ -61,12 +69,14 @@ router.get('/', async (req, res) => {
       sql += ` AND material_name IN (${materials})`
     }
     console.log(sql)
+
     res.send({
       products: products,
       nibs: nibs,
       colors: colors,
       brands: brands,
       materials: materials,
+      totalPages: totalPages,
     })
   } catch (err) {
     // 发生错误时返回 500 错误

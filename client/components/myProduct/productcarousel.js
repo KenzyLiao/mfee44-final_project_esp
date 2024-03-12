@@ -6,7 +6,6 @@ import 'swiper/css/navigation'
 import 'swiper/css/thumbs'
 import { Autoplay, FreeMode, Navigation, Thumbs } from 'swiper/modules'
 
-// 根据产品图片命名规则生成图片数组
 const getProductImages = (imageName) => {
   // 提取基础名称
   const baseName = imageName.split('-')[0]
@@ -20,16 +19,15 @@ const getProductImages = (imageName) => {
 
 export default function Carousel({ products, pid }) {
   const [thumbsSwiper, setThumbsSwiper] = useState(null)
-
-  // 使用 useMemo 缓存所有产品的图片数组
-  const allProductImages = useMemo(() => {
-    return products.map((product) => getProductImages(product.image)).flat()
-  }, [products])
-
-  // 过滤只包含当前产品图片的数组
-  const currentProductImages = allProductImages.filter((image) =>
-    image.includes(products[pid].image.split('-')[0])
-  )
+  const product = products.find((product) => product.product_id == pid)
+  // 使用 useMemo 缓存特定产品的图片数组
+  const currentProductImages = useMemo(() => {
+    // 找到与 pid 对应的产品
+    // 如果找到了相应的产品，则生成与该产品相关的图片数组
+    if (product) {
+      return getProductImages(product.image)
+    }
+  }, [product])
 
   return (
     <>
