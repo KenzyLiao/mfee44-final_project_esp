@@ -109,7 +109,6 @@ export default function List() {
   const handlePageChange = (page) => {
     // 這裡可以根據頁碼做一些處理，例如獲取新的產品列表等
     setCurrentPage(page)
-    window.location.reload()
   }
   const filteredProducts = product.filter((product) => {
     // 如果没有选择条件，返回 true
@@ -162,8 +161,11 @@ export default function List() {
   })
 
   useEffect(() => {
-    setCurrentPage(1) // 篩選條件變化時重置頁碼為第一頁
-  }, [selectedColors, selectedNibs, selectedMaterials, priceRange, searchQuery])
+    // 只有在当前页面不是第一页时才重置为第一页
+    if (currentPage !== 1) {
+      setCurrentPage(1);
+    }
+  }, [selectedColors, selectedNibs, selectedMaterials, priceRange, searchQuery]);
 
   const displayedProducts = filteredProducts.slice(startIndex, endIndex)
 
@@ -246,6 +248,7 @@ export default function List() {
         setTotalPages(data.totalPages)
 
         window.history.pushState({}, '', newUrl.toString())
+        console.log(totalPages)
       } catch (error) {
         console.error('Error:', error)
       }
@@ -260,7 +263,7 @@ export default function List() {
     selectedMaterials,
     searchQuery,
   ])
-
+  
   return (
     <>
       <div className="row mt-2 mb-3">

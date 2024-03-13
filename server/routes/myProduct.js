@@ -20,26 +20,8 @@ router.get('/', async (req, res) => {
       INNER JOIN material AS m ON g.material_id = m.material_id
       INNER JOIN color AS c ON g.color_id = c.color_id
       WHERE product_type = 1`
-    if (req.query.sortingOption === 'newest') {
-      sql += ` ORDER BY p.updated_at ASC`
-    }
-    if (req.query.sortingOption === 'low-to-high') {
-      sql += ` ORDER BY p.price ASC`
-    }
-    if (req.query.sortingOption === 'high-to-low') {
-      sql += ` ORDER BY p.price DESC`
-    }
-    // 使用 Promise 包装数据库查询
-    const [products] = await mydb.execute(sql)
 
-    const [nibs] = await mydb.execute(`SELECT * FROM nib`)
-    const [colors] = await mydb.execute(`SELECT * FROM color`)
-    const [brands] = await mydb.execute(`SELECT * FROM brand`)
-    const [materials] = await mydb.execute(`SELECT * FROM material`)
-    const productsPerPage = 12
-    const totalPages = Math.ceil(products.length / productsPerPage)
-    console.log(totalPages)
-
+    // 构建筛选条件
     if (req.query.nibs) {
       const nibs = req.query.nibs
         .split(',')
@@ -68,7 +50,28 @@ router.get('/', async (req, res) => {
         .join(',')
       sql += ` AND material_name IN (${materials})`
     }
-    console.log(sql)
+
+    // 构建排序条件
+    if (req.query.sortingOption === 'newest') {
+      sql += ` ORDER BY p.updated_at ASC`
+    }
+    if (req.query.sortingOption === 'low-to-high') {
+      sql += ` ORDER BY p.price ASC`
+    }
+    if (req.query.sortingOption === 'high-to-low') {
+      sql += ` ORDER BY p.price DESC`
+    }
+
+    // 使用 Promise 包装数据库查询
+    const [products] = await mydb.execute(sql)
+
+    const [nibs] = await mydb.execute(`SELECT * FROM nib`)
+    const [colors] = await mydb.execute(`SELECT * FROM color`)
+    const [brands] = await mydb.execute(`SELECT * FROM brand`)
+    const [materials] = await mydb.execute(`SELECT * FROM material`)
+    const productsPerPage = 12
+    const totalPages = Math.ceil(products.length / productsPerPage)
+    console.log(totalPages)
 
     res.send({
       products: products,
