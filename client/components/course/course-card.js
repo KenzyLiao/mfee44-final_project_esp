@@ -25,7 +25,7 @@ export default function CourseCard({
               width: '100%',
               paddingTop: '56.25%', // 9 / 16 = 0.5625
               background: `url(http://localhost:3005/course/images/course_${
-                image.split('_')[1].split('.')[0] % 14
+                image.split('_')[1].split('.')[0] % 25
               }.jpg) no-repeat center center / cover`,
             }}
             variant="top"
