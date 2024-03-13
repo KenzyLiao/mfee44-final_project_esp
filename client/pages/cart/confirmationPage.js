@@ -47,8 +47,6 @@ export default function ConfirmationPage() {
 
       if (data.status === 'success') {
         toast.success('付款成功')
-      } else {
-        toast.error('付款失敗')
       }
 
       if (data.data) {

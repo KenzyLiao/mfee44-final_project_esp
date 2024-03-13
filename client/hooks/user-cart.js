@@ -298,7 +298,6 @@ export function CartProvider({ children }) {
 
   //計算總金額 （扣掉優惠卷與運費） -未完成優惠卷邏輯
 
-  // 计算总金额（考虑运费和优惠券折扣）
   useEffect(() => {
     const numericShippingFee = Number(formData.shippingFee)
     let discountAmount = 0
@@ -317,7 +316,6 @@ export function CartProvider({ children }) {
     // 假设你有一个状态来存储最终的总金额
     setTotalPrice(newTotalPrice)
   }, [cart, formData.shippingFee, selectCoupon])
-  console.log(totalPrice)
 
   /* confirmation */
 
