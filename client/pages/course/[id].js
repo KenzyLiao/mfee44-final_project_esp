@@ -9,6 +9,8 @@ import Image from 'next/image'
 import { BsArrowDown, BsArrowUp } from 'react-icons/bs'
 import CourseSubInfo from '@/components/course/course-sub-info'
 
+import { useCart } from '@/hooks/user-cart'
+
 import {
   BsBookmarkCheckFill,
   BsFillStarFill,
@@ -17,6 +19,7 @@ import {
 } from 'react-icons/bs'
 
 export default function CoursePage() {
+  const { addCartItem } = useCart()
   // const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
   const router = useRouter()
   const { id } = router.query
@@ -52,7 +55,7 @@ export default function CoursePage() {
     price,
     description,
     image,
-    teacher_name,
+    teacher,
     teacher_image,
     rank,
     total_minute,
@@ -64,6 +67,10 @@ export default function CoursePage() {
     news_date,
     news_content,
   } = data
+  let data_send = { ...data }
+  let image_name = 'course_' + (image.split('_')[1].split('.')[0] % 25) + '.jpg'
+  data_send.image = 'http://localhost:3005/course/images/' + image_name
+  data_send.url = 'http://localhost:3000/course/' + id
 
   const sub_units_num = units
     .map((v) => v.sub_units.length)
@@ -79,6 +86,7 @@ export default function CoursePage() {
   // })
 
   // const total_video_minute = min + Math.floor(sec / 60)
+  console.log(data[0])
 
   return (
     <>
@@ -111,7 +119,7 @@ export default function CoursePage() {
                 </div>
                 {/* 老師名字 */}
                 <div className="teacher_info">
-                  <p className="text-h5 mb-0">{`${teacher_name}`}</p>
+                  <p className="text-h5 mb-0">{`${teacher}`}</p>
                 </div>
               </div>
               {/* 課程介紹 */}
@@ -350,7 +358,7 @@ export default function CoursePage() {
                       />
                     </div>
                     <div className="teacher-info-item-title-info d-flex align-items-center">
-                      <p className="text-h3 mb-0 mx-3">{teacher_name}</p>
+                      <p className="text-h3 mb-0 mx-3">{teacher}</p>
                     </div>
                   </div>
                 </div>
@@ -368,9 +376,14 @@ export default function CoursePage() {
                 NT${price.toLocaleString()}
               </p>
               <div className="d-flex flex-column flex-xl-row">
-                <a className="text-decoration-none collect-btn border1 px-2 text-center">
+                <div
+                  className="text-decoration-none collect-btn border1 px-2 text-center"
+                  onClick={() => {
+                    addCartItem(data_send)
+                  }}
+                >
                   <BsFillCartFill className="mb-1" /> 加入購物車
-                </a>
+                </div>
               </div>
             </div>
           </aside>

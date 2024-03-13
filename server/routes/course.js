@@ -152,7 +152,7 @@ router.get('/:id', async (req, res) => {
     return
   }
   const [rows] = await mydb.execute(
-    `SELECT product.*, course_product.*, course_category.category_name, course_teacher.name AS teacher_name, course_teacher.image AS teacher_image,course_teacher.introduction AS teacher_introduction,
+    `SELECT product.*, course_product.*, course_category.category_name as category, course_teacher.name AS teacher, course_teacher.image AS teacher_image,course_teacher.introduction AS teacher_introduction,
     course_news.title AS news_title, course_news.content AS news_content, course_news.date AS news_date
     FROM product  
     JOIN course_product ON product.id = course_product.product_id 
@@ -163,6 +163,7 @@ router.get('/:id', async (req, res) => {
     AND product.valid = 1 
     AND product.id = ${req.params.id}`
   )
+  rows[0].type = 'course'
   const [rows2] = await mydb.execute(
     `SELECT * FROM course_units WHERE course_id = ${req.params.id}`
   )

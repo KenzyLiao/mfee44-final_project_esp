@@ -28,13 +28,17 @@ export default function CoursePage() {
   ]
   const [data, setData] = useState([])
   useEffect(() => {
-    fetch('http://localhost:3005/api/course')
-      .then((response) => response.json())
-      .then((data) => setData(data))
-      .catch((error) => console.error('Error:', error))
+    const fetchData = async () => {
+      try {
+        const response = await fetch('http://localhost:3005/api/course')
+        const data = await response.json()
+        setData(data)
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    }
+    fetchData()
   }, [])
-  // console.log('text', data[2])
-  // console.log('painting', data[3])
 
   return (
     <>
@@ -49,22 +53,27 @@ export default function CoursePage() {
           <CardGroup data={data} />
         </div>
       ))} */}
-      <div className="mb-5">
-        <CardGroupTitle {...titleData[1]} />
-        <CardGroup data={data[0]} />
-      </div>
-      <div className="mb-5">
-        <CardGroupTitle {...titleData[2]} />
-        <CardGroup data={data[1]} />
-      </div>
-      <div className="mb-5">
-        <CardGroupTitle {...titleData[3]} />
-        <CardGroup data={data[2]} />
-      </div>
-      <div className="mb-5">
-        <CardGroupTitle {...titleData[4]} />
-        <CardGroup data={data[3]} />
-      </div>
+
+      {data && data.length >= 4 && (
+        <>
+          <div className="mb-5">
+            <CardGroupTitle {...titleData[1]} />
+            <CardGroup data={data[0]} />
+          </div>
+          <div className="mb-5">
+            <CardGroupTitle {...titleData[2]} />
+            <CardGroup data={data[1]} />
+          </div>
+          <div className="mb-5">
+            <CardGroupTitle {...titleData[3]} />
+            <CardGroup data={data[2]} />
+          </div>
+          <div className="mb-5">
+            <CardGroupTitle {...titleData[4]} />
+            <CardGroup data={data[3]} />
+          </div>
+        </>
+      )}
     </>
   )
 }
