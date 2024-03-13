@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import Carousel from '@/components/myProduct/productcarousel'
-import FavIcon from '@/components/myProduct/heart-icon'
 import QuantityButton from '@/components/myProduct/quantitybutton'
 import ProductFigure from '@/components/myProduct/productfigure'
 import Link from 'next/link'
@@ -118,22 +117,8 @@ export default function Detail() {
                 </div>
 
                 <div style={{ marginTop: '2rem' }}>
-                  <div
-                    className="d-flex justify-content-between align-items-center m-3"
-                    style={{ flexWrap: 'wrap' }}
-                  >
-                    <QuantityButton />
-                    <span className="my-3">
-                      <FavIcon />
-                      <span className="ms-2 text-h4">加入收藏</span>
-                    </span>
-                  </div>
-                  <button className="btn btn-primary w-100 mb-3 rounded-pill">
-                    加入購物車
-                  </button>
-                  <button className="btn btn-outline-primary w-100 mb-4 rounded-pill">
-                    立即購買
-                  </button>
+                  <QuantityButton products={products} pid={pid} />
+
                   <div
                     className="accordion accordion-flush m-2"
                     id="accordionFlushExample"

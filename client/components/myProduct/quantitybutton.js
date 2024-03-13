@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function QuantityButton() {
+export default function QuantityButton({ products, pid }) {
   const [quantity, setQuantity] = useState(1)
 
   const decreaseQuantity = () => {
@@ -13,9 +13,22 @@ export default function QuantityButton() {
     setQuantity(quantity + 1)
   }
 
+  const addToCart = () => {
+    const selectedProduct = products.find(
+      (product) => product.product_id == pid
+    )
+    if (selectedProduct) {
+      const currentPageUrl = window.location.href
+      // 在這裡添加加入購物車的邏輯，可以調用外部函數或方法
+      console.log(
+        `加入購物車：${selectedProduct.name}，數量：${quantity}，頁面網址：${currentPageUrl}`
+      )
+    }
+  }
+
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center">
+      <div className="d-flex justify-content-between align-items-center m-3">
         <div className="quantity-selector">
           <button className="btn" onClick={decreaseQuantity}>
             -
@@ -26,6 +39,13 @@ export default function QuantityButton() {
           </button>
         </div>
       </div>
+
+      <button
+        className="btn btn-primary w-100 my-3 rounded-pill"
+        onClick={addToCart}
+      >
+        加入購物車
+      </button>
       <style jsx>{`
         .quantity-selector {
           justify-content: space-between;

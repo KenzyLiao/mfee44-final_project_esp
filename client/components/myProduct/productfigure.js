@@ -1,5 +1,4 @@
 import React from 'react'
-import Heart from './heart-icon' // 假设 FavIcon 组件位于同一目录下的 FavIcon.js 文件中
 
 const ProductFigure = ({ image, brand, name, price }) => {
   // 格式化价格，添加千位分隔符
@@ -17,9 +16,7 @@ const ProductFigure = ({ image, brand, name, price }) => {
         <p className="text-h6 ">{brand}</p>
         <p className="text-h3 ">{name}</p>
         <span className="text-my-notice text-h4 ">${formattedPrice}</span>
-        <div style={{ position: 'absolute', top: '3%', right: '5%' }}>
-          <Heart />
-        </div>
+        <div style={{ position: 'absolute', top: '3%', right: '5%' }}></div>
       </div>
     </div>
   )
