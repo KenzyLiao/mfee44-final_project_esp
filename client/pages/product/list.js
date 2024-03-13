@@ -224,7 +224,6 @@ export default function List() {
     selectedMaterials,
   ])
 
-  console.log(totalPages)
   return (
     <>
       <div className="row mt-2 mb-3">

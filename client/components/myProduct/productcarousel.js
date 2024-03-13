@@ -7,14 +7,29 @@ import 'swiper/css/thumbs'
 import { Autoplay, FreeMode, Navigation, Thumbs } from 'swiper/modules'
 
 const getProductImages = (imageName) => {
-  // 提取基础名称
+  // 提取基礎名稱
   const baseName = imageName.split('-')[0]
   const images = []
   for (let i = 1; i <= 4; i++) {
-    // 假设您最多有4张图片
-    images.push(`/images/myProduct/${baseName}-${i}.jpg`)
+    // 構建圖片路徑
+    const imagePath = `/images/myProduct/${baseName}-${i}.jpg`
+    // 檢查圖片是否存在，如果存在則添加到圖片數組中
+    if (imageExists(imagePath)) {
+      images.push(imagePath)
+    } else {
+      // 如果圖片不存在，則跳出循環
+      break
+    }
   }
   return images
+}
+
+// 檢查圖片是否存在的輔助函數
+const imageExists = (url) => {
+  var http = new XMLHttpRequest()
+  http.open('HEAD', url, false)
+  http.send()
+  return http.status != 404
 }
 
 export default function Carousel({ products, pid }) {
@@ -36,7 +51,7 @@ export default function Carousel({ products, pid }) {
           style={{
             '--swiper-navigation-color': 'gray',
             '--swiper-pagination-color': '#fff',
-            maxHeight: '650px',
+            maxHeight: '600px',
           }}
           autoplay={{
             delay: 2500,
