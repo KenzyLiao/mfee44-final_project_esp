@@ -82,6 +82,7 @@ export default function Carousel({ products, pid }) {
           className="mySwiper"
           style={{
             maxHeight: '150px',
+            marginTop: '3px'
           }}
         >
           {currentProductImages.map((image, index) => (

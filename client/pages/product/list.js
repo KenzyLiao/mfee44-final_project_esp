@@ -3,7 +3,7 @@ import ProductFigure from '@/components/myProduct/productfigure'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faSliders, faTimes } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faSliders } from '@fortawesome/free-solid-svg-icons'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import Typography from '@mui/material/Typography'
@@ -11,6 +11,7 @@ import Slide from '@mui/material/Slide'
 import Pagination from '@/components/myProduct/pagination'
 import ScrollToTopButton from '@/components/myProduct/upbutton'
 import Link from 'next/link'
+import SearchForm from '@/components/myProduct/search-form'
 
 export default function List() {
   const [isMobile, setIsMobile] = useState(false)
@@ -42,6 +43,10 @@ export default function List() {
   const [selectedMaterials, setSelectedMaterials] = useState([])
   const [selectedNibs, setSelectedNibs] = useState([])
   const [selectedBrand, setSelectedBrand] = useState('')
+  const [searchQuery, setSearchQuery] = useState('')
+  const handleSearch = (query) => {
+    setSearchQuery(query)
+  }
   const [isPressed] = useState(false)
   const handleBrandClick = (brandName) => {
     setSelectedBrand(brandName)
@@ -106,52 +111,58 @@ export default function List() {
     setCurrentPage(page)
   }
   const filteredProducts = product.filter((product) => {
-    // 如果沒有選擇，則顯示所有產品
+    // 如果没有选择条件，返回 true
     if (
       selectedColors.length === 0 &&
       selectedNibs.length === 0 &&
       selectedMaterials.length === 0 &&
       priceRange[0] === initialPriceRange[0] &&
       priceRange[1] === initialPriceRange[1] &&
-      selectedBrand === ''
+      selectedBrand === '' &&
+      searchQuery === ''
     ) {
       return true
     }
 
-    // 檢查產品的顏色是否在選擇的顏色中
+    // 检查产品的颜色是否在选择的颜色中
     const isColorMatched =
       selectedColors.length === 0 || selectedColors.includes(product.color_name)
 
-    // 檢查產品的筆尖是否在選擇的筆尖中
+    // 检查产品的笔尖是否在选择的笔尖中
     const isNibMatched =
       selectedNibs.length === 0 || selectedNibs.includes(product.nib_name)
 
-    // 檢查產品的材質是否在選擇的材質中
+    // 检查产品的材质是否在选择的材质中
     const isMaterialMatched =
       selectedMaterials.length === 0 ||
       selectedMaterials.includes(product.material_name)
 
-    // 檢查產品的價格是否在選擇的價格範圍內
+    // 检查产品的价格是否在选择的价格范围内
     const isPriceMatched =
       product.price >= priceRange[0] && product.price <= priceRange[1]
 
-    // 檢查產品的品牌是否與選擇的品牌匹配
+    // 检查产品的品牌是否与选择的品牌匹配
     const isBrandMatched =
       selectedBrand === '' || selectedBrand === product.brand_name
 
-    // 返回是否滿足所有選擇條件
+    const isNameMatched =
+      searchQuery === '' ||
+      product.name.toLowerCase().includes(searchQuery.toLowerCase())
+
+    // 返回是否满足所有选择条件
     return (
       isColorMatched &&
       isNibMatched &&
       isMaterialMatched &&
       isPriceMatched &&
-      isBrandMatched
+      isBrandMatched &&
+      isNameMatched
     )
   })
 
   useEffect(() => {
     setCurrentPage(1) // 篩選條件變化時重置頁碼為第一頁
-  }, [selectedColors, selectedNibs, selectedMaterials, priceRange])
+  }, [selectedColors, selectedNibs, selectedMaterials, priceRange, searchQuery])
 
   const displayedProducts = filteredProducts.slice(startIndex, endIndex)
 
@@ -176,24 +187,39 @@ export default function List() {
     const fetchData = async () => {
       // 構建 fetchUrl
       let updatedFetchUrl = 'http://localhost:3005/api/myProduct?'
-
+      const newUrl = new URL(window.location.href)
       // 根據排序選項添加對應的排序方式到 fetchUrl
       if (sortingOption !== '') {
         updatedFetchUrl += `sortingOption=${sortingOption}&`
+        newUrl.searchParams.set('sortingOption', sortingOption)
+      } else {
+        newUrl.searchParams.delete('sortingOption')
       }
 
       // 加入其他篩選條件到 fetchUrl
       if (selectedColors.length > 0) {
         updatedFetchUrl += `colors=${selectedColors}&`
+        newUrl.searchParams.set('colors', selectedColors.join(','))
+      } else {
+        newUrl.searchParams.delete('colors')
       }
       if (selectedBrand.length > 0) {
         updatedFetchUrl += `brands=${selectedBrand}&`
+        newUrl.searchParams.set('brands', selectedBrand)
+      } else {
+        newUrl.searchParams.delete('brands')
       }
       if (selectedNibs.length > 0) {
         updatedFetchUrl += `nibs=${selectedNibs}&`
+        newUrl.searchParams.set('nibs', selectedNibs.join(','))
+      } else {
+        newUrl.searchParams.delete('nibs')
       }
       if (selectedMaterials.length > 0) {
         updatedFetchUrl += `materials=${selectedMaterials}&`
+        newUrl.searchParams.set('materials', selectedMaterials.join(','))
+      } else {
+        newUrl.searchParams.delete('materials')
       }
 
       // 移除最後的 '&' 符號
@@ -210,6 +236,8 @@ export default function List() {
         setBrand(data.brands)
         setMaterial(data.materials)
         setTotalPages(data.totalPages)
+
+        window.history.pushState({}, '', newUrl.toString())
       } catch (error) {
         console.error('Error:', error)
       }
@@ -229,7 +257,9 @@ export default function List() {
       <div className="row mt-2 mb-3">
         <div className="col">
           <div className="d-flex align-items-center">
-            <span className="ps-3 text-h1 my-3 ">所有鋼筆</span>
+            <span className="ps-3 text-h1 my-3 ">
+              {selectedBrand ? selectedBrand : '所有鋼筆'}
+            </span>
           </div>
           <div className="card-text d-flex justify-content-between align-items-center ms-3">
             <nav
@@ -238,7 +268,10 @@ export default function List() {
               style={{ marginLeft: '230px' }}
             ></nav>
             {!isMobile && (
-              <div className="d-flex p-2 justify-content-end align-items-center">
+              <div className="d-flex p-2 justify-content-start align-items-center">
+                <div>
+                  <SearchForm onSearch={handleSearch}></SearchForm>
+                </div>
                 <div className="dropdown ms-3">
                   <button
                     className="btn dropdown-toggle my-text-contents-CH rounded-pill shadow"
@@ -301,8 +334,10 @@ export default function List() {
                   className="btn my-text-contents-CH rounded-pill shadow"
                   onClick={handleOpen}
                 >
-                  <span style={{ marginRight: '10px' }}>篩選</span>
-                  <FontAwesomeIcon icon={faSliders} />
+                  <span>
+                    篩選
+                    <FontAwesomeIcon icon={faSliders} size="xs" />
+                  </span>
                 </button>
 
                 <Dialog
@@ -330,7 +365,7 @@ export default function List() {
                         className="btn btn-secondary rounded-pill"
                         onClick={handleClose}
                       >
-                        <FontAwesomeIcon icon={faTimes} />
+                        X
                       </button>
                     </div>
 
