@@ -91,7 +91,7 @@ router.get('/overview', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const num = req.query.num || 3
-    const [results] = await mydb.execute(
+    const [newest] = await mydb.execute(
       `SELECT product.*, course_product.*, course_category.category_name, course_teacher.name AS teacher_name
       FROM product
       JOIN course_product ON product.id = course_product.product_id
@@ -99,9 +99,43 @@ router.get('/', async (req, res) => {
       JOIN course_teacher ON course_product.teacher_id = course_teacher.id
       WHERE product.product_type = 2
       AND product.valid = 1
+      ORDER BY created_at DESC
       LIMIT ${num}`
     )
-    res.send(results)
+    const [hot] = await mydb.execute(
+      `SELECT product.*, course_product.*, course_category.category_name, course_teacher.name AS teacher_name
+      FROM product
+      JOIN course_product ON product.id = course_product.product_id
+      JOIN course_category ON course_product.category_id = course_category.id
+      JOIN course_teacher ON course_product.teacher_id = course_teacher.id
+      WHERE product.product_type = 2
+      AND product.valid = 1
+      ORDER BY student_num DESC
+      LIMIT ${num}`
+    )
+    const [handwriting] = await mydb.execute(
+      `SELECT product.*, course_product.*, course_category.category_name, course_teacher.name AS teacher_name
+      FROM product
+      JOIN course_product ON product.id = course_product.product_id
+      JOIN course_category ON course_product.category_id = course_category.id
+      JOIN course_teacher ON course_product.teacher_id = course_teacher.id
+      WHERE product.product_type = 2
+      AND product.valid = 1
+      AND course_product.category_id = 1
+      LIMIT ${num}`
+    )
+    const [painting] = await mydb.execute(
+      `SELECT product.*, course_product.*, course_category.category_name, course_teacher.name AS teacher_name
+      FROM product
+      JOIN course_product ON product.id = course_product.product_id
+      JOIN course_category ON course_product.category_id = course_category.id
+      JOIN course_teacher ON course_product.teacher_id = course_teacher.id
+      WHERE product.product_type = 2
+      AND product.valid = 1
+      AND course_product.category_id = 2
+      LIMIT ${num}`
+    )
+    res.send([newest, hot, handwriting, painting])
   } catch (err) {
     console.error('查詢資料錯誤:', err)
     return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
