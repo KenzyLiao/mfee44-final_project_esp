@@ -69,6 +69,10 @@ export default function Detail() {
     return <div>Loading...</div>
   }
   const maxLength = 11
+  window.addEventListener('popstate', () => {
+    window.location.reload()
+  })
+
   return (
     <>
       {selectedProduct && (

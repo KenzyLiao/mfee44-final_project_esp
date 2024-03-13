@@ -109,6 +109,7 @@ export default function List() {
   const handlePageChange = (page) => {
     // 這裡可以根據頁碼做一些處理，例如獲取新的產品列表等
     setCurrentPage(page)
+    window.location.reload()
   }
   const filteredProducts = product.filter((product) => {
     // 如果没有选择条件，返回 true
@@ -185,10 +186,11 @@ export default function List() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // 構建 fetchUrl
+      // 构建 fetchUrl
       let updatedFetchUrl = 'http://localhost:3005/api/myProduct?'
       const newUrl = new URL(window.location.href)
-      // 根據排序選項添加對應的排序方式到 fetchUrl
+
+      // 根据排序选项添加对应的排序方式到 fetchUrl
       if (sortingOption !== '') {
         updatedFetchUrl += `sortingOption=${sortingOption}&`
         newUrl.searchParams.set('sortingOption', sortingOption)
@@ -196,9 +198,9 @@ export default function List() {
         newUrl.searchParams.delete('sortingOption')
       }
 
-      // 加入其他篩選條件到 fetchUrl
+      // 加入其他筛选条件到 fetchUrl
       if (selectedColors.length > 0) {
-        updatedFetchUrl += `colors=${selectedColors}&`
+        updatedFetchUrl += `colors=${selectedColors.join(',')}&`
         newUrl.searchParams.set('colors', selectedColors.join(','))
       } else {
         newUrl.searchParams.delete('colors')
@@ -210,26 +212,32 @@ export default function List() {
         newUrl.searchParams.delete('brands')
       }
       if (selectedNibs.length > 0) {
-        updatedFetchUrl += `nibs=${selectedNibs}&`
+        updatedFetchUrl += `nibs=${selectedNibs.join(',')}&`
         newUrl.searchParams.set('nibs', selectedNibs.join(','))
       } else {
         newUrl.searchParams.delete('nibs')
       }
       if (selectedMaterials.length > 0) {
-        updatedFetchUrl += `materials=${selectedMaterials}&`
+        updatedFetchUrl += `materials=${selectedMaterials.join(',')}&`
         newUrl.searchParams.set('materials', selectedMaterials.join(','))
       } else {
         newUrl.searchParams.delete('materials')
       }
+      if (searchQuery.length > 0) {
+        updatedFetchUrl += `searchQuery=${searchQuery}&`
+        newUrl.searchParams.set('searchQuery', searchQuery)
+      } else {
+        newUrl.searchParams.delete('searchQuery')
+      }
 
-      // 移除最後的 '&' 符號
+      // 移除最后的 '&' 符号
       updatedFetchUrl = updatedFetchUrl.slice(0, -1)
 
       try {
         const response = await fetch(updatedFetchUrl)
         const data = await response.json()
 
-        // 更新狀態
+        // 更新状态
         setProduct(data.products)
         setNib(data.nibs)
         setColor(data.colors)
@@ -250,6 +258,7 @@ export default function List() {
     selectedBrand,
     selectedNibs,
     selectedMaterials,
+    searchQuery,
   ])
 
   return (
