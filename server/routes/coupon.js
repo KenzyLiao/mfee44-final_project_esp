@@ -18,13 +18,46 @@ const router = express.Router();
 //     res.json("發生錯誤");
 //   }
 // });
-router.get('/', async (req, res) => {
+
+router.get('/activity3000', async (req, res) => {
+  try {
+    
+    const [results] = await mydb.execute(
+      `SELECT * FROM mycoupon LIMIT 4`
+    )
+    console.log(results);
+    
+    res.json(results)
+  } catch (err) {
+    console.error('查詢資料錯誤:', err)
+    return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
+  }
+})
+
+router.get('/activity5000', async (req, res) => {
+  try {
+    
+    const [results] = await mydb.execute(
+      `SELECT * FROM mycoupon where id=5 or id=6 LIMIT 2`
+    )
+    console.log(results);
+    
+    res.json(results)
+  } catch (err) {
+    console.error('查詢資料錯誤:', err)
+    return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
+  }
+})
+
+router.get('/memberCoupon', async (req, res) => {
     try {
       
       const [results] = await mydb.execute(
         `SELECT * FROM mycoupon`
       )
-      res.send(results)
+      console.log(results);
+      
+      res.json(results)
     } catch (err) {
       console.error('查詢資料錯誤:', err)
       return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
@@ -61,5 +94,7 @@ router.get("/types", async (req, res) => {
     res.json("發生錯誤");
   }
 });
+
+
 
 export default router;

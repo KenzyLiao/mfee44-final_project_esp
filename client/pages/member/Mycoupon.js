@@ -1,5 +1,5 @@
 import React from 'react'
-import UserCoupon from '@/components/myCoupon/UsedCoupon'
+import UsedCoupon from '@/components/myCoupon/UsedCoupon'
 import Tab from 'react-bootstrap/Tab'
 import Tabs from 'react-bootstrap/Tabs'
 // import couponData from '@/data/ianCoupon.json'
@@ -13,7 +13,7 @@ const CouponPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('http://localhost:3005/api/coupon/')
+        const response = await fetch('http://localhost:3005/api/coupon/memberCoupon')
         const data = await response.json()
         setData(data)
       } catch (error) {
@@ -52,7 +52,7 @@ const CouponPage = () => {
                           /* console.log(v.start_at) */
                         }
                         return (
-                          <UserCoupon
+                          <UsedCoupon
                             key={v.id}
                             coupon_name={coupon_name}
                             discount={discount_title}
