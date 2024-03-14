@@ -44,6 +44,8 @@ router.get('/overview', async (req, res) => {
   const type = req.query.type || null
   const state = req.query.state || null
   const search = req.query.search || null
+  const page = req.query.page || 1
+  const sort = req.query.sort || 'DESC'
   console.log('state:', typeof state)
 
   const baseSQL = `
@@ -59,20 +61,28 @@ router.get('/overview', async (req, res) => {
   let inserts = []
 
   if (type) {
-    finalSQL += ` AND category_id = ?`
-    inserts.push(type)
+    finalSQL += ` AND category_id = ${type}`
+    // inserts.push(type)
   }
   if (search) {
-    finalSQL += ` AND (product.name LIKE ? OR course_teacher.name LIKE ?)`
-    inserts.push('%' + search + '%', '%' + search + '%')
+    finalSQL += ` AND (product.name LIKE '${'%' + search + '%'}' OR course_teacher.name LIKE '${'%' + search + '%'}')`
+    // inserts.push('%' + search + '%', '%' + search + '%')
   }
 
   if (state === '1') {
-    finalSQL += ` ORDER BY student_num DESC`
+    finalSQL += ` ORDER BY student_num`
   } else if (state === '2') {
-    finalSQL += ` ORDER BY price`
+    finalSQL += ` ORDER BY price ${sort}`
   } else if (state === '3') {
-    finalSQL += ` ORDER BY created_at DESC`
+    finalSQL += ` ORDER BY created_at ${sort}`
+  }
+  let totalSQL = finalSQL
+  const [total_data] = await mydb.execute(totalSQL)
+  const total_page = Math.ceil(total_data.length / 12)
+
+  if (page) {
+    finalSQL += ` LIMIT 12 OFFSET ?`
+    inserts.push((page - 1) * 12)
   }
 
   finalSQL = mysql.format(finalSQL, inserts)
@@ -80,8 +90,8 @@ router.get('/overview', async (req, res) => {
 
   try {
     const [results] = await mydb.execute(finalSQL)
-
-    res.send(results)
+    res.send({ results, total_page })
+    // res.send(results)
   } catch (err) {
     console.error('查詢資料錯誤:', err)
     return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })

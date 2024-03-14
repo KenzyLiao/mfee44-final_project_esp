@@ -54,26 +54,38 @@ export default function CoursePage() {
         </div>
       ))} */}
 
-      {data && data.length >= 4 && (
-        <>
-          <div className="mb-5">
-            <CardGroupTitle {...titleData[1]} />
-            <CardGroup data={data[0]} />
-          </div>
-          <div className="mb-5">
-            <CardGroupTitle {...titleData[2]} />
-            <CardGroup data={data[1]} />
-          </div>
-          <div className="mb-5">
-            <CardGroupTitle {...titleData[3]} />
-            <CardGroup data={data[2]} />
-          </div>
-          <div className="mb-5">
-            <CardGroupTitle {...titleData[4]} />
-            <CardGroup data={data[3]} />
-          </div>
-        </>
-      )}
+      <div className="mb-5">
+        <CardGroupTitle
+          title={titleData[1].title}
+          subTitle={titleData[1].subTitle}
+          linkUrl="http://localhost:3000/course/overview?state=3"
+        />
+        <CardGroup data={data[0]} />
+      </div>
+      <div className="mb-5">
+        <CardGroupTitle
+          title={titleData[2].title}
+          subTitle={titleData[2].subTitle}
+          linkUrl="http://localhost:3000/course/overview?state=1"
+        />
+        <CardGroup data={data[1]} />
+      </div>
+      <div className="mb-5">
+        <CardGroupTitle
+          title={titleData[3].title}
+          subTitle={titleData[3].subTitle}
+          linkUrl="http://localhost:3000/course/overview?type=1"
+        />
+        <CardGroup data={data[2]} />
+      </div>
+      <div className="mb-5">
+        <CardGroupTitle
+          title={titleData[4].title}
+          subTitle={titleData[4].subTitle}
+          linkUrl="http://localhost:3000/course/overview?type=2"
+        />
+        <CardGroup data={data[3]} />
+      </div>
     </>
   )
 }

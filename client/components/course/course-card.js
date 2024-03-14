@@ -2,7 +2,13 @@ import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Link from 'next/link'
-import { BsFillStarFill, BsClockFill, BsFillPeopleFill } from 'react-icons/bs'
+import {
+  BsFillStarFill,
+  BsClockFill,
+  BsFillPeopleFill,
+  BsFillEasel2Fill,
+  BsFillPenFill,
+} from 'react-icons/bs'
 
 export default function CourseCard({
   id,
@@ -14,6 +20,7 @@ export default function CourseCard({
   rank,
   total_minute,
   student_num,
+  category_name,
 }) {
   return (
     <>
@@ -56,8 +63,8 @@ export default function CourseCard({
             >
               {description}
             </Card.Text>
-            <Card.Text className="d-flex flex-column flex-lg-row align-items-lg-center">
-              <span>
+            <Card.Text className="d-flex flex-lg-row align-items-lg-center">
+              <span className="me-1">
                 <BsFillStarFill
                   style={{
                     fontSize: '16px',
@@ -67,18 +74,28 @@ export default function CourseCard({
                 />
                 {rank}
               </span>
-              <span>
+              <span className="me-1">
                 <BsClockFill style={{ padding: '5px', fontSize: '24px' }} />
                 {total_minute}分鐘
               </span>
-              <span>
+              <span className="me-1">
                 <BsFillPeopleFill
                   style={{ padding: '5px', fontSize: '24px' }}
                 />
                 {student_num}人
               </span>
+              <span className="me-1">
+                {category_name === '手寫字' ? (
+                  <BsFillPenFill className=" mb-1 me-1 " />
+                ) : (
+                  <BsFillEasel2Fill className="mb-1 me-1" />
+                )}
+                {category_name}
+              </span>
             </Card.Text>
-            <Card.Text className="text-h3 text-my-notice">${price}</Card.Text>
+            <Card.Text className="text-h3 text-my-notice">
+              ${price.toLocaleString()}
+            </Card.Text>
           </Card.Body>
         </Card>
       </Link>
