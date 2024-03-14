@@ -160,12 +160,13 @@ export default function List() {
     )
   })
 
-  useEffect(() => {
-    // 只有在当前页面不是第一页时才重置为第一页
-    if (currentPage !== 1) {
-      setCurrentPage(1);
-    }
-  }, [selectedColors, selectedNibs, selectedMaterials, priceRange, searchQuery]);
+  useEffect(() => {}, [
+    selectedColors,
+    selectedNibs,
+    selectedMaterials,
+    priceRange,
+    searchQuery,
+  ])
 
   const displayedProducts = filteredProducts.slice(startIndex, endIndex)
 
@@ -246,7 +247,7 @@ export default function List() {
         setBrand(data.brands)
         setMaterial(data.materials)
         setTotalPages(data.totalPages)
-
+        setCurrentPage(1)
         window.history.pushState({}, '', newUrl.toString())
         console.log(totalPages)
       } catch (error) {
@@ -263,7 +264,7 @@ export default function List() {
     selectedMaterials,
     searchQuery,
   ])
-  
+
   return (
     <>
       <div className="row mt-2 mb-3">
