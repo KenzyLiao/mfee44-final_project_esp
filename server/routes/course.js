@@ -70,7 +70,7 @@ router.get('/overview', async (req, res) => {
   }
 
   if (state === '1') {
-    finalSQL += ` ORDER BY student_num`
+    finalSQL += ` ORDER BY student_num DESC`
   } else if (state === '2') {
     finalSQL += ` ORDER BY price ${sort}`
   } else if (state === '3') {
