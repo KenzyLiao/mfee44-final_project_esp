@@ -29,29 +29,6 @@ export default function Confirmation() {
 
   const router = useRouter()
 
-  // const [formData, setFormData] = useState({})
-
-  // useEffect(() => {
-  //   // 從 localStorage 中恢復結帳資訊，這保證了代碼只在客戶端執行
-  //   const clientCheckoutInfo =
-  //     JSON.parse(localStorage.getItem('checkout_info')) || {}
-  //   setFormData(clientCheckoutInfo)
-  // }, [])
-
-  // useEffect(() => {
-  //   // 監聽 selectCoupon 的變化，僅更新優惠券資訊，同時保留其他 formData 資訊
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     coupon_id: selectCoupon.id || null,
-  //     coupon_name: selectCoupon.coupon_name || '無',
-  //   }))
-  // }, [selectCoupon])
-
-  // useEffect(() => {
-  //   // 當 formData 更新時，將其保存到 localStorage
-  //   localStorage.setItem('checkout_info', JSON.stringify(formData))
-  // }, [formData])
-
   /* 後端請求建立訂單 建立訂單到server,packages與order id由server產生 */
   const creatOrder = async () => {
     // products將會組合在packages屬性之下

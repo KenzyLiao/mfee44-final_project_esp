@@ -4,7 +4,12 @@ import { useForm, Controller } from 'react-hook-form'
 import styles from './checkoutProcessForm.module.scss'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-// import { countries, townships, postcodes } from '@/data/data-townships'
+
+//hook
+import { useCheckout } from '@/hooks/use-checkout'
+
+//地區資料
+import { countries, townships, postcodes } from '@/data/data-townships'
 
 // icon
 import { IoIosArrowRoundBack, IoIosFiling } from 'react-icons/io'
@@ -19,15 +24,11 @@ import {
 } from 'react-icons/md'
 
 export default function CheckoutProcessForm({
-  //   handleChange = () => {},
-  // handleSubmit = () => {},
-  //   formData = {},
-  countries = [],
-  townships = [],
-  postcodes = [],
   selectCoupon = {},
   updateFormData = () => {},
 }) {
+  const { setFormData } = useCheckout()
+
   const router = useRouter()
 
   const initialFormData = {
@@ -68,6 +69,17 @@ export default function CheckoutProcessForm({
     defaultValues: initialFormData,
   })
 
+  const formData = watch()
+  console.log(formData)
+
+  // 使用 watch 監控整個表單的變化
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      setFormData(value) // 將變化的表單數據更新到 Context 中
+    })
+    return () => subscription.unsubscribe()
+  }, [watch, setFormData])
+
   useEffect(() => {
     // 假设你需要根据某些条件更新表单的默认值，可以在这里使用reset
     // 注意：这里直接使用initialFormData是因为我们模拟了初始值的场景
@@ -77,6 +89,7 @@ export default function CheckoutProcessForm({
 
   // 使用 watch 監視 shipping 欄位的值
   const shipping = watch('shipping')
+
   // 監聽發票類型的變化
   const invoiceType = watch('invoiceType') // 監聽發票類型的變化
   //監聽宅配 地址
@@ -140,7 +153,7 @@ export default function CheckoutProcessForm({
     }
   }, [router.isReady, router.query, shipping, setValue, watch])
 
-  //   處理postcode
+  //處理postcode
   useEffect(() => {
     const postcodeValue =
       watch('country') && watch('township')

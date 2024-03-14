@@ -196,37 +196,6 @@ export function CartProvider({ children }) {
   //   localStorage.setItem('checkout_info', JSON.stringify(formData))
   // }, [formData])
 
-  //由於postcode是設置onlyread 導致onchange無法監聽 因此透過依賴變數方式去改變FormData.postcode
-  useEffect(() => {
-    if (formData.country && formData.township) {
-      const countryIndex = countries.indexOf(formData.country)
-      const townshipIndex = townships[countryIndex].indexOf(formData.township)
-      const newPostcode = postcodes[countryIndex][townshipIndex]
-
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        postcode: newPostcode,
-      }))
-    }
-  }, [formData.country, formData.township])
-
-  //處理門市資料
-  useEffect(() => {
-    // 確保組件加載完成後再讀取查詢參數
-    if (router.isReady) {
-      const { storeType, storeID, storeName, storeAddress } = router.query
-
-      // 設置門市資訊到狀態，同時保留其他已有的狀態資料
-      setFormData((currentFormData) => ({
-        ...currentFormData, // 保留原有資料
-        shipping: storeType || currentFormData.shipping, // 更新storeID，如果不存在則保留原有值
-        storeID: storeID || currentFormData.storeID, // 更新storeID，如果不存在則保留原有值
-        storeName: storeName || currentFormData.storeName, // 更新storeName，如果不存在則保留原有值
-        storeAddress: storeAddress || currentFormData.storeAddress, // 更新storeAddress，如果不存在則保留原有值
-      }))
-    }
-  }, [router.isReady, router.query]) // 監聽router.query的變化
-
   //計算總金額 （扣掉優惠卷與運費） -未完成優惠卷邏輯
 
   useEffect(() => {
@@ -250,14 +219,14 @@ export function CartProvider({ children }) {
 
   /* confirmation */
 
-  useEffect(() => {
-    // 監聽 selectCoupon 的變化，僅更新優惠券資訊，同時保留其他 formData 資訊
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      coupon_id: selectCoupon.id || null,
-      coupon_name: selectCoupon.coupon_name || '無',
-    }))
-  }, [selectCoupon])
+  // useEffect(() => {
+  //   // 監聽 selectCoupon 的變化，僅更新優惠券資訊，同時保留其他 formData 資訊
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     coupon_id: selectCoupon.id || null,
+  //     coupon_name: selectCoupon.coupon_name || '無',
+  //   }))
+  // }, [selectCoupon])
 
   const updateFormData = (newData) => {
     setFormData((prev) => ({ ...prev, ...newData }))
