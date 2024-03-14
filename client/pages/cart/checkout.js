@@ -23,8 +23,10 @@ export default function Checkout() {
     countries,
     townships,
     postcodes,
+    updateFormData,
   } = useCart()
 
+  
   return (
     <>
       <div className="row">
@@ -37,6 +39,8 @@ export default function Checkout() {
             countries={countries}
             townships={townships}
             postcodes={postcodes}
+            selectCoupon={selectCoupon}
+            updateFormData={updateFormData}
           />
         </div>
         {/* 右邊 */}
