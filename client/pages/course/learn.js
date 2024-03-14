@@ -17,6 +17,7 @@ export default function LearnPage() {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [articleOpen, setArticleOpen] = useState(false)
+  const [videoUrl, setVideoUrl] = useState('')
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -69,7 +70,7 @@ export default function LearnPage() {
               width="100%"
               height="100%"
               controls="true"
-              url="video/01.mp4"
+              url={`http://localhost:3005/course/video/${videoUrl}`}
             />
           </div>
           {/* 章節選擇 */}
@@ -86,12 +87,14 @@ export default function LearnPage() {
                     <Accordion.Body>
                       {v.sub_units.map((v, index) => {
                         return (
-                          <Section
-                            key={index}
-                            secNum={index + 1}
-                            secTitle={`${v.title}`}
-                            secTime={`${v.video_len}`}
-                          />
+                          <div onClick={() => setVideoUrl(v.video_path)}>
+                            <Section
+                              key={index}
+                              secNum={index + 1}
+                              secTitle={`${v.title}`}
+                              secTime={`${v.video_len}`}
+                            />
+                          </div>
                         )
                       })}
                     </Accordion.Body>
