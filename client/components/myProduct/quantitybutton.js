@@ -1,16 +1,18 @@
 import React, { useState } from 'react'
+import { useCart } from '@/hooks/user-cart'
 
 export default function QuantityButton({ products, pid }) {
-  const [quantity, setQuantity] = useState(1)
+  const [qty, setQuantity] = useState(1)
+  const { addCartItem } = useCart()
 
   const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1)
+    if (qty > 1) {
+      setQuantity(qty - 1)
     }
   }
 
   const increaseQuantity = () => {
-    setQuantity(quantity + 1)
+    setQuantity(qty + 1)
   }
 
   const addToCart = () => {
@@ -19,26 +21,36 @@ export default function QuantityButton({ products, pid }) {
     )
     if (selectedProduct) {
       const currentPageUrl = window.location.href
-      // 在這裡添加加入購物車的邏輯，可以調用外部函數或方法
-      console.log(
-        `加入購物車：${selectedProduct.name}，數量：${quantity}，頁面網址：${currentPageUrl}`
-      )
+      addCartItem({
+        type: 'general',
+        id: selectedProduct.product_id,
+        name: selectedProduct.name,
+        image: `/images/myProduct/${selectedProduct.image}`,
+        price: selectedProduct.price,
+        desc: selectedProduct.description,
+        brand: selectedProduct.brand_name,
+        color: selectedProduct.color_name,
+        nib: selectedProduct.nib_name,
+        material: selectedProduct.material_name,
+        url: currentPageUrl,
+        // qty: qty,
+      })
     }
   }
 
   return (
     <>
-      <div className="d-flex justify-content-between align-items-center m-3">
+      {/* <div className="d-flex justify-content-between align-items-center m-3">
         <div className="quantity-selector">
           <button className="btn" onClick={decreaseQuantity}>
             -
           </button>
-          <div className="my-auto">{quantity}</div>
+          <div className="my-auto">{qty}</div>
           <button className="btn" onClick={increaseQuantity}>
             +
           </button>
         </div>
-      </div>
+      </div> */}
 
       <button
         className="btn btn-primary w-100 my-3 rounded-pill"

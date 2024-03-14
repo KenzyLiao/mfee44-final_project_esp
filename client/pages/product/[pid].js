@@ -66,7 +66,11 @@ export default function Detail() {
   }
 
   if (loading) {
-    return <div>Loading...</div>
+    return (
+      <div id="loading">
+        Loading . . .
+      </div>
+    )
   }
   const maxLength = 11
   window.addEventListener('popstate', () => {
