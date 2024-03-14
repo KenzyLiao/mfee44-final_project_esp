@@ -30,14 +30,14 @@ export default function InventorySearch() {
           <div className="offcanvas-body row">
             {/* 設計200*200 */}
             <div className="img-div col-sm-6 col-12 mx-auto">
-              <img src="/images/myService/56407.jpg" alt="" />
+              <img src="/images/myService/n02.jpg" alt="" />
             </div>
             <div className="ps-4 col-sm-6 flex-grow-1">
-              <h3>PILOT 百樂 Capless按鍵鋼筆</h3>
-              <div className="mb-1">品牌:PILOT</div>
-              <div className="mb-1">價錢:7900</div>
-              <div className="mb-1">顏色:銀灰</div>
-              <div className="mb-1">筆尖:F</div>
+              <h3>來自資料表的品名</h3>
+              <div className="mb-1">品牌:來自資料表的品牌</div>
+              <div className="mb-1">價錢:來自資料表的價錢</div>
+              <div className="mb-1">顏色:來自資料表的顏色</div>
+              <div className="mb-1">筆尖:來自資料表的筆尖</div>
               <div className="mb-1">
                 <i className="fa-regular fa-heart" />
               </div>
@@ -46,7 +46,7 @@ export default function InventorySearch() {
           <div className="offcanvas-body row my-1 product-describe">
             <h5 className="m-0">商品敘述</h5>
             <p>
-              PILOT(CAPLESS)系列是世界首創的按鍵式鋼筆,1963年開使販售後,一直名列於暢銷榜上,CAPLESS系列如同原子筆一般,只要按鍵按壓一下,就能輕鬆書寫.
+            (來自資料表的商品敘述)
             </p>
           </div>
           <div className="offcanvas-body row mt-2">
@@ -56,10 +56,10 @@ export default function InventorySearch() {
                   <a>
                     <i className="fa-solid fa-location-dot" />
                   </a>
-                  台北士林店
+                  來自資料表(stock)的分店店名
                 </div>
                 <div>
-                  庫存充足
+                  來自資料表(stock)的庫存狀態
                 </div>
               </li>
             </ul>
