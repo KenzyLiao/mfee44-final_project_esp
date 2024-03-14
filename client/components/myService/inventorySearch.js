@@ -10,7 +10,7 @@ export default function InventorySearch() {
         role="button"
         aria-controls="offcanvasExample"
       >
-        分店庫存查詢
+        庫存查詢
       </a>
       <div className="container">
         <div
@@ -28,40 +28,10 @@ export default function InventorySearch() {
             />
           </div>
           <div className="offcanvas-body row">
-            {/* 設計200*200 */}
-            <div className="img-div col-sm-6 col-12 mx-auto">
-              <img src="/images/myService/n02.jpg" alt="" />
-            </div>
-            <div className="ps-4 col-sm-6 flex-grow-1">
-              <h3>來自資料表的品名</h3>
-              <div className="mb-1">品牌:來自資料表的品牌</div>
-              <div className="mb-1">價錢:來自資料表的價錢</div>
-              <div className="mb-1">顏色:來自資料表的顏色</div>
-              <div className="mb-1">筆尖:來自資料表的筆尖</div>
-              <div className="mb-1">
-                <i className="fa-regular fa-heart" />
-              </div>
-            </div>
-          </div>
-          <div className="offcanvas-body row my-1 product-describe">
-            <h5 className="m-0">商品敘述</h5>
-            <p>
-            (來自資料表的商品敘述)
-            </p>
-          </div>
-          <div className="offcanvas-body row mt-2">
             <ul>
-              <li className="d-flex justify-content-between">
-                <div>
-                  <a>
-                    <i className="fa-solid fa-location-dot" />
-                  </a>
-                  來自資料表(stock)的分店店名
-                </div>
-                <div>
-                  來自資料表(stock)的庫存狀態
-                </div>
-              </li>
+              {/* href 導至"服務據點"service路由並附上參數僅以textsearch=XXX店搜尋，連過去的同時也要發送請求*/}
+              <li><a href='http://localhost:3000/service'>XXX店</a><span>庫存尚餘:?</span></li> 
+              
             </ul>
           </div>
         </div>
@@ -75,18 +45,7 @@ export default function InventorySearch() {
 
         @media (min-width: 768px) {
           .offcanvas {
-            width: 50vw;
-          }
-        }
-
-        .img-div {
-          width: 30%;
-          height: auto;
-          overflow: hidden;
-
-          & img {
-            width: 100%;
-            height: auto;
+            width: 25vw;
           }
         }
 
@@ -98,7 +57,14 @@ export default function InventorySearch() {
           list-style: none;
 
           & li {
-            border-bottom: 1px solid black;
+            font-size:21px;
+            border-bottom: 1px dashed black;
+            position:relative;
+            & span{
+              position:absolute;
+              top:0;
+              right:0;
+            }
           }
         }
 
@@ -119,8 +85,8 @@ export default function InventorySearch() {
             display: none;
           }
         }
-        #a1{
-          color:#ff0083
+        #a1 {
+          color: #ff0083;
         }
       `}</style>
     </>
