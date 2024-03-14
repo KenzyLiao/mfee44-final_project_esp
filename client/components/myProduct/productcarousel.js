@@ -10,7 +10,7 @@ const getProductImages = (imageName) => {
   // 提取基礎名稱
   const baseName = imageName.split('-')[0]
   const images = []
-  for (let i = 1; i <= 6; i++) {
+  for (let i = 1; i <= 9; i++) {
     // 構建圖片路徑
     const imagePath = `/images/myProduct/${baseName}-${i}.jpg`
     // 檢查圖片是否存在，如果存在則添加到圖片數組中

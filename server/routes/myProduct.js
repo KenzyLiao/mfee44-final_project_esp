@@ -50,7 +50,11 @@ router.get('/', async (req, res) => {
         .join(',')
       sql += ` AND material_name IN (${materials})`
     }
-
+    if (req.query.searchQuery) {
+      const searchQuery = req.query.searchQuery
+      sql += ` AND p.name LIKE '%${searchQuery}%'`
+    }
+    console.log(sql)
     // 构建排序条件
     if (req.query.sortingOption === 'newest') {
       sql += ` ORDER BY p.updated_at ASC`

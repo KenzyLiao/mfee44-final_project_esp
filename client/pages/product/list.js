@@ -3,7 +3,7 @@ import ProductFigure from '@/components/myProduct/productfigure'
 import Slider from 'rc-slider'
 import 'rc-slider/assets/index.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCheck, faSliders } from '@fortawesome/free-solid-svg-icons'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 import Dialog from '@mui/material/Dialog'
 import DialogContent from '@mui/material/DialogContent'
 import Typography from '@mui/material/Typography'
@@ -12,7 +12,7 @@ import Pagination from '@/components/myProduct/pagination'
 import ScrollToTopButton from '@/components/myProduct/upbutton'
 import Link from 'next/link'
 import SearchForm from '@/components/myProduct/search-form'
-
+import { FaSliders } from 'react-icons/fa6'
 export default function List() {
   const [isMobile, setIsMobile] = useState(false)
   const [open, setOpen] = useState(false)
@@ -159,14 +159,6 @@ export default function List() {
       isNameMatched
     )
   })
-
-  useEffect(() => {}, [
-    selectedColors,
-    selectedNibs,
-    selectedMaterials,
-    priceRange,
-    searchQuery,
-  ])
 
   const displayedProducts = filteredProducts.slice(startIndex, endIndex)
 
@@ -349,7 +341,7 @@ export default function List() {
                 >
                   <span>
                     篩選
-                    <FontAwesomeIcon icon={faSliders} size="xs" />
+                    <FaSliders />
                   </span>
                 </button>
 
@@ -378,7 +370,7 @@ export default function List() {
                         className="btn btn-secondary rounded-pill"
                         onClick={handleClose}
                       >
-                        X
+                        ✕
                       </button>
                     </div>
 
@@ -1166,7 +1158,7 @@ export default function List() {
                     </div>
                   ))
                 ) : (
-                  <p>查无数据</p>
+                  <p className='text-h3'>沒有符合的商品 . . . </p>
                 )}
               </div>
 

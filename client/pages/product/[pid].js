@@ -4,6 +4,8 @@ import QuantityButton from '@/components/myProduct/quantitybutton'
 import ProductFigure from '@/components/myProduct/productfigure'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { BsGlobe } from 'react-icons/bs'
+import { IoIosLock, IoMdCheckmarkCircleOutline } from 'react-icons/io'
 
 export default function Detail() {
   const [products, setProducts] = useState([])
@@ -66,11 +68,7 @@ export default function Detail() {
   }
 
   if (loading) {
-    return (
-      <div id="loading">
-        Loading . . .
-      </div>
-    )
+    return <div id="loading">Loading . . .</div>
   }
   const maxLength = 11
   window.addEventListener('popstate', () => {
@@ -93,7 +91,14 @@ export default function Detail() {
                 <h3 className="text-h3 text-my-notice">
                   NT ${Number(selectedProduct.price).toLocaleString()}
                 </h3>
-
+                <div className="mt-4">
+                  <BsGlobe className="mx-3" />
+                  Worldwide shipping <br />
+                  <IoIosLock className="mx-3" />
+                  Secure payments <br />
+                  <IoMdCheckmarkCircleOutline className="mx-3" />
+                  Authentic products <br />
+                </div>
                 <div className="mt-4 mx-2 my-text-contents-CH">
                   <div>
                     系列
@@ -123,7 +128,6 @@ export default function Detail() {
                     </span>
                   </div>
                 </div>
-
                 <div style={{ marginTop: '2rem' }}>
                   <QuantityButton products={products} pid={pid} />
 
