@@ -11,18 +11,12 @@ import toast, { Toaster } from 'react-hot-toast'
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
+import { useCheckout } from '@/hooks/use-checkout'
 
 export default function Confirmation() {
-  const {
-    cart,
-    rawTotalPrice,
-    totalPrice,
-    cartCourse,
-    cartGeneral,
-    formatPrice,
-    selectCoupon,
-    formData,
-  } = useCart()
+  const { cart, cartCourse, cartGeneral, formatPrice } = useCart()
+
+  const { rawTotalPrice, totalPrice, selectCoupon, formData } = useCheckout()
 
   //linePay資料使用
   const [linePayOrder, setLinePayOrder] = useState({})

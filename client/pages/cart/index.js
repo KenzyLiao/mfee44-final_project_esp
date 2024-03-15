@@ -10,6 +10,7 @@ import { useRouter } from 'next/router'
 
 //勾子context
 import { useCart } from '@/hooks/user-cart'
+import { useCheckout } from '@/hooks/use-checkout'
 
 export default function CartIndex() {
   /* cart */
@@ -156,15 +157,17 @@ export default function CartIndex() {
     decrement,
     removeCartItem,
     cartCourse,
-    rawTotalPrice,
-    totalPrice,
     formatPrice,
     // 優惠卷
+  } = useCart()
+
+  const {
+    totalPrice,
+    rawTotalPrice,
     coupons,
-    selectCoupon,
     selectedCouponID,
     handleRadioChange,
-  } = useCart()
+  } = useCheckout()
 
   const router = useRouter()
 

@@ -370,7 +370,7 @@ router.get('/confirm', async (req, res) => {
         [dbLinePay.order_id]
       )
       let ecPayData = results[0]
-      console.log(ecPayData)
+      console.log(ecPayData.shipping)
 
       //建立廠商訂單編號
       const uuid = uuidv4().replace(/-/g, '')
@@ -527,4 +527,5 @@ router.get('/check-transaction', async (req, res) => {
     res.json({ status: 'transactionId錯誤', error: err })
   }
 })
+
 export default router

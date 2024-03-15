@@ -27,6 +27,7 @@ export default function CheckoutProcessForm({
   selectCoupon = {},
   updateFormData = () => {},
 }) {
+  console.log(selectCoupon)
   const { setFormData } = useCheckout()
 
   const router = useRouter()
@@ -97,7 +98,7 @@ export default function CheckoutProcessForm({
     ? countries.indexOf(watch('country'))
     : 0
 
-  //   處理發票變化
+  //  處理發票變化
   useEffect(() => {
     if (invoiceType !== '3') {
       setValue('mobileBarcode', '') // 如果發票類型不是3，清空 mobileBarcode
@@ -164,7 +165,7 @@ export default function CheckoutProcessForm({
     setValue('postcode', postcodeValue, { shouldValidate: true })
   }, [watch('country'), watch('township'), postcodes, setValue])
 
-  //處理couppon
+  //處理couppon(會當機)
   useEffect(() => {
     // 當 selectCoupon 改變時，使用 setValue 更新 React Hook Form 中的值
     setValue('coupon_id', selectCoupon.id || null)
@@ -173,7 +174,7 @@ export default function CheckoutProcessForm({
     // 確保表單驗證是更新的（如果需要）
     // 這一步是可選的，取決於您是否需要在這些字段更新時觸發驗證
     // trigger(['coupon_id', 'coupon_name'])
-  }, [selectCoupon, setValue, router.isReady])
+  }, [selectCoupon, router.isReady])
 
   useEffect(() => {
     // 從 localStorage 讀取表單數據

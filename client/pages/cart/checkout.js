@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import CheckoutProcessForm from '@/components/myCart/checkoutProcessForm/checkoutProcessForm'
 
@@ -12,21 +12,17 @@ import { useCart } from '@/hooks/user-cart'
 import { useCheckout } from '@/hooks/use-checkout'
 
 export default function Checkout() {
+  const { cartCourse, cartGeneral, formatPrice } = useCart()
+
   const {
-    rawTotalPrice,
-    totalPrice,
-    cartCourse,
-    cartGeneral,
-    formatPrice,
-    selectCoupon,
-    // formData,
+    formData,
     countries,
     townships,
     postcodes,
-    updateFormData,
-  } = useCart()
-
-  const { formData } = useCheckout()
+    rawTotalPrice,
+    totalPrice,
+    selectCoupon,
+  } = useCheckout()
 
   return (
     <>
@@ -38,7 +34,6 @@ export default function Checkout() {
             townships={townships}
             postcodes={postcodes}
             selectCoupon={selectCoupon}
-            updateFormData={updateFormData}
           />
         </div>
         {/* 右邊 */}
