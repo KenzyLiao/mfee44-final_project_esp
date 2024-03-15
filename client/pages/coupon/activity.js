@@ -60,7 +60,7 @@ export default function Home() {
 
         <ul>
           <li>
-            <div className="row row-cols-lg-3">
+            <div className="row cols-lg-3 ">
               {data.map((v, i) => {
                 const { coupon_name, end_at, discount_title, start_at } = v
                 {
@@ -131,7 +131,7 @@ export default function Home() {
 
       <style jsx>{`
         .p-activity {
-          width: 980px;
+          width: 1170px;
           margin: 0 auto;
 
           & img {

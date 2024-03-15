@@ -26,14 +26,14 @@ export default function UsedCoupon({
             <p className="expiration m-0">
               {/* 有效期限：2024.12.31 */}
               {limit_time.split('T')[0]}
-            </p>
-            <p className="expiration m-0">
+           <b>~</b> 
               {/* 有效期限：2024.12.31 */}
               {end_time.split('T')[0]}
             </p>
-            <div href={`/product/list`} className="button">
+            <a className='rule_link' href="">使用規則</a> 
+            <a href={`/product/list`} className="button">
               已領取
-            </div>
+            </a>
           </div>
         </div>
       </div>
@@ -52,6 +52,7 @@ export default function UsedCoupon({
             position: relative;
             justify-content: center; /* 水平置中 */
             align-items: center; /* 垂直置中 */
+            filter:drop-shadow(0px 0px 4px #9c9d9d) ;
             & img {
               position: absolute;
               width: 100%;
@@ -80,6 +81,10 @@ export default function UsedCoupon({
               width: 100px;
               height: 200px;
               z-index: 999;
+              
+            }
+            &:hover{
+              filter:drop-shadow(0px 0px 3px rgb(230 40 124 / 80%)) ;
             }
           }
           .text-container {
@@ -102,6 +107,18 @@ export default function UsedCoupon({
               color: #555;
               margin-bottom: 10px;
             }
+            b{
+              margin:0 5px;
+            }
+            .rule_link{
+              display:block;
+              color:#600;
+              
+              &:hover{
+                text-decoration: underline;
+                color:#f00;
+              }
+            }
             .discount {
               color: #e44d26;
               font-size: 24px;
@@ -111,15 +128,22 @@ export default function UsedCoupon({
             .expiration {
               color: #777;
               line-height: 16px;
-              padding:10px 0
+              padding:8px 0 4px;
             }
             .button {
+              background: #e44d26;
               display: inline-block;
               padding: 3px 10px;
-              border: 1.5px #e44d26 solid;
-              color: #e44d26;
+              border: 1.5px #fff solid;
+              color: #fff;
               text-decoration: none;
               border-radius: 5px;
+              &:hover{ 
+                border: 1.5px #e44d26 solid;
+                color: #e44d26; 
+                background:#fff;
+                }
+                
             }
           }
           @media (max-width: 991px) {
