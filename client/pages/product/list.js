@@ -240,8 +240,8 @@ export default function List() {
         setMaterial(data.materials)
         setTotalPages(data.totalPages)
         setCurrentPage(1)
+        setLoading(false)
         window.history.pushState({}, '', newUrl.toString())
-        console.log(totalPages)
       } catch (error) {
         console.error('Error:', error)
       }
@@ -256,7 +256,10 @@ export default function List() {
     selectedMaterials,
     searchQuery,
   ])
-
+  const [loading, setLoading] = useState(true)
+  if (loading) {
+    return <div id="loading">Loading . . .</div>
+  }
   return (
     <>
       <div className="row mt-2 mb-3">
@@ -1158,7 +1161,7 @@ export default function List() {
                     </div>
                   ))
                 ) : (
-                  <p className='text-h3'>沒有符合的商品 . . . </p>
+                  <p className="text-h3">沒有符合的商品 . . . </p>
                 )}
               </div>
 
