@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import ReactPlayer from 'react-player'
+import Image from 'next/image'
 import Accordion from 'react-bootstrap/Accordion'
 import Section from '@/components/course/section'
 import New from '@/components/course/new'
@@ -8,12 +9,32 @@ import dynamic from 'next/dynamic'
 import CourseSubInfo from '@/components/course/course-sub-info'
 
 export default function LearnPage() {
-  const ReactPlayer = dynamic(
-    () => import('react-player'),
-    { ssr: false } // 這將確保只在客戶端渲染
-  )
+  // const ReactPlayer = dynamic(
+  //   () => import('react-player'),
+  //   { ssr: false } // 這將確保只在客戶端渲染
+  // )
 
-  const id = 214
+  // const [isPlaying, setIsPlaying] = useState(true)
+  // const [isReady, setIsReady] = useState(false)
+  // const playerRef = useRef()
+  // const onReady = useCallback(() => {
+  //   if (!isReady) {
+  //     const timeToStart = 60
+  //     playerRef.current.seekTo(timeToStart, 'seconds')
+  //     setIsReady(true)
+  //   }
+  // }, [isReady])
+  const [isReady, setIsReady] = useState(false)
+  const [startAt, setStartAt] = useState(0)
+  const playerRef = useRef()
+  const onReady = useCallback(() => {
+    if (!isReady) {
+      playerRef.current.seekTo(startAt, 'seconds')
+      setIsReady(true)
+    }
+  }, [isReady, startAt])
+
+  const id = 215
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [articleOpen, setArticleOpen] = useState(false)
@@ -48,6 +69,7 @@ export default function LearnPage() {
     rank,
     total_minute,
     student_num,
+    teacher,
     teacher_introduction,
     article,
     units,
@@ -59,6 +81,7 @@ export default function LearnPage() {
   const sub_units_num = units
     .map((v) => v.sub_units.length)
     .reduce((a, b) => a + b)
+
   return (
     <>
       <div className="container">
@@ -67,15 +90,19 @@ export default function LearnPage() {
           {/* 播放器 */}
           <div className="video col-xl-7 col-12 mb-2 mb-xl-0">
             <ReactPlayer
+              ref={playerRef}
+              playing={true}
+              muted={true}
               width="100%"
               height="100%"
               controls="true"
               url={`http://localhost:3005/course/video/TRIAL____________${videoUrl}`}
+              onReady={onReady}
             />
           </div>
           {/* 章節選擇 */}
           <div className="scrollable col-xl-5 col-12 mb-1 mb-xl-0">
-            <h5>章節選擇</h5>
+            <p className="text-h3 d-flex justify-content-center">章節選擇</p>
             <Accordion defaultActiveKey={[]} alwaysOpen>
               {units.map((v, index) => {
                 return (
@@ -87,7 +114,17 @@ export default function LearnPage() {
                     <Accordion.Body>
                       {v.sub_units.map((v, index) => {
                         return (
-                          <div onClick={() => setVideoUrl(v.video_path)}>
+                          <div
+                            onClick={() => {
+                              setVideoUrl(v.video_path)
+                              // 設定影片開始時間
+                              setStartAt(Number(v.video_len.split(':')[1]))
+                              setIsReady(false)
+                            }}
+                            className={`cursor-pointer ${
+                              videoUrl === v.video_path ? 'active' : ''
+                            }`}
+                          >
                             <Section
                               key={index}
                               secNum={index + 1}
@@ -169,24 +206,27 @@ export default function LearnPage() {
             <div className="d-flex justify-content-between mb-4">
               <div className="text-h2">關於講師</div>
             </div>
-            <div className="teacher-info-item">
-              <div className="teacher-info-item-title">
+            <div className="teacher-info-item mb-5">
+              <div className="teacher-info-item-title mb-2">
                 <div className="d-flex">
-                  <div className="teacher-info-item-title-img">
-                    <img
-                      src="https://images.pexels.com/photos/36843/lion-panthera-leo-lioness-animal-world.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                      alt="teacher"
+                  <div className="teacher-info-item-title-img ">
+                    <Image
+                      src={
+                        'http://localhost:3005/course/images/' + 'default.jpg'
+                      }
+                      width={50}
+                      height={50}
+                      style={{ borderRadius: '50%' }}
+                      alt="teacher image"
                     />
                   </div>
                   <div className="teacher-info-item-title-info d-flex align-items-center">
-                    <p className="text-h3 mb-0 mx-3">陳曉明</p>
+                    <p className="text-h3 mb-0 mx-3">{teacher}</p>
                   </div>
                 </div>
               </div>
               <div className="teacher-info-item-content">
-                <p className="text-p">
-                  陳曉明，台灣書法家，畢業於國立台北藝術大學美術學系，曾任教於國立台北藝術大學美術學系，現為台北市立美術館館長。
-                </p>
+                <p className="text-h4">{teacher_introduction}</p>
               </div>
             </div>
           </div>
@@ -248,6 +288,18 @@ export default function LearnPage() {
           .course_content_item_open {
             display: block;
           }
+        }
+        .cursor-pointer {
+          cursor: pointer;
+          transition: 0.2s;
+          &:hover {
+            background-color: white;
+            color: var(--my-notice);
+          }
+        }
+        .active {
+          background-color: white;
+          color: var(--my-notice);
         }
       `}</style>
     </>

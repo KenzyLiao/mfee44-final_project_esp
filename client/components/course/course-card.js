@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Card from 'react-bootstrap/Card'
 import Link from 'next/link'
+import Ratio from 'react-bootstrap/Ratio'
 import {
   BsFillStarFill,
   BsClockFill,
@@ -22,21 +23,29 @@ export default function CourseCard({
   student_num,
   category_name,
 }) {
+  const [isHovered, setIsHovered] = useState(false)
+  let imageURL = `http://localhost:3005/course/images/course_${
+    image.split('_')[1].split('.')[0] % 25
+  }.jpg`
   return (
     <>
       <Link href={`http://localhost:3000/course/${id}`}>
-        <Card style={{ width: '100%', borderRadius: 0 }}>
-          <Card.Img
-            style={{
-              borderRadius: 0,
-              width: '100%',
-              paddingTop: '56.25%', // 9 / 16 = 0.5625
-              background: `url(http://localhost:3005/course/images/course_${
-                image.split('_')[1].split('.')[0] % 25
-              }.jpg) no-repeat center center / cover`,
-            }}
-            variant="top"
-          />
+        <Card
+          style={{ width: '100%', borderRadius: 0 }}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <Ratio aspectRatio="16x9" style={{ overflow: 'hidden' }}>
+            <Card.Img
+              variant="top"
+              src={imageURL}
+              className="image-style"
+              style={{
+                transform: isHovered ? 'scale(1.2)' : 'scale(1)',
+                transition: 'transform 0.5s  ease-out',
+              }}
+            />
+          </Ratio>
 
           <Card.Body>
             <Card.Title
@@ -64,7 +73,7 @@ export default function CourseCard({
               {description}
             </Card.Text>
             <Card.Text className="d-flex flex-lg-row align-items-lg-center">
-              <span className="me-1">
+              <span className="me-1 text-my-black">
                 <BsFillStarFill
                   style={{
                     fontSize: '16px',
@@ -74,19 +83,19 @@ export default function CourseCard({
                 />
                 {rank}
               </span>
-              <span className="me-1">
+              <span className="me-1 text-my-black">
                 <BsClockFill style={{ padding: '5px', fontSize: '24px' }} />
                 {total_minute}分鐘
               </span>
-              <span className="me-1">
+              <span className="me-1 text-my-black">
                 <BsFillPeopleFill
                   style={{ padding: '5px', fontSize: '24px' }}
                 />
                 {student_num}人
               </span>
-              <span className="me-1">
+              <span className="me-1 text-my-black">
                 {category_name === '手寫字' ? (
-                  <BsFillPenFill className=" mb-1 me-1 " />
+                  <BsFillPenFill className=" mb-1 me-1  " />
                 ) : (
                   <BsFillEasel2Fill className="mb-1 me-1" />
                 )}
@@ -99,6 +108,16 @@ export default function CourseCard({
           </Card.Body>
         </Card>
       </Link>
+      <style jsx>{`
+        .image-style {
+          transition: transform 0.3s ease;
+        }
+        .image-style:hover {
+          &img {
+            transform: scale(1.1);
+          }
+        }
+      `}</style>
     </>
   )
 }

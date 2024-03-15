@@ -101,6 +101,8 @@ export default function CoursePage() {
               height="100%"
               controls="true"
               url="http://localhost:3005/course/video/01.mp4"
+              playing={true}
+              muted={true}
             />
           </div>
           {/* 課程介紹 */}
@@ -125,7 +127,7 @@ export default function CoursePage() {
               {/* 課程介紹 */}
               <div className="course_intro">
                 <p className="text-h2">{name}</p>
-                <p className="text-h5">{description}</p>
+                <p className="text-h4">{description}</p>
               </div>
             </div>
             {/* 星、按鈕 */}
@@ -344,9 +346,9 @@ export default function CoursePage() {
                 <div className="text-h2">關於講師</div>
               </div>
               <div className="teacher-info-item mb-5">
-                <div className="teacher-info-item-title">
+                <div className="teacher-info-item-title mb-2">
                   <div className="d-flex">
-                    <div className="teacher-info-item-title-img">
+                    <div className="teacher-info-item-title-img ">
                       <Image
                         src={
                           'http://localhost:3005/course/images/' + 'default.jpg'
@@ -363,7 +365,7 @@ export default function CoursePage() {
                   </div>
                 </div>
                 <div className="teacher-info-item-content">
-                  <p className="text-p">{teacher_introduction}</p>
+                  <p className="text-h4">{teacher_introduction}</p>
                 </div>
               </div>
             </div>
@@ -377,7 +379,7 @@ export default function CoursePage() {
               </p>
               <div className="d-flex flex-column flex-xl-row">
                 <div
-                  className="text-decoration-none collect-btn border1 px-2 text-center"
+                  className="text-decoration-none collect-btn border1 px-2 text-center addCart"
                   onClick={() => {
                     addCartItem(data_send)
                   }}
@@ -521,6 +523,15 @@ export default function CoursePage() {
         }
         .border1 {
           border: 1px solid #7c7477;
+        }
+        .addCart {
+          background-color: #7c7477;
+          color: var(--my-white);
+          transition: 0.2s;
+          &:hover {
+            background-color: white;
+            color: #7c7477;
+          }
         }
       `}</style>
     </>
