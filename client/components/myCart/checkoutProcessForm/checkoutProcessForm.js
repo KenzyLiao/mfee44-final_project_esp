@@ -3,6 +3,7 @@ import { Form, Container, Collapse } from 'react-bootstrap'
 import { useForm, Controller } from 'react-hook-form'
 import styles from './checkoutProcessForm.module.scss'
 import Link from 'next/link'
+
 import { useRouter } from 'next/router'
 
 //hook
@@ -27,7 +28,6 @@ export default function CheckoutProcessForm({
   selectCoupon = {},
   updateFormData = () => {},
 }) {
-  console.log(selectCoupon)
   const { setFormData } = useCheckout()
 
   const router = useRouter()
@@ -71,7 +71,6 @@ export default function CheckoutProcessForm({
   })
 
   const formData = watch()
-  console.log(formData)
 
   // 使用 watch 監控整個表單的變化
   useEffect(() => {
@@ -227,55 +226,16 @@ export default function CheckoutProcessForm({
               control={control}
               name="shipping"
               render={({ field }) => (
-                <>
-                  <div className="icon-box d-flex mt-4">
-                    <Form.Check
-                      {...field}
-                      className={`text-h5 text-my-black ${styles['form-check']}`}
-                      label="黑貓宅急便"
-                      type="radio"
-                      id="shippingType1"
-                      value="宅配"
-                      checked={field.value === '宅配'}
-                    />
-                  </div>
-
-                  <div className="icon-box d-flex mt-4">
-                    <Form.Check
-                      {...field}
-                      className={`text-h5 text-my-black ${styles['form-check']}`}
-                      label="7-11店到店"
-                      type="radio"
-                      id="shippingType2"
-                      value="UNIMARTC2C"
-                      checked={field.value === 'UNIMARTC2C'}
-                    />
-                  </div>
-
-                  <div className="icon-box d-flex mt-4">
-                    <Form.Check
-                      {...field}
-                      className={`text-h5 text-my-black ${styles['form-check']}`}
-                      label="全家店到店"
-                      type="radio"
-                      id="shippingType3"
-                      value="FAMIC2C"
-                      checked={field.value === 'FAMIC2C'}
-                    />
-                  </div>
-
-                  <div className="icon-box d-flex mt-4">
-                    <Form.Check
-                      {...field}
-                      className={`text-h5 text-my-black ${styles['form-check']}`}
-                      label="OK店到店"
-                      type="radio"
-                      id="shippingType4"
-                      value="OKMARTC2C"
-                      checked={field.value === 'OKMARTC2C'}
-                    />
-                  </div>
-                </>
+                <Form.Select
+                  {...field}
+                  className="mt-4 text-h5 text-my-black"
+                  id="shippingSelect"
+                >
+                  <option value="宅配">黑貓宅急便</option>
+                  <option value="UNIMARTC2C">7-11收貨</option>
+                  <option value="FAMIC2C">全家收貨</option>
+                  <option value="OKMARTC2C">OK收貨</option>
+                </Form.Select>
               )}
             />
           </Form.Group>
@@ -399,6 +359,7 @@ export default function CheckoutProcessForm({
                 border: '1px solid #ccc',
                 borderRadius: '5px',
                 marginBottom: '1rem',
+                marginTop: '1rem',
               }}
             >
               <EcpayShipment shipping={shipping} />
@@ -445,6 +406,7 @@ export default function CheckoutProcessForm({
             </div>
           </>
         )}
+
         {shipping === 'FAMIC2C' && (
           <>
             <div
@@ -453,6 +415,7 @@ export default function CheckoutProcessForm({
                 border: '1px solid #ccc',
                 borderRadius: '5px',
                 marginBottom: '1rem',
+                marginTop: '1rem',
               }}
             >
               <EcpayShipment shipping={shipping} />
@@ -507,6 +470,7 @@ export default function CheckoutProcessForm({
                 border: '1px solid #ccc',
                 borderRadius: '5px',
                 marginBottom: '1rem',
+                marginTop: '1rem',
               }}
             >
               <EcpayShipment shipping={shipping} />

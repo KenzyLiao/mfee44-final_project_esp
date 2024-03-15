@@ -80,7 +80,7 @@ router.post('/create-shipping-order', async (req, res) => {
     ReceiverEmail: 'tesy@gmail.com',
     TradeDesc: '',
     ServerReplyURL:
-      'https://fdaf-2001-b400-e3d3-10c8-7dd8-737f-2fc3-94cc.ngrok-free.app/api/ecpay-shipping/shipment-status-notification', // 物流狀況會通知到此URL,因本地測試無法收到,透過電腦終端設置ngrok轉發過來
+      'https://da33-114-25-134-143.ngrok-free.app/api/ecpay-shipping/shipment-status-notification', // 物流狀況會通知到此URL,因本地測試無法收到,透過電腦終端設置ngrok轉發過來
     ClientReplyURL: '',
     LogisticsC2CReplyURL: 'http://localhost:3000/',
     Remark: '',

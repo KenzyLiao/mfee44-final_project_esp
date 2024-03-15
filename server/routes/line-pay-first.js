@@ -370,7 +370,7 @@ router.get('/confirm', async (req, res) => {
         [dbLinePay.order_id]
       )
       let ecPayData = results[0]
-      console.log(ecPayData.shipping)
+      console.log(ecPayData)
 
       //建立廠商訂單編號
       const uuid = uuidv4().replace(/-/g, '')
@@ -384,7 +384,7 @@ router.get('/confirm', async (req, res) => {
           MerchantTradeDate: transactionTime, // 請帶交易時間, ex: 2017/05/17 16:23:45, 為aiocheckout時所產生的
           LogisticsType: 'Home',
           LogisticsSubType: 'TCAT', //黑貓
-          GoodsAmount: ecPayData.amount.toString(), //商品價格 1元以上
+          GoodsAmount: '20000', //商品價格 1元以上 最高上限20000（指賠償）
           CollectionAmount: 'N',
           IsCollection: 'N',
           GoodsName: '墨韻雅筆', //品牌方店名
@@ -421,8 +421,8 @@ router.get('/confirm', async (req, res) => {
           MerchantTradeDate: transactionTime, // 請帶交易時間, ex: 2017/05/17 16:23:45, 為aiocheckout時所產生的
           LogisticsType: 'CVS', //超商取貨：CVS 宅配:Home
           LogisticsSubType: ecPayData.shipping, //四大超商物流UNIMART、FAMI、HILIFE、UNIMARTC2C、FAMIC2C、HILIFEC2C、OKMARTC2C  & 黑貓：TCAT
-          GoodsAmount: ecPayData.amount.toString(), //商品金額範圍為1~20000元。
-          CollectionAmount: ecPayData.amount.toString(), //同上
+          GoodsAmount: '20000', //商品金額範圍為1~20000元。 最高上限20000（指賠償） ,若貨到付款則為實際付款金額
+          CollectionAmount: '20000', //同上
           IsCollection: 'N', //Ｙ:貨到付款  ,預設值為N:純配送
           GoodsName: '墨韻雅筆', //品牌名
           SenderName: '墨韻雅筆', //品牌名
@@ -527,5 +527,4 @@ router.get('/check-transaction', async (req, res) => {
     res.json({ status: 'transactionId錯誤', error: err })
   }
 })
-
 export default router

@@ -77,17 +77,21 @@ export default function Confirmation() {
 
   //點擊付款行為＝創建訂單+請求linePay API
   const creatOrderAndPay = async () => {
-    const orderResponse = await creatOrder()
-    if (orderResponse.status === 'success') {
-      await toast.success('已成功建立訂單')
+    if (cart.length > 1) {
+      const orderResponse = await creatOrder()
+      if (orderResponse.status === 'success') {
+        await toast.success('已成功建立訂單')
 
-      setTimeout(() => {
-        goLinePay(orderResponse.data.order.orderId)
-      }, 1500)
+        setTimeout(() => {
+          goLinePay(orderResponse.data.order.orderId)
+        }, 1500)
+      } else {
+        toast.error('訂單創建失敗,請稍後再重試', {
+          duration: 3000,
+        })
+      }
     } else {
-      toast.error('訂單創建失敗,請稍後再重試', {
-        duration: 3000,
-      })
+      toast.error('購物車沒有商品,請進行選購')
     }
   }
 

@@ -1,4 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react'
+import toast, { Toaster } from 'react-hot-toast'
 
 //1.建立與導出
 export const CartContext = createContext(null)
