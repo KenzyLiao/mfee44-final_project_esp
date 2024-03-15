@@ -70,7 +70,7 @@ export default function LearnPage() {
               width="100%"
               height="100%"
               controls="true"
-              url={`http://localhost:3005/course/video/${videoUrl}`}
+              url={`http://localhost:3005/course/video/TRIAL____________${videoUrl}`}
             />
           </div>
           {/* 章節選擇 */}
