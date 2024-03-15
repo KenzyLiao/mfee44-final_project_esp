@@ -15,7 +15,8 @@ const ProductFigure = ({ image, brand, name, price }) => {
       <div className="card-body no-space-x ">
         <p className="text-p ">{brand}</p>
         <p className="text-h4 ">{name}</p>
-        <span className="text-my-notice text-h5 ">${formattedPrice}</span>
+        <div style={{ position: 'absolute', bottom: '3%', left: '5%' }}>
+        <span className="text-my-notice text-h5 ">${formattedPrice}</span></div>
         <div style={{ position: 'absolute', top: '3%', right: '5%' }}></div>
       </div>
     </div>
