@@ -77,7 +77,9 @@ export default function Confirmation() {
 
   //點擊付款行為＝創建訂單+請求linePay API
   const creatOrderAndPay = async () => {
-    if (cart.length > 1) {
+    if (cart.length < 0) {
+      toast.error('購物車沒有商品,請進行選購')
+    } else {
       const orderResponse = await creatOrder()
       if (orderResponse.status === 'success') {
         await toast.success('已成功建立訂單')
@@ -90,8 +92,6 @@ export default function Confirmation() {
           duration: 3000,
         })
       }
-    } else {
-      toast.error('購物車沒有商品,請進行選購')
     }
   }
 
