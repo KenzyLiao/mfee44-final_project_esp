@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import ReactPlayer from 'react-player'
+import Link from 'next/link'
 import New from '@/components/course/new'
 import Section from '@/components/course/section'
+import ProductFigure from '@/components/myProduct/productfigure'
 import Accordion from 'react-bootstrap/Accordion'
 
 import { useRouter } from 'next/router'
@@ -25,6 +27,7 @@ export default function CoursePage() {
   const { id } = router.query
 
   const [data, setData] = useState(null)
+  const [data2, setData2] = useState(null)
   const [error, setError] = useState(null)
   const [isOpen, setIsOpen] = useState(true)
   const [articleOpen, setArticleOpen] = useState(false)
@@ -32,9 +35,14 @@ export default function CoursePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // course data
         const response = await fetch(`http://localhost:3005/api/course/${id}`)
         const data = await response.json()
+        // pen data
+        const response2 = await fetch(`http://localhost:3005/api/myProduct`)
+        const data2 = await response2.json()
         setData(data[0])
+        setData2(data2)
       } catch (error) {
         console.error('Error:', error)
         setError(error)
@@ -67,8 +75,22 @@ export default function CoursePage() {
     news_date,
     news_content,
   } = data
+
+  // pen data
+  const date = new Date()
+  const currentMinute = date.getMinutes()
+  const pen_random_num = currentMinute % 213
+  // const pen_random_num = Math.floor(Math.random() * 213)
+  const pen = data2.products[pen_random_num]
+  const brand_name = pen.brand_name
+  const pen_name = pen.name
+  const pen_price = pen.price
+  const productImage = pen.image
+  const pen_id = pen.product_id
+
   let data_send = { ...data }
-  let image_name = 'course_' + (image.split('_')[1].split('.')[0] % 25) + '.jpg'
+  let image_name =
+    'course_' + (productImage.split('_')[1].split('.')[0] % 25) + '.jpg'
   data_send.image = 'http://localhost:3005/course/images/' + image_name
   data_send.url = 'http://localhost:3000/course/' + id
 
@@ -86,7 +108,7 @@ export default function CoursePage() {
   // })
 
   // const total_video_minute = min + Math.floor(sec / 60)
-  console.log(data[0])
+  // console.log(data[0])
 
   return (
     <>
@@ -137,11 +159,6 @@ export default function CoursePage() {
                 {Array.from({ length: rank }).map((_, index) => {
                   return <BsFillStarFill key={index} className="me-1" />
                 })}
-                {/* <BsFillStarFill />
-                <BsFillStarFill />
-                <BsFillStarFill />
-                <BsFillStarFill />
-                <BsFillStarFill /> */}
               </div>
               <div className="btn-group">
                 <a className=" text-decoration-none border1">
@@ -161,60 +178,6 @@ export default function CoursePage() {
             <div className="mb-5">
               <p className="text-h2">關於課程{/*ㄣ*/}</p>
               <div className="course-sub-info">
-                {/* <Container>
-                  <Row className='mb-2'>
-                    <Col>
-                      <div className="course-sub-info-item d-flex align-items-center">
-                        <BsClockFill
-                          className="me-1 text-primary"
-                          style={{ width: '40px', fontSize: '50px' }}
-                        />
-                        <div className="info">
-                          <div className="label">課程時長</div>
-                          <div className="value">{total_minute}分鐘</div>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col>
-                      <div className="course-sub-info-item d-flex align-items-center">
-                        <BsFillPlayCircleFill
-                          className="me-1 text-primary"
-                          style={{ width: '40px', fontSize: '50px' }}
-                        />
-                        <div className="info">
-                          <div className="label">單元數</div>
-                          <div className="value">{`${units.length}章${sub_units_num}單元`}</div>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <div className="course-sub-info-item d-flex align-items-center">
-                        <BsFillPeopleFill
-                          className="me-1 text-primary"
-                          style={{ width: '40px', fontSize: '50px' }}
-                        />
-                        <div className="info">
-                          <div className="label">課程總人數</div>
-                          <div className="value">{student_num}位同學</div>
-                        </div>
-                      </div>
-                    </Col>
-                    <Col>
-                      <div className="course-sub-info-item d-flex align-items-center">
-                        <BsFillEyeFill
-                          className="me-1 text-primary"
-                          style={{ width: '40px', fontSize: '50px' }}
-                        />
-                        <div className="info">
-                          <div className="label">觀看次數</div>
-                          <div className="value">不限觀看次數</div>
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
-                </Container> */}
                 <CourseSubInfo
                   total_minute={total_minute}
                   units_length={units.length}
@@ -229,7 +192,6 @@ export default function CoursePage() {
             <div className="news mb-5">
               <div className="d-flex justify-content-between mb-3">
                 <div className="text-h2">最新消息</div>
-                {/* <div className="text_fold">收起消息</div> */}
               </div>
               <div className>
                 <New
@@ -372,20 +334,32 @@ export default function CoursePage() {
             {/* teacher end */}
           </main>
           <aside className="col-md-3 mb-5 ">
-            <div className="price border1">
-              <p className="text-h4">購買課程</p>
-              <p className="text-h3 text-my-notice">
-                NT${price.toLocaleString()}
-              </p>
-              <div className="d-flex flex-column flex-xl-row">
-                <div
-                  className="text-decoration-none collect-btn border1 px-2 text-center addCart"
-                  onClick={() => {
-                    addCartItem(data_send)
-                  }}
-                >
-                  <BsFillCartFill className="mb-1" /> 加入購物車
+            <div className="right-sticky">
+              <div className="price border1 mb-4">
+                <p className="text-h4">購買課程</p>
+                <p className="text-h3 text-my-notice">
+                  NT${price.toLocaleString()}
+                </p>
+                <div className="d-flex flex-column flex-xl-row">
+                  <div
+                    className="text-decoration-none collect-btn border1 px-2 text-center addCart"
+                    onClick={() => {
+                      addCartItem(data_send)
+                    }}
+                  >
+                    <BsFillCartFill className="mb-1" /> 加入購物車
+                  </div>
                 </div>
+              </div>
+              <div className=" d-none d-lg-block">
+                <Link href={`http://localhost:3000/product/${pen_id}`}>
+                  <ProductFigure
+                    image={`/images/myProduct/${productImage}`}
+                    brand={brand_name}
+                    name={pen_name}
+                    price={pen_price}
+                  />
+                </Link>
               </div>
             </div>
           </aside>
@@ -445,6 +419,8 @@ export default function CoursePage() {
         .price {
           padding: 20px 10px;
           border: 1px solid $primary;
+        }
+        .right-sticky {
           position: sticky;
           top: 120px;
         }
