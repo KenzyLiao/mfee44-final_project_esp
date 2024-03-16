@@ -275,8 +275,13 @@ export default function CoursePage() {
                             setOpenList(
                               openList.filter((v) => v !== index.toString())
                             )
+                            // openList等於一個時，再按一次就是全部關閉了
+                            if (openList.length === 1) {
+                              setIsOpen(true)
+                            }
                           } else {
                             setOpenList([...openList, index.toString()])
+                            setIsOpen(false)
                           }
                         }}
                       >
@@ -346,6 +351,14 @@ export default function CoursePage() {
                     onClick={() => {
                       addCartItem(data_send)
                     }}
+                    onKeyDown={(event) => {
+                      // Enter or Space key
+                      if (event.key === 'Enter') {
+                        addCartItem(data_send)
+                      }
+                    }}
+                    tabIndex="0" // Make the div focusable
+                    role="button" // Indicate that the div is a button
                   >
                     <BsFillCartFill className="mb-1" /> 加入購物車
                   </div>
