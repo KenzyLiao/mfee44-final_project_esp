@@ -42,7 +42,6 @@ export default function CoursePage() {
 
   return (
     <>
-      <div>課程首頁</div>
       <div className="mb-5">
         <CourseCarousel />
       </div>
