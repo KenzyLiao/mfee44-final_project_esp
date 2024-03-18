@@ -13,7 +13,11 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { Navigation } from 'swiper/modules'
 
+// //勾子context
+import { useCart } from '@/hooks/user-cart'
+
 export default function Detail() {
+  const { Toaster } = useCart()
   const [products, setProducts] = useState([])
   const [displayedProducts, setDisplayedProducts] = useState([])
   const [selectedProduct, setSelectedProduct] = useState(null)
@@ -217,6 +221,7 @@ export default function Detail() {
               </div>
             </div>
           </div>
+          <Toaster />
           <div className="text-h2 my-5">其他人還看了</div>
           {/* <div
             className="row mb-5 overflow-x-auto"

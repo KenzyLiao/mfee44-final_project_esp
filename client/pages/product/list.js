@@ -282,7 +282,7 @@ export default function List() {
                 </div>
                 <div className="dropdown ms-3">
                   <button
-                    className="btn custom-dropdown-button dropdown-toggle my-text-contents-CH rounded-pill shadow"
+                    className="btn custom-dropdown-button dropdown-toggle my-text-contents-CH rounded-pill "
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
@@ -339,16 +339,14 @@ export default function List() {
             {isMobile && (
               <div className="d-flex p-2 justify-content-end align-items-center">
                 <button
-                  className="btn my-text-contents-CH rounded-pill "
+                  className="btn my-text-contents-CH rounded-pill"
                   onClick={handleOpen}
                   style={{
-                    backgroundColor: '#ff69b4' /* 粉色背景 */,
-                    transition: 'background-color 0.3s' /* 渐变动画 */,
-                    border: 'none' /* 移除边框 */,
-                    outline: 'none' /* 移除默认外边框 */,
-
-                    padding: '10px 20px' /* 添加内边距 */,
-                    color: '#fff' /* 文字颜色 */,
+                    backgroundColor: '#ff69b4',
+                    border: 'none',
+                    outline: 'none',
+                    padding: '10px 20px',
+                    color: '#fff',
                   }}
                 >
                   <span>
@@ -777,7 +775,7 @@ export default function List() {
                     <div className="me-2" key={brandItem.brand_id}>
                       <button
                         type="button"
-                        className="btn"
+                        className="btn my-button"
                         onClick={() => handleBrandClick(brandItem.brand_name)}
                       >
                         {brandItem.brand_name}
@@ -1221,7 +1219,7 @@ export default function List() {
           background: #ff1493; /* 滑块悬停时的颜色 */
         }
         .custom-dropdown-button {
-          background-color: #ff69b4; /* 粉色 */
+          background-color: #7c7477; /* 粉色 */
           color: #fff;
           border: none;
           padding: 10px 20px;
@@ -1236,7 +1234,7 @@ export default function List() {
         }
 
         .dropdown-menu {
-          background-color: #ff69b4; /* 粉色 */
+          background-color: #7c7477; /* 粉色 */
           border: none;
           border-radius: 20px;
           box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
@@ -1256,16 +1254,24 @@ export default function List() {
 
         .dropdown-item:hover,
         .dropdown-item:focus {
-          background-color: rgba(148, 0, 211, 0.6); /* 紫色 */
+          background-color: #ff9fd0; /* 紫色 */
         }
 
         .dropdown-item.active,
         .dropdown-item:active {
-          background-color: rgba(148, 0, 211, 1); /* 紫色 */
+          background-color: #ff1493; /* 紫色 */
           /* 圆角 */
         }
-        .hover-pink:hover {
-          background-color: rgba(255, 255, 203); /* 鼠标悬停时的深色粉色背景 */
+
+        .my-button {
+          color: black;
+          padding: 8px 16px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+
+        .my-button:hover {
+          color: #ff1493;
         }
       `}</style>
     </>
