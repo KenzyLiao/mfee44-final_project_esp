@@ -77,7 +77,7 @@ export default function LearnPage() {
         <h1 className="text-h1 d-flex justify-content-center my-5">{name}</h1>
         <div className="row mb-5">
           {/* 播放器 */}
-          <div className="video col-xl-7 col-12 mb-2 mb-xl-0">
+          <div className="video col-xl-8 col-12 mb-2 mb-xl-0">
             <ReactPlayer
               ref={playerRef}
               playing={true}
@@ -91,7 +91,7 @@ export default function LearnPage() {
           </div>
           {/* 章節選擇 */}
           {/* 電腦版 */}
-          <div className="scrollable col-xl-5 col-12 mb-1 mb-xl-0 d-md-block d-none">
+          <div className="scrollable col-xl-4 col-12 mb-1 mb-xl-0 d-lg-block d-none">
             <p className="text-h3 d-flex justify-content-center">章節選擇</p>
             <Accordion defaultActiveKey={[]} alwaysOpen>
               {units.map((v, index) => {
@@ -131,7 +131,7 @@ export default function LearnPage() {
             </Accordion>
           </div>
           {/* 手機板 */}
-          <div className="d-md-none">
+          <div className="d-lg-none">
             <Button onClick={() => setLgShow(true)}>章節選擇</Button>
             <Modal
               size="lg"
@@ -286,11 +286,10 @@ export default function LearnPage() {
 
       <style jsx>{`
         .scrollable {
-          max-height: 350px;
+          max-height: 400px;
           overflow: auto;
-        }
-        .scrollable {
           width: 100%;
+          height: 100%;
           padding: 0;
         }
         video {
@@ -298,10 +297,11 @@ export default function LearnPage() {
         }
         @media (min-width: 992px) {
           .scrollable {
-            width: 45%;
+            width: 30%;
+            height: 100%;
           }
           .video {
-            width: 55%;
+            width: 70%;
           }
         }
         .teacher-info {
