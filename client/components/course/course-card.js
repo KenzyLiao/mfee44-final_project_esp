@@ -47,18 +47,10 @@ export default function CourseCard({
             />
           </Ratio>
 
-          <Card.Body>
-            <Card.Title
-            // style={{
-            //   overflow: 'hidden',
-            //   textOverflow: 'ellipsis',
-            //   whiteSpace: 'nowrap',
-            // }}
-            >
-              {name}
-            </Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">
-              <p>{`By ${teacher_name}`}</p>
+          <Card.Body className="d-flex flex-column">
+            <Card.Title>{name}</Card.Title>
+            <Card.Subtitle className="text-muted">
+              <p className="mb-2">{`By ${teacher_name}`}</p>
             </Card.Subtitle>
             <Card.Text
               style={{
@@ -69,6 +61,7 @@ export default function CourseCard({
                 WebkitBoxOrient: 'vertical',
                 whiteSpace: 'normal',
               }}
+              className="flex-fill"
             >
               {description}
             </Card.Text>
