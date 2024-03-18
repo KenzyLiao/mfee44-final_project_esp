@@ -9,6 +9,8 @@ import ShippingRule from '@/components/myCart/shippingRule'
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
+import { useCheckout } from '@/hooks/use-checkout'
+
 export default function Checkout() {
   const {
     rawTotalPrice,
@@ -17,13 +19,14 @@ export default function Checkout() {
     cartGeneral,
     formatPrice,
     selectCoupon,
-    handleChange,
-    handleSubmit,
-    formData,
+    // formData,
     countries,
     townships,
     postcodes,
+    updateFormData,
   } = useCart()
+
+  const { formData } = useCheckout()
 
   return (
     <>
@@ -31,12 +34,11 @@ export default function Checkout() {
         {/* 左邊 */}
         <div className="col-lg-7">
           <CheckoutProcessForm
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-            formData={formData}
             countries={countries}
             townships={townships}
             postcodes={postcodes}
+            selectCoupon={selectCoupon}
+            updateFormData={updateFormData}
           />
         </div>
         {/* 右邊 */}

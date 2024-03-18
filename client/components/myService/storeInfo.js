@@ -7,7 +7,7 @@ import { FaLocationDot } from 'react-icons/fa6'
 import { FaPhone } from 'react-icons/fa6'
 import { IoTime } from 'react-icons/io5'
 
-export default function StoreInfo({ storeData, setStoreData,storeDetail ,setStoreDetail }) {
+export default function StoreInfo({ storeData, setStoreData,storeDetail ,setStoreDetail,geojsonData,hoveredStore,onStoreHover,hoveredMarker,setHoveredMarker  }) {
   const [isHidden, setIsHidden] = useState(false)
 
   const handleAClick = (detail) => {
@@ -17,8 +17,23 @@ export default function StoreInfo({ storeData, setStoreData,storeDetail ,setStor
   }
   useEffect(() => {
     // 当 storeDetail 不为空时，显示店铺详情
-    setIsHidden(!!storeDetail);
-  }, [storeDetail]);
+    // setIsHidden(!!storeDetail);
+    if(storeData.length === 0 && geojsonData.length === 0 ){
+      setIsHidden(false)
+    }
+  }, [storeData,storeDetail,geojsonData]);
+
+  // 监听鼠标悬停事件，将悬停的店铺信息传递给父组件
+  const handleStoreHover = (store) => {
+    onStoreHover(store);
+  };
+  const handleMouseEnter = (markerData) => {
+    setHoveredMarker(markerData);
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredMarker(null);
+  };
 
   return (
     <>
@@ -64,16 +79,16 @@ export default function StoreInfo({ storeData, setStoreData,storeDetail ,setStor
           </div>
         ) : (
           <>
-            {storeData.length === 0 ? (
+            {storeData.length === 0 && geojsonData.length === 0 ? (
               <p className="no-data-message mt-1 text-h3">查無相符條件的據點</p>
             ) : (
-              <ul className="list-ul">
+              <ul className="list-ul pe-2">
                 {storeData.map(
                   (
                     store,
                     index // 假设 storeData 是存储所有店铺信息的数组
                   ) => (
-                    <li key={index}>
+                    <li key={index} onMouseEnter={() => handleMouseEnter(store)} onMouseLeave={handleMouseLeave}>
                       <h5 className="d-flex justify-content-between">
                         <span className="store-icon">
                           <CiShop />
