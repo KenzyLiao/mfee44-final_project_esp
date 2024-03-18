@@ -12,7 +12,6 @@ import { countries, townships, postcodes } from '@/data/data-townships'
 export const CartContext = createContext(null)
 // 協助全站(_app.js)裡套用Provider的元件，集中要使用的狀態
 export function CartProvider({ children }) {
-  const router = useRouter()
   // 共享用狀態(state)
   const [cart, setCart] = useState([])
   const [totalPrice, setTotalPrice] = useState(0)
@@ -161,7 +160,7 @@ export function CartProvider({ children }) {
     localStorage.setItem('selectedCouponID', newSelectedCouponID)
   }
   /* formData */
-
+  const router = useRouter()
   const [formData, setFormData] = useState({
     shipping: '宅配', //默認宅配,後續新增7-11物流
     shippingFee: '200',
@@ -185,16 +184,117 @@ export function CartProvider({ children }) {
     payType: 'LinePay', //支付類型
   })
 
-  // useEffect(() => {
-  //   const clientCheckoutInfo =
-  //     JSON.parse(localStorage.getItem('checkout_info')) || {}
-  //   setFormData(clientCheckoutInfo)
-  // }, [])
+  useEffect(() => {
+    const clientCheckoutInfo =
+      JSON.parse(localStorage.getItem('checkout_info')) || {}
+    setFormData(clientCheckoutInfo)
+  }, [])
 
   //將資料存到localstorage 保存
-  // useEffect(() => {
-  //   localStorage.setItem('checkout_info', JSON.stringify(formData))
-  // }, [formData])
+  useEffect(() => {
+    localStorage.setItem('checkout_info', JSON.stringify(formData))
+  }, [formData])
+
+  //由於postcode是設置onlyread 導致onchange無法監聽 因此透過依賴變數方式去改變FormData.postcode
+  useEffect(() => {
+    if (formData.country && formData.township) {
+      const countryIndex = countries.indexOf(formData.country)
+      const townshipIndex = townships[countryIndex].indexOf(formData.township)
+      const newPostcode = postcodes[countryIndex][townshipIndex]
+
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        postcode: newPostcode,
+      }))
+    }
+  }, [formData.country, formData.township])
+
+  //處理門市資料
+  useEffect(() => {
+    // 確保組件加載完成後再讀取查詢參數
+    if (router.isReady) {
+      const { storeType, storeID, storeName, storeAddress } = router.query
+
+      // 設置門市資訊到狀態，同時保留其他已有的狀態資料
+      setFormData((currentFormData) => ({
+        ...currentFormData, // 保留原有資料
+        shipping: storeType || currentFormData.shipping, // 更新storeID，如果不存在則保留原有值
+        storeID: storeID || currentFormData.storeID, // 更新storeID，如果不存在則保留原有值
+        storeName: storeName || currentFormData.storeName, // 更新storeName，如果不存在則保留原有值
+        storeAddress: storeAddress || currentFormData.storeAddress, // 更新storeAddress，如果不存在則保留原有值
+      }))
+    }
+  }, [router.isReady, router.query]) // 監聽router.query的變化
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+
+    //當country選取時重置township&postcode
+    if (name === 'country') {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+        township: '',
+        postcode: '',
+      }))
+    }
+
+    //當門市重新選取時重置
+    if (name === 'shipping') {
+      const isNotHomeDelivery = value !== '宅配'
+      const newShippingFee = isNotHomeDelivery ? '80' : '200'
+
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        // 當更改運送方式時，根據選擇重置或保持門市資料
+        storeType: isNotHomeDelivery ? '' : prevFormData.storeType,
+        storeID: isNotHomeDelivery ? '' : prevFormData.storeID,
+        storeName: isNotHomeDelivery ? '' : prevFormData.storeName,
+        storeAddress: isNotHomeDelivery ? '' : prevFormData.storeAddress,
+        // 更新shipping值和運費
+        [name]: value,
+        shippingFee: newShippingFee,
+      }))
+    }
+    if (name === 'invoiceType') {
+      // 檢查是否正在更改發票類型
+      // 如果發票類型不是3，則將手機載具的資料設為空值
+      const mobileBarcodeValue = value === '3' ? formData.mobileBarcode : ''
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+        mobileBarcode: mobileBarcodeValue,
+      }))
+    } else {
+      // 對於其他情況，正常更新表單資料
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        [name]: value,
+      }))
+    }
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // 必填所有表格欄位
+    if (
+      !formData.firstName ||
+      !formData.lastName ||
+      !formData.email ||
+      !formData.mobilePhone
+    ) {
+      alert('請填寫所有資料')
+      return // 阻止提交
+    }
+
+    if (formData.invoiceType === '3' && !formData.mobileBarcode) {
+      alert('請填寫手機條碼')
+      return // 阻止提交
+    }
+
+    console.log(formData) // 處理表單數據...
+    router.push('/cart/confirmation')
+  }
 
   //計算總金額 （扣掉優惠卷與運費） -未完成優惠卷邏輯
 
@@ -219,18 +319,16 @@ export function CartProvider({ children }) {
 
   /* confirmation */
 
-  // useEffect(() => {
-  //   // 監聽 selectCoupon 的變化，僅更新優惠券資訊，同時保留其他 formData 資訊
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     coupon_id: selectCoupon.id || null,
-  //     coupon_name: selectCoupon.coupon_name || '無',
-  //   }))
-  // }, [selectCoupon])
+  useEffect(() => {
+    // 監聽 selectCoupon 的變化，僅更新優惠券資訊，同時保留其他 formData 資訊
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      coupon_id: selectCoupon.id || null,
+      coupon_name: selectCoupon.coupon_name || '無',
+    }))
+  }, [selectCoupon])
 
-  const updateFormData = (newData) => {
-    setFormData((prev) => ({ ...prev, ...newData }))
-  }
+  console.log(selectCoupon)
 
   return (
     <CartContext.Provider
@@ -254,7 +352,8 @@ export function CartProvider({ children }) {
         handleSelectCoupon,
         handleRadioChange,
         // formData
-        updateFormData,
+        handleChange,
+        handleSubmit,
         formData,
         countries,
         townships,

@@ -4,7 +4,12 @@ import { useForm, Controller } from 'react-hook-form'
 import styles from './checkoutProcessForm.module.scss'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-// import { countries, townships, postcodes } from '@/data/data-townships'
+
+//hook
+import { useCheckout } from '@/hooks/use-checkout'
+
+//地區資料
+import { countries, townships, postcodes } from '@/data/data-townships'
 
 // icon
 import { IoIosArrowRoundBack, IoIosFiling } from 'react-icons/io'
@@ -19,28 +24,182 @@ import {
 } from 'react-icons/md'
 
 export default function CheckoutProcessForm({
-  handleChange = () => {},
-  // handleSubmit = () => {},
-  formData = {},
-  countries = [],
-  townships = [],
-  postcodes = [],
+  selectCoupon = {},
+  updateFormData = () => {},
 }) {
+  const { setFormData } = useCheckout()
+
   const router = useRouter()
+
+  const initialFormData = {
+    shipping: '宅配', //默認宅配,後續新增7-11物流
+    shippingFee: '200',
+    firstName: '',
+    lastName: '',
+    email: '',
+    mobilePhone: '',
+    // 宅配信息
+    country: '',
+    township: '',
+    postcode: '',
+    address: '',
+    // 門市自取信息
+    storeID: '',
+    storeType: '',
+    storeName: '',
+    storeAddress: '',
+    // 優惠卷,
+    coupon_id: '',
+    coupon_name: '',
+    // 共用信息
+    invoiceType: '2', //1非營業人電子發票 ２捐贈（默認）  3手機條碼
+    mobileBarcode: '', //手機載具 當invoiceType為3時,才會有資料
+    payType: 'LinePay', //支付類型
+  }
 
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
+    reset,
+    register,
+    setValue,
   } = useForm({
-    defaultValues: {
-      firstName: formData.firstName,
-      lastName: formData.lastName,
-      email: formData.email,
-    },
+    defaultValues: initialFormData,
   })
 
+  const formData = watch()
+  console.log(formData)
+
+  // 使用 watch 監控整個表單的變化
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      setFormData(value) // 將變化的表單數據更新到 Context 中
+    })
+    return () => subscription.unsubscribe()
+  }, [watch, setFormData])
+
+  useEffect(() => {
+    // 假设你需要根据某些条件更新表单的默认值，可以在这里使用reset
+    // 注意：这里直接使用initialFormData是因为我们模拟了初始值的场景
+    // 在实际应用中，你可能需要根据实际来源动态获取这些值
+    reset(initialFormData)
+  }, [reset])
+
+  // 使用 watch 監視 shipping 欄位的值
+  const shipping = watch('shipping')
+
+  // 監聽發票類型的變化
+  const invoiceType = watch('invoiceType') // 監聽發票類型的變化
+  //監聽宅配 地址
+  const selectedCountryIndex = watch('country')
+    ? countries.indexOf(watch('country'))
+    : 0
+
+  //   處理發票變化
+  useEffect(() => {
+    if (invoiceType !== '3') {
+      setValue('mobileBarcode', '') // 如果發票類型不是3，清空 mobileBarcode
+    }
+  }, [invoiceType, setValue])
+
+  useEffect(() => {
+    // 確保路由器準備就緒後再嘗試讀取查詢參數
+    if (!router.isReady) return
+
+    // 從查詢參數中獲取門市類型
+    const queryStoreType = router.query.storeType
+
+    // 根據storeType設置shipping的預設值
+    const defaultShipping = queryStoreType || '宅配' // 如果沒有指定storeType，則預設為'宅配'
+
+    // 使用reset函數更新表單的預設值，包括根據storeType設置的shipping
+    reset({
+      ...initialFormData, // 使用展開運算符保持其他初始表單數據不變
+      shipping: defaultShipping,
+      // 可以在這裡添加其他基於storeType條件的表單欄位預設值設置
+    })
+  }, [router.isReady, router.query, reset])
+
+  //處理運送方式與運費
+  useEffect(() => {
+    // 確保路由器準備就緒後再嘗試讀取查詢參數
+    if (!router.isReady) return
+
+    // 從查詢參數中獲取門市信息
+    const queryStoreType = router.query.storeType
+    const queryStoreID = router.query.storeID
+    const queryStoreName = router.query.storeName
+    const queryStoreAddress = router.query.storeAddress
+
+    // 計算新的運費
+    const newShippingFee = shipping !== '宅配' ? '80' : '200'
+    setValue('shippingFee', newShippingFee)
+
+    // 檢查當前選中的運送方式是否和門市類型匹配
+    if (shipping !== queryStoreType) {
+      // 如果不匹配，清空門市信息
+      setValue('storeType', '')
+      setValue('storeID', '')
+      setValue('storeName', '')
+      setValue('storeAddress', '')
+    } else {
+      // 如果匹配，更新門市信息（可選擇性地僅在信息為空時更新）
+      setValue('storeType', queryStoreType || watch('storeType'))
+      setValue('storeID', queryStoreID || watch('storeID'))
+      setValue('storeName', queryStoreName || watch('storeName'))
+      setValue('storeAddress', queryStoreAddress || watch('storeAddress'))
+    }
+  }, [router.isReady, router.query, shipping, setValue, watch])
+
+  //處理postcode
+  useEffect(() => {
+    const postcodeValue =
+      watch('country') && watch('township')
+        ? postcodes[selectedCountryIndex]?.[
+            townships[selectedCountryIndex].indexOf(watch('township'))
+          ]
+        : ''
+    setValue('postcode', postcodeValue, { shouldValidate: true })
+  }, [watch('country'), watch('township'), postcodes, setValue])
+
+  //處理couppon
+  useEffect(() => {
+    // 當 selectCoupon 改變時，使用 setValue 更新 React Hook Form 中的值
+    setValue('coupon_id', selectCoupon.id || null)
+    setValue('coupon_name', selectCoupon.coupon_name || '無')
+
+    // 確保表單驗證是更新的（如果需要）
+    // 這一步是可選的，取決於您是否需要在這些字段更新時觸發驗證
+    // trigger(['coupon_id', 'coupon_name'])
+  }, [selectCoupon, setValue, router.isReady])
+
+  useEffect(() => {
+    // 從 localStorage 讀取表單數據
+    const storedData = localStorage.getItem('check_info')
+
+    if (storedData) {
+      // 諮詢用戶是否恢復資料
+      const confirmRestore =
+        window.confirm('您有未完成的表單資料，是否要恢復？')
+
+      if (confirmRestore) {
+        // 如果用戶選擇恢復，則解析並設置表單數據
+        const formData = JSON.parse(storedData)
+
+        // 使用 reset 函數來恢復表單數據
+        reset(formData)
+      } else {
+        // 如果用戶選擇不恢復，可以選擇清除 localStorage 中的數據
+        localStorage.removeItem('check_info')
+      }
+    }
+  }, [reset])
+
   const onSubmit = (data) => {
+    localStorage.setItem('check_info', JSON.stringify(data))
+    updateFormData(data)
     console.log('data', data)
     router.push('/cart/confirmation')
   }
@@ -62,60 +221,67 @@ export default function CheckoutProcessForm({
             </Link>
           </div>
           <Form.Group>
-            <div className="icon-box d-flex mt-4">
-              <Form.Check
-                className={`text-h5 text-my-black ${styles['form-check']} `}
-                label="黑貓宅急便"
-                type="radio"
-                name="shipping"
-                id="shippingType1"
-                value="宅配"
-                onChange={handleChange}
-                checked={formData.shipping === '宅配'}
-              />
-            </div>
+            {/* 使用 Controller 管理單選按鈕 */}
+            <Controller
+              control={control}
+              name="shipping"
+              render={({ field }) => (
+                <>
+                  <div className="icon-box d-flex mt-4">
+                    <Form.Check
+                      {...field}
+                      className={`text-h5 text-my-black ${styles['form-check']}`}
+                      label="黑貓宅急便"
+                      type="radio"
+                      id="shippingType1"
+                      value="宅配"
+                      checked={field.value === '宅配'}
+                    />
+                  </div>
 
-            <div className="icon-box d-flex mt-4">
-              <Form.Check
-                className={`text-h5 text-my-black ${styles['form-check']} `}
-                label="7-11店到店"
-                type="radio"
-                name="shipping"
-                id="shippingType2"
-                value="UNIMARTC2C"
-                onChange={handleChange}
-                checked={formData.shipping === 'UNIMARTC2C'}
-              />
-            </div>
+                  <div className="icon-box d-flex mt-4">
+                    <Form.Check
+                      {...field}
+                      className={`text-h5 text-my-black ${styles['form-check']}`}
+                      label="7-11店到店"
+                      type="radio"
+                      id="shippingType2"
+                      value="UNIMARTC2C"
+                      checked={field.value === 'UNIMARTC2C'}
+                    />
+                  </div>
 
-            <div className="icon-box d-flex mt-4">
-              <Form.Check
-                className={`text-h5 text-my-black ${styles['form-check']} `}
-                label="全家店到店"
-                type="radio"
-                name="shipping"
-                id="shippingType2"
-                value="FAMIC2C"
-                onChange={handleChange}
-                checked={formData.shipping === 'FAMIC2C'}
-              />
-            </div>
+                  <div className="icon-box d-flex mt-4">
+                    <Form.Check
+                      {...field}
+                      className={`text-h5 text-my-black ${styles['form-check']}`}
+                      label="全家店到店"
+                      type="radio"
+                      id="shippingType3"
+                      value="FAMIC2C"
+                      checked={field.value === 'FAMIC2C'}
+                    />
+                  </div>
 
-            <div className="icon-box d-flex mt-4">
-              <Form.Check
-                className={`text-h5 text-my-black ${styles['form-check']} `}
-                label="OK店到店"
-                type="radio"
-                name="shipping"
-                id="shippingType3"
-                value="OKMARTC2C"
-                onChange={handleChange}
-                checked={formData.shipping === 'OKMARTC2C'}
-              />
-            </div>
+                  <div className="icon-box d-flex mt-4">
+                    <Form.Check
+                      {...field}
+                      className={`text-h5 text-my-black ${styles['form-check']}`}
+                      label="OK店到店"
+                      type="radio"
+                      id="shippingType4"
+                      value="OKMARTC2C"
+                      checked={field.value === 'OKMARTC2C'}
+                    />
+                  </div>
+                </>
+              )}
+            />
           </Form.Group>
         </div>
-        {formData.shipping === '宅配' && (
+        {/* 根據選擇顯示不同表單區塊 */}
+        {shipping === '宅配' && (
+          // 宅配表單區塊
           <>
             {/* 宅配*/}
             <h2 className="text-h4 text-my-black mb-3 mt-5 d-flex align-items-center">
@@ -124,82 +290,108 @@ export default function CheckoutProcessForm({
             </h2>
             <Form.Group controlId="formCountry">
               <Form.Label className="text-h5 text-my-black">城市</Form.Label>
-              <Form.Select
-                className={` ${styles['option-placeholder']}`}
-                as="select"
+              <Controller
                 name="country"
-                value={formData.country}
-                onChange={handleChange}
-              >
-                <option value="" disabled>
-                  請選擇城市
-                </option>
-                {countries.map((v, i) => (
-                  <option key={i} value={v}>
-                    {v}
-                  </option>
-                ))}
-              </Form.Select>
+                control={control}
+                rules={{
+                  required: shipping === '宅配' ? '城市為必填' : false,
+                }}
+                render={({ field }) => (
+                  <>
+                    <Form.Select {...field}>
+                      <option value="">請選擇城市</option>
+                      {countries.map((v, i) => (
+                        <option key={i} value={v}>
+                          {v}
+                        </option>
+                      ))}
+                    </Form.Select>
+                    {errors.country && (
+                      <div className="text-danger">
+                        {errors.country.message}
+                      </div>
+                    )}
+                  </>
+                )}
+              />
             </Form.Group>
 
             <Form.Group controlId="formTownship">
               <Form.Label className="text-h5 text-my-black">鄉鎮區</Form.Label>
-              <Form.Select
-                className={`${styles['form-control']} ${styles['option-placeholder']}`}
+              <Controller
                 name="township"
-                value={formData.township}
-                onChange={handleChange}
-              >
-                <option value="" disabled>
-                  請選擇鄉鎮區
-                </option>
-                {formData.country !== '' &&
-                  townships[countries.indexOf(formData.country)].map((v, i) => (
-                    <option key={i} value={v}>
-                      {v}
-                    </option>
-                  ))}
-              </Form.Select>
+                control={control}
+                rules={{
+                  required: shipping === '宅配' ? '鄉鎮區為必填' : false,
+                }}
+                render={({ field }) => (
+                  <>
+                    <Form.Select {...field}>
+                      <option value="">請選擇鄉鎮區</option>
+                      {townships[selectedCountryIndex] &&
+                        townships[selectedCountryIndex].map((v, i) => (
+                          <option key={i} value={v}>
+                            {v}
+                          </option>
+                        ))}
+                    </Form.Select>
+                    {errors.township && (
+                      <div className="text-danger">
+                        {errors.township.message}
+                      </div>
+                    )}
+                  </>
+                )}
+              />
             </Form.Group>
 
             <Form.Group controlId="formPostcode">
               <Form.Label className="text-h5 text-my-black">
                 郵遞區號
               </Form.Label>
-              <Form.Control
-                className={styles['form-control']}
-                type="text"
+              <Controller
                 name="postcode"
-                value={
-                  formData.country && formData.township
-                    ? postcodes[countries.indexOf(formData.country)][
-                        townships[countries.indexOf(formData.country)].indexOf(
-                          formData.township
-                        )
-                      ]
-                    : ''
-                }
-                onChange={handleChange}
-                readOnly
+                control={control}
+                render={({ field }) => (
+                  <input className="form-control" {...field} readOnly />
+                )}
               />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formAddress">
               <Form.Label className="text-h5 text-my-black">地址</Form.Label>
-              <Form.Control
-                className={styles['form-control']}
-                type="text"
+              <Controller
                 name="address"
-                value={formData.address}
-                onChange={handleChange}
-                placeholder="請輸入地址"
+                control={control}
+                rules={{
+                  required: shipping === '宅配' ? '地址為必填' : false,
+                  pattern: {
+                    value:
+                      /^[\u4e00-\u9fa5]+(路|街|巷)[\u4e00-\u9fa5\d]*[號巷弄樓]/,
+                    message: '請輸入正確的台灣地址',
+                  },
+                }}
+                render={({ field }) => (
+                  <>
+                    <Form.Control
+                      {...field}
+                      type="text"
+                      placeholder="請輸入地址"
+                    />
+                    {errors.address && (
+                      <div className="text-danger">
+                        {errors.address.message}
+                      </div>
+                    )}
+                  </>
+                )}
               />
             </Form.Group>
           </>
         )}
-        {formData.shipping === 'UNIMARTC2C' && (
+
+        {shipping === 'UNIMARTC2C' && (
           <>
-            {/* 門市*/}
             <div
               style={{
                 padding: '1rem',
@@ -208,22 +400,52 @@ export default function CheckoutProcessForm({
                 marginBottom: '1rem',
               }}
             >
-              <EcpayShipment shipping={formData.shipping} />
+              <EcpayShipment shipping={shipping} />
               <p>
                 <strong>超商類型:</strong> 統一超商
               </p>
+
               <p>
-                <strong>門市:</strong> {formData.storeName}
+                <strong>門市名稱:</strong>
+                <Controller
+                  name="storeName"
+                  control={control}
+                  rules={{ required: '請選擇門市' }}
+                  render={({ field, fieldState: { error } }) => (
+                    <>
+                      <span>{field.value}</span>
+                      {error && (
+                        <div style={{ color: 'red' }}>{error.message}</div>
+                      )}
+                    </>
+                  )}
+                />
               </p>
+
               <p>
-                <strong>門市地址:</strong> {formData.storeAddress}
+                <strong>門市地址:</strong>
+                <Controller
+                  name="storeAddress"
+                  control={control}
+                  rules={{ required: '請選擇門市' }}
+                  render={({ field, fieldState: { error } }) => (
+                    <>
+                      <span>{field.value}</span>
+                      {error && (
+                        <div style={{ color: 'red' }}>{error.message}</div>
+                      )}
+                    </>
+                  )}
+                />
               </p>
+
+              <input type="hidden" {...register('storeName')} />
+              <input type="hidden" {...register('storeAddress')} />
             </div>
           </>
         )}
-        {formData.shipping === 'FAMIC2C' && (
+        {shipping === 'FAMIC2C' && (
           <>
-            {/* 門市*/}
             <div
               style={{
                 padding: '1rem',
@@ -232,20 +454,50 @@ export default function CheckoutProcessForm({
                 marginBottom: '1rem',
               }}
             >
-              <EcpayShipment shipping={formData.shipping} />
+              <EcpayShipment shipping={shipping} />
               <p>
                 <strong>超商類型:</strong> 全家超商
               </p>
               <p>
-                <strong>門市:</strong> {formData.storeName}
+                <strong>門市名稱:</strong>
+                <Controller
+                  name="storeName"
+                  control={control}
+                  rules={{ required: '請選擇門市' }}
+                  render={({ field, fieldState: { error } }) => (
+                    <>
+                      <span>{field.value}</span>
+                      {error && (
+                        <div style={{ color: 'red' }}>{error.message}</div>
+                      )}
+                    </>
+                  )}
+                />
               </p>
+
               <p>
-                <strong>門市地址:</strong> {formData.storeAddress}
+                <strong>門市地址:</strong>
+                <Controller
+                  name="storeAddress"
+                  control={control}
+                  rules={{ required: '請選擇門市' }}
+                  render={({ field, fieldState: { error } }) => (
+                    <>
+                      <span>{field.value}</span>
+                      {error && (
+                        <div style={{ color: 'red' }}>{error.message}</div>
+                      )}
+                    </>
+                  )}
+                />
               </p>
+
+              <input type="hidden" {...register('storeName')} />
+              <input type="hidden" {...register('storeAddress')} />
             </div>
           </>
         )}
-        {formData.shipping === 'OKMARTC2C' && (
+        {shipping === 'OKMARTC2C' && (
           <>
             {/* 門市*/}
             <div
@@ -256,16 +508,45 @@ export default function CheckoutProcessForm({
                 marginBottom: '1rem',
               }}
             >
-              <EcpayShipment shipping={formData.shipping} />
+              <EcpayShipment shipping={shipping} />
               <p>
                 <strong>超商類型:</strong> OK超商
               </p>
               <p>
-                <strong>門市:</strong> {formData.storeName}
+                <strong>門市名稱:</strong>
+                <Controller
+                  name="storeName"
+                  control={control}
+                  rules={{ required: '請選擇門市' }}
+                  render={({ field, fieldState: { error } }) => (
+                    <>
+                      <span>{field.value}</span>
+                      {error && (
+                        <div style={{ color: 'red' }}>{error.message}</div>
+                      )}
+                    </>
+                  )}
+                />
               </p>
+
               <p>
-                <strong>門市地址:</strong> {formData.storeAddress}
+                <strong>門市地址:</strong>
+                <Controller
+                  name="storeAddress"
+                  control={control}
+                  rules={{ required: '請選擇門市' }}
+                  render={({ field, fieldState: { error } }) => (
+                    <>
+                      <span>{field.value}</span>
+                      {error && (
+                        <div style={{ color: 'red' }}>{error.message}</div>
+                      )}
+                    </>
+                  )}
+                />
               </p>
+              <input type="hidden" {...register('storeName')} />
+              <input type="hidden" {...register('storeAddress')} />
             </div>
           </>
         )}
@@ -280,7 +561,11 @@ export default function CheckoutProcessForm({
               name="firstName"
               control={control}
               rules={{
-                required: '姓氏是必填的',
+                required: '姓氏是必填',
+                pattern: {
+                  value: /^[\u4e00-\u9fa5]{1,2}$/,
+                  message: '請輸入有效的中文姓氏',
+                },
               }}
               render={({ field, fieldState: { error } }) => (
                 <Form.Control {...field} type="text" isInvalid={!!error} />
@@ -298,7 +583,13 @@ export default function CheckoutProcessForm({
             <Controller
               name="lastName"
               control={control}
-              rules={{ required: true }}
+              rules={{
+                required: '名字是必填的',
+                pattern: {
+                  value: /^[\u4e00-\u9fa5]{1,4}$/,
+                  message: '請輸入有效的中文名字',
+                },
+              }}
               render={({ field }) => (
                 <Form.Control
                   {...field}
@@ -309,7 +600,7 @@ export default function CheckoutProcessForm({
             />
             {errors.lastName && (
               <Form.Control.Feedback type="invalid">
-                名字是必填的
+                {errors.lastName.message}
               </Form.Control.Feedback>
             )}
           </Form.Group>
@@ -346,7 +637,13 @@ export default function CheckoutProcessForm({
             <Controller
               name="mobilePhone"
               control={control}
-              rules={{ required: true }}
+              rules={{
+                required: '電話是必填',
+                pattern: {
+                  value: /^09\d{8}$/,
+                  message: '請輸入有效的台灣手機號碼',
+                },
+              }}
               render={({ field }) => (
                 <Form.Control
                   {...field}
@@ -357,7 +654,7 @@ export default function CheckoutProcessForm({
             />
             {errors.mobilePhone && (
               <Form.Control.Feedback type="invalid">
-                電話是必填的
+                {errors.mobilePhone.message}
               </Form.Control.Feedback>
             )}
           </Form.Group>
@@ -367,47 +664,55 @@ export default function CheckoutProcessForm({
               發票類型
             </h2>
             <Form.Group>
-              <Form.Check
-                className={`text-h5 text-my-black ${styles['form-check']} `}
-                type="radio"
-                label="非營業人電子發票"
-                name="invoiceType"
-                id="invoiceType1"
-                value="1"
-                onChange={handleChange}
-                checked={formData.invoiceType === '1'}
-              />
-              <Form.Check
-                className={`text-h5 text-my-black ${styles['form-check']} `}
-                type="radio"
-                label="雲端發票-捐贈"
-                name="invoiceType"
-                id="invoiceType2"
-                value="2"
-                onChange={handleChange}
-                checked={formData.invoiceType === '2'}
-              />
-              <Form.Check
-                className={`text-h5 text-my-black ${styles['form-check']} `}
-                type="radio"
-                label="雲端發票-手機條碼"
-                name="invoiceType"
-                id="invoiceType3"
-                value="3"
-                onChange={handleChange}
-                checked={formData.invoiceType === '3'}
-              />
+              {['1', '2', '3'].map((type, index) => (
+                <Controller
+                  key={type}
+                  name="invoiceType"
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Check
+                      {...field}
+                      className={`text-h5 text-my-black ${styles['form-check']}`}
+                      type="radio"
+                      label={
+                        [
+                          '非營業人電子發票',
+                          '雲端發票-捐贈',
+                          '雲端發票-手機條碼',
+                        ][index]
+                      }
+                      id={`invoiceType${type}`}
+                      value={type}
+                      checked={field.value === type}
+                    />
+                  )}
+                />
+              ))}
             </Form.Group>
 
-            <Collapse in={formData.invoiceType === '3'}>
-              <Form.Group className="mb-3" controlId="formMobileBarcode">
-                <Form.Control
-                  className={`${styles['form-control']}`}
-                  type="text"
+            <Collapse in={invoiceType === '3'}>
+              <Form.Group className="mb-3">
+                <Controller
                   name="mobileBarcode"
-                  value={formData.mobileBarcode}
-                  onChange={handleChange}
-                  placeholder="請輸入手機載具 ex:/545142S"
+                  control={control}
+                  rules={{
+                    required: invoiceType === '3' ? '請輸入手機載具' : false,
+                  }}
+                  render={({ field, fieldState: { error } }) => (
+                    <>
+                      <Form.Control
+                        {...field}
+                        type="text"
+                        placeholder="請輸入手機載具 ex:/545142S"
+                        isInvalid={!!error}
+                      />
+                      {error && (
+                        <Form.Control.Feedback type="invalid">
+                          {error.message}
+                        </Form.Control.Feedback>
+                      )}
+                    </>
+                  )}
                 />
               </Form.Group>
             </Collapse>
@@ -415,67 +720,89 @@ export default function CheckoutProcessForm({
           <div>
             <h2 className="text-h4 text-my-black mb-3 mt-5 d-flex align-items-center">
               <MdOutlinePayments className="me-2 text-my-black" size="24px" />
-              支付方式
+              付款方式
             </h2>
             <Form.Group className="">
               <div className="icon-box d-flex mt-4">
-                <Form.Check
-                  className={`text-h5 text-my-black ${styles['form-check']} `}
-                  type="radio"
+                <Controller
                   name="payType"
-                  id="payType1"
-                  value="LinePay"
-                  onChange={handleChange}
-                  checked={formData.payType === 'LinePay'}
-                />
-                <img
-                  label="LINEPAY"
-                  src="/images/paylogo/linepay.png"
-                  alt="linepay"
-                  className="object-fit-cover ps-3"
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Check
+                      {...field}
+                      className={`text-h5 text-my-black ${styles['form-check']}`}
+                      type="radio"
+                      label={
+                        <div className="icon-box">
+                          <img
+                            src="/images/paylogo/linepay.png"
+                            alt="LINEPAY"
+                            className="object-fit-cover ps-3"
+                          />
+                        </div>
+                      }
+                      id="payType1"
+                      value="LinePay"
+                      checked={field.value === 'LinePay'}
+                    />
+                  )}
                 />
               </div>
               <div className="icon-box d-flex mt-4">
-                <Form.Check
-                  className={`text-h5 text-my-black ${styles['form-check']} `}
-                  type="radio"
+                <Controller
                   name="payType"
-                  id="payType2"
-                  value="綠界Pay"
-                  onChange={handleChange}
-                  checked={formData.payType === '綠界Pay'}
-                />
-                <img
-                  label="ECPAY"
-                  src="/images/paylogo/ecpay2.png"
-                  alt="linepay"
-                  className="object-fit-cover ps-3"
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Check
+                      {...field}
+                      className={`text-h5 text-my-black ${styles['form-check']}`}
+                      type="radio"
+                      label={
+                        <div className="icon-box">
+                          <img
+                            src="/images/paylogo/ecpay2.png"
+                            alt="ECPAY"
+                            className="object-fit-cover ps-3"
+                          />
+                        </div>
+                      }
+                      id="payType2"
+                      value="EcPay"
+                      checked={field.value === 'EcPay'}
+                    />
+                  )}
                 />
               </div>
               <div className="icon-box d-flex mt-4">
-                <Form.Check
-                  className={`text-h5 text-my-black ${styles['form-check']} `}
-                  type="radio"
-                  label=""
+                <Controller
                   name="payType"
-                  id="payType3"
-                  value="信用卡"
-                  onChange={handleChange}
-                  checked={formData.payType === '信用卡'}
-                />
-                <img
-                  label="ECPAY"
-                  src="/images/paylogo/creditcard.png"
-                  alt="linepay"
-                  className="object-fit-cover ps-2"
+                  control={control}
+                  render={({ field }) => (
+                    <Form.Check
+                      {...field}
+                      className={`text-h5 text-my-black ${styles['form-check']}`}
+                      type="radio"
+                      label={
+                        <div className="icon-box">
+                          <img
+                            src="/images/paylogo/creditcard.png"
+                            alt="Credit Card"
+                            className="object-fit-cover ps-2"
+                          />
+                        </div>
+                      }
+                      id="payType3"
+                      value="信用卡"
+                      checked={field.value === 'creditcard'}
+                    />
+                  )}
                 />
               </div>
             </Form.Group>
           </div>
-          <button type="submit">提交</button>
           <div
+            onClick={handleSubmit(onSubmit)}
             className="col-lg-4 ms-auto my-button1  mt-5 "
-            onClick={handleSubmit}
           >
             下一步
           </div>
