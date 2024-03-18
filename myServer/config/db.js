@@ -1,19 +1,16 @@
-require('dotenv').config();
-const mysql = require('mysql');
+const mysql = require('mysql2/promise');
+const dotenv = require('dotenv');
+dotenv.config();
 
-const db = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_DATABASE
+const pool = mysql.createPool({
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USERNAME,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
 
-db.connect(err => {
-    if (err) {
-        console.error('連接資料庫時發生錯誤：', err);
-        process.exit(1);
-    }
-    console.log('已連接到資料庫');
-});
-
-module.exports = db;
+module.exports = pool;

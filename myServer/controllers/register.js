@@ -2,6 +2,7 @@ const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const db = require('../config/db');
+const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
   const { email, password, title, lastname, firstname, auth_provider = 'local' } = req.body;
@@ -14,6 +15,11 @@ exports.register = async (req, res) => {
       console.error('Error registering user:', err);
       return res.status(500).json({ message: 'Error registering user' });
     }
+
+    // 註冊成功後生成 token。
+    const payload = { email: email, id: result.insertId }; // 根據您的需要自定義 payload。
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' });
+    console.log('Generated JWT:', token);
 
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -42,7 +48,8 @@ exports.register = async (req, res) => {
         return res.status(500).json({ message: 'Error sending email'});
       }
       console.log('Verification email sent: ' + info.response);
-      res.status(200).json({ message: 'User registered successfully. Verification email sent.' });
+      // 将生成的 JWT 作为响应的一部分发送回前端
+      res.status(200).json({ message: 'User registered successfully. Verification email sent.', token: token });
     });
   });
 };
@@ -58,7 +65,7 @@ exports.verify = (req, res) => {
     }
 
     if (result.length === 0 || code !== result[0].verification_code) {
-      return res.status(400).json({ message: 'Invalid verification code' });
+      return res.status(400).json({ message: '無效驗證碼' });
     }
 
     const sqlUpdate = 'UPDATE users SET email_verified = true WHERE email = ?';
@@ -67,7 +74,9 @@ exports.verify = (req, res) => {
         console.error('Error updating user verification status:', err);
         return res.status(500).json({ message: 'Error updating user verification status' });
       }
-      res.status(200).json({ message: 'Account successfully verified.' });
+      res.status(200).json({ message: 'User registered successfully. Verification email sent.'});
     });
   });
 };
+
+

@@ -182,7 +182,7 @@ export default function List() {
   useEffect(() => {
     const fetchData = async () => {
       // 构建 fetchUrl
-      let updatedFetchUrl = 'http://localhost:3005/api/myProduct?'
+      let updatedFetchUrl = 'http://localhost:3001/api/products?'
       const newUrl = new URL(window.location.href)
 
       // 根据排序选项添加对应的排序方式到 fetchUrl
@@ -282,7 +282,7 @@ export default function List() {
                 </div>
                 <div className="dropdown ms-3">
                   <button
-                    className="btn dropdown-toggle my-text-contents-CH rounded-pill shadow"
+                    className="btn custom-dropdown-button dropdown-toggle my-text-contents-CH rounded-pill shadow"
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
@@ -339,12 +339,21 @@ export default function List() {
             {isMobile && (
               <div className="d-flex p-2 justify-content-end align-items-center">
                 <button
-                  className="btn my-text-contents-CH rounded-pill shadow"
+                  className="btn my-text-contents-CH rounded-pill "
                   onClick={handleOpen}
+                  style={{
+                    backgroundColor: '#ff69b4' /* 粉色背景 */,
+                    transition: 'background-color 0.3s' /* 渐变动画 */,
+                    border: 'none' /* 移除边框 */,
+                    outline: 'none' /* 移除默认外边框 */,
+
+                    padding: '10px 20px' /* 添加内边距 */,
+                    color: '#fff' /* 文字颜色 */,
+                  }}
                 >
                   <span>
                     篩選
-                    <FaSliders />
+                    <FaSliders style={{ marginLeft: '5px' }} />
                   </span>
                 </button>
 
@@ -1140,7 +1149,7 @@ export default function List() {
         <div className="col-lg-9 col-md-12">
           <div id="page-content-wrapper">
             <div className="container">
-              <div className="row row-cols-2 row-cols-lg-3 g-4 row-cols-md-2">
+              <div className="row row-cols-1 row-cols-lg-3 g-4 row-cols-sm-2">
                 {/* 循环渲染产品 */}
                 {displayedProducts.length > 0 ? (
                   displayedProducts.map((product) => (
@@ -1210,6 +1219,53 @@ export default function List() {
         /* 滚动条滑块悬停状态 */
         ::-webkit-scrollbar-thumb:hover {
           background: #ff1493; /* 滑块悬停时的颜色 */
+        }
+        .custom-dropdown-button {
+          background-color: #ff69b4; /* 粉色 */
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 30px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .custom-dropdown-button:hover {
+          background-color: #ff1493; /* 深粉色 */
+          transform: scale(1.05);
+        }
+
+        .dropdown-menu {
+          background-color: #ff69b4; /* 粉色 */
+          border: none;
+          border-radius: 20px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+          overflow: hidden; /* 隐藏超出的内容 */
+        }
+
+        .dropdown-item {
+          color: #fff;
+          padding: 10px 20px;
+          /* 圆形边界 */
+          transition: background-color 0.3s ease;
+        }
+
+        .dropdown-item:last-child {
+          border-bottom: none;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+          background-color: rgba(148, 0, 211, 0.6); /* 紫色 */
+        }
+
+        .dropdown-item.active,
+        .dropdown-item:active {
+          background-color: rgba(148, 0, 211, 1); /* 紫色 */
+          /* 圆角 */
+        }
+        .hover-pink:hover {
+          background-color: rgba(255, 255, 203); /* 鼠标悬停时的深色粉色背景 */
         }
       `}</style>
     </>
