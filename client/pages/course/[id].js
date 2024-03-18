@@ -13,6 +13,7 @@ import CourseSubInfo from '@/components/course/course-sub-info'
 
 import { useCart } from '@/hooks/user-cart'
 
+
 import {
   BsBookmarkCheckFill,
   BsFillStarFill,
@@ -21,7 +22,7 @@ import {
 } from 'react-icons/bs'
 
 export default function CoursePage() {
-  const { addCartItem } = useCart()
+  const { addCartItem, Toaster } = useCart()
   // const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
   const router = useRouter()
   const { id } = router.query
@@ -377,6 +378,7 @@ export default function CoursePage() {
             </div>
           </aside>
         </div>
+        {/* <Toaster /> */}
       </div>
       <style jsx>{`
         h1 {
