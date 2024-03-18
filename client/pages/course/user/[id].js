@@ -3,6 +3,8 @@ import ReactPlayer from 'react-player'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Accordion from 'react-bootstrap/Accordion'
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 import Section from '@/components/course/section'
 import New from '@/components/course/new'
 import { BsListOl, BsArrowDown, BsArrowUp } from 'react-icons/bs'
@@ -12,6 +14,7 @@ export default function LearnPage() {
   const router = useRouter()
   const { id } = router.query
   const [isReady, setIsReady] = useState(false)
+  const [lgShow, setLgShow] = useState(false)
   const [startAt, setStartAt] = useState(0)
   const playerRef = useRef()
   const onReady = useCallback(() => {
@@ -20,10 +23,11 @@ export default function LearnPage() {
       setIsReady(true)
     }
   }, [isReady, startAt])
+
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [articleOpen, setArticleOpen] = useState(false)
-  const [videoUrl, setVideoUrl] = useState('')
+  const [videoUrl, setVideoUrl] = useState('01.mp4')
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -86,7 +90,8 @@ export default function LearnPage() {
             />
           </div>
           {/* 章節選擇 */}
-          <div className="scrollable col-xl-5 col-12 mb-1 mb-xl-0">
+          {/* 電腦版 */}
+          <div className="scrollable col-xl-5 col-12 mb-1 mb-xl-0 d-md-block d-none">
             <p className="text-h3 d-flex justify-content-center">章節選擇</p>
             <Accordion defaultActiveKey={[]} alwaysOpen>
               {units.map((v, index) => {
@@ -124,6 +129,67 @@ export default function LearnPage() {
                 )
               })}
             </Accordion>
+          </div>
+          {/* 手機板 */}
+          <div className="d-md-none">
+            <Button onClick={() => setLgShow(true)}>章節選擇</Button>
+            <Modal
+              size="lg"
+              show={lgShow}
+              onHide={() => setLgShow(false)}
+              aria-labelledby="example-modal-sizes-title-lg"
+            >
+              <Modal.Header closeButton>
+                <Modal.Title id="example-modal-sizes-title-lg">
+                  章節選擇
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body >
+                <Accordion
+                  defaultActiveKey={Array.from(
+                    { length: units.length },
+                    (_, i) => i.toString()
+                  )}
+                  alwaysOpen
+                >
+                  {units.map((v, index) => {
+                    return (
+                      <Accordion.Item key={index} eventKey={index.toString()}>
+                        <Accordion.Header>
+                          <BsListOl className="me-1" />
+                          {v.title}
+                        </Accordion.Header>
+                        <Accordion.Body>
+                          {v.sub_units.map((v, index) => {
+                            return (
+                              <div
+                                onClick={() => {
+                                  setVideoUrl(v.video_path)
+                                  // 設定影片開始時間
+                                  setStartAt(Number(v.video_len.split(':')[1]))
+                                  setIsReady(false)
+                                  setLgShow(false)
+                                }}
+                                className={`cursor-pointer ${
+                                  videoUrl === v.video_path ? 'active' : ''
+                                }`}
+                              >
+                                <Section
+                                  key={index}
+                                  secNum={index + 1}
+                                  secTitle={`${v.title}`}
+                                  secTime={`${v.video_len}`}
+                                />
+                              </div>
+                            )
+                          })}
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    )
+                  })}
+                </Accordion>
+              </Modal.Body>
+            </Modal>
           </div>
         </div>
         <div>
