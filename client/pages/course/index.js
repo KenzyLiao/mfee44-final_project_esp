@@ -2,6 +2,7 @@ import React, { useRef, useState, useEffect } from 'react'
 import CourseCarousel from '@/components/course/course-carousel.js'
 import CardGroup from '@/components/course/card-group.js'
 import CardGroupTitle from '@/components/course/card-group-title.js'
+import MyCardGroup from '@/components/course/my-card-group.js'
 
 export default function CoursePage() {
   const titleData = [
@@ -26,6 +27,7 @@ export default function CoursePage() {
       subTitle: '發揮你的創意',
     },
   ]
+  const [login, setLogin] = useState(true)
   const [data, setData] = useState([])
   useEffect(() => {
     const fetchData = async () => {
@@ -46,12 +48,17 @@ export default function CoursePage() {
         <CourseCarousel />
       </div>
 
-      {/* {titleData.map((item, idx) => (
-        <div className="mb-5" key={idx}>
-          <CardGroupTitle {...item} />
-          <CardGroup data={data} />
+      {/* 我的學習 */}
+      {login && (
+        <div>
+          <CardGroupTitle
+            title={titleData[0].title}
+            subTitle={titleData[0].subTitle}
+            linkUrl="http://localhost:3000/course/overview?state=3"
+          />
+          <MyCardGroup data={data[1]} />
         </div>
-      ))} */}
+      )}
 
       <div className="mb-5">
         <CardGroupTitle

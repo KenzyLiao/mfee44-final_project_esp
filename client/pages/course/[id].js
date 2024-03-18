@@ -76,7 +76,7 @@ export default function CoursePage() {
     news_content,
   } = data
 
-  // pen data
+  // pen random data
   const date = new Date()
   const currentMinute = date.getMinutes()
   const pen_random_num = currentMinute % 213

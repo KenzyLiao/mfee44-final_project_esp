@@ -1,29 +1,16 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
 import ReactPlayer from 'react-player'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Accordion from 'react-bootstrap/Accordion'
 import Section from '@/components/course/section'
 import New from '@/components/course/new'
 import { BsListOl, BsArrowDown, BsArrowUp } from 'react-icons/bs'
-import dynamic from 'next/dynamic'
 import CourseSubInfo from '@/components/course/course-sub-info'
 
 export default function LearnPage() {
-  // const ReactPlayer = dynamic(
-  //   () => import('react-player'),
-  //   { ssr: false } // 這將確保只在客戶端渲染
-  // )
-
-  // const [isPlaying, setIsPlaying] = useState(true)
-  // const [isReady, setIsReady] = useState(false)
-  // const playerRef = useRef()
-  // const onReady = useCallback(() => {
-  //   if (!isReady) {
-  //     const timeToStart = 60
-  //     playerRef.current.seekTo(timeToStart, 'seconds')
-  //     setIsReady(true)
-  //   }
-  // }, [isReady])
+  const router = useRouter()
+  const { id } = router.query
   const [isReady, setIsReady] = useState(false)
   const [startAt, setStartAt] = useState(0)
   const playerRef = useRef()
@@ -33,8 +20,6 @@ export default function LearnPage() {
       setIsReady(true)
     }
   }, [isReady, startAt])
-
-  const id = 215
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [articleOpen, setArticleOpen] = useState(false)
