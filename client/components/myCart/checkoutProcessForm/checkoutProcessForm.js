@@ -3,17 +3,18 @@ import { Form, Container, Collapse } from 'react-bootstrap'
 import { useForm, Controller } from 'react-hook-form'
 import styles from './checkoutProcessForm.module.scss'
 import Link from 'next/link'
+
 import { useRouter } from 'next/router'
 
 //hook
-import { useCheckout } from '@/hooks/use-checkout'
+// import { useCheckout } from '@/hooks/use-checkout'
 
 //地區資料
 import { countries, townships, postcodes } from '@/data/data-townships'
 
 // icon
 import { IoIosArrowRoundBack, IoIosFiling } from 'react-icons/io'
-
+//component
 import EcpayShipment from '../ecPayShippment'
 
 import {
@@ -25,9 +26,10 @@ import {
 
 export default function CheckoutProcessForm({
   selectCoupon = {},
-  updateFormData = () => {},
+  setFormData = () => {},
 }) {
-  const { setFormData } = useCheckout()
+  console.log(selectCoupon)
+  // const { setFormData } = useCheckout()
 
   const router = useRouter()
 
@@ -97,7 +99,7 @@ export default function CheckoutProcessForm({
     ? countries.indexOf(watch('country'))
     : 0
 
-  //   處理發票變化
+  //  處理發票變化
   useEffect(() => {
     if (invoiceType !== '3') {
       setValue('mobileBarcode', '') // 如果發票類型不是3，清空 mobileBarcode
@@ -164,7 +166,7 @@ export default function CheckoutProcessForm({
     setValue('postcode', postcodeValue, { shouldValidate: true })
   }, [watch('country'), watch('township'), postcodes, setValue])
 
-  //處理couppon
+  //處理couppon(會當機)
   useEffect(() => {
     // 當 selectCoupon 改變時，使用 setValue 更新 React Hook Form 中的值
     setValue('coupon_id', selectCoupon.id || null)
@@ -173,7 +175,7 @@ export default function CheckoutProcessForm({
     // 確保表單驗證是更新的（如果需要）
     // 這一步是可選的，取決於您是否需要在這些字段更新時觸發驗證
     // trigger(['coupon_id', 'coupon_name'])
-  }, [selectCoupon, setValue, router.isReady])
+  }, [selectCoupon, router.isReady])
 
   useEffect(() => {
     // 從 localStorage 讀取表單數據
@@ -199,7 +201,7 @@ export default function CheckoutProcessForm({
 
   const onSubmit = (data) => {
     localStorage.setItem('check_info', JSON.stringify(data))
-    updateFormData(data)
+
     console.log('data', data)
     router.push('/cart/confirmation')
   }
@@ -226,55 +228,19 @@ export default function CheckoutProcessForm({
               control={control}
               name="shipping"
               render={({ field }) => (
-                <>
-                  <div className="icon-box d-flex mt-4">
-                    <Form.Check
-                      {...field}
-                      className={`text-h5 text-my-black ${styles['form-check']}`}
-                      label="黑貓宅急便"
-                      type="radio"
-                      id="shippingType1"
-                      value="宅配"
-                      checked={field.value === '宅配'}
-                    />
-                  </div>
-
-                  <div className="icon-box d-flex mt-4">
-                    <Form.Check
-                      {...field}
-                      className={`text-h5 text-my-black ${styles['form-check']}`}
-                      label="7-11店到店"
-                      type="radio"
-                      id="shippingType2"
-                      value="UNIMARTC2C"
-                      checked={field.value === 'UNIMARTC2C'}
-                    />
-                  </div>
-
-                  <div className="icon-box d-flex mt-4">
-                    <Form.Check
-                      {...field}
-                      className={`text-h5 text-my-black ${styles['form-check']}`}
-                      label="全家店到店"
-                      type="radio"
-                      id="shippingType3"
-                      value="FAMIC2C"
-                      checked={field.value === 'FAMIC2C'}
-                    />
-                  </div>
-
-                  <div className="icon-box d-flex mt-4">
-                    <Form.Check
-                      {...field}
-                      className={`text-h5 text-my-black ${styles['form-check']}`}
-                      label="OK店到店"
-                      type="radio"
-                      id="shippingType4"
-                      value="OKMARTC2C"
-                      checked={field.value === 'OKMARTC2C'}
-                    />
-                  </div>
-                </>
+                <Form.Select
+                  {...field}
+                  className="mt-4 text-h5 text-my-black"
+                  id="shippingSelect"
+                >
+                  <option value="宅配">黑貓宅急便</option>
+                  <option value="UNIMARTC2C">7-11收貨</option>
+                  <option value="FAMIC2C">全家收貨</option>
+                  <option value="OKMARTC2C">OK收貨</option>
+                  {/* <option value="UNIMARTC2C-Y">7-11貨到付款</option>
+                  <option value="FAMIC2C-Y">全家貨到付款</option>
+                  <option value="OKMARTC2C-Y">OK貨到付款</option> */}
+                </Form.Select>
               )}
             />
           </Form.Group>
@@ -393,11 +359,14 @@ export default function CheckoutProcessForm({
         {shipping === 'UNIMARTC2C' && (
           <>
             <div
+              className="box-shadow "
               style={{
                 padding: '1rem',
-                border: '1px solid #ccc',
+                backgroundColor: 'var(--my-white)',
+                // border: '0.5px solid var(--my-black)',
                 borderRadius: '5px',
                 marginBottom: '1rem',
+                marginTop: '1rem',
               }}
             >
               <EcpayShipment shipping={shipping} />
@@ -447,11 +416,14 @@ export default function CheckoutProcessForm({
         {shipping === 'FAMIC2C' && (
           <>
             <div
+              className="box-shadow "
               style={{
                 padding: '1rem',
-                border: '1px solid #ccc',
+                backgroundColor: 'var(--my-white)',
+                // border: '0.5px solid var(--my-black)',
                 borderRadius: '5px',
                 marginBottom: '1rem',
+                marginTop: '1rem',
               }}
             >
               <EcpayShipment shipping={shipping} />
@@ -501,11 +473,14 @@ export default function CheckoutProcessForm({
           <>
             {/* 門市*/}
             <div
+              className="box-shadow "
               style={{
                 padding: '1rem',
-                border: '1px solid #ccc',
+                backgroundColor: 'var(--my-white)',
+                // border: '0.5px solid var(--my-black)',
                 borderRadius: '5px',
                 marginBottom: '1rem',
+                marginTop: '1rem',
               }}
             >
               <EcpayShipment shipping={shipping} />

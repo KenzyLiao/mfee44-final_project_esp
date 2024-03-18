@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-
+import ProgressBar from '@/components/myCart/progressBar'
 import OrderSummary from '@/components/myCart/orderSummary'
 import SmallProductCart from '@/components/myCart/smallProductCart'
 import SmallCourseCart from '@/components/myCart/smallCourseCart'
@@ -11,18 +11,13 @@ import toast, { Toaster } from 'react-hot-toast'
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
+import { useCheckout } from '@/hooks/use-checkout'
 
 export default function Confirmation() {
-  const {
-    cart,
-    rawTotalPrice,
-    totalPrice,
-    cartCourse,
-    cartGeneral,
-    formatPrice,
-    selectCoupon,
-    formData,
-  } = useCart()
+  const { cart, cartCourse, cartGeneral, formatPrice } = useCart()
+
+  const { rawTotalPrice, totalPrice, selectCoupon, formData } = useCheckout()
+  console.log(formData.payType)
 
   //linePay資料使用
   const [linePayOrder, setLinePayOrder] = useState({})
@@ -81,19 +76,33 @@ export default function Confirmation() {
     }
   }
 
+  const goEcPay = async (orderId) => {
+    if (window.confirm('請確認導向至ECPAY進行付款嗎？')) {
+      window.location.href = `http://localhost:3005/api/ecpay?orderId=${orderId}`
+    }
+  }
+
   //點擊付款行為＝創建訂單+請求linePay API
   const creatOrderAndPay = async () => {
-    const orderResponse = await creatOrder()
-    if (orderResponse.status === 'success') {
-      await toast.success('已成功建立訂單')
-
-      setTimeout(() => {
-        goLinePay(orderResponse.data.order.orderId)
-      }, 1500)
+    if (cart.length < 0) {
+      toast.error('購物車沒有商品,請進行選購')
     } else {
-      toast.error('訂單創建失敗,請稍後再重試', {
-        duration: 3000,
-      })
+      const orderResponse = await creatOrder()
+      if (orderResponse.status === 'success') {
+        await toast.success('已成功建立訂單')
+
+        setTimeout(() => {
+          if (formData.payType === 'LinePay') {
+            goLinePay(orderResponse.data.order.orderId)
+          } else if (formData.payType === 'EcPay') {
+            goEcPay(orderResponse.data.order.orderId)
+          }
+        }, 1500)
+      } else {
+        toast.error(orderResponse.message, {
+          duration: 3000,
+        })
+      }
     }
   }
 
@@ -113,6 +122,11 @@ export default function Confirmation() {
   }, [router.isReady, router.query])
   return (
     <>
+      <ProgressBar
+        percentage={90}
+        text={'結帳進度'}
+        textColor={'var(--my-white)'}
+      />
       <div className="row">
         {/* 左邊 */}
         <div className="col-lg-7">

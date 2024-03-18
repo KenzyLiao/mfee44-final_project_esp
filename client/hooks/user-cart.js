@@ -1,21 +1,12 @@
 import { createContext, useState, useContext, useEffect } from 'react'
-import { useRouter } from 'next/router'
-
-/* 資料庫資料 */
-//優惠卷
-import couponsData from '@/data/coupon.json'
-
-//地區資料
-import { countries, townships, postcodes } from '@/data/data-townships'
+import toast, { Toaster } from 'react-hot-toast'
 
 //1.建立與導出
 export const CartContext = createContext(null)
 // 協助全站(_app.js)裡套用Provider的元件，集中要使用的狀態
 export function CartProvider({ children }) {
-  const router = useRouter()
   // 共享用狀態(state)
   const [cart, setCart] = useState([])
-  const [totalPrice, setTotalPrice] = useState(0)
 
   //初始化 localstorage資料提取到cart
   useEffect(() => {
@@ -38,7 +29,7 @@ export function CartProvider({ children }) {
 
   //購物車的某item數量增加
   const increment = (id) => {
-    const newCart = cart.map((v, i) => {
+    const newCart = cart.map((v) => {
       if (v.id === id) return { ...v, qty: v.qty + 1 }
       else return v
     })
@@ -47,7 +38,7 @@ export function CartProvider({ children }) {
 
   //購物車的某item數量減少
   const decrement = (id) => {
-    const newCart = cart.map((v, i) => {
+    const newCart = cart.map((v) => {
       if (v.id === id) return { ...v, qty: v.qty - 1 }
       else return v
     })
@@ -57,40 +48,41 @@ export function CartProvider({ children }) {
   // 新增項目到購物車 (old version)
   const addCartItem = (item) => {
     if (item.type === 'general') {
-      const index = cart.findIndex((v, i) => v.id === item.id)
+      const index = cart.findIndex((v) => v.id === item.id)
       if (index > -1) {
         increment(item.id)
+        toast.success(`添加【${item.name}】到購物車成功`)
         return false
       }
       // 擴充item數量屬性
       const newItem = { ...item, qty: 1 }
       const newCart = [...cart, newItem]
+      toast.success(`添加【${item.name}】到購物車成功`)
       setCart(newCart)
     } else {
       // 只有單一數量的商品 例如課程
-      const index = cart.findIndex((v, i) => v.id === item.id)
+      const index = cart.findIndex((v) => v.id === item.id)
       if (index > -1) {
-        alert(`已經添加過【${item.name}】到購物車`)
+        // alert(`已經添加過【${item.name}】到購物車`)
+        toast.error(`已經添加過【${item.name}】到購物車`)
         return false
       }
       // 擴充item數量屬性
       const newItem = { ...item, qty: 1 }
       const newCart = [...cart, newItem]
       setCart(newCart)
+      toast.success(`添加【${item.name}】到購物車成功`)
     }
   }
 
   //刪除購物車的項目
   const removeCartItem = (item) => {
-    const newCart = cart.filter((v, i) => v.id !== item.id)
+    const newCart = cart.filter((v) => v.id !== item.id)
     setCart(newCart)
   }
 
   //計算總商品數量 以品項計算
   const totalItems = cart.length
-
-  //計算總小記
-  const rawTotalPrice = cart.reduce((acc, v) => acc + v.qty * v.price, 0)
 
   // 轉換金額格式為$99,999
   function formatPrice(price) {
@@ -100,136 +92,6 @@ export function CartProvider({ children }) {
       minimumFractionDigits: 0,
     })
     return formatter.format(price)
-  }
-
-  /* 處理優惠卷 */
-
-  const [coupons, setCoupons] = useState([])
-  const [selectedCouponID, setSelectedCouponID] = useState('none')
-  const [selectCoupon, setSelectCoupon] = useState({})
-
-  //處理資料庫過來的優惠卷資料
-  useEffect(() => {
-    const fetchData = async () => {
-      const newcouponsData = await couponsData
-      if (newcouponsData) {
-        setCoupons(newcouponsData)
-      }
-    }
-    fetchData()
-  }, [])
-
-  //初始化 localstorage資料提取到selectCoupon
-  useEffect(() => {
-    if (localStorage.getItem('selectedCouponID')) {
-      const clientSelectedCouponID =
-        localStorage.getItem('selectedCouponID') || 'none'
-      setSelectedCouponID(clientSelectedCouponID)
-    }
-  }, [])
-
-  useEffect(() => {
-    handleSelectCoupon(coupons, selectedCouponID)
-  }, [selectedCouponID, coupons])
-
-  const handleSelectCoupon = (coupponsArray, coupon_code) => {
-    const [newSelectCoupon] = coupponsArray.filter(
-      (v) => coupon_code === v.coupon_code
-    )
-
-    if (newSelectCoupon) {
-      setSelectCoupon(newSelectCoupon)
-    } else {
-      setSelectCoupon({
-        coupon_code: 'none',
-        coupon_name: '無',
-        ValidFrom: '',
-        ValidTo: '',
-        MinimumSpend: 0,
-        DiscountType: '',
-        DiscountValue: 0,
-        UsageLimit: 0,
-        UsedCount: 0,
-      })
-    }
-  }
-
-  const handleRadioChange = (e) => {
-    // 更新选中的优惠券ID状态，并保存到localStorage
-    const newSelectedCouponID = e.target.value
-    setSelectedCouponID(newSelectedCouponID)
-    localStorage.setItem('selectedCouponID', newSelectedCouponID)
-  }
-  /* formData */
-
-  const [formData, setFormData] = useState({
-    shipping: '宅配', //默認宅配,後續新增7-11物流
-    shippingFee: '200',
-    firstName: '',
-    lastName: '',
-    email: '',
-    mobilePhone: '',
-    // 宅配信息
-    country: '',
-    township: '',
-    postcode: '',
-    address: '',
-    // 門市自取信息
-    storeID: '',
-    storeType: '',
-    storeName: '',
-    storeAddress: '',
-    // 共用信息
-    invoiceType: '2', //1非營業人電子發票 ２捐贈（默認）  3手機條碼
-    mobileBarcode: '', //手機載具 當invoiceType為3時,才會有資料
-    payType: 'LinePay', //支付類型
-  })
-
-  // useEffect(() => {
-  //   const clientCheckoutInfo =
-  //     JSON.parse(localStorage.getItem('checkout_info')) || {}
-  //   setFormData(clientCheckoutInfo)
-  // }, [])
-
-  //將資料存到localstorage 保存
-  // useEffect(() => {
-  //   localStorage.setItem('checkout_info', JSON.stringify(formData))
-  // }, [formData])
-
-  //計算總金額 （扣掉優惠卷與運費） -未完成優惠卷邏輯
-
-  useEffect(() => {
-    const numericShippingFee = Number(formData.shippingFee)
-    let discountAmount = 0
-    if (selectCoupon && selectCoupon.DiscountType === 'Amount') {
-      discountAmount = selectCoupon.DiscountValue
-    } else if (selectCoupon && selectCoupon.DiscountType === 'Percent') {
-      discountAmount =
-        cart.reduce((acc, v) => acc + v.qty * v.price, 0) *
-        (selectCoupon.DiscountValue / 100)
-    }
-
-    const newTotalPrice =
-      cart.reduce((acc, v) => acc + v.qty * v.price, 0) +
-      numericShippingFee -
-      discountAmount
-    // 假设你有一个状态来存储最终的总金额
-    setTotalPrice(newTotalPrice)
-  }, [cart, formData.shippingFee, selectCoupon])
-
-  /* confirmation */
-
-  // useEffect(() => {
-  //   // 監聽 selectCoupon 的變化，僅更新優惠券資訊，同時保留其他 formData 資訊
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     coupon_id: selectCoupon.id || null,
-  //     coupon_name: selectCoupon.coupon_name || '無',
-  //   }))
-  // }, [selectCoupon])
-
-  const updateFormData = (newData) => {
-    setFormData((prev) => ({ ...prev, ...newData }))
   }
 
   return (
@@ -242,23 +104,11 @@ export function CartProvider({ children }) {
         decrement,
         addCartItem,
         formatPrice,
-        rawTotalPrice,
-        totalPrice,
         cartCourse,
         cartGeneral,
         totalItems,
-        // 優惠卷
-        coupons,
-        selectedCouponID,
-        selectCoupon,
-        handleSelectCoupon,
-        handleRadioChange,
-        // formData
-        updateFormData,
-        formData,
-        countries,
-        townships,
-        postcodes,
+        // Toast
+        Toaster,
       }}
       //用value屬性傳入共享用狀態(state)
     >

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-
+import React, { useEffect, useState } from 'react'
+import ProgressBar from '@/components/myCart/progressBar'
 import CheckoutProcessForm from '@/components/myCart/checkoutProcessForm/checkoutProcessForm'
 
 import OrderSummary from '@/components/myCart/orderSummary'
@@ -12,24 +12,26 @@ import { useCart } from '@/hooks/user-cart'
 import { useCheckout } from '@/hooks/use-checkout'
 
 export default function Checkout() {
+  const { cartCourse, cartGeneral, formatPrice } = useCart()
+
   const {
-    rawTotalPrice,
-    totalPrice,
-    cartCourse,
-    cartGeneral,
-    formatPrice,
-    selectCoupon,
-    // formData,
+    formData,
+    setFormData,
     countries,
     townships,
     postcodes,
-    updateFormData,
-  } = useCart()
-
-  const { formData } = useCheckout()
+    rawTotalPrice,
+    totalPrice,
+    selectCoupon,
+  } = useCheckout()
 
   return (
     <>
+      <ProgressBar
+        percentage={75}
+        text={'結帳進度'}
+        textColor={'var(--my-white)'}
+      />
       <div className="row">
         {/* 左邊 */}
         <div className="col-lg-7">
@@ -38,7 +40,7 @@ export default function Checkout() {
             townships={townships}
             postcodes={postcodes}
             selectCoupon={selectCoupon}
-            updateFormData={updateFormData}
+            setFormData={setFormData}
           />
         </div>
         {/* 右邊 */}
@@ -54,11 +56,8 @@ export default function Checkout() {
             />
           </div>
           <div className="text-h4 mb-4 ">我的購物車</div>
-          <SmallProductCart
-            cartGeneral={cartGeneral}
-            formatPrice={formatPrice}
-          />
-          <SmallCourseCart cartCourse={cartCourse} formatPrice={formatPrice} />
+          <SmallProductCart cartGeneral={cartGeneral} />
+          <SmallCourseCart cartCourse={cartCourse} />
           <div className="my-5">
             <ShippingRule />
           </div>

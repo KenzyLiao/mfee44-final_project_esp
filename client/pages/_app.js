@@ -24,8 +24,10 @@ export default function MyApp({ Component, pageProps }) {
     Component.getLayout || ((page) => <DefaultLayout>{page}</DefaultLayout>)
 
   return (
-    <CheckoutProvider>
-      <CartProvider>{getLayout(<Component {...pageProps} />)}</CartProvider>
-    </CheckoutProvider>
+    <CartProvider>
+      <CheckoutProvider>
+        {getLayout(<Component {...pageProps} />)}
+      </CheckoutProvider>
+    </CartProvider>
   )
 }
