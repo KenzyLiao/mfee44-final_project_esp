@@ -7,14 +7,14 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 
 //hook
-import { useCheckout } from '@/hooks/use-checkout'
+// import { useCheckout } from '@/hooks/use-checkout'
 
 //地區資料
 import { countries, townships, postcodes } from '@/data/data-townships'
 
 // icon
 import { IoIosArrowRoundBack, IoIosFiling } from 'react-icons/io'
-
+//component
 import EcpayShipment from '../ecPayShippment'
 
 import {
@@ -26,9 +26,10 @@ import {
 
 export default function CheckoutProcessForm({
   selectCoupon = {},
-  updateFormData = () => {},
+  setFormData = () => {},
 }) {
-  const { setFormData } = useCheckout()
+  console.log(selectCoupon)
+  // const { setFormData } = useCheckout()
 
   const router = useRouter()
 
@@ -71,6 +72,7 @@ export default function CheckoutProcessForm({
   })
 
   const formData = watch()
+  console.log(formData)
 
   // 使用 watch 監控整個表單的變化
   useEffect(() => {
@@ -199,7 +201,7 @@ export default function CheckoutProcessForm({
 
   const onSubmit = (data) => {
     localStorage.setItem('check_info', JSON.stringify(data))
-    updateFormData(data)
+
     console.log('data', data)
     router.push('/cart/confirmation')
   }
@@ -235,6 +237,9 @@ export default function CheckoutProcessForm({
                   <option value="UNIMARTC2C">7-11收貨</option>
                   <option value="FAMIC2C">全家收貨</option>
                   <option value="OKMARTC2C">OK收貨</option>
+                  {/* <option value="UNIMARTC2C-Y">7-11貨到付款</option>
+                  <option value="FAMIC2C-Y">全家貨到付款</option>
+                  <option value="OKMARTC2C-Y">OK貨到付款</option> */}
                 </Form.Select>
               )}
             />
@@ -354,9 +359,11 @@ export default function CheckoutProcessForm({
         {shipping === 'UNIMARTC2C' && (
           <>
             <div
+              className="box-shadow "
               style={{
                 padding: '1rem',
-                border: '1px solid #ccc',
+                backgroundColor: 'var(--my-white)',
+                // border: '0.5px solid var(--my-black)',
                 borderRadius: '5px',
                 marginBottom: '1rem',
                 marginTop: '1rem',
@@ -406,13 +413,14 @@ export default function CheckoutProcessForm({
             </div>
           </>
         )}
-
         {shipping === 'FAMIC2C' && (
           <>
             <div
+              className="box-shadow "
               style={{
                 padding: '1rem',
-                border: '1px solid #ccc',
+                backgroundColor: 'var(--my-white)',
+                // border: '0.5px solid var(--my-black)',
                 borderRadius: '5px',
                 marginBottom: '1rem',
                 marginTop: '1rem',
@@ -465,9 +473,11 @@ export default function CheckoutProcessForm({
           <>
             {/* 門市*/}
             <div
+              className="box-shadow "
               style={{
                 padding: '1rem',
-                border: '1px solid #ccc',
+                backgroundColor: 'var(--my-white)',
+                // border: '0.5px solid var(--my-black)',
                 borderRadius: '5px',
                 marginBottom: '1rem',
                 marginTop: '1rem',

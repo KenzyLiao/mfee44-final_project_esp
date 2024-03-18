@@ -51,23 +51,27 @@ export function CartProvider({ children }) {
       const index = cart.findIndex((v) => v.id === item.id)
       if (index > -1) {
         increment(item.id)
+        toast.success(`添加【${item.name}】到購物車成功`)
         return false
       }
       // 擴充item數量屬性
       const newItem = { ...item, qty: 1 }
       const newCart = [...cart, newItem]
+      toast.success(`添加【${item.name}】到購物車成功`)
       setCart(newCart)
     } else {
       // 只有單一數量的商品 例如課程
       const index = cart.findIndex((v) => v.id === item.id)
       if (index > -1) {
-        alert(`已經添加過【${item.name}】到購物車`)
+        // alert(`已經添加過【${item.name}】到購物車`)
+        toast.error(`已經添加過【${item.name}】到購物車`)
         return false
       }
       // 擴充item數量屬性
       const newItem = { ...item, qty: 1 }
       const newCart = [...cart, newItem]
       setCart(newCart)
+      toast.success(`添加【${item.name}】到購物車成功`)
     }
   }
 
@@ -103,6 +107,8 @@ export function CartProvider({ children }) {
         cartCourse,
         cartGeneral,
         totalItems,
+        // Toast
+        Toaster,
       }}
       //用value屬性傳入共享用狀態(state)
     >
