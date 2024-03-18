@@ -65,10 +65,10 @@
   width: 100%; /* 图片宽度填满容器 */
   height: 100%; /* 图片高度填满容器 */
   -o-object-fit: cover;
-     object-fit: cover; /* 裁剪并保持比例 */
+  object-fit: cover; /* 裁剪并保持比例 */
 }
 
 .swiper-slide {
   background-size: cover; /* 覆盖整个容器，保持比例 */
   background-position: center; /* 居中显示 */
-}/*# sourceMappingURL=cart.css.map */
+} /*# sourceMappingURL=cart.css.map */
