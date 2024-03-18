@@ -13,7 +13,6 @@ import CourseSubInfo from '@/components/course/course-sub-info'
 
 import { useCart } from '@/hooks/user-cart'
 
-
 import {
   BsBookmarkCheckFill,
   BsFillStarFill,
@@ -91,7 +90,7 @@ export default function CoursePage() {
 
   let data_send = { ...data }
   let image_name =
-    'course_' + (productImage.split('_')[1].split('.')[0] % 25) + '.jpg'
+    'course_' + (image.split('_')[1].split('.')[0] % 25) + '.jpg'
   data_send.image = 'http://localhost:3005/course/images/' + image_name
   data_send.url = 'http://localhost:3000/course/' + id
 
@@ -110,6 +109,7 @@ export default function CoursePage() {
 
   // const total_video_minute = min + Math.floor(sec / 60)
   // console.log(data[0])
+  console.log('data_send', data_send)
 
   return (
     <>
@@ -378,7 +378,7 @@ export default function CoursePage() {
             </div>
           </aside>
         </div>
-        {/* <Toaster /> */}
+        <Toaster />
       </div>
       <style jsx>{`
         h1 {
