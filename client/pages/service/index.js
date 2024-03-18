@@ -21,6 +21,8 @@ export default function RepairAndServicePage() {
   const [geojsonData, setGeojsonData] = useState([]) //用於地圖區的資料
   const [storeData, setStoreData] = useState([]) //用於訊息區的資料
   const [storeDetail, setStoreDetail] = useState(null) // 添加 storeDetail 状态
+  const [hoveredStore, setHoveredStore] = useState(null); // 添加 hoveredStore 状态 //這行好像無用
+  const [hoveredMarker, setHoveredMarker] = useState(null);
 
 
   //頁面上方用於展開的動畫，只在初次渲染時執行一次
@@ -67,7 +69,12 @@ export default function RepairAndServicePage() {
     handleRequest()
 
   }, [area, openTime, closeTime, textSearch]) //有value改變時，就發請求
-
+  const handleStoreHover = (store) => {
+    setHoveredStore(store);
+  };
+  const handleMarkerHover = (markerData) => {
+    setSelectedMarker(markerData);
+  };
   return (
     <>
       <h1 className="text-center mb-3 text-h1">服務據點</h1>
@@ -98,10 +105,10 @@ export default function RepairAndServicePage() {
       </div>
       <div className="info d-flex row mx-5 mb-5">
         <div className="left col-md-6 px-0 text-center">
-          <Map geojsonData={geojsonData} setGeojsonData={setGeojsonData} setStoreDetail={setStoreDetail}/>
+          <Map geojsonData={geojsonData} setGeojsonData={setGeojsonData} setStoreDetail={setStoreDetail} hoveredStore={hoveredStore} setHoveredStore={setHoveredStore} hoveredMarker={hoveredMarker} setHoveredMarker={setHoveredMarker}/>
         </div>
         <div className="right col-md-6 px-0">
-          <StoreInfo storeData={storeData} setStoreData={setStoreData} storeDetail={storeDetail} setStoreDetail={setStoreDetail}/>
+          <StoreInfo storeData={storeData} setStoreData={setStoreData} storeDetail={storeDetail} setStoreDetail={setStoreDetail} geojsonData={geojsonData} hoveredStore={hoveredStore} setHoveredStore={setHoveredStore} onStoreHover={handleStoreHover} hoveredMarker={hoveredMarker} setHoveredMarker={setHoveredMarker}/>
         </div>
       </div>
 

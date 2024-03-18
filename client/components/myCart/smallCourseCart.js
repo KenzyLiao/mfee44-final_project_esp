@@ -1,9 +1,8 @@
 import React from 'react'
-
-export default function SmallCourseCart({
-  cartCourse = [],
-  formatPrice = () => {},
-}) {
+// //勾子context
+import { useCart } from '@/hooks/user-cart'
+export default function SmallCourseCart({ cartCourse = [] }) {
+  const { formatPrice } = useCart()
   return (
     <>
       <h4 className="text-p text-my-black mb-2 mt-4">
@@ -23,7 +22,7 @@ export default function SmallCourseCart({
               alt="..."
             />
           </div>
-          <div className="card-body d-flex flex-column justify-content-center ">
+          <div className="card-body d-flex flex-column  ">
             <div className=" ms-3 text-h4 text-my-black ">{v.name}</div>
             <div className=" ms-3 text-p text-my-black ">
               {formatPrice(v.price)}

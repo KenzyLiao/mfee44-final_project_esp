@@ -4,90 +4,162 @@ import Collapse from 'react-bootstrap/Collapse'
 import SmallCourseCart from '../smallCourseCart'
 import SmallProductCart from '../smallProductCart'
 
-export default function MyOrderList({ cName = '' }) {
-  const orders = [
-    { id: 1, content: '内容 1' },
-    { id: 2, content: '内容 2' },
-    { id: 3, content: '内容 2' },
-    // 可以继续添加更多订单...
-  ]
+import { useCart } from '@/hooks/user-cart'
 
+export default function MyOrderList({ cName = '', orderData = [] }) {
   const [openId, setOpenId] = useState(null)
+
+  const { formatPrice } = useCart()
 
   const toggleOpen = (id) => {
     setOpenId((currentOpenId) => (currentOpenId === id ? null : id))
   }
 
   return (
-    <div className="container py-4">
-      <h2 className="text-h3">{cName}</h2>
-      <div className="text-h6">
-        {orders.map((order) => (
-          <React.Fragment key={order.id}>
-            <div className="container-myOrderList  mb-3 shadow-sm">
-              <div className="d-flex justify-content-between align-items-center ">
-                <div className="order-head  ">
-                  <h5 className="mb-0 text-h4 me-5 ">
-                    訂單編號:{' '}
-                    <span className="text-h4 text-my-black">{order.id}</span>
-                  </h5>
-                  <p className="mb-0 text-muted  me-5 text-h5 text-my-black">
-                    日期: 20/02/2024
+    <div className="container py-4 ">
+      <h2 className="text-h3 ">{cName}</h2>
+      <div className="text-h6 ">
+        {orderData.map((order, index) => {
+          //處理product資料給SmallProductCart元件
+          const productItems = order.order_items
+            .filter((item) => item.product_type === 1)
+            .map((item) => ({
+              ...item,
+              qty: item.order_item_quantity,
+              id: item.order_item_id,
+              // 可以在這裡移除原本的 name 屬性，如果你不想保留它：
+              // 注意，這是選擇性的，取決於你是否還需要原來的 name 屬性。
+              // 如果需要保留原名，這一行可以不加。
+              description: undefined,
+              image: '/images/myProduct/' + item.image,
+              url: 'http://localhost:3000/product/' + item.order_item_id,
+            }))
+
+          //處理course資料給SmallCourseCart元件
+          const courseItems = order.order_items
+            .filter((item) => item.product_type === 2)
+            .map((item) => ({
+              ...item,
+              qty: item.order_item_quantity,
+              id: item.order_item_id,
+              description: undefined,
+              image: `http://localhost:3005/course/images/course_${
+                item.image.split('_')[1].split('.')[0] % 25
+              }.jpg`,
+              url: 'http://localhost:3000/course/' + item.order_item_id,
+            }))
+          console.log(courseItems)
+          return (
+            <React.Fragment key={index}>
+              <div className="container-myOrderList  mb-3 shadow-sm ">
+                <div className="d-flex justify-content-around align-items-center ">
+                  <div className="order-head ">
+                    <h5 className="mb-0 text-h4 me-5 ">
+                      訂單編號:{' '}
+                      <span className="text-h4 text-my-black ">
+                        {index + 1}
+                      </span>
+                    </h5>
+                    <p className="mb-0 text-muted  me-5 text-h5 text-my-black ">
+                      {order.order_created_at}
+                    </p>
+                    <p
+                      className={`mb-0  me-5 text-h5 text-my-black ${
+                        order.payment_status === '付款成功'
+                          ? 'text-success'
+                          : 'text-danger'
+                      }`}
+                    >
+                      {order.payment_status}
+                    </p>
+                  </div>
+                  <p
+                    className={`mb-0  mx-auto me-5 text-h5 text-my-black ${
+                      order.rtn_msg === '收貨訂單處理異常,請聯繫客服'
+                        ? 'text-danger'
+                        : 'text-success'
+                    }`}
+                  >
+                    {order.payment_status === '未付款成功'
+                      ? '未成立'
+                      : order.rtn_msg}
                   </p>
-                  <p className="mb-0 text-success  me-5 text-h5 text-my-black">
-                    付款狀態
-                  </p>
-                  <p className="mb-0 text-h5 text-my-black">
-                    價格:{' '}
+                  <p className="mb-0 text-h5 text-my-black  ms-auto">
                     <span className="font-weight-bold  me-5 text-h4 text-my-notice">
-                      $8888
+                      {formatPrice(order.amount)}
                     </span>
                   </p>
+                  <Button
+                    className="flex-shrink-0"
+                    variant=" bg-my-primary text-my-white rounded-5 text-h6 "
+                    onClick={() => toggleOpen(index)}
+                    aria-controls={`collapse-text-${index}`}
+                    aria-expanded={openId === index}
+                  >
+                    詳細
+                  </Button>
                 </div>
-
-                <Button
-                  variant=" bg-my-primary text-my-white rounded-5 text-h6 "
-                  onClick={() => toggleOpen(order.id)}
-                  aria-controls={`collapse-text-${order.id}`}
-                  aria-expanded={openId === order.id}
-                >
-                  更多細節
-                </Button>
+                <Collapse in={openId === index}>
+                  <div id={`collapse-text-${index}`} className="mt-3">
+                    <div className="order-body d-flex justify-content-around my-5  py-4">
+                      <div className="text-h6 ">
+                        <h4 className="text-h3">顧客資訊</h4>
+                        <div className="firstName">
+                          {order.firstname}{' '}
+                          <span className="lastName">{order.lastname}</span>
+                        </div>
+                        <div className="email">{order.email}</div>
+                        <div className="mobliePhone">{order.mobilephone}</div>
+                      </div>
+                      <div className="text-h6">
+                        <h4 className="text-h3">運送資訊</h4>
+                        {order.shipping === '黑貓宅急便' && (
+                          <>
+                            <div className="country">
+                              {order.country}
+                              <span className="township">
+                                {' '}
+                                {order.township}
+                              </span>
+                            </div>
+                            <div className="address"> {order.address}</div>
+                            <div className="postcode">{order.postcode}</div>
+                          </>
+                        )}
+                        {order.shipping !== '黑貓宅急便' && (
+                          <>
+                            <div className="">
+                              <span className="shipping">{order.shipping}</span>
+                            </div>
+                            <div className="store_name">
+                              {' '}
+                              {order.store_name}
+                            </div>
+                            <div className="store_address">
+                              {order.store_address}
+                            </div>
+                          </>
+                        )}
+                      </div>
+                      <div className="text-h6">
+                        <h4 className="text-h3">付款資訊</h4>
+                        <div className="payType">{order.payment}</div>
+                      </div>
+                      <div className="text-h6">
+                        <h4 className="text-h3">訂單編號</h4>
+                        <div className="payType">{order.order_id}</div>
+                      </div>
+                    </div>
+                    <div className="">
+                      <SmallProductCart cartGeneral={productItems} />
+                      <SmallCourseCart cartCourse={courseItems} />
+                    </div>
+                  </div>
+                </Collapse>
               </div>
-              <Collapse in={openId === order.id}>
-                <div id={`collapse-text-${order.id}`} className="mt-3">
-                  <div className="order-body d-flex justify-content-around my-5  py-4">
-                    <div className="text-h6 ">
-                      <h4 className="text-h3">顧客資訊</h4>
-                      <div className="firstName">
-                        王 <span className="lastName">小明</span>
-                      </div>
-                      <div className="email">test@example.com</div>
-                      <div className="mobliePhone">0987654321</div>
-                    </div>
-                    <div className="text-h6">
-                      <h4 className="text-h3">運送資訊</h4>
-                      <div className="firstName">
-                        王 <span className="lastName">小明</span>
-                      </div>
-                      <div className="email">test@example.com</div>
-                      <div className="mobliePhone">0987654321</div>
-                    </div>{' '}
-                    <div className="text-h6">
-                      <h4 className="text-h3">支付資訊</h4>
-                      <div className="payType">LINEPAY</div>
-                      <div className="payStatus">尚未付款</div>
-                    </div>
-                  </div>
-                  <div className="">
-                    <SmallProductCart />
-                    <SmallCourseCart />
-                  </div>
-                </div>
-              </Collapse>
-            </div>
-          </React.Fragment>
-        ))}
+            </React.Fragment>
+          )
+        })}
       </div>
       <style jsx>{`
         .container-myOrderList {
@@ -114,6 +186,7 @@ export default function MyOrderList({ cName = '' }) {
         .order-head {
           display: flex;
           align-items: center;
+         
         }
         @media (max-width: 991px) {
           .order-head {

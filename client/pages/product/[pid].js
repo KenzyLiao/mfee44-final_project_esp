@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { BsGlobe } from 'react-icons/bs'
 import { IoIosLock, IoMdCheckmarkCircleOutline } from 'react-icons/io'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper-bundle.css'
 
 export default function Detail() {
   const [products, setProducts] = useState([])
