@@ -1,6 +1,6 @@
 import { createContext, useState, useContext, useEffect } from 'react'
 import { useRouter } from 'next/router'
-
+import toast, { Toaster } from 'react-hot-toast'
 /* 資料庫資料 */
 //優惠卷
 import couponsData from '@/data/coupon.json'
@@ -70,6 +70,7 @@ export function CartProvider({ children }) {
       const index = cart.findIndex((v, i) => v.id === item.id)
       if (index > -1) {
         alert(`已經添加過【${item.name}】到購物車`)
+        toast.error('付款成功')
         return false
       }
       // 擴充item數量屬性

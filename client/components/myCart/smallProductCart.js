@@ -1,9 +1,10 @@
 import React from 'react'
+// //勾子context
+import { useCart } from '@/hooks/user-cart'
 
-export default function SmallProductCart({
-  cartGeneral = [],
-  formatPrice = () => {},
-}) {
+export default function SmallProductCart({ cartGeneral = [] }) {
+  const { formatPrice } = useCart()
+  console.log(cartGeneral)
   return (
     <>
       <h4 className="text-p text-my-black mb-2 ">商品({cartGeneral.length})</h4>

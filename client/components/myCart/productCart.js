@@ -196,7 +196,9 @@ export default function ProductCart({
 
         .product-name {
           color: var(--my-black);
+          white-space: wrap;
           text-overflow: ellipsis;
+
           align-self: start;
           font: 900 16px Noto Serif TC, -apple-system, Roboto, Helvetica,
             sans-serif;
