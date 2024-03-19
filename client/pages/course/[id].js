@@ -123,7 +123,7 @@ export default function CoursePage() {
               width="100%"
               height="100%"
               controls="true"
-              url="http://localhost:3005/course/video/01.mp4"
+              url={`http://localhost:3005/course/video/TRIAL____________${id}_intro.mp4`}
               playing={true}
               muted={true}
             />
