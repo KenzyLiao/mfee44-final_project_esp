@@ -1,14 +1,28 @@
 import React, { useEffect, useState } from 'react'
 
 const MemberProfile = () => {
-  const [users, setUsers] = useState(null)
+  const [user, setUser] = useState({
+    title: '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    phone: '',
+    birthdate: '',
+  })
   const [loading, setLoading] = useState(true)
+
+  const years = Array.from(
+    new Array(100),
+    (val, index) => new Date().getFullYear() - index
+  )
+  const months = Array.from(new Array(12), (val, index) => index + 1)
+  const days = Array.from(new Array(31), (val, index) => index + 1)
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
         const token = localStorage.getItem('token')
-        const response = await fetch('/api/users', {
+        const response = await fetch('http://localhost:3005/api/profile', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -19,18 +33,78 @@ const MemberProfile = () => {
         }
 
         const data = await response.json()
-        setUsers(data)
+        console.log('Received data:', data)
+
+        const newUser = {
+          title: data.title || '',
+          firstname: data.firstname || '',
+          lastname: data.lastname || '',
+          email: data.email || '',
+          phone: data.phone || '',
+          birthdate: data.birthdate || '',
+        }
+
+        if (data.birthdate) {
+          const [year, month, day] = data.birthdate.split('-')
+          newUser.year = year
+          newUser.month = month
+          newUser.day = day
+        }
+
+        setUser(newUser)
       } catch (error) {
         console.error('Failed to fetch user data', error)
+      } finally {
+        setLoading(false)
       }
-      setLoading(false)
     }
 
     fetchUserData()
   }, [])
 
+  const handleChange = (event) => {
+    const { name, value } = event.target
+    setUser({ ...user, [name]: value })
+  }
+
+  const handleSaveProfile = async () => {
+    const profileData = { ...user }
+    if (!user.birthdate) {
+      profileData.birthdate = `${user.year}-${user.month.padStart(
+        2,
+        '0'
+      )}-${user.day.padStart(2, '0')}`
+    }
+
+    console.log('Updating profile with data:', profileData)
+
+    try {
+      const token = localStorage.getItem('token')
+      const response = await fetch('http://localhost:3005/api/update', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(profileData),
+      })
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`)
+      }
+
+      alert('個人檔案已更新！')
+      window.location.reload()
+    } catch (error) {
+      console.error('Failed to update profile', error)
+      alert('更新個人檔案時發生錯誤。')
+    }
+  }
+
   if (loading) return <div>Loading...</div>
 
+  // 邏輯判斷：如果已設定生日，則禁用生日選項
+  const birthdateSet = !!user.birthdate
   return (
     <>
       <div className="profile-page">
@@ -44,27 +118,102 @@ const MemberProfile = () => {
                   <div className="header-title">個人資料</div>
                   <div className="personal-info">
                     <div className="field-title">稱謂*</div>
-                    <select className="input-title">
+                    <select
+                      className="input-title"
+                      value={user.title}
+                      name="title"
+                      onChange={handleChange}
+                    >
                       <option value="mr">先生</option>
                       <option value="ms">女士</option>
                       <option value="preferNotToSay">不願透露</option>
                     </select>
                     <div className="field-firstname">姓氏*</div>
-                    <input type="text" className="input-firstname" />
-
+                    <input
+                      type="text"
+                      className="input-firstname"
+                      value={user.firstname}
+                      name="firstname"
+                      onChange={handleChange}
+                    />
                     <div className="field-lastname">名字*</div>
-                    <input type="text" className="input-lastname" />
+                    <input
+                      type="text"
+                      className="input-lastname"
+                      value={user.lastname}
+                      name="lastname"
+                      onChange={handleChange}
+                    />
                     <div className="field-email">電子郵件</div>
-                    <div className="input-email"></div>
+                    <div className="input-email">{user.email}</div>{' '}
+                    {/* 假設電子郵件不可更改 */}
                     <div className="field-password">密碼</div>
                     <button className="change-password">更改</button>
                     <div className="field-birthday">出生日期</div>
                     <div className="date-picker">
-                      <div className="picker-input"></div>
+                      <select
+                        className="date-picker-select"
+                        name="year"
+                        value={user.year}
+                        onChange={handleChange}
+                        disabled={birthdateSet}
+                      >
+                        <option value="">年</option>
+                        {years.map((year) => (
+                          <option key={year} value={year}>
+                            {year}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        className="date-picker-select"
+                        name="month"
+                        value={user.month}
+                        onChange={handleChange}
+                        disabled={birthdateSet}
+                      >
+                        <option value="">月</option>
+                        {months.map((month) => (
+                          <option
+                            key={month}
+                            value={month < 10 ? `0${month}` : `${month}`}
+                          >
+                            {month < 10 ? `0${month}` : `${month}`}
+                          </option>
+                        ))}
+                      </select>
+                      <select
+                        className="date-picker-select"
+                        name="day"
+                        value={user.day}
+                        onChange={handleChange}
+                        disabled={birthdateSet}
+                      >
+                        <option value="">日</option>
+                        {days.map((day) => (
+                          <option
+                            key={day}
+                            value={day < 10 ? `0${day}` : `${day}`}
+                          >
+                            {day < 10 ? `0${day}` : day}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="field-phone">電話號碼</div>
-                    <div className="input-phone"></div>
-                    <div className="save-profile">儲存我的個人檔案</div>
+                    <input
+                      type="text"
+                      className="input-phone"
+                      value={user.phone}
+                      name="phone"
+                      onChange={handleChange}
+                    />
+                    <button
+                      className="save-profile"
+                      onClick={handleSaveProfile}
+                    >
+                      儲存我的個人檔案
+                    </button>
                   </div>
                 </div>
               </div>
@@ -92,6 +241,15 @@ const MemberProfile = () => {
         </div>
       </div>
       <style jsx>{`
+        .date-picker-select {
+          height: 3rem;
+          border: 1px solid #eae8e4;
+          font-size: 1rem;
+          padding: 0 2rem 0 1rem;
+          -webkit-appearance: none; /* 針對 Safari 和 Chrome */
+          -moz-appearance: none; /* 針對 Firefox */
+          appearance: none; /* 標準語法 */
+        }
         .profile-page {
           background-color: #f6f5f3;
           display: flex;
@@ -247,6 +405,7 @@ const MemberProfile = () => {
           width: 528px;
           max-width: 100%;
           height: 48px;
+          padding: 0px 10px;
         }
         .field-lastname {
           color: #19110b;
@@ -265,6 +424,7 @@ const MemberProfile = () => {
           width: 528px;
           max-width: 100%;
           height: 48px;
+          padding: 0px 10px;
         }
         .field-email {
           color: #19110b;
@@ -283,6 +443,7 @@ const MemberProfile = () => {
           width: 528px;
           max-width: 100%;
           height: 48px;
+          padding: 10px 10px;
         }
         .field-password {
           color: #19110b;
@@ -331,14 +492,14 @@ const MemberProfile = () => {
         .date-picker {
           align-self: start;
           display: flex;
-          margin-top: 12px;
-          gap: 0px;
+          margin-top: 10px;
+          gap: 10px;
         }
         .picker-input {
           border: 1px solid #eae8e4;
           background-color: #fff;
-          width: 114px;
           height: 48px;
+          width: 528px;
         }
         .field-phone {
           color: #19110b;
@@ -357,11 +518,13 @@ const MemberProfile = () => {
           width: 128px;
           max-width: 100%;
           height: 48px;
+          padding: 0px 10px;
         }
         .save-profile {
           justify-content: center;
           align-items: center;
           border-radius: 50px;
+          border: 1px solid #7c7477;
           background-color: #7c7477;
           margin-top: 24px;
           color: #fff;
