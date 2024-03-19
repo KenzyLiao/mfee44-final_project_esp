@@ -24,7 +24,7 @@ export default function OrderSummary({
         </div>
         <div className="d-flex justify-content-between my-2 text-my-black">
           <div className="text-h5">優惠折扣</div>
-          <div className="text-h6 text-my-notice">-{formatPrice(888)}</div>
+          <div className="text-h6 text-my-notice">-{formatPrice(0)}</div>
         </div>
         <hr />
         <div className="d-flex justify-content-between mt-4 text-my-black">

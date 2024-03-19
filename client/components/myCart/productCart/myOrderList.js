@@ -145,9 +145,12 @@ export default function MyOrderList({ cName = '', orderData = [] }) {
                         <h4 className="text-h3">付款資訊</h4>
                         <div className="payType">{order.payment}</div>
                       </div>
+
                       <div className="text-h6">
                         <h4 className="text-h3">訂單編號</h4>
                         <div className="payType">{order.order_id}</div>
+                        <h4 className="text-h3 mt-3">貨物訂單號</h4>
+                        <div className="payType">{order.paymentNo}</div>
                       </div>
                     </div>
                     <div className="">

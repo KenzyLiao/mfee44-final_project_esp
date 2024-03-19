@@ -79,6 +79,10 @@ export default function Confirmation() {
   const goEcPay = async (orderId) => {
     if (window.confirm('請確認導向至ECPAY進行付款嗎？')) {
       window.location.href = `http://localhost:3005/api/ecpay?orderId=${orderId}`
+      localStorage.removeItem('checkout_info')
+      localStorage.removeItem('check_info')
+      localStorage.removeItem('selectedCouponID')
+      localStorage.removeItem('cart')
     }
   }
 

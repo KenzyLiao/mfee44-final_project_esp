@@ -18,7 +18,13 @@ function getCurrentTransactionTime() {
 dotenv.config()
 
 const router = express.Router()
-const { MERCHANTID, HASHKEY, HASHIV, HOST } = process.env
+const {
+  MERCHANTID,
+  HASHKEY,
+  HASHIV,
+  HOST,
+  REACT_REDIRECT_CONFIRM_URL: CONFIRM,
+} = process.env
 
 const options = {
   OperationMode: 'Test', // Test or Production
@@ -69,7 +75,8 @@ router.get('/', async (req, res) => {
       TradeDesc: '測試交易描述',
       ItemName: '墨韻雅筆',
       ReturnURL: `${HOST}/api/ecpay/return`,
-      ClientBackURL: `${HOST}/api/ecpay/clientReturn`, //需要回傳的時候去訪問伺服器確認交易結果
+      // ClientBackURL: `${HOST}/api/ecpay/clientReturn`, //需要回傳的時候去訪問伺服器確認交易結果
+      ClientBackURL: `http://localhost:3000/cart/confirmationPageEcpay`, //需要回傳的時候去訪問伺服器確認交易結果
     }
     //將綠界金流訂單號存到order表備份
     const [updateResult] = await mydb.execute(
@@ -284,7 +291,10 @@ router.post('/return', async (req, res) => {
 
 router.get('/clientReturn', (req, res) => {
   console.log('clientReturn:', req.body, req.query)
-  res.render('return', { query: req.query })
+  console.log(req.body)
+
+  res.redirect(CONFIRM)
+  // res.render('return', { query: req.query })
 })
 
 export default router
