@@ -71,3 +71,22 @@ exports.verify = (req, res) => {
     });
   });
 };
+
+exports.getProfile = (req, res) => {
+  // req.user.id 应该在 authenticateToken 中间件中被赋值
+  const userId = req.user.id;
+
+  const sqlSelect = 'SELECT email, title, lastname, firstname FROM users WHERE id = ?';
+  db.query(sqlSelect, [userId], (err, results) => {
+    if (err) {
+      console.error('Error fetching user profile:', err);
+      return res.status(500).json({ message: 'Error fetching user profile' });
+    }
+
+    if (results.length > 0) {
+      res.json(results[0]);
+    } else {
+      res.status(404).json({ message: 'User not found' });
+    }
+  });
+};
