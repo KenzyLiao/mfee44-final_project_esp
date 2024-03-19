@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-
+import React, { useEffect, useState } from 'react'
+import ProgressBar from '@/components/myCart/progressBar'
 import CheckoutProcessForm from '@/components/myCart/checkoutProcessForm/checkoutProcessForm'
 
 import OrderSummary from '@/components/myCart/orderSummary'
@@ -9,34 +9,38 @@ import ShippingRule from '@/components/myCart/shippingRule'
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
+import { useCheckout } from '@/hooks/use-checkout'
+
 export default function Checkout() {
+  const { cartCourse, cartGeneral, formatPrice } = useCart()
+
   const {
-    rawTotalPrice,
-    totalPrice,
-    cartCourse,
-    cartGeneral,
-    formatPrice,
-    selectCoupon,
-    handleChange,
-    handleSubmit,
     formData,
+    setFormData,
     countries,
     townships,
     postcodes,
-  } = useCart()
+    rawTotalPrice,
+    totalPrice,
+    selectCoupon,
+  } = useCheckout()
 
   return (
     <>
+      <ProgressBar
+        percentage={75}
+        text={'結帳進度'}
+        textColor={'var(--my-white)'}
+      />
       <div className="row">
         {/* 左邊 */}
         <div className="col-lg-7">
           <CheckoutProcessForm
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-            formData={formData}
             countries={countries}
             townships={townships}
             postcodes={postcodes}
+            selectCoupon={selectCoupon}
+            setFormData={setFormData}
           />
         </div>
         {/* 右邊 */}
@@ -52,11 +56,8 @@ export default function Checkout() {
             />
           </div>
           <div className="text-h4 mb-4 ">我的購物車</div>
-          <SmallProductCart
-            cartGeneral={cartGeneral}
-            formatPrice={formatPrice}
-          />
-          <SmallCourseCart cartCourse={cartCourse} formatPrice={formatPrice} />
+          <SmallProductCart cartGeneral={cartGeneral} />
+          <SmallCourseCart cartCourse={cartCourse} />
           <div className="my-5">
             <ShippingRule />
           </div>

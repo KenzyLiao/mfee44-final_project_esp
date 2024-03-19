@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-
+import ProgressBar from '@/components/myCart/progressBar'
 import OrderSummary from '@/components/myCart/orderSummary'
 import SmallProductCart from '@/components/myCart/smallProductCart'
 import SmallCourseCart from '@/components/myCart/smallCourseCart'
@@ -11,46 +11,18 @@ import toast, { Toaster } from 'react-hot-toast'
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
+import { useCheckout } from '@/hooks/use-checkout'
 
 export default function Confirmation() {
-  const {
-    cart,
-    rawTotalPrice,
-    totalPrice,
-    cartCourse,
-    cartGeneral,
-    formatPrice,
-    selectCoupon,
-    formData,
-  } = useCart()
+  const { cart, cartCourse, cartGeneral, formatPrice } = useCart()
+
+  const { rawTotalPrice, totalPrice, selectCoupon, formData } = useCheckout()
+  console.log(formData.payType)
 
   //linePay資料使用
   const [linePayOrder, setLinePayOrder] = useState({})
-  console.log(linePayOrder)
+
   const router = useRouter()
-
-  // const [formData, setFormData] = useState({})
-
-  // useEffect(() => {
-  //   // 從 localStorage 中恢復結帳資訊，這保證了代碼只在客戶端執行
-  //   const clientCheckoutInfo =
-  //     JSON.parse(localStorage.getItem('checkout_info')) || {}
-  //   setFormData(clientCheckoutInfo)
-  // }, [])
-
-  // useEffect(() => {
-  //   // 監聽 selectCoupon 的變化，僅更新優惠券資訊，同時保留其他 formData 資訊
-  //   setFormData((prevFormData) => ({
-  //     ...prevFormData,
-  //     coupon_id: selectCoupon.id || null,
-  //     coupon_name: selectCoupon.coupon_name || '無',
-  //   }))
-  // }, [selectCoupon])
-
-  // useEffect(() => {
-  //   // 當 formData 更新時，將其保存到 localStorage
-  //   localStorage.setItem('checkout_info', JSON.stringify(formData))
-  // }, [formData])
 
   /* 後端請求建立訂單 建立訂單到server,packages與order id由server產生 */
   const creatOrder = async () => {
@@ -86,7 +58,7 @@ export default function Confirmation() {
       if (data.status === 'success') {
         setLinePayOrder(data.data.order)
       }
-      return data // 
+      return data //
     } catch (error) {
       console.error('創建訂單失敗', error)
       return { status: 'error' } //明確返回一個錯誤狀態,好讓付款函數可以透過狀態判定才去執行,解決延遲問題
@@ -97,28 +69,46 @@ export default function Confirmation() {
   const goLinePay = async (orderId) => {
     if (window.confirm('請確認導向至LINE PAY進行付款嗎？')) {
       window.location.href = `http://localhost:3005/api/line-pay-first/reserve?orderId=${orderId}`
+      localStorage.removeItem('checkout_info')
+      localStorage.removeItem('check_info')
+      localStorage.removeItem('selectedCouponID')
+      localStorage.removeItem('cart')
+    }
+  }
+
+  const goEcPay = async (orderId) => {
+    if (window.confirm('請確認導向至ECPAY進行付款嗎？')) {
+      window.location.href = `http://localhost:3005/api/ecpay?orderId=${orderId}`
     }
   }
 
   //點擊付款行為＝創建訂單+請求linePay API
   const creatOrderAndPay = async () => {
-    const orderResponse = await creatOrder()
-    if (orderResponse.status === 'success') {
-      await toast.success('已成功建立訂單')
-      setTimeout(() => {
-        goLinePay(orderResponse.data.order.orderId)
-      }, 1500)
+    if (cart.length < 0) {
+      toast.error('購物車沒有商品,請進行選購')
     } else {
-      toast.error('訂單創建失敗,請稍後再重試', {
-        duration: 3000,
-      })
+      const orderResponse = await creatOrder()
+      if (orderResponse.status === 'success') {
+        await toast.success('已成功建立訂單')
+
+        setTimeout(() => {
+          if (formData.payType === 'LinePay') {
+            goLinePay(orderResponse.data.order.orderId)
+          } else if (formData.payType === 'EcPay') {
+            goEcPay(orderResponse.data.order.orderId)
+          }
+        }, 1500)
+      } else {
+        toast.error(orderResponse.message, {
+          duration: 3000,
+        })
+      }
     }
   }
 
   //confirm 用戶付款成功後，跳轉回來的行為，
   useEffect(() => {
     if (router.isReady) {
-      console.log(router.query)
       // http://localhost:3000/cart/confirmation?transactionId=2022112800733496610&orderId=da3b7389-1525-40e0-a139-52ff02a350a8
       // 這裡要得到交易id，處理伺服器通知line pay已確認付款，為必要流程
       // TODO: 除非為不需登入的交易，為提高安全性應檢查是否為會員登入狀態
@@ -132,6 +122,11 @@ export default function Confirmation() {
   }, [router.isReady, router.query])
   return (
     <>
+      <ProgressBar
+        percentage={90}
+        text={'結帳進度'}
+        textColor={'var(--my-white)'}
+      />
       <div className="row">
         {/* 左邊 */}
         <div className="col-lg-7">
