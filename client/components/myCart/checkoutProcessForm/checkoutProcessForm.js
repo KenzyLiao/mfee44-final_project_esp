@@ -28,7 +28,6 @@ export default function CheckoutProcessForm({
   selectCoupon = {},
   setFormData = () => {},
 }) {
-  console.log(selectCoupon)
   // const { setFormData } = useCheckout()
 
   const router = useRouter()
@@ -106,24 +105,6 @@ export default function CheckoutProcessForm({
     }
   }, [invoiceType, setValue])
 
-  useEffect(() => {
-    // 確保路由器準備就緒後再嘗試讀取查詢參數
-    if (!router.isReady) return
-
-    // 從查詢參數中獲取門市類型
-    const queryStoreType = router.query.storeType
-
-    // 根據storeType設置shipping的預設值
-    const defaultShipping = queryStoreType || '宅配' // 如果沒有指定storeType，則預設為'宅配'
-
-    // 使用reset函數更新表單的預設值，包括根據storeType設置的shipping
-    reset({
-      ...initialFormData, // 使用展開運算符保持其他初始表單數據不變
-      shipping: defaultShipping,
-      // 可以在這裡添加其他基於storeType條件的表單欄位預設值設置
-    })
-  }, [router.isReady, router.query, reset])
-
   //處理運送方式與運費
   useEffect(() => {
     // 確保路由器準備就緒後再嘗試讀取查詢參數
@@ -166,7 +147,7 @@ export default function CheckoutProcessForm({
     setValue('postcode', postcodeValue, { shouldValidate: true })
   }, [watch('country'), watch('township'), postcodes, setValue])
 
-  //處理couppon(會當機)
+  //處理couppon
   useEffect(() => {
     // 當 selectCoupon 改變時，使用 setValue 更新 React Hook Form 中的值
     setValue('coupon_id', selectCoupon.id || null)
@@ -177,27 +158,46 @@ export default function CheckoutProcessForm({
     // trigger(['coupon_id', 'coupon_name'])
   }, [selectCoupon, router.isReady])
 
+  //跨頁回到此頁時的恢復數據
   useEffect(() => {
-    // 從 localStorage 讀取表單數據
+    // 確保路由器準備就緒後再嘗試讀取查詢參數和 localStorage
+    if (!router.isReady) return
+
+    // 從 localStorage 中嘗試恢復表單數據
     const storedData = localStorage.getItem('check_info')
 
+    // 如果存在存儲的表單數據，詢問用戶是否恢復
     if (storedData) {
-      // 諮詢用戶是否恢復資料
       const confirmRestore =
-        window.confirm('您有未完成的表單資料，是否要恢復？')
+        window.confirm('您有未完成的表單數據，是否要恢復？')
 
       if (confirmRestore) {
-        // 如果用戶選擇恢復，則解析並設置表單數據
+        // 用戶選擇恢復數據
         const formData = JSON.parse(storedData)
 
-        // 使用 reset 函數來恢復表單數據
-        reset(formData)
+        // 從查詢參數中獲取門市信息，優先使用查詢參數更新表單數據
+        const { storeType, storeID, storeName, storeAddress } = router.query
+        const queryData = {
+          ...(storeType && { shipping: storeType }),
+          ...(storeID && { storeID }),
+          ...(storeName && { storeName }),
+          ...(storeAddress && { storeAddress }),
+        }
+
+        // 合併查詢參數和存儲的表單數據，查詢參數優先
+        const mergedFormData = { ...formData, ...queryData }
+
+        // 更新表單數據
+        reset(mergedFormData)
       } else {
-        // 如果用戶選擇不恢復，可以選擇清除 localStorage 中的數據
+        // 用戶選擇不恢復，清除 localStorage 中的數據
         localStorage.removeItem('check_info')
+
+        // 也可以在這裡根據需要設置表單的默認值或清空表單
+        reset() // 傳遞給 reset 的參數根據你的需要進行調整
       }
     }
-  }, [reset])
+  }, [router.isReady, router.query, reset])
 
   const onSubmit = (data) => {
     localStorage.setItem('check_info', JSON.stringify(data))
