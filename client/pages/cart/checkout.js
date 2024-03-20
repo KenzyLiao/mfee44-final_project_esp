@@ -6,6 +6,7 @@ import OrderSummary from '@/components/myCart/orderSummary'
 import SmallProductCart from '@/components/myCart/smallProductCart'
 import SmallCourseCart from '@/components/myCart/smallCourseCart'
 import ShippingRule from '@/components/myCart/shippingRule'
+import { jwtDecode } from 'jwt-decode'
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
@@ -13,6 +14,8 @@ import { useCheckout } from '@/hooks/use-checkout'
 
 export default function Checkout() {
   const { cartCourse, cartGeneral, formatPrice } = useCart()
+  const [token, setToken] = useState('')
+  const [user, setUser] = useState(null)
 
   const {
     formData,
@@ -24,6 +27,24 @@ export default function Checkout() {
     totalPrice,
     selectCoupon,
   } = useCheckout()
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token')
+    // console.log(storedToken)
+
+    if (storedToken) {
+      setToken(storedToken)
+      // 確保在token有效的情況下才進行解碼
+      try {
+        const decodedUser = jwtDecode(storedToken)
+        setUser(decodedUser)
+        // 這裡可以使用decodedUser進行其他操作
+      } catch (error) {
+        console.error('Token解碼錯誤', error)
+        // 處理無效token的情況
+      }
+    }
+  }, []) // 空依賴數組確保只在組件掛載時運行
 
   return (
     <>
@@ -53,6 +74,7 @@ export default function Checkout() {
               rawTotalPrice={rawTotalPrice}
               formatPrice={formatPrice}
               shippingFee={formData.shippingFee}
+              discount_value={selectCoupon.discount_value}
             />
           </div>
           <div className="text-h4 mb-4 ">我的購物車</div>
