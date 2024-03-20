@@ -1,5 +1,6 @@
 import express from 'express'
 import mydb from '../configs/mydb.js'
+import authenticate from '##/middlewares/Myauthenticate.js'
 
 const router = express.Router()
 
@@ -8,7 +9,7 @@ router.get('/', (req, res) => {
   res.render('index', { title: 'Express' })
 })
 
-router.get('/orders/:uid', async (req, res) => {
+router.get('/orders/:uid', authenticate, async (req, res) => {
   const uid = Number(req.params.uid)
 
   if (isNaN(uid)) {
@@ -47,7 +48,8 @@ router.get('/orders/:uid', async (req, res) => {
       JOIN order_info ON \`order\`.order_info_id = order_info.id
       LEFT JOIN mycoupon ON \`order\`.\`coupon_id\` = mycoupon.id
     WHERE
-      \`order\`.user_id = ?;
+      \`order\`.user_id = ?
+      ORDER BY \`order\`.created_at DESC;
   `,
       [uid]
     )
