@@ -269,7 +269,7 @@ export default function Detail() {
                 slidesPerView: 1,
               },
               // 当视窗宽度小于等于 768px 时，显示 1 个 slide
-              576: {
+              768: {
                 slidesPerView: 2,
               },
               // 当视窗宽度小于等于 992px 时，显示 2 个 slide
