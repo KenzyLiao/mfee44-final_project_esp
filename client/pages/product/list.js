@@ -182,7 +182,7 @@ export default function List() {
   useEffect(() => {
     const fetchData = async () => {
       // 构建 fetchUrl
-      let updatedFetchUrl = 'http://localhost:3001/api/products?'
+      let updatedFetchUrl = 'http://localhost:3005/api/myProduct?'
       const newUrl = new URL(window.location.href)
 
       // 根据排序选项添加对应的排序方式到 fetchUrl

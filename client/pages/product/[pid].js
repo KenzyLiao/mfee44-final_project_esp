@@ -26,7 +26,7 @@ export default function Detail() {
   const { pid } = router.query
 
   useEffect(() => {
-    fetch('http://localhost:3001/api/products')
+    fetch('http://localhost:3005/api/myProduct')
       .then((response) => response.json())
       .then((data) => {
         setProducts(data.products)
@@ -262,7 +262,7 @@ export default function Detail() {
             slidesPerView={3}
             navigation
             loop={false}
-            style={{ width: '100%', paddingBlock: 15 }}
+            style={{ width: '100%', paddingLeft: 15 }}
             modules={[Navigation]}
             breakpoints={{
               1: {
@@ -288,7 +288,7 @@ export default function Detail() {
                 {/* ProductFigure 组件 */}
                 <div
                   className="col"
-                  style={{ width: '250px', marginRight: '10px' }}
+                  style={{ width: '250px', margin: '10px' }}
                 >
                   <Link
                     href={`/product/${product.product_id}`}
