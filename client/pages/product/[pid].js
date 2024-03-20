@@ -257,6 +257,7 @@ export default function Detail() {
               </div>
             </div>
           </div> */}
+          
           <Swiper
             spaceBetween={10}
             slidesPerView={3}
