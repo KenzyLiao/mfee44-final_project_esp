@@ -9,6 +9,17 @@ export default function MyOrder() {
   const [orderData, setOrderData] = useState([])
   console.log(orderData)
 
+  //取得token 令牌
+  const [token, setToken] = useState('')
+  console.log(token)
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token')
+    // console.log(storedToken)
+    if (storedToken) {
+      setToken(storedToken)
+    }
+  }, []) // 空依賴數組確保只在組件掛載時運行
   useEffect(() => {
     fetchData()
   }, [uid])
@@ -16,7 +27,13 @@ export default function MyOrder() {
   const fetchData = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3005/api/orders/orders/${uid}`
+        `http://localhost:3005/api/orders/orders/${uid}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       )
       const data = await response.json()
       if (data.status === 'success') {

@@ -55,7 +55,7 @@ export default function MyOrderList({ cName = '', orderData = [] }) {
                 <div className="d-flex justify-content-around align-items-center ">
                   <div className="order-head ">
                     <h5 className="mb-0 text-h4 me-5 ">
-                      訂單編號:{' '}
+                      訂單:
                       <span className="text-h4 text-my-black ">
                         {index + 1}
                       </span>
@@ -145,9 +145,12 @@ export default function MyOrderList({ cName = '', orderData = [] }) {
                         <h4 className="text-h3">付款資訊</h4>
                         <div className="payType">{order.payment}</div>
                       </div>
+
                       <div className="text-h6">
                         <h4 className="text-h3">訂單編號</h4>
                         <div className="payType">{order.order_id}</div>
+                        <h4 className="text-h3 mt-3">貨物訂單號</h4>
+                        <div className="payType">{order.paymentNo}</div>
                       </div>
                     </div>
                     <div className="">

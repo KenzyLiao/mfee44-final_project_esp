@@ -3,10 +3,12 @@ import { useCart } from '@/hooks/user-cart'
 
 /* 資料庫資料 */
 //優惠卷(暫時)
-import couponsData from '@/data/coupon.json'
+// import couponsData from '@/data/coupon.json'
+import ianCoupon from '@/data/ianCoupon.json'
 
 //地區資料
 import { countries, townships, postcodes } from '@/data/data-townships'
+import { BsCheckLg } from 'react-icons/bs'
 
 //1.建立與導出
 export const CheckoutContext = createContext(null)
@@ -40,18 +42,27 @@ export function CheckoutProvider({ children }) {
     payType: '', //支付類型
   })
 
+  /* 處理formData */
+  //初始化 localstorage資料提取到cart
+  useEffect(() => {
+    if (localStorage.getItem('check_info')) {
+      const clientFormData = JSON.parse(localStorage.getItem('check_info'))
+      setFormData(clientFormData)
+    }
+  }, [])
   /* 處理優惠卷 */
 
   const [coupons, setCoupons] = useState([])
   const [selectedCouponID, setSelectedCouponID] = useState('none')
   const [selectCoupon, setSelectCoupon] = useState({})
-  console.log(selectCoupon)
+  console.log(selectCoupon.discount_value)
 
   //處理資料庫過來的優惠卷資料
   useEffect(() => {
     const fetchData = async () => {
-      const newcouponsData = await couponsData
+      let newcouponsData = await ianCoupon
       if (newcouponsData) {
+        newcouponsData = newcouponsData.filter((v) => v.coupon_valid !== 0)
         setCoupons(newcouponsData)
       }
     }
@@ -85,7 +96,8 @@ export function CheckoutProvider({ children }) {
         ValidFrom: '',
         ValidTo: '',
         MinimumSpend: 0,
-        DiscountType: '',
+        discount_value: 0,
+        discount_type: '金額',
         DiscountValue: 0,
         UsageLimit: 0,
         UsedCount: 0,
@@ -107,8 +119,9 @@ export function CheckoutProvider({ children }) {
   useEffect(() => {
     const numericShippingFee = Number(formData.shippingFee)
     let discountAmount = 0
-    if (selectCoupon && selectCoupon.DiscountType === 'Amount') {
-      discountAmount = selectCoupon.DiscountValue
+    if (selectCoupon && selectCoupon.discount_type === '金額') {
+      discountAmount = selectCoupon.discount_value
+      console.log(discountAmount)
     } else if (selectCoupon && selectCoupon.DiscountType === 'Percent') {
       discountAmount =
         cart.reduce((acc, v) => acc + v.qty * v.price, 0) *

@@ -23,7 +23,6 @@ export default function CartIndex() {
     removeCartItem,
     cartCourse,
     formatPrice,
-    // 優惠卷
   } = useCart()
 
   const {
@@ -31,6 +30,7 @@ export default function CartIndex() {
     rawTotalPrice,
     coupons,
     selectedCouponID,
+    selectCoupon,
     handleRadioChange,
   } = useCheckout()
 
@@ -71,6 +71,7 @@ export default function CartIndex() {
             checkoutPath={'/cart/checkout'}
             formatPrice={formatPrice}
             handleNextSteap={handleNextSteap}
+            discount_value={selectCoupon.discount_value}
           />
           <CartCouppon
             coupons={coupons}

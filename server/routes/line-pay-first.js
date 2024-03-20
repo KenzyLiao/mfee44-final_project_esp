@@ -2,6 +2,9 @@ import express, { query } from 'express'
 import moment from 'moment'
 import mydb from '../configs/mydb.js'
 
+// 引入認證中間件
+import authenticate from '../middlewares/Myauthenticate.js'
+
 // line pay使用npm套件 串接流程簡化成只要呼叫 SDK 的 API 就可以完成
 import { createLinePayClient } from 'line-pay-merchant'
 
@@ -36,12 +39,12 @@ router.get('/', (req, res) => {
 })
 
 // (1) 建立訂單路由
-router.post('/creatOrder', async (req, res) => {
+router.post('/creatOrder', authenticate, async (req, res) => {
   // 初始化 connection 變量，確保它在 try、catch 和 finally 塊中都可訪問
   let connection
 
-  // 會員id由authenticate中介軟體提供 （未完成）
-  const userId = 556
+  // 會員id由authenticate中介軟體提供
+  const userId = req.user.user_id
 
   //假設前端丟過來的checkout資料
   const clientOrder = req.body
