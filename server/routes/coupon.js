@@ -77,7 +77,7 @@ router.get('/memberCoupon', async (req, res) => {
   try {
     const [results] = await mydb.execute(
       `SELECT member_coupon.*, mycoupon.* FROM member_coupon JOIN
-        mycoupon ON member_coupon.coupon_id = mycoupon.id WHERE member_coupon.user_id = 1`
+        mycoupon ON member_coupon.coupon_id = mycoupon.id WHERE member_coupon.user_id = 1 ORDER BY member_coupon.used_valid DESC`
     )
     console.log(results)
 

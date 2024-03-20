@@ -18,6 +18,7 @@ export default function UsedCoupon({ coupon }) {
           location.reload()
         }
       })
+      
     } catch (error) {
       console.error('Error:', error)
     }
@@ -51,9 +52,20 @@ export default function UsedCoupon({ coupon }) {
                 onClick={get_coupon}
                 className={`${coupon.status == 0 ? 'button' : 'be_used'}`}
               >
-                {coupon.status == 0 ? '未' : '已'}領取
+                {coupon.status == 0 ? '' : '已'}領取
               </a>
             )}
+            <div>
+            {coupon.used_valid === 0 ? (
+                <div className='be_used'>
+                    已使用
+                </div>
+            ) : (
+                <div>
+                    {/* 其他相關元素 */}
+                </div>
+            )}
+        </div>
           </div>
         </div>
       </div>
@@ -67,6 +79,7 @@ export default function UsedCoupon({ coupon }) {
             width: 70%;
             height: 200px;
             margin: 10px 0;
+            
 
             display: flex; /* 使用 Flexbox */
             position: relative;
