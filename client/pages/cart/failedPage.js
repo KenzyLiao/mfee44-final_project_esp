@@ -8,6 +8,7 @@ import { jwtDecode } from 'jwt-decode'
 export default function ConfirmationPage() {
   //token
   const [token, setToken] = useState('')
+  console.log(token)
   const [user, setUser] = useState('')
 
   useEffect(() => {
