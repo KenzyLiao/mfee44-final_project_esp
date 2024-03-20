@@ -2,8 +2,50 @@ import React, { useEffect, useState } from 'react'
 import FluidLayout from '@/components/layout/fluid-layout'
 import { LuCheckCircle2 } from 'react-icons/lu'
 import { useRouter } from 'next/router'
+import { useCart } from '@/hooks/user-cart'
+import Link from 'next/link'
+import jwtDecode from 'jwt-decode'
 
 export default function ConfirmationPage() {
+  const [token, setToken] = useState('')
+  const [user, setUser] = useState('')
+  console.log(user)
+
+  const [amount, setAmount] = useState('')
+
+  const router = useRouter()
+
+  const { formatPrice } = useCart()
+
+  //token
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token')
+
+    if (storedToken) {
+      setToken(storedToken)
+      // 確保在token有效的情況下才進行解碼
+      try {
+        const decodedUser = jwtDecode(storedToken)
+        setUser(decodedUser)
+        // 這裡可以使用decodedUser進行其他操作
+      } catch (error) {
+        console.error('Token解碼錯誤', error)
+        // 處理無效token的情況
+      }
+    }
+  }, []) // 空依賴數組確保只在組件掛載時運行
+
+  useEffect(() => {
+    if (router.isReady) {
+      const queryAmount = router.query.amount
+      if (queryAmount) {
+        setAmount(queryAmount)
+      } else {
+        // 若amount不存在，重定向到首頁
+        router.push('/')
+      }
+    }
+  }, [router, router.query.amount])
   return (
     <>
       <div className=" background-container my-3 ">
@@ -14,7 +56,10 @@ export default function ConfirmationPage() {
             </div>
             付款成功
           </h1>
-          <div className="my-btn-check mt-3">查看訂單詳情</div>
+          <p className="text-h4 text-my-notice my-2">{formatPrice(amount)}</p>
+          <Link href={`/member/orders/${user.user_id}`}>
+            <div className="my-btn-check mt-3">查看訂單詳情</div>
+          </Link>
         </div>
       </div>
 

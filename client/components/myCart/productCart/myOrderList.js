@@ -55,7 +55,7 @@ export default function MyOrderList({ cName = '', orderData = [] }) {
                 <div className="d-flex justify-content-around align-items-center ">
                   <div className="order-head ">
                     <h5 className="mb-0 text-h4 me-5 ">
-                      訂單編號:{' '}
+                      訂單:
                       <span className="text-h4 text-my-black ">
                         {index + 1}
                       </span>

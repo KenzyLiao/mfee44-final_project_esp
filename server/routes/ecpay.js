@@ -23,7 +23,8 @@ const {
   HASHKEY,
   HASHIV,
   HOST,
-  REACT_REDIRECT_CONFIRM_URL: CONFIRM,
+  ECPAY_CONFIRM_URL: CONFIRM,
+  REACT_REDIRECT_CANCEL_URL,
 } = process.env
 
 const options = {
@@ -75,8 +76,8 @@ router.get('/', async (req, res) => {
       TradeDesc: '測試交易描述',
       ItemName: '墨韻雅筆',
       ReturnURL: `${HOST}/api/ecpay/return`,
-      // ClientBackURL: `${HOST}/api/ecpay/clientReturn`, //需要回傳的時候去訪問伺服器確認交易結果
-      ClientBackURL: `http://localhost:3000/cart/confirmationPageEcpay`, //需要回傳的時候去訪問伺服器確認交易結果
+      ClientBackURL: `http://localhost:3005/api/ecpay/clientReturn?tradeNo=${TradeNo}`, //需要回傳的時候去訪問伺服器確認交易結果
+      // ClientBackURL: `http://localhost:3000`, //當用戶在綠界付款頁面點擊返回網站的網址
     }
     //將綠界金流訂單號存到order表備份
     const [updateResult] = await mydb.execute(
@@ -125,7 +126,6 @@ router.post('/return', async (req, res) => {
         [MerchantTradeNo]
       )
       console.log('訂單更新成功:', updateResult)
-      res.send('1|OK')
 
       /* 若ecpay支付成功 建立綠界物流訂單 */
       // 用來將ecpay物流傳到前端的容器
@@ -289,12 +289,17 @@ router.post('/return', async (req, res) => {
   }
 })
 
-router.get('/clientReturn', (req, res) => {
-  console.log('clientReturn:', req.body, req.query)
-  console.log(req.body)
-
-  res.redirect(CONFIRM)
-  // res.render('return', { query: req.query })
+router.get('/clientReturn', async (req, res) => {
+  const ecpayTradeNo = req.query.tradeNo
+  const [rows] = await mydb.execute(
+    'SELECT * FROM `order` WHERE ecpay_TradeNo=?',
+    [ecpayTradeNo]
+  )
+  if (rows.length > 0 && rows[0].payment_status === 'paid') {
+    res.redirect(CONFIRM + `?amount=${rows[0].amount}`)
+  } else {
+    res.redirect(REACT_REDIRECT_CANCEL_URL)
+  }
 })
 
 export default router

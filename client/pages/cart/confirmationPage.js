@@ -3,11 +3,34 @@ import FluidLayout from '@/components/layout/fluid-layout'
 import { LuCheckCircle2 } from 'react-icons/lu'
 import { useRouter } from 'next/router'
 import toast, { Toaster } from 'react-hot-toast'
+import Link from 'next/link'
+import { jwtDecode } from 'jwt-decode'
 //勾子context
 import { useCart } from '@/hooks/user-cart'
 
 export default function ConfirmationPage() {
+  const router = useRouter()
+  const [token, setToken] = useState('')
+  const [user, setUser] = useState('')
   const { formatPrice } = useCart()
+
+  //token
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token')
+    // console.log(storedToken)
+    if (storedToken) {
+      setToken(storedToken)
+      // 確保在token有效的情況下才進行解碼
+      try {
+        const decodedUser = jwtDecode(storedToken)
+        setUser(decodedUser)
+        // 這裡可以使用decodedUser進行其他操作
+      } catch (error) {
+        console.error('Token解碼錯誤', error)
+        // 處理無效token的情況
+      }
+    }
+  }, []) // 空依賴數組確保只在組件掛載時運行
 
   // confirm回來用的，在記錄確認之後，line-pay回傳訊息與代碼，例如
   // {returnCode: '1172', returnMessage: 'Existing same orderId.'}
@@ -20,8 +43,6 @@ export default function ConfirmationPage() {
   // 回傳回來的成功訂單詳細資料,後續開發可能用到
   const [orderInfo, setOrderInfo] = useState([])
   console.log(result)
-
-  const router = useRouter()
 
   //顯示付款成功後的額度,並存在session
   useEffect(() => {
@@ -88,7 +109,9 @@ export default function ConfirmationPage() {
           <p className="text-h4 text-my-notice my-2">
             {formatPrice(totalPrice)}
           </p>
-          <div className="my-btn-check mt-3">查看訂單詳情</div>
+          <Link href={`/member/orders/${user.user_id}`}>
+            <div className="my-btn-check mt-3">查看訂單詳情</div>
+          </Link>
         </div>
         <Toaster />
       </div>
