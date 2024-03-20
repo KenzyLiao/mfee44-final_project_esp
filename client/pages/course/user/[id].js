@@ -27,13 +27,14 @@ export default function LearnPage() {
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [articleOpen, setArticleOpen] = useState(false)
-  const [videoUrl, setVideoUrl] = useState('01.mp4')
+  const [videoUrl, setVideoUrl] = useState(`${id}_intro.mp4`)
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await fetch(`http://localhost:3005/api/course/${id}`)
         const data = await response.json()
         setData(data[0])
+        setVideoUrl(`${id}_intro.mp4`)
       } catch (error) {
         console.error('Error:', error)
         setError(error)
@@ -144,7 +145,7 @@ export default function LearnPage() {
                   章節選擇
                 </Modal.Title>
               </Modal.Header>
-              <Modal.Body >
+              <Modal.Body>
                 <Accordion
                   defaultActiveKey={Array.from(
                     { length: units.length },
