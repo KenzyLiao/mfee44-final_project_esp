@@ -98,19 +98,6 @@ export default function CoursePage() {
     .map((v) => v.sub_units.length)
     .reduce((a, b) => a + b)
 
-  // let min = 0
-  // let sec = 0
-  // units.forEach((unit) => {
-  //   unit.sub_units.forEach((sub_unit) => {
-  //     min += Number(sub_unit.video_len.split(':')[0])
-  //     sec += Number(sub_unit.video_len.split(':')[1])
-  //   })
-  // })
-
-  // const total_video_minute = min + Math.floor(sec / 60)
-  // console.log(data[0])
-  console.log('data_send', data_send)
-
   return (
     <>
       <div className="container">
@@ -254,7 +241,6 @@ export default function CoursePage() {
                     } else {
                       setOpenList([])
                     }
-                    // console.log(openList)
                   }}
                   onKeyDown={() => setIsOpen(!isOpen)}
                   role="button"

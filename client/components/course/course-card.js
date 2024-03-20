@@ -22,14 +22,18 @@ export default function CourseCard({
   total_minute,
   student_num,
   category_name,
+  cms,
 }) {
+  const cardLink = cms
+    ? `http://localhost:3000/course/CMS/${id}`
+    : `http://localhost:3000/course/${id}`
   const [isHovered, setIsHovered] = useState(false)
   let imageURL = `http://localhost:3005/course/images/course_${
     image.split('_')[1].split('.')[0] % 25
   }.jpg`
   return (
     <>
-      <Link href={`http://localhost:3000/course/${id}`}>
+      <Link href={cardLink}>
         <Card
           style={{ width: '100%', borderRadius: 0 }}
           onMouseEnter={() => setIsHovered(true)}

@@ -40,6 +40,11 @@ router.get('/set_total_minute', async (req, res) => {
   res.status(200).send(rows)
 })
 
+router.get('/teacher', async (req, res) => {
+  const [rows] = await mydb.execute(`SELECT * FROM course_teacher`)
+  res.status(200).send(rows)
+})
+
 router.get('/overview', async (req, res) => {
   const type = req.query.type || null
   const state = req.query.state || null
