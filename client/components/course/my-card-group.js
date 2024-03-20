@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import CourseCard from '@/components/course/course-card.js'
+import MyCourseCard from './my-course-card'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 
@@ -10,7 +10,7 @@ export default function CardGroup({ data = [] }) {
         <Row xs={1} md={3} className="g-4">
           {data.map((item, idx) => (
             <Col key={idx}>
-              <CourseCard {...item} />
+              <MyCourseCard {...item} />
             </Col>
           ))}
         </Row>

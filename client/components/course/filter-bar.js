@@ -1,13 +1,18 @@
-import { BsChevronRight } from 'react-icons/bs'
-import { BsSearch, BsX } from 'react-icons/bs'
+import { BsSortDownAlt, BsSortDown } from 'react-icons/bs'
 import Link from 'next/link'
 import React, { useState } from 'react'
 
-export default function FilterBar({ filterProps, setFilterProps, router }) {
+export default function FilterBar({
+  filterProps,
+  setFilterProps,
+  router,
+  setNowPage,
+}) {
   const [searchText, setSearchText] = useState('')
   let filterType = filterProps.filterType ? filterProps.filterType : ''
   let filterState = filterProps.filterState ? filterProps.filterState : ''
   let filterSearch = filterProps.filterSearch ? filterProps.filterSearch : ''
+  let filterSort = filterProps.filterSort ? filterProps.filterSort : ''
   // console.log('filterType:', filterType)
   // console.log('filterState:', filterState)
   // console.log('filterSearch:', filterSearch)
@@ -17,21 +22,51 @@ export default function FilterBar({ filterProps, setFilterProps, router }) {
     let filterType = filterProps.filterType ? filterProps.filterType : ''
     let filterState = filterProps.filterState ? filterProps.filterState : ''
     let filterSearch = filterProps.filterSearch ? filterProps.filterSearch : ''
+    let filterSort = filterProps.filterSort ? filterProps.filterSort : 'DESC'
     let filterText = e.target.innerText
+    setNowPage(1)
     if (filterText === '文字') {
-      setFilterProps({ filterType: '文字', filterState, filterSearch })
+      setFilterProps({
+        filterType: '文字',
+        filterState,
+        filterSearch,
+        filterSort,
+      })
     } else if (filterText === '繪畫') {
-      setFilterProps({ filterType: '繪畫', filterState, filterSearch })
+      setFilterProps({
+        filterType: '繪畫',
+        filterState,
+        filterSearch,
+        filterSort,
+      })
     }
     if (filterText === '最熱門') {
-      setFilterProps({ filterType, filterState: '最熱門', filterSearch })
+      setFilterProps({
+        filterType,
+        filterState: '最熱門',
+        filterSearch,
+        filterSort,
+      })
     } else if (filterText === '依價格') {
-      setFilterProps({ filterType, filterState: '依價格', filterSearch })
+      filterSort = filterSort === 'DESC' ? 'ASC' : 'DESC'
+      setFilterProps({
+        filterType,
+        filterState: '依價格',
+        filterSearch,
+        filterSort,
+      })
     } else if (filterText === '依時間') {
-      setFilterProps({ filterType, filterState: '依時間', filterSearch })
+      filterSort = filterSort === 'DESC' ? 'ASC' : 'DESC'
+      setFilterProps({
+        filterType,
+        filterState: '依時間',
+        filterSearch,
+        filterSort,
+      })
     }
   }
   const handleSearch = (e) => {
+    setNowPage(1)
     let searchText = e.target.value
     setSearchText(searchText)
     setTimeout(() => {
@@ -109,6 +144,8 @@ export default function FilterBar({ filterProps, setFilterProps, router }) {
               }`}
             >
               依價格
+              {filterState == '依價格' &&
+                (filterSort === 'DESC' ? <BsSortDown /> : <BsSortDownAlt />)}
             </span>
           </Link>
           <p className="mb-1 fs-5 text-h3">&nbsp;|&nbsp;</p>
@@ -126,6 +163,8 @@ export default function FilterBar({ filterProps, setFilterProps, router }) {
               }`}
             >
               依時間
+              {filterState == '依時間' &&
+                (filterSort === 'DESC' ? <BsSortDown /> : <BsSortDownAlt />)}
             </span>
           </Link>
         </div>

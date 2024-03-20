@@ -11,7 +11,7 @@ import {
   BsFillPenFill,
 } from 'react-icons/bs'
 
-export default function CourseCard({
+export default function MyCourseCard({
   id,
   name,
   price,
@@ -29,7 +29,7 @@ export default function CourseCard({
   }.jpg`
   return (
     <>
-      <Link href={`http://localhost:3000/course/${id}`}>
+      <Link href={`http://localhost:3000/course/user/${id}`}>
         <Card
           style={{ width: '100%', borderRadius: 0 }}
           onMouseEnter={() => setIsHovered(true)}
@@ -95,8 +95,8 @@ export default function CourseCard({
                 {category_name}
               </span>
             </Card.Text>
-            <Card.Text className="text-h3 text-my-notice">
-              ${price.toLocaleString()}
+            <Card.Text className="text-h4 text-my-notice">
+              {/* ${price.toLocaleString()} */}購買日期:2024/3/18
             </Card.Text>
           </Card.Body>
         </Card>

@@ -1,19 +1,19 @@
 import React from 'react'
 import Link from 'next/link'
 import LoginLogic from '@/components/member/useLogin'
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/router'
 
 function LoginContent() {
   const router = useRouter()
   const { email, setEmail, password, setPassword, error, handleLogin } =
-  LoginLogic({
-    onLoginSuccess: (data) => {
-      console.log('登入成功：', data);
-      localStorage.setItem('token', data.token);
-      router.push('./MemberProfile');
-    },
-    onLoginFail: (error) => console.error('登入失敗：', error),
-  });
+    LoginLogic({
+      onLoginSuccess: (data) => {
+        console.log('登入成功：', data)
+        localStorage.setItem('token', data.token)
+        router.push('./profile')
+      },
+      onLoginFail: (error) => console.error('登入失敗：', error),
+    })
 
   return (
     <>
@@ -53,7 +53,7 @@ function LoginContent() {
         </div>
         <div className="create-account"></div>
         <div className="create-account-label">建立帳號</div>
-        <Link href="/member/signup">
+        <Link href="/member/register">
           <button className="create-personal-account">建立個人帳號</button>
         </Link>
       </div>
@@ -134,12 +134,13 @@ function LoginContent() {
         }
 
         .login-input {
-    border-radius: 4px;
-    border: 1px solid #eae8e4;
-    margin-top: 11px;
-    height: 48px;
-    width: 100%;
-  }
+          border-radius: 4px;
+          border: 1px solid #eae8e4;
+          margin-top: 11px;
+          height: 48px;
+          width: 100%;
+          padding:0px 10px;
+        }
 
         @media (max-width: 991px) {
           .login-input {
@@ -164,7 +165,7 @@ function LoginContent() {
           border: 1px solid #eae8e4;
           margin-top: 7px;
           height: 48px;
-          padding-left: 10px;
+          padding:0px 10px;
           width: 100%;
         }
 
