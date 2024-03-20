@@ -1,22 +1,33 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import ReactPlayer from 'react-player'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
 import Accordion from 'react-bootstrap/Accordion'
+import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
 import Section from '@/components/course/section'
 import New from '@/components/course/new'
 import { BsListOl, BsArrowDown, BsArrowUp } from 'react-icons/bs'
-import dynamic from 'next/dynamic'
 import CourseSubInfo from '@/components/course/course-sub-info'
 
 export default function LearnPage() {
-  const ReactPlayer = dynamic(
-    () => import('react-player'),
-    { ssr: false } // 這將確保只在客戶端渲染
-  )
+  const router = useRouter()
+  const { id } = router.query
+  const [isReady, setIsReady] = useState(false)
+  const [lgShow, setLgShow] = useState(false)
+  const [startAt, setStartAt] = useState(0)
+  const playerRef = useRef()
+  const onReady = useCallback(() => {
+    if (!isReady) {
+      playerRef.current.seekTo(startAt, 'seconds')
+      setIsReady(true)
+    }
+  }, [isReady, startAt])
 
-  const id = 214
   const [data, setData] = useState(null)
   const [error, setError] = useState(null)
   const [articleOpen, setArticleOpen] = useState(false)
+  const [videoUrl, setVideoUrl] = useState('01.mp4')
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -47,6 +58,7 @@ export default function LearnPage() {
     rank,
     total_minute,
     student_num,
+    teacher,
     teacher_introduction,
     article,
     units,
@@ -58,23 +70,29 @@ export default function LearnPage() {
   const sub_units_num = units
     .map((v) => v.sub_units.length)
     .reduce((a, b) => a + b)
+
   return (
     <>
       <div className="container">
         <h1 className="text-h1 d-flex justify-content-center my-5">{name}</h1>
         <div className="row mb-5">
           {/* 播放器 */}
-          <div className="video col-xl-7 col-12 mb-2 mb-xl-0">
+          <div className="video col-xl-8 col-12 mb-2 mb-xl-0">
             <ReactPlayer
+              ref={playerRef}
+              playing={true}
+              muted={true}
               width="100%"
               height="100%"
               controls="true"
-              url="video/01.mp4"
+              url={`http://localhost:3005/course/video/TRIAL____________${videoUrl}`}
+              onReady={onReady}
             />
           </div>
           {/* 章節選擇 */}
-          <div className="scrollable col-xl-5 col-12 mb-1 mb-xl-0">
-            <h5>章節選擇</h5>
+          {/* 電腦版 */}
+          <div className="scrollable col-xl-4 col-12 mb-1 mb-xl-0 d-lg-block d-none">
+            <p className="text-h3 d-flex justify-content-center">章節選擇</p>
             <Accordion defaultActiveKey={[]} alwaysOpen>
               {units.map((v, index) => {
                 return (
@@ -86,12 +104,24 @@ export default function LearnPage() {
                     <Accordion.Body>
                       {v.sub_units.map((v, index) => {
                         return (
-                          <Section
-                            key={index}
-                            secNum={index + 1}
-                            secTitle={`${v.title}`}
-                            secTime={`${v.video_len}`}
-                          />
+                          <div
+                            onClick={() => {
+                              setVideoUrl(v.video_path)
+                              // 設定影片開始時間
+                              setStartAt(Number(v.video_len.split(':')[1]))
+                              setIsReady(false)
+                            }}
+                            className={`cursor-pointer ${
+                              videoUrl === v.video_path ? 'active' : ''
+                            }`}
+                          >
+                            <Section
+                              key={index}
+                              secNum={index + 1}
+                              secTitle={`${v.title}`}
+                              secTime={`${v.video_len}`}
+                            />
+                          </div>
                         )
                       })}
                     </Accordion.Body>
@@ -99,6 +129,67 @@ export default function LearnPage() {
                 )
               })}
             </Accordion>
+          </div>
+          {/* 手機板 */}
+          <div className="d-lg-none">
+            <Button onClick={() => setLgShow(true)}>章節選擇</Button>
+            <Modal
+              size="lg"
+              show={lgShow}
+              onHide={() => setLgShow(false)}
+              aria-labelledby="example-modal-sizes-title-lg"
+            >
+              <Modal.Header closeButton>
+                <Modal.Title id="example-modal-sizes-title-lg">
+                  章節選擇
+                </Modal.Title>
+              </Modal.Header>
+              <Modal.Body >
+                <Accordion
+                  defaultActiveKey={Array.from(
+                    { length: units.length },
+                    (_, i) => i.toString()
+                  )}
+                  alwaysOpen
+                >
+                  {units.map((v, index) => {
+                    return (
+                      <Accordion.Item key={index} eventKey={index.toString()}>
+                        <Accordion.Header>
+                          <BsListOl className="me-1" />
+                          {v.title}
+                        </Accordion.Header>
+                        <Accordion.Body>
+                          {v.sub_units.map((v, index) => {
+                            return (
+                              <div
+                                onClick={() => {
+                                  setVideoUrl(v.video_path)
+                                  // 設定影片開始時間
+                                  setStartAt(Number(v.video_len.split(':')[1]))
+                                  setIsReady(false)
+                                  setLgShow(false)
+                                }}
+                                className={`cursor-pointer ${
+                                  videoUrl === v.video_path ? 'active' : ''
+                                }`}
+                              >
+                                <Section
+                                  key={index}
+                                  secNum={index + 1}
+                                  secTitle={`${v.title}`}
+                                  secTime={`${v.video_len}`}
+                                />
+                              </div>
+                            )
+                          })}
+                        </Accordion.Body>
+                      </Accordion.Item>
+                    )
+                  })}
+                </Accordion>
+              </Modal.Body>
+            </Modal>
           </div>
         </div>
         <div>
@@ -166,24 +257,27 @@ export default function LearnPage() {
             <div className="d-flex justify-content-between mb-4">
               <div className="text-h2">關於講師</div>
             </div>
-            <div className="teacher-info-item">
-              <div className="teacher-info-item-title">
+            <div className="teacher-info-item mb-5">
+              <div className="teacher-info-item-title mb-2">
                 <div className="d-flex">
-                  <div className="teacher-info-item-title-img">
-                    <img
-                      src="https://images.pexels.com/photos/36843/lion-panthera-leo-lioness-animal-world.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
-                      alt="teacher"
+                  <div className="teacher-info-item-title-img ">
+                    <Image
+                      src={
+                        'http://localhost:3005/course/images/' + 'default.jpg'
+                      }
+                      width={50}
+                      height={50}
+                      style={{ borderRadius: '50%' }}
+                      alt="teacher image"
                     />
                   </div>
                   <div className="teacher-info-item-title-info d-flex align-items-center">
-                    <p className="text-h3 mb-0 mx-3">陳曉明</p>
+                    <p className="text-h3 mb-0 mx-3">{teacher}</p>
                   </div>
                 </div>
               </div>
               <div className="teacher-info-item-content">
-                <p className="text-p">
-                  陳曉明，台灣書法家，畢業於國立台北藝術大學美術學系，曾任教於國立台北藝術大學美術學系，現為台北市立美術館館長。
-                </p>
+                <p className="text-h4">{teacher_introduction}</p>
               </div>
             </div>
           </div>
@@ -192,11 +286,10 @@ export default function LearnPage() {
 
       <style jsx>{`
         .scrollable {
-          max-height: 350px;
+          max-height: 400px;
           overflow: auto;
-        }
-        .scrollable {
           width: 100%;
+          height: 100%;
           padding: 0;
         }
         video {
@@ -204,10 +297,11 @@ export default function LearnPage() {
         }
         @media (min-width: 992px) {
           .scrollable {
-            width: 45%;
+            width: 30%;
+            height: 100%;
           }
           .video {
-            width: 55%;
+            width: 70%;
           }
         }
         .teacher-info {
@@ -245,6 +339,18 @@ export default function LearnPage() {
           .course_content_item_open {
             display: block;
           }
+        }
+        .cursor-pointer {
+          cursor: pointer;
+          transition: 0.2s;
+          &:hover {
+            background-color: white;
+            color: var(--my-notice);
+          }
+        }
+        .active {
+          background-color: white;
+          color: var(--my-notice);
         }
       `}</style>
     </>

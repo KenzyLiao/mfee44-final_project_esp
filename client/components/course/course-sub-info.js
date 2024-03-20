@@ -8,7 +8,12 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-export default function CourseSubInfo({total_minute,units_length,sub_units_num,student_num}) {
+export default function CourseSubInfo({
+  total_minute,
+  units_length,
+  sub_units_num,
+  student_num,
+}) {
   return (
     <>
       <Container>
