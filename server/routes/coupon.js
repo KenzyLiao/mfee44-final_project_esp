@@ -18,6 +18,21 @@ const router = express.Router()
 //     res.json("發生錯誤");
 //   }
 // });
+router.post('/userCoupon',async (req, res) => {
+  try {
+    const Uid=req.body
+    console.log(Uid);
+    
+    const [results] = await mydb.execute(`SELECT * FROM member_coupon WHERE member_coupon.user_id=${Uid}`)
+    console.log(results)
+
+    res.send(results)
+  } catch (err) {
+    console.error('查詢資料錯誤:', err)
+    return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
+  }
+})
+
 router.get('/catchCoupon', async (req, res) => {
   try {
     const [results] = await mydb.execute(`SELECT * FROM mycoupon LIMIT 4`)
