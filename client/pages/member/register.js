@@ -53,6 +53,7 @@ function RegistrationPage() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(registrationData),
+        credentials: 'include',
       })
 
       const responseData = await response.json()
