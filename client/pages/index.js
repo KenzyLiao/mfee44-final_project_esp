@@ -6,6 +6,7 @@ import styles from './index.module.scss'
 
 import ConceptSection from '@/components/home/conceptSection'
 import Carosuel2 from '@/components/common/carosuel2'
+import Carosuel2copy from '@/components/common/carosuel2copy'
 
 import Section4 from '@/components/home/section4'
 import Section5 from '@/components/home/section5'
@@ -16,7 +17,7 @@ export default function Home() {
       <div className="row">
         {/* carosuel */}
         <div className={` col-lg-12 ${styles['carosuel']}`}>
-          <Carosuel2 />
+          <Carosuel2copy />
         </div>
       </div>
       {/* hero-section */}
