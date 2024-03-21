@@ -25,12 +25,11 @@ export default function List() {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleSubmit = () => {
-    // 處理提交邏輯
-    setOpen(false) // 提交後關閉模態
+    setOpen(false)
   }
 
   const initialPriceRange = [1, 50000]
-  const [priceRange, setPriceRange] = useState(initialPriceRange) // 默認價格區間
+  const [priceRange, setPriceRange] = useState(initialPriceRange)
   const formatPrice = (price) => {
     const numericPrice = parseFloat(price)
     return numericPrice.toLocaleString()
@@ -101,17 +100,14 @@ export default function List() {
 
   const [currentPage, setCurrentPage] = useState(1)
   const productsPerPage = 12
-  const [totalPages, setTotalPages] = useState(0) // 總頁數
+  const [totalPages, setTotalPages] = useState(0)
   const startIndex = (currentPage - 1) * productsPerPage
   const endIndex = Math.min(startIndex + productsPerPage, product.length)
 
-  // 處理頁碼變化的函數
   const handlePageChange = (page) => {
-    // 這裡可以根據頁碼做一些處理，例如獲取新的產品列表等
     setCurrentPage(page)
   }
   const filteredProducts = product.filter((product) => {
-    // 如果没有选择条件，返回 true
     if (
       selectedColors.length === 0 &&
       selectedNibs.length === 0 &&
@@ -124,24 +120,19 @@ export default function List() {
       return true
     }
 
-    // 检查产品的颜色是否在选择的颜色中
     const isColorMatched =
       selectedColors.length === 0 || selectedColors.includes(product.color_name)
 
-    // 检查产品的笔尖是否在选择的笔尖中
     const isNibMatched =
       selectedNibs.length === 0 || selectedNibs.includes(product.nib_name)
 
-    // 检查产品的材质是否在选择的材质中
     const isMaterialMatched =
       selectedMaterials.length === 0 ||
       selectedMaterials.includes(product.material_name)
 
-    // 检查产品的价格是否在选择的价格范围内
     const isPriceMatched =
       product.price >= priceRange[0] && product.price <= priceRange[1]
 
-    // 检查产品的品牌是否与选择的品牌匹配
     const isBrandMatched =
       selectedBrand === '' || selectedBrand === product.brand_name
 
@@ -149,7 +140,6 @@ export default function List() {
       searchQuery === '' ||
       product.name.toLowerCase().includes(searchQuery.toLowerCase())
 
-    // 返回是否满足所有选择条件
     return (
       isColorMatched &&
       isNibMatched &&
@@ -167,13 +157,10 @@ export default function List() {
       setIsMobile(window.innerWidth <= 991)
     }
 
-    // 初始加載時觸發一次檢測
     checkIsMobile()
 
-    // 監聽窗口大小變化
     window.addEventListener('resize', checkIsMobile)
 
-    // 在清理函數中移除事件監聽器
     return () => {
       window.removeEventListener('resize', checkIsMobile)
     }
@@ -181,11 +168,9 @@ export default function List() {
 
   useEffect(() => {
     const fetchData = async () => {
-      // 构建 fetchUrl
       let updatedFetchUrl = 'http://localhost:3005/api/myProduct?'
       const newUrl = new URL(window.location.href)
 
-      // 根据排序选项添加对应的排序方式到 fetchUrl
       if (sortingOption !== '') {
         updatedFetchUrl += `sortingOption=${sortingOption}&`
         newUrl.searchParams.set('sortingOption', sortingOption)
@@ -193,7 +178,6 @@ export default function List() {
         newUrl.searchParams.delete('sortingOption')
       }
 
-      // 加入其他筛选条件到 fetchUrl
       if (selectedColors.length > 0) {
         updatedFetchUrl += `colors=${selectedColors.join(',')}&`
         newUrl.searchParams.set('colors', selectedColors.join(','))
@@ -225,14 +209,12 @@ export default function List() {
         newUrl.searchParams.delete('searchQuery')
       }
 
-      // 移除最后的 '&' 符号
       updatedFetchUrl = updatedFetchUrl.slice(0, -1)
 
       try {
         const response = await fetch(updatedFetchUrl)
         const data = await response.json()
 
-        // 更新状态
         setProduct(data.products)
         setNib(data.nibs)
         setColor(data.colors)
@@ -339,15 +321,8 @@ export default function List() {
             {isMobile && (
               <div className="d-flex p-2 justify-content-end align-items-center">
                 <button
-                  className="btn my-text-contents-CH rounded-pill"
+                  className="btn my-text-contents-CH rounded-pill custom-dropdown-button dropdown-toggle "
                   onClick={handleOpen}
-                  style={{
-                    backgroundColor: '#ff69b4',
-                    border: 'none',
-                    outline: 'none',
-                    padding: '10px 20px',
-                    color: '#fff',
-                  }}
                 >
                   <span>
                     篩選
@@ -470,7 +445,7 @@ export default function List() {
                             </label>
                           </div>
                         ))}
-                        {/* 展开更多按钮 */}
+
                         {!showMore && (
                           <button
                             className="btn btn-link"
@@ -479,7 +454,7 @@ export default function List() {
                             + 更多
                           </button>
                         )}
-                        {/* 超过四个材料的选项 */}
+
                         {showMore &&
                           material.slice(4).map((materialItem) => (
                             <div
@@ -707,11 +682,11 @@ export default function List() {
                       <div id="panelsStayOpen-collapseThree">
                         <div className="mt-5">
                           <Slider
-                            min={1} // 使用动态计算的最小价格
-                            max={50000} // 使用动态计算的最大价格
+                            min={1}
+                            max={50000}
                             step={100}
                             range
-                            defaultValue={[1, 50000]} // 默认值设为动态计算的最小和最大价格
+                            defaultValue={[1, 50000]}
                             value={priceRange}
                             onChange={handlePriceChange}
                           />
@@ -1122,11 +1097,11 @@ export default function List() {
                       >
                         <div style={{ margin: '20px' }}>
                           <Slider
-                            min={1} // 使用动态计算的最小价格
-                            max={50000} // 使用动态计算的最大价格
+                            min={1}
+                            max={50000}
                             step={100}
                             range
-                            defaultValue={[1, 50000]} // 默认值设为动态计算的最小和最大价格
+                            defaultValue={[1, 50000]}
                             value={priceRange}
                             onChange={handlePriceChange}
                           />
@@ -1148,7 +1123,6 @@ export default function List() {
           <div id="page-content-wrapper">
             <div className="container">
               <div className="row row-cols-1 row-cols-lg-3 g-4 row-cols-sm-2">
-                {/* 循环渲染产品 */}
                 {displayedProducts.length > 0 ? (
                   displayedProducts.map((product) => (
                     <div className="col" key={product.product_id}>
@@ -1198,28 +1172,25 @@ export default function List() {
           opacity: 0.5;
         }
 
-        /* 滚动条的样式 */
         ::-webkit-scrollbar {
-          height: 3px; /* 滚动条宽度 */
+          height: 3px;
         }
 
-        /* 滚动条轨道 */
         ::-webkit-scrollbar-track {
-          background: #f3f3f3; /* 轨道背景颜色 */
+          background: #f3f3f3;
         }
 
-        /* 滚动条滑块 */
         ::-webkit-scrollbar-thumb {
-          background: #ff69b4; /* 滑块颜色 */
-          border-radius: 4px; /* 滑块圆角 */
+          background: #ff69b4;
+          border-radius: 4px;
         }
 
-        /* 滚动条滑块悬停状态 */
         ::-webkit-scrollbar-thumb:hover {
-          background: #ff1493; /* 滑块悬停时的颜色 */
+          background: #ff1493;
         }
+
         .custom-dropdown-button {
-          background-color: #7c7477; /* 粉色 */
+          background-color: #7c7477;
           color: #fff;
           border: none;
           padding: 10px 20px;
@@ -1229,22 +1200,21 @@ export default function List() {
         }
 
         .custom-dropdown-button:hover {
-          background-color: #ff1493; /* 深粉色 */
+          background-color: #ff1493;
           transform: scale(1.05);
         }
 
         .dropdown-menu {
-          background-color: #7c7477; /* 粉色 */
+          background-color: #7c7477;
           border: none;
           border-radius: 20px;
           box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-          overflow: hidden; /* 隐藏超出的内容 */
+          overflow: hidden;
         }
 
         .dropdown-item {
           color: #fff;
           padding: 10px 20px;
-          /* 圆形边界 */
           transition: background-color 0.3s ease;
         }
 
@@ -1254,13 +1224,12 @@ export default function List() {
 
         .dropdown-item:hover,
         .dropdown-item:focus {
-          background-color: #ff9fd0; /* 紫色 */
+          background-color: #ff9fd0;
         }
 
         .dropdown-item.active,
         .dropdown-item:active {
-          background-color: #ff1493; /* 紫色 */
-          /* 圆角 */
+          background-color: #ff1493;
         }
 
         .my-button {

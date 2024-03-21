@@ -6,6 +6,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { BsGlobe } from 'react-icons/bs'
 import { IoIosLock, IoMdCheckmarkCircleOutline } from 'react-icons/io'
+import InventorySearch from '@/components/myService/inventorySearch'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/css'
 import 'swiper/css/navigation'
@@ -22,6 +23,7 @@ export default function Detail() {
   const [displayedProducts, setDisplayedProducts] = useState([])
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [inventoryData, setInventoryData] = useState(null) // Pollo新增用於存儲庫存資料的狀態
   const router = useRouter()
   const { pid } = router.query
 
@@ -78,17 +80,30 @@ export default function Detail() {
   }
 
   if (loading) {
-    return <div id="loading">Loading . . .</div>
+    return <div className='load' id="loading">Loading . . .</div>
   }
   const maxLength = 11
   window.addEventListener('popstate', () => {
     window.location.reload()
   })
-
+  // Pollo獲取庫存資料的函數
+  const fetchInventoryData = () => {
+    fetch(`http://localhost:3005/api/inventory/${pid}`)
+      .then((response) => response.json())
+      .then((data) => {
+        // 將獲取的資料設置到狀態中
+        setInventoryData(data)
+      })
+      .catch((error) => {
+        console.error('Error fetching inventory data:', error)
+      })
+  }
   return (
     <>
       {selectedProduct && (
         <>
+          {/* Pollo子元件 */}
+          <InventorySearch inventoryData={inventoryData} />
           <div className="row mt-5">
             <div className="col-lg-7 my-3">
               <div className="position-sticky" style={{ top: '2rem' }}>
@@ -137,6 +152,23 @@ export default function Detail() {
                       {selectedProduct.nib_name}
                     </span>
                   </div>
+                  {/* Pollo子元件的按鈕 */}
+                  <a
+                    style={{
+                      color: '#ff0083',
+                      display: 'block',
+                      marginTop: '0.5rem',
+                      fontSize: '16px',
+                    }}
+                    id="a1"
+                    data-bs-toggle="offcanvas"
+                    href="#offcanvasExample"
+                    role="button"
+                    aria-controls="offcanvasExample"
+                    onClick={fetchInventoryData} // 將點擊事件綁定到父元件的函數上
+                  >
+                    庫存查詢
+                  </a>
                 </div>
                 <div style={{ marginTop: '2rem' }}>
                   <QuantityButton products={products} pid={pid} />
@@ -223,17 +255,35 @@ export default function Detail() {
           </div>
           <Toaster />
           <div className="text-h2 my-5">其他人還看了</div>
-          {/* <div
-            className="row mb-5 overflow-x-auto"
-            style={{ whiteSpace: 'nowrap' }}
-          >
-            <div className="col-12 mb-4">
-              <div className="d-inline-flex">
-                {displayedProducts.map((product) => (
+          <div className="mb-4">
+            <Swiper
+              spaceBetween={10}
+              slidesPerView={3}
+              navigation
+              loop={false}
+              style={{ width: '100%', paddingLeft: 15 }}
+              modules={[Navigation]}
+              breakpoints={{
+                1: {
+                  slidesPerView: 1,
+                },
+                768: {
+                  slidesPerView: 2,
+                },
+                992: {
+                  slidesPerView: 3,
+                },
+                1400: {
+                  slidesPerView: 4,
+                },
+              }}
+            >
+              {displayedProducts.map((product) => (
+                <SwiperSlide key={product.product_id}>
+                  {/* ProductFigure 组件 */}
                   <div
                     className="col"
-                    key={product.product_id}
-                    style={{ width: '250px', marginRight: '10px' }}
+                    style={{ width: '300px', margin: '10px' }}
                   >
                     <Link
                       href={`/product/${product.product_id}`}
@@ -253,87 +303,10 @@ export default function Detail() {
                       />
                     </Link>
                   </div>
-                ))}
-              </div>
-            </div>
-          </div> */}
-          
-          <Swiper
-            spaceBetween={10}
-            slidesPerView={3}
-            navigation
-            loop={false}
-            style={{ width: '100%', paddingLeft: 15 }}
-            modules={[Navigation]}
-            breakpoints={{
-              1: {
-                slidesPerView: 1,
-              },
-              // 当视窗宽度小于等于 768px 时，显示 1 个 slide
-              768: {
-                slidesPerView: 2,
-              },
-              // 当视窗宽度小于等于 992px 时，显示 2 个 slide
-              992: {
-                slidesPerView: 3,
-              },
-              // 默认情况下，在大于 992px 宽度的视窗下，显示 3 个 slide
-              1200: {
-                slidesPerView: 4,
-              },
-            }}
-          >
-            {/* 在 SwiperSlide 中放置产品信息 */}
-            {displayedProducts.map((product) => (
-              <SwiperSlide key={product.product_id}>
-                {/* ProductFigure 组件 */}
-                <div
-                  className="col"
-                  style={{ width: '250px', margin: '10px' }}
-                >
-                  <Link
-                    href={`/product/${product.product_id}`}
-                    as={`/product/${product.product_id}`}
-                    style={{ textDecoration: `none` }}
-                  >
-                    <ProductFigure
-                      key={product.product_id}
-                      image={`/images/myProduct/${product.image}`}
-                      brand={product.brand_name}
-                      name={
-                        product.name.length > maxLength
-                          ? `${product.name.substring(0, maxLength)}...`
-                          : product.name
-                      }
-                      price={formatPrice(product.price)}
-                    />
-                  </Link>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-
-          <style jsx>{`
-            ::-webkit-scrollbar {
-              height: 3px; /* 滚动条宽度 */
-            }
-
-            /* 滚动条轨道 */
-            ::-webkit-scrollbar-track {
-              background: #f3f3f3; /* 轨道背景颜色 */
-            }
-
-            /* 滚动条滑块 */
-            ::-webkit-scrollbar-thumb {
-              background: #ff69b4; /* 滑块颜色 */
-              border-radius: 4px; /* 滑块圆角 */
-            }
-
-            /* 滚动条滑块悬停状态 */
-            ::-webkit-scrollbar-thumb:hover {
-              background: #ff1493; /* 滑块悬停时的颜色 */
-            }
-          `}</style>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         </>
       )}
     </>
