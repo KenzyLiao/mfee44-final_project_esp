@@ -55,7 +55,7 @@ router.post('/creatOrder', authenticate, async (req, res) => {
   }
 
   //要生成給資料庫的資料 進行formData解構
-  const {
+  let {
     shipping,
 
     // 宅配＆與c2c共用資料
@@ -78,6 +78,10 @@ router.post('/creatOrder', authenticate, async (req, res) => {
     payType,
     coupon_id,
   } = clientOrder.formData
+
+  // if (!coupon_id) {
+  //   coupon_id = null
+  // }
 
   //進行cart解構
   const cart = clientOrder.cart
@@ -143,6 +147,7 @@ router.post('/creatOrder', authenticate, async (req, res) => {
     const orderInfoId = orderInfoResult.insertId
 
     // 寫入到`order`表
+
     await connection.execute(
       'INSERT INTO `order` (id, user_id, amount,payment_status, order_info_id,coupon_id,payment,shipping) VALUES (?, ?, ?,?, ?, ?,?,?)',
       [

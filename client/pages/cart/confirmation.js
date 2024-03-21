@@ -8,7 +8,6 @@ import OrderConfirmList from '@/components/myCart/orderConfirmList'
 import ShippingRule from '@/components/myCart/shippingRule'
 import Link from 'next/link'
 import toast, { Toaster } from 'react-hot-toast'
-import jwtDecode from 'jwt-decode'
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
