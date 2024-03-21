@@ -2,6 +2,9 @@ import express, { query } from 'express'
 import moment from 'moment'
 import mydb from '../configs/mydb.js'
 
+// 引入認證中間件
+import authenticate from '../middlewares/Myauthenticate.js'
+
 // line pay使用npm套件 串接流程簡化成只要呼叫 SDK 的 API 就可以完成
 import { createLinePayClient } from 'line-pay-merchant'
 
@@ -36,12 +39,12 @@ router.get('/', (req, res) => {
 })
 
 // (1) 建立訂單路由
-router.post('/creatOrder', async (req, res) => {
+router.post('/creatOrder', authenticate, async (req, res) => {
   // 初始化 connection 變量，確保它在 try、catch 和 finally 塊中都可訪問
   let connection
 
-  // 會員id由authenticate中介軟體提供 （未完成）
-  const userId = 556
+  // 會員id由authenticate中介軟體提供
+  const userId = req.user.user_id
 
   //假設前端丟過來的checkout資料
   const clientOrder = req.body
@@ -52,7 +55,7 @@ router.post('/creatOrder', async (req, res) => {
   }
 
   //要生成給資料庫的資料 進行formData解構
-  const {
+  let {
     shipping,
 
     // 宅配＆與c2c共用資料
@@ -75,6 +78,10 @@ router.post('/creatOrder', async (req, res) => {
     payType,
     coupon_id,
   } = clientOrder.formData
+
+  // if (!coupon_id) {
+  //   coupon_id = null
+  // }
 
   //進行cart解構
   const cart = clientOrder.cart
@@ -140,6 +147,7 @@ router.post('/creatOrder', async (req, res) => {
     const orderInfoId = orderInfoResult.insertId
 
     // 寫入到`order`表
+
     await connection.execute(
       'INSERT INTO `order` (id, user_id, amount,payment_status, order_info_id,coupon_id,payment,shipping) VALUES (?, ?, ?,?, ?, ?,?,?)',
       [
