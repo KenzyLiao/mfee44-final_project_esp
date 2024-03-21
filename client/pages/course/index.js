@@ -3,6 +3,7 @@ import CourseCarousel from '@/components/course/course-carousel.js'
 import CardGroup from '@/components/course/card-group.js'
 import CardGroupTitle from '@/components/course/card-group-title.js'
 import MyCardGroup from '@/components/course/my-card-group.js'
+import { motion } from 'framer-motion'
 
 export default function CoursePage() {
   const titleData = [
@@ -27,7 +28,7 @@ export default function CoursePage() {
       subTitle: '發揮你的創意',
     },
   ]
-  const [login, setLogin] = useState(true)
+  const [login, setLogin] = useState(false)
   const [data, setData] = useState([])
   useEffect(() => {
     const fetchData = async () => {
@@ -60,7 +61,10 @@ export default function CoursePage() {
         </div>
       )}
 
-      <div className="mb-5">
+      <div
+        
+        className="mb-5"
+      >
         <CardGroupTitle
           title={titleData[1].title}
           subTitle={titleData[1].subTitle}
