@@ -7,9 +7,17 @@ import { useRouter } from 'next/router'
 import { BsGlobe } from 'react-icons/bs'
 import { IoIosLock, IoMdCheckmarkCircleOutline } from 'react-icons/io'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/swiper-bundle.css'
+import 'swiper/css'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
+import 'swiper/css/scrollbar'
+import { Navigation } from 'swiper/modules'
+
+// //勾子context
+import { useCart } from '@/hooks/user-cart'
 
 export default function Detail() {
+  const { Toaster } = useCart()
   const [products, setProducts] = useState([])
   const [displayedProducts, setDisplayedProducts] = useState([])
   const [selectedProduct, setSelectedProduct] = useState(null)
@@ -213,8 +221,9 @@ export default function Detail() {
               </div>
             </div>
           </div>
+          <Toaster />
           <div className="text-h2 my-5">其他人還看了</div>
-          <div
+          {/* <div
             className="row mb-5 overflow-x-auto"
             style={{ whiteSpace: 'nowrap' }}
           >
@@ -247,7 +256,60 @@ export default function Detail() {
                 ))}
               </div>
             </div>
-          </div>
+          </div> */}
+
+          <Swiper
+            spaceBetween={10}
+            slidesPerView={3}
+            navigation
+            loop={false}
+            style={{ width: '100%', paddingLeft: 15 }}
+            modules={[Navigation]}
+            breakpoints={{
+              1: {
+                slidesPerView: 1,
+              },
+              // 当视窗宽度小于等于 768px 时，显示 1 个 slide
+              768: {
+                slidesPerView: 2,
+              },
+              // 当视窗宽度小于等于 992px 时，显示 2 个 slide
+              992: {
+                slidesPerView: 3,
+              },
+              // 默认情况下，在大于 992px 宽度的视窗下，显示 3 个 slide
+              1200: {
+                slidesPerView: 4,
+              },
+            }}
+          >
+            {/* 在 SwiperSlide 中放置产品信息 */}
+            {displayedProducts.map((product) => (
+              <SwiperSlide key={product.product_id}>
+                {/* ProductFigure 组件 */}
+                <div className="col" style={{ width: '250px', margin: '10px' }}>
+                  <Link
+                    href={`/product/${product.product_id}`}
+                    as={`/product/${product.product_id}`}
+                    style={{ textDecoration: `none` }}
+                  >
+                    <ProductFigure
+                      key={product.product_id}
+                      image={`/images/myProduct/${product.image}`}
+                      brand={product.brand_name}
+                      name={
+                        product.name.length > maxLength
+                          ? `${product.name.substring(0, maxLength)}...`
+                          : product.name
+                      }
+                      price={formatPrice(product.price)}
+                    />
+                  </Link>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+
           <style jsx>{`
             ::-webkit-scrollbar {
               height: 3px; /* 滚动条宽度 */

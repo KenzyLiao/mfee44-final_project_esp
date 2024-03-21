@@ -7,17 +7,28 @@ import SmallCourseCart from '@/components/myCart/smallCourseCart'
 import OrderConfirmList from '@/components/myCart/orderConfirmList'
 import ShippingRule from '@/components/myCart/shippingRule'
 import Link from 'next/link'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
+import { jwtDecode } from 'jwt-decode'
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
 import { useCheckout } from '@/hooks/use-checkout'
 
 export default function Confirmation() {
+  const { rawTotalPrice, totalPrice, selectCoupon, formData } = useCheckout()
+  console.log(formData)
   const { cart, cartCourse, cartGeneral, formatPrice } = useCart()
 
-  const { rawTotalPrice, totalPrice, selectCoupon, formData } = useCheckout()
-  console.log(formData.payType)
+  //取得token 令牌
+  const [token, setToken] = useState('')
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token')
+    // console.log(storedToken)
+    if (storedToken) {
+      setToken(storedToken)
+    }
+  }, []) // 空依賴數組確保只在組件掛載時運行
 
   //linePay資料使用
   const [linePayOrder, setLinePayOrder] = useState({})
@@ -34,6 +45,7 @@ export default function Confirmation() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             amount: totalPrice,
@@ -79,6 +91,10 @@ export default function Confirmation() {
   const goEcPay = async (orderId) => {
     if (window.confirm('請確認導向至ECPAY進行付款嗎？')) {
       window.location.href = `http://localhost:3005/api/ecpay?orderId=${orderId}`
+      localStorage.removeItem('checkout_info')
+      localStorage.removeItem('check_info')
+      localStorage.removeItem('selectedCouponID')
+      localStorage.removeItem('cart')
     }
   }
 
@@ -120,6 +136,7 @@ export default function Confirmation() {
       }
     }
   }, [router.isReady, router.query])
+
   return (
     <>
       <ProgressBar
@@ -151,6 +168,7 @@ export default function Confirmation() {
               formatPrice={formatPrice}
               creatOrderAndPay={creatOrderAndPay}
               shippingFee={formData.shippingFee}
+              discount_value={selectCoupon.discount_value}
             />
           </div>
           <div className="text-h4 mb-4">我的購物車</div>
@@ -169,7 +187,6 @@ export default function Confirmation() {
             付款
           </div>
         </div>
-        <Toaster />
       </div>
       <style jsx>{`
         .rwd-button {

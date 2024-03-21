@@ -6,14 +6,27 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 // Import Swiper styles
 import 'swiper/css'
 import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 // import required modules
-import { Navigation } from 'swiper/modules'
+import { Navigation, Pagination, Autoplay } from 'swiper/modules'
 
 export default function CourseCarousel() {
   return (
     <>
-      <Swiper navigation={true} modules={[Navigation]} className="mySwiper">
+      <Swiper
+        slidesPerView={1}
+        spaceBetween={30}
+        loop={true}
+        navigation={true}
+        autoplay={{
+          delay: 1500,
+          disableOnInteraction: false,
+        }}
+        modules={[Navigation, Pagination, Autoplay]}
+        pagination={true}
+        className="mySwiper"
+      >
         <SwiperSlide>
           <div className="image-container">
             <img

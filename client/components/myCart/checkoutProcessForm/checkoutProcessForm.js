@@ -28,7 +28,6 @@ export default function CheckoutProcessForm({
   selectCoupon = {},
   setFormData = () => {},
 }) {
-  console.log(selectCoupon)
   // const { setFormData } = useCheckout()
 
   const router = useRouter()
@@ -166,7 +165,31 @@ export default function CheckoutProcessForm({
     setValue('postcode', postcodeValue, { shouldValidate: true })
   }, [watch('country'), watch('township'), postcodes, setValue])
 
-  //處理couppon(會當機)
+  /* ----------------------調整------------------------- */
+  useEffect(() => {
+    if (!router.isReady) return
+
+    // 从查询参数中获取门市信息
+    const { storeType, storeID, storeName, storeAddress } = router.query
+
+    // 从 localStorage 中尝试恢复表单数据
+    const storedData = localStorage.getItem('check_info')
+    const formData = storedData ? JSON.parse(storedData) : {}
+
+    // 将查询参数中的门市信息合并到表单数据中，查询参数优先
+    const mergedFormData = {
+      ...formData,
+      ...(storeType && { shipping: storeType }),
+      ...(storeID && { storeID }),
+      ...(storeName && { storeName }),
+      ...(storeAddress && { storeAddress }),
+    }
+
+    // 更新表单数据
+    reset(mergedFormData)
+  }, [router.isReady, router.query, reset])
+
+  //處理couppon
   useEffect(() => {
     // 當 selectCoupon 改變時，使用 setValue 更新 React Hook Form 中的值
     setValue('coupon_id', selectCoupon.id || null)

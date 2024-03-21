@@ -282,7 +282,7 @@ export default function List() {
                 </div>
                 <div className="dropdown ms-3">
                   <button
-                    className="btn dropdown-toggle my-text-contents-CH rounded-pill shadow"
+                    className="btn custom-dropdown-button dropdown-toggle my-text-contents-CH rounded-pill "
                     type="button"
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
@@ -339,12 +339,19 @@ export default function List() {
             {isMobile && (
               <div className="d-flex p-2 justify-content-end align-items-center">
                 <button
-                  className="btn my-text-contents-CH rounded-pill shadow"
+                  className="btn my-text-contents-CH rounded-pill"
                   onClick={handleOpen}
+                  style={{
+                    backgroundColor: '#ff69b4',
+                    border: 'none',
+                    outline: 'none',
+                    padding: '10px 20px',
+                    color: '#fff',
+                  }}
                 >
                   <span>
                     篩選
-                    <FaSliders />
+                    <FaSliders style={{ marginLeft: '5px' }} />
                   </span>
                 </button>
 
@@ -768,7 +775,7 @@ export default function List() {
                     <div className="me-2" key={brandItem.brand_id}>
                       <button
                         type="button"
-                        className="btn"
+                        className="btn my-button"
                         onClick={() => handleBrandClick(brandItem.brand_name)}
                       >
                         {brandItem.brand_name}
@@ -1140,7 +1147,7 @@ export default function List() {
         <div className="col-lg-9 col-md-12">
           <div id="page-content-wrapper">
             <div className="container">
-              <div className="row row-cols-2 row-cols-lg-3 g-4 row-cols-md-2">
+              <div className="row row-cols-1 row-cols-lg-3 g-4 row-cols-sm-2">
                 {/* 循环渲染产品 */}
                 {displayedProducts.length > 0 ? (
                   displayedProducts.map((product) => (
@@ -1210,6 +1217,61 @@ export default function List() {
         /* 滚动条滑块悬停状态 */
         ::-webkit-scrollbar-thumb:hover {
           background: #ff1493; /* 滑块悬停时的颜色 */
+        }
+        .custom-dropdown-button {
+          background-color: #7c7477; /* 粉色 */
+          color: #fff;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 30px;
+          cursor: pointer;
+          transition: all 0.3s ease;
+        }
+
+        .custom-dropdown-button:hover {
+          background-color: #ff1493; /* 深粉色 */
+          transform: scale(1.05);
+        }
+
+        .dropdown-menu {
+          background-color: #7c7477; /* 粉色 */
+          border: none;
+          border-radius: 20px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+          overflow: hidden; /* 隐藏超出的内容 */
+        }
+
+        .dropdown-item {
+          color: #fff;
+          padding: 10px 20px;
+          /* 圆形边界 */
+          transition: background-color 0.3s ease;
+        }
+
+        .dropdown-item:last-child {
+          border-bottom: none;
+        }
+
+        .dropdown-item:hover,
+        .dropdown-item:focus {
+          background-color: #ff9fd0; /* 紫色 */
+        }
+
+        .dropdown-item.active,
+        .dropdown-item:active {
+          background-color: #ff1493; /* 紫色 */
+          /* 圆角 */
+        }
+
+        .my-button {
+          color: black;
+          padding: 8px 16px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+        }
+
+        .my-button:hover {
+          color: #ff1493;
         }
       `}</style>
     </>

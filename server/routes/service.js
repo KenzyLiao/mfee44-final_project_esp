@@ -16,10 +16,10 @@ router.get('/', async (req, res) => {
             sql += ` AND area IN ('${area.split(',').join("','")}')`;
         }
         if (openTime && openTime.trim() !== '') {
-            sql += ` AND opentime >= '${openTime}'`;
+            sql += ` AND opentime <= '${openTime}'`;
         }
         if (closeTime && closeTime.trim() !== '') {
-            sql += ` AND closetime <= '${closeTime}'`;
+            sql += ` AND closetime >= '${closeTime}'`;
         }
         if (textSearch && textSearch.trim() !== '') {
             sql += ` AND (name LIKE '%${textSearch}%' OR address LIKE '%${textSearch}%')`;
