@@ -24,7 +24,7 @@ router.post('/userCoupon', async (req, res) => {
     console.log('uid', Uid)
 
     const [results] = await mydb.execute(
-      `SELECT * FROM member_coupon WHERE user_id=?`,
+      `SELECT * FROM member_coupon WHERE user_id=? AND valid=1`,
       [Uid]
     )
     let queries = results.map((result) => {
