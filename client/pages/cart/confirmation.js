@@ -7,7 +7,7 @@ import SmallCourseCart from '@/components/myCart/smallCourseCart'
 import OrderConfirmList from '@/components/myCart/orderConfirmList'
 import ShippingRule from '@/components/myCart/shippingRule'
 import Link from 'next/link'
-import toast, { Toaster } from 'react-hot-toast'
+import toast from 'react-hot-toast'
 import { jwtDecode } from 'jwt-decode'
 
 // //勾子context
@@ -136,6 +136,7 @@ export default function Confirmation() {
       }
     }
   }, [router.isReady, router.query])
+
   return (
     <>
       <ProgressBar
@@ -186,7 +187,6 @@ export default function Confirmation() {
             付款
           </div>
         </div>
-        <Toaster />
       </div>
       <style jsx>{`
         .rwd-button {

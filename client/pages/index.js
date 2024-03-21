@@ -11,6 +11,8 @@ import Carosuel2copy from '@/components/common/carosuel2copy'
 import Section4 from '@/components/home/section4'
 import Section5 from '@/components/home/section5'
 
+import CardSection from '@/components/home/CardSection'
+
 export default function Home() {
   return (
     <>
@@ -71,12 +73,13 @@ export default function Home() {
       {/* concept */}
       <ConceptSection />
       <div className="row">
-        <div className="bg-warning col-lg-12">
-          <Section4 />
+        <div className="col-lg-12 bg-my-white">
+          <div className="text-h2 my-3">極品工藝</div>
+          <div className="d-flex justify-content-center">
+            <CardSection />
+          </div>
         </div>
-        <div className="bg-warning col-lg-12">
-          <Section5 />
-        </div>
+        <div className="bg-warning col-lg-12">123</div>
       </div>
     </>
   )
