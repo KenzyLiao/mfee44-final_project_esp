@@ -80,9 +80,12 @@ export default function Detail() {
   }
 
   if (loading) {
-    return <div className='load' id="loading">Loading . . .</div>
+    return (
+      <div className="load" id="loading">
+        Loading . . .
+      </div>
+    )
   }
-  const maxLength = 11
   window.addEventListener('popstate', () => {
     window.location.reload()
   })
@@ -294,11 +297,7 @@ export default function Detail() {
                         key={product.product_id}
                         image={`/images/myProduct/${product.image}`}
                         brand={product.brand_name}
-                        name={
-                          product.name.length > maxLength
-                            ? `${product.name.substring(0, maxLength)}...`
-                            : product.name
-                        }
+                        name={product.name}
                         price={formatPrice(product.price)}
                       />
                     </Link>
