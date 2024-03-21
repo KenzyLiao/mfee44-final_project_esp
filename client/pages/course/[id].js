@@ -21,7 +21,7 @@ import {
 } from 'react-icons/bs'
 
 export default function CoursePage() {
-  const { addCartItem, Toaster } = useCart()
+  const { addCartItem } = useCart()
   // const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
   const router = useRouter()
   const { id } = router.query
@@ -363,7 +363,6 @@ export default function CoursePage() {
             </div>
           </aside>
         </div>
-        <Toaster />
       </div>
       <style jsx>{`
         h1 {
