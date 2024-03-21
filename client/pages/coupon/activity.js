@@ -6,6 +6,7 @@ export default function Home() {
   // 引入資料
   const [data, setData] = useState([])
   const [data_2, setData_2] = useState([])
+  // const [dataMember, setDataMember] = useState([])
   const fetchData = async () => {
     try {
       const response = await fetch(
@@ -14,13 +15,18 @@ export default function Home() {
       const response_2 = await fetch(
         'http://localhost:3005/api/coupon/activity/?type=2'
       )
+      // const menberResponse = await fetch(
+        //   ''
+        // )
       const result = await response.json()
       const result_2 = await response_2.json()
+       // const dataMember = await menberResponse.json()
       console.log('res', result)
       console.log(result_2)
 
       setData(result)
       setData_2(result_2)
+       // setDataMember(dataMember)
     } catch (error) {
       console.error('Error:', error)
     }
@@ -44,7 +50,7 @@ export default function Home() {
         <div className="title_h2">冬日溫暖，書寫心情！</div>
         <div className="main_h3">
           ✨ 優惠劵領取說明 ✨<br />
-          📅 活動期間：2024年03月05日 至 2024年04月11日 🎉
+          📅 活動期間：2024年03月04日 至 2024年04月11日 🎉
           <br />
           購物滿3000元即享折扣300元！ <br />
           💡 如何獲得優惠：
@@ -73,19 +79,19 @@ export default function Home() {
             </div>
           </li>
           <li>
-            <img src="/images/myCoupon/activity_banner.png" alt="" />
+            <img src="/images/myCoupon/banner2.png" alt="" />
           </li>
         </ul>
 
         {/* 5000折500$ */}
         <div>
-          <div className="title_h2">冬日溫暖，書寫心情！</div>
+          <div className="title_h2">春季送送送!</div>
         </div>
         <div className="main_h3">
-          ✨ 優惠劵領取說明 ✨<br />
-          📅 活動期間：2024年03月05日 至 2024年04月11日 🎉
+          ✨ 春季送送送! ✨<br />
+          📅 活動期間：2024年03月04日 至 2024年04月11日 🎉
           <br />
-          購物滿3000元即享折扣300元！ <br />
+          購物滿5000元即享折扣500元！ <br />
           💡 如何獲得優惠：
           <br />
           在活動期間，購物滿3000元即可自動獲得折扣300元。

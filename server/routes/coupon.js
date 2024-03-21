@@ -48,6 +48,8 @@ router.get('/get', async (req, res) => {
     }
 
     res.json(output)
+    console.log(req.query.id_coupon)
+    console.log("4465")
   } catch (err) {
     console.error('查詢資料錯誤:', err)
     return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })

@@ -44,7 +44,7 @@ export default function UsedCoupon({ coupon }) {
               {/* 有效期限：2024.12.31 */}
               {coupon.end_at.split('T')[0]}
             </p>
-            <a className="rule_link" href="">
+            <a className="rule_link" href="http://localhost:3000/coupon/activity_rule">
               使用規則
             </a>
             {!coupon.coupon_id && (
