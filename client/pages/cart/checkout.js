@@ -41,7 +41,7 @@ export default function Checkout() {
         // 這裡可以使用decodedUser進行其他操作
       } catch (error) {
         console.error('Token解碼錯誤', error)
-        // 處理無效token的情況處理
+        // 處理無效token的情況
       }
     }
   }, []) // 空依賴數組確保只在組件掛載時運行

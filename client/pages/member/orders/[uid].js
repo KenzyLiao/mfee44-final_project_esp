@@ -20,9 +20,12 @@ export default function MyOrder() {
       setToken(storedToken)
     }
   }, []) // 空依賴數組確保只在組件掛載時運行
+
   useEffect(() => {
-    fetchData()
-  }, [uid])
+    if (token) {
+      fetchData()
+    }
+  }, [uid, token])
 
   const fetchData = async () => {
     try {

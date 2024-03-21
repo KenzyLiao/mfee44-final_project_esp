@@ -158,46 +158,7 @@ export default function CheckoutProcessForm({
     // trigger(['coupon_id', 'coupon_name'])
   }, [selectCoupon, router.isReady])
 
-  // useEffect(() => {
-  //   // 確保路由器準備就緒後再嘗試讀取查詢參數
-  //   if (!router.isReady) return
-
-  //   // 從查詢參數中獲取門市類型
-  //   const queryStoreType = router.query.storeType
-
-  //   // 根據storeType設置shipping的預設值
-  //   const defaultShipping = queryStoreType || '宅配' // 如果沒有指定storeType，則預設為'宅配'
-
-  //   // 使用reset函數更新表單的預設值，包括根據storeType設置的shipping
-  //   reset({
-  //     ...initialFormData, // 使用展開運算符保持其他初始表單數據不變
-  //     shipping: defaultShipping,
-  //     // 可以在這裡添加其他基於storeType條件的表單欄位預設值設置
-  //   })
-  // }, [router.isReady, router.query, reset])
-
-  // useEffect(() => {
-  //   // 從 localStorage 讀取表單數據
-  //   const storedData = localStorage.getItem('check_info')
-
-  //   if (storedData) {
-  //     // 諮詢用戶是否恢復資料
-  //     const confirmRestore =
-  //       window.confirm('您有未完成的表單資料，是否要恢復？')
-
-  //     if (confirmRestore) {
-  //       // 如果用戶選擇恢復，則解析並設置表單數據
-  //       const formData = JSON.parse(storedData)
-
-  //       // 使用 reset 函數來恢復表單數據
-  //       reset(formData)
-  //     } else {
-  //       // 如果用戶選擇不恢復，可以選擇清除 localStorage 中的數據
-  //       localStorage.removeItem('check_info')
-  //     }
-  //   }
-  // }, [reset])
-
+  //跨頁回到此頁時的恢復數據
   useEffect(() => {
     if (!router.isReady) return
 
