@@ -18,15 +18,24 @@ const router = express.Router()
 //     res.json("發生錯誤");
 //   }
 // });
-router.post('/userCoupon',async (req, res) => {
+router.post('/userCoupon', async (req, res) => {
   try {
-    const Uid=req.body
-    console.log(Uid);
-    
-    const [results] = await mydb.execute(`SELECT * FROM member_coupon WHERE member_coupon.user_id=${Uid}`)
-    console.log(results)
+    const Uid = 1 // req.body.uid
+    console.log('uid', Uid)
 
-    res.send(results)
+    const [results] = await mydb.execute(
+      `SELECT * FROM member_coupon WHERE user_id=?`,
+      [Uid]
+    )
+    let queries = results.map((result) => {
+      return mydb.execute(`SELECT * FROM mycoupon WHERE id=?`, [
+        result.coupon_id,
+      ])
+    })
+    let couponResults = await Promise.all(queries)
+    couponResults = couponResults.map((result) => result[0][0])
+
+    res.send(couponResults)
   } catch (err) {
     console.error('查詢資料錯誤:', err)
     return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
@@ -64,7 +73,7 @@ router.get('/get', async (req, res) => {
 
     res.json(output)
     console.log(req.query.id_coupon)
-    console.log("4465")
+    console.log('4465')
   } catch (err) {
     console.error('查詢資料錯誤:', err)
     return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
