@@ -165,7 +165,7 @@ export default function CheckoutProcessForm({
     setValue('postcode', postcodeValue, { shouldValidate: true })
   }, [watch('country'), watch('township'), postcodes, setValue])
 
-  /* ----------------------------------------------- */
+  /* ----------------------調整------------------------- */
   useEffect(() => {
     if (!router.isReady) return
 
