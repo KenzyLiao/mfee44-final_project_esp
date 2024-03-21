@@ -105,6 +105,24 @@ export default function CheckoutProcessForm({
     }
   }, [invoiceType, setValue])
 
+  useEffect(() => {
+    // 確保路由器準備就緒後再嘗試讀取查詢參數
+    if (!router.isReady) return
+
+    // 從查詢參數中獲取門市類型
+    const queryStoreType = router.query.storeType
+
+    // 根據storeType設置shipping的預設值
+    const defaultShipping = queryStoreType || '宅配' // 如果沒有指定storeType，則預設為'宅配'
+
+    // 使用reset函數更新表單的預設值，包括根據storeType設置的shipping
+    reset({
+      ...initialFormData, // 使用展開運算符保持其他初始表單數據不變
+      shipping: defaultShipping,
+      // 可以在這裡添加其他基於storeType條件的表單欄位預設值設置
+    })
+  }, [router.isReady, router.query, reset])
+
   //處理運送方式與運費
   useEffect(() => {
     // 確保路由器準備就緒後再嘗試讀取查詢參數
@@ -147,6 +165,30 @@ export default function CheckoutProcessForm({
     setValue('postcode', postcodeValue, { shouldValidate: true })
   }, [watch('country'), watch('township'), postcodes, setValue])
 
+  /* ----------------------調整------------------------- */
+  useEffect(() => {
+    if (!router.isReady) return
+
+    // 从查询参数中获取门市信息
+    const { storeType, storeID, storeName, storeAddress } = router.query
+
+    // 从 localStorage 中尝试恢复表单数据
+    const storedData = localStorage.getItem('check_info')
+    const formData = storedData ? JSON.parse(storedData) : {}
+
+    // 将查询参数中的门市信息合并到表单数据中，查询参数优先
+    const mergedFormData = {
+      ...formData,
+      ...(storeType && { shipping: storeType }),
+      ...(storeID && { storeID }),
+      ...(storeName && { storeName }),
+      ...(storeAddress && { storeAddress }),
+    }
+
+    // 更新表单数据
+    reset(mergedFormData)
+  }, [router.isReady, router.query, reset])
+
   //處理couppon
   useEffect(() => {
     // 當 selectCoupon 改變時，使用 setValue 更新 React Hook Form 中的值
@@ -158,82 +200,27 @@ export default function CheckoutProcessForm({
     // trigger(['coupon_id', 'coupon_name'])
   }, [selectCoupon, router.isReady])
 
-  // useEffect(() => {
-  //   // 確保路由器準備就緒後再嘗試讀取查詢參數
-  //   if (!router.isReady) return
-
-  //   // 從查詢參數中獲取門市類型
-  //   const queryStoreType = router.query.storeType
-
-  //   // 根據storeType設置shipping的預設值
-  //   const defaultShipping = queryStoreType || '宅配' // 如果沒有指定storeType，則預設為'宅配'
-
-  //   // 使用reset函數更新表單的預設值，包括根據storeType設置的shipping
-  //   reset({
-  //     ...initialFormData, // 使用展開運算符保持其他初始表單數據不變
-  //     shipping: defaultShipping,
-  //     // 可以在這裡添加其他基於storeType條件的表單欄位預設值設置
-  //   })
-  // }, [router.isReady, router.query, reset])
-
-  // useEffect(() => {
-  //   // 從 localStorage 讀取表單數據
-  //   const storedData = localStorage.getItem('check_info')
-
-  //   if (storedData) {
-  //     // 諮詢用戶是否恢復資料
-  //     const confirmRestore =
-  //       window.confirm('您有未完成的表單資料，是否要恢復？')
-
-  //     if (confirmRestore) {
-  //       // 如果用戶選擇恢復，則解析並設置表單數據
-  //       const formData = JSON.parse(storedData)
-
-  //       // 使用 reset 函數來恢復表單數據
-  //       reset(formData)
-  //     } else {
-  //       // 如果用戶選擇不恢復，可以選擇清除 localStorage 中的數據
-  //       localStorage.removeItem('check_info')
-  //     }
-  //   }
-  // }, [reset])
-
   useEffect(() => {
-    if (!router.isReady) return
-
-    // 嘗試從 localStorage 中恢復表單數據
+    // 從 localStorage 讀取表單數據
     const storedData = localStorage.getItem('check_info')
-    const formData = storedData ? JSON.parse(storedData) : initialFormData
 
-    // 從查詢參數中獲取門市信息
-    const { storeType, storeID, storeName, storeAddress } = router.query
+    if (storedData) {
+      // 諮詢用戶是否恢復資料
+      const confirmRestore =
+        window.confirm('您有未完成的表單資料，是否要恢復？')
 
-    // 根據門市信息更新表單數據，如果有的話
-    const queryData = {
-      ...(storeType && { shipping: storeType }),
-      ...(storeID && { storeID }),
-      ...(storeName && { storeName }),
-      ...(storeAddress && { storeAddress }),
-    }
+      if (confirmRestore) {
+        // 如果用戶選擇恢復，則解析並設置表單數據
+        const formData = JSON.parse(storedData)
 
-    // 如果存在查詢參數中的門市信息，則優先合併這些信息
-    if (storeType || storeID || storeName || storeAddress) {
-      const mergedFormData = { ...formData, ...queryData }
-      reset(mergedFormData)
-    } else {
-      // 如果用戶返回但沒有新的門市選擇，詢問是否恢復之前的數據
-      if (storedData) {
-        const confirmRestore =
-          window.confirm('您有未完成的表單數據，是否要恢復？')
-        if (confirmRestore) {
-          reset(formData)
-        } else {
-          localStorage.removeItem('check_info')
-          reset(initialFormData) // 或其他邏輯，如重置表單到初始狀態
-        }
+        // 使用 reset 函數來恢復表單數據
+        reset(formData)
+      } else {
+        // 如果用戶選擇不恢復，可以選擇清除 localStorage 中的數據
+        localStorage.removeItem('check_info')
       }
     }
-  }, [router.isReady, router.query, reset])
+  }, [reset])
 
   const onSubmit = (data) => {
     localStorage.setItem('check_info', JSON.stringify(data))
