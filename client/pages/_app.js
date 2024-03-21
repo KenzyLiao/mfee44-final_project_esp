@@ -9,6 +9,8 @@ import { CartProvider } from '@/hooks/user-cart'
 
 //表單用的Provider
 import { CheckoutProvider } from '@/hooks/use-checkout'
+//庫存用的Provider
+import { StoreProvider } from '@/hooks/store-context'
 
 import DefaultLayout from '@/components/layout/default-layout'
 
@@ -26,7 +28,7 @@ export default function MyApp({ Component, pageProps }) {
   return (
     <CartProvider>
       <CheckoutProvider>
-        {getLayout(<Component {...pageProps} />)}
+        <StoreProvider>{getLayout(<Component {...pageProps} />)}</StoreProvider>
       </CheckoutProvider>
     </CartProvider>
   )
