@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import ContactDiv from '@/components/myService/contactDiv'
 import Progress from '@/components/myService/progress'
 import AreaFilter from '@/components/myService/areaFilter'
@@ -10,6 +10,8 @@ import StoreInfo from '@/components/myService/storeInfo'
 import axios from 'axios'
 import testmapData from '@/data/store1.json' //地圖測試用資料
 import teststoreData from '@/data/store2.json' //店家列表測試用資料
+import InventorySearch from '@/components/myService/inventorySearch'
+import { StoreContext } from '@/hooks/store-context'
 
 export default function RepairAndServicePage() {
   //首次渲染顯示所有店
@@ -21,11 +23,23 @@ export default function RepairAndServicePage() {
   const [geojsonData, setGeojsonData] = useState([]) //用於地圖區的資料
   const [storeData, setStoreData] = useState([]) //用於訊息區的資料
   const [storeDetail, setStoreDetail] = useState(null) // 添加 storeDetail 状态
-  const [hoveredStore, setHoveredStore] = useState(null); // 添加 hoveredStore 状态 //這行好像無用
-  const [hoveredMarker, setHoveredMarker] = useState(null);
+  const [hoveredStore, setHoveredStore] = useState(null) // 添加 hoveredStore 状态 //這行好像無用
+  const [hoveredMarker, setHoveredMarker] = useState(null)
 
+  const { selectedStore } = useContext(StoreContext)
+  // console.log(selectedStore)
+  // 這段會一直把店名留在頁面運作
+  useEffect(() => {
+    // setArea([]);
+    if (selectedStore) {
+      setTextSearch(selectedStore)
+    }
+  }, [selectedStore])
 
-  //頁面上方用於展開的動畫，只在初次渲染時執行一次
+  //改做法，在area和textsearch組件內拿context???
+
+  //頁面上方用於展開的動畫
+
   useEffect(() => {
     import('@/utils/serviceTool/serviceIndex.js')
   }, [])
@@ -67,14 +81,14 @@ export default function RepairAndServicePage() {
       }, 1000)
     }
     handleRequest()
-
   }, [area, openTime, closeTime, textSearch]) //有value改變時，就發請求
   const handleStoreHover = (store) => {
-    setHoveredStore(store);
-  };
+    setHoveredStore(store)
+  }
   const handleMarkerHover = (markerData) => {
-    setSelectedMarker(markerData);
-  };
+    setSelectedMarker(markerData)
+  }
+
   return (
     <>
       <h1 className="text-center mb-3 text-h1">服務據點</h1>
@@ -105,18 +119,41 @@ export default function RepairAndServicePage() {
       </div>
       <div className="info d-flex row mx-5 mb-5">
         <div className="left col-md-6 px-0 text-center">
-          <Map geojsonData={geojsonData} setGeojsonData={setGeojsonData} setStoreDetail={setStoreDetail} hoveredStore={hoveredStore} setHoveredStore={setHoveredStore} hoveredMarker={hoveredMarker} setHoveredMarker={setHoveredMarker}/>
+          <Map
+            geojsonData={geojsonData}
+            setGeojsonData={setGeojsonData}
+            setStoreDetail={setStoreDetail}
+            hoveredStore={hoveredStore}
+            setHoveredStore={setHoveredStore}
+            hoveredMarker={hoveredMarker}
+            setHoveredMarker={setHoveredMarker}
+          />
         </div>
         <div className="right col-md-6 px-0">
-          <StoreInfo storeData={storeData} setStoreData={setStoreData} storeDetail={storeDetail} setStoreDetail={setStoreDetail} geojsonData={geojsonData} hoveredStore={hoveredStore} setHoveredStore={setHoveredStore} onStoreHover={handleStoreHover} hoveredMarker={hoveredMarker} setHoveredMarker={setHoveredMarker}/>
+          <StoreInfo
+            storeData={storeData}
+            setStoreData={setStoreData}
+            storeDetail={storeDetail}
+            setStoreDetail={setStoreDetail}
+            geojsonData={geojsonData}
+            hoveredStore={hoveredStore}
+            setHoveredStore={setHoveredStore}
+            onStoreHover={handleStoreHover}
+            hoveredMarker={hoveredMarker}
+            setHoveredMarker={setHoveredMarker}
+          />
         </div>
       </div>
-
+      <InventorySearch
+        textSearch={textSearch}
+        setTextSearch={setTextSearch}
+        area={area}
+        setArea={setArea}
+      />
       {/* 把定位樣式放在page */}
       <style jsx>{`
-      .info{
-        
-      }
+        .info {
+        }
         .contactDiv {
           position: relative;
         }
@@ -135,12 +172,10 @@ export default function RepairAndServicePage() {
         }
         .right {
           border-left: 2px solid black;
-          max-height:50vh;
-        overflow-y:auto;
+          max-height: 50vh;
+          overflow-y: auto;
         }
 
-
-        
         @media screen and (max-width: 391px) {
           .right {
             margin-top: 20px;

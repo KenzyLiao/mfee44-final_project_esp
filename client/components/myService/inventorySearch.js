@@ -1,23 +1,33 @@
-import React from 'react'
+import React, { useState,useContext } from 'react'
+import Link from 'next/link'
+import { StoreContext } from '@/hooks/store-context';
 
-export default function InventorySearch() {
+
+
+export default function InventorySearch({
+  inventoryData,
+  textSearch,
+  setTextSearch,
+  area,
+  setArea,
+}) {
+  const [data, setData] = useState(null)
+
+  const { setSelectedStore } = useContext(StoreContext);
+  const handleStoreClick = (storeName) => {
+    setSelectedStore(storeName);
+    // 在這裡您也可以執行其他操作，如導航到其他頁面等
+  };
+
   return (
     <>
-      <a
-        id="a1"
-        data-bs-toggle="offcanvas"
-        href="#offcanvasExample"
-        role="button"
-        aria-controls="offcanvasExample"
-      >
-        庫存查詢
-      </a>
       <div className="container">
         <div
           className="offcanvas offcanvas-end"
           tabIndex={-1}
           id="offcanvasExample"
           aria-labelledby="offcanvasExampleLabel"
+          data-bs-scroll='true'
         >
           <div className="offcanvas-header row me-2">
             <button
@@ -29,14 +39,25 @@ export default function InventorySearch() {
           </div>
           <div className="offcanvas-body row">
             <ul>
-              {/* href 導至"服務據點"service路由並附上參數僅以textsearch=XXX店搜尋，連過去的同時也要發送請求*/}
-              <li><a href='http://localhost:3000/service'>XXX店</a><span>庫存尚餘:?</span></li> 
-              
+              {inventoryData &&
+                inventoryData.map((item, index) => (
+                  <li className="mt-3" key={index}>
+                    <Link href={`http://localhost:3000/service`}
+                        onClick={() => handleStoreClick(item.store_id)}
+                    >
+                        {item.store_id}
+                    </Link>
+                    <span id='span1'><span id='span2'>庫存尚餘:</span> <span id='span3'>{item.qty}</span></span>
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
       </div>
       <style jsx>{`
+       #span3{
+        color:#ff0083;
+       }
         @media (max-width: 767.98px) {
           .offcanvas.show {
             width: 100%;
@@ -55,17 +76,28 @@ export default function InventorySearch() {
 
         .offcanvas-body ul {
           list-style: none;
-
+          overflow-y: auto;
           & li {
-            font-size:21px;
+            font-size: 21px;
             border-bottom: 1px dashed black;
-            position:relative;
-            & span{
-              position:absolute;
-              top:0;
-              right:0;
+            position: relative;
+            & #span1 {
+              position: absolute;
+              top: 0;
+              right: 0;
             }
           }
+        }
+
+        ::-webkit-scrollbar {
+          width: 20px; /* 设置滚动条宽度 */
+        }
+        ::-webkit-scrollbar-thumb {
+          background-color: #ff0083;
+          border-radius: 10px;
+        }
+        ::-webkit-scrollbar-button {
+          background: transparent;
         }
 
         @media screen and (max-width: 391px) {
@@ -84,9 +116,6 @@ export default function InventorySearch() {
           .product-describe {
             display: none;
           }
-        }
-        #a1 {
-          color: #ff0083;
         }
       `}</style>
     </>
