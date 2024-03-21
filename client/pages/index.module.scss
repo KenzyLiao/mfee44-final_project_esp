@@ -3,8 +3,6 @@
 //carosuel
 .carosuel {
   padding-inline: 0px !important;
-
-  box-shadow: 10px 10px 10px red;
 }
 
 /* hero-section */
@@ -12,9 +10,11 @@
   .image-container {
     position: relative; /* 對Image組件是必需的 */
     height: 900px; /* 或任何特定的高度 */
+
     .hero-button {
       display: none;
     }
+
     @media (max-width: 991px) {
       .hero-button {
         display: flex;
@@ -167,4 +167,8 @@
 .vertical-text {
   writing-mode: vertical-rl;
   letter-spacing: 0.5rem;
+}
+
+.card-button {
+  width: 200px;
 }
