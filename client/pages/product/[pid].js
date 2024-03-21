@@ -257,7 +257,7 @@ export default function Detail() {
               </div>
             </div>
           </div> */}
-          
+
           <Swiper
             spaceBetween={10}
             slidesPerView={3}
@@ -287,10 +287,7 @@ export default function Detail() {
             {displayedProducts.map((product) => (
               <SwiperSlide key={product.product_id}>
                 {/* ProductFigure 组件 */}
-                <div
-                  className="col"
-                  style={{ width: '250px', margin: '10px' }}
-                >
+                <div className="col" style={{ width: '250px', margin: '10px' }}>
                   <Link
                     href={`/product/${product.product_id}`}
                     as={`/product/${product.product_id}`}
