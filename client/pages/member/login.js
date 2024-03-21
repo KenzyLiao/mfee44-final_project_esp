@@ -7,12 +7,11 @@ function LoginContent() {
   const router = useRouter()
   const { email, setEmail, password, setPassword, error, handleLogin } =
     LoginLogic({
-      onLoginSuccess: (data) => {
-        console.log('登入成功：', data)
-        localStorage.setItem('token', data.token)
+      onLoginSuccess: () => {
+        console.log('登入成功')
         router.push('./profile')
       },
-      onLoginFail: (error) => console.error('登入失敗：', error),
+      onLoginFail: (error) => console.error('登入失败：', error),
     })
 
   return (
@@ -49,6 +48,22 @@ function LoginContent() {
               登入
             </button>
             <div className="google-login">使用GOOGLE帳號登入</div>
+            <button
+              className="line-login"
+              onClick={() => {
+                const clientId = '2003654359'
+                const redirectUri = encodeURIComponent(
+                  'http://localhost:3005/api/myLine-Login'
+                )
+                const state = '隨機或固定字串，用於防止CSRF攻擊'
+                const scope = encodeURIComponent('profile openid')
+                const authUrl = `https://access.line.me/oauth2/v2.1/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&state=${state}&scope=${scope}`
+
+                window.location.href = authUrl
+              }}
+            >
+              使用LINE帳號登入
+            </button>
           </form>
         </div>
         <div className="create-account"></div>
@@ -139,7 +154,7 @@ function LoginContent() {
           margin-top: 11px;
           height: 48px;
           width: 100%;
-          padding:0px 10px;
+          padding: 0px 10px;
         }
 
         @media (max-width: 991px) {
@@ -165,7 +180,7 @@ function LoginContent() {
           border: 1px solid #eae8e4;
           margin-top: 7px;
           height: 48px;
-          padding:0px 10px;
+          padding: 0px 10px;
           width: 100%;
         }
 
@@ -232,6 +247,21 @@ function LoginContent() {
           text-align: center;
           padding: 18px 60px;
           font: 14px Inter, sans-serif;
+        }
+        .line-login {
+          justify-content: center;
+          align-items: center;
+          border-radius: 1440px;
+          border: 1px solid #19110b;
+          backdrop-filter: blur(7.5px);
+          background-color: rgba(255, 255, 255, 0.2);
+          margin-top: 8px;
+          color: #19110b;
+          white-space: nowrap;
+          text-align: center;
+          padding: 18px 60px;
+          font: 14px Inter, sans-serif;
+          width: 100%;
         }
 
         .create-account {

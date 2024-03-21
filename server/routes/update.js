@@ -11,7 +11,7 @@ router.get('/', async (req, res) => {
 
 // PUT 請求單獨處理，用於更新用戶資料
 router.put('/', async (req, res) => {
-  const token = req.headers.authorization?.split(' ')[1]
+  const token = req.cookies.authToken // 從 Cookie 中獲取令牌
   if (!token) {
     return res.status(401).json({ message: '缺少令牌' })
   }
