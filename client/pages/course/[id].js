@@ -89,8 +89,7 @@ export default function CoursePage() {
   const pen_id = pen.product_id
 
   let data_send = { ...data }
-  let image_name =
-    'course_' + (image.split('_')[1].split('.')[0] % 25) + '.jpg'
+  let image_name = 'course_' + (image.split('_')[1].split('.')[0] % 25) + '.jpg'
   data_send.image = 'http://localhost:3005/course/images/' + image_name
   data_send.url = 'http://localhost:3000/course/' + id
 
@@ -110,7 +109,7 @@ export default function CoursePage() {
               width="100%"
               height="100%"
               controls="true"
-              url={`http://localhost:3005/course/video/TRIAL____________${id}_intro.mp4`}
+              url={`http://localhost:3005/course/video/${id}_intro_1.mp4`}
               playing={true}
               muted={true}
             />
@@ -380,10 +379,10 @@ export default function CoursePage() {
         }
         @media (min-width: 992px) {
           .course_info {
-            width: 45%;
+            width: 40%;
           }
           .video {
-            width: 55%;
+            width: 60%;
           }
         }
         .teacher {

@@ -70,7 +70,7 @@ export default function CourseCard({
               {description}
             </Card.Text>
             <Card.Text className="d-flex flex-lg-row align-items-lg-center">
-              <span className="me-1 text-my-black">
+              {/* <span className="me-1 text-my-black">
                 <BsFillStarFill
                   style={{
                     fontSize: '16px',
@@ -79,7 +79,7 @@ export default function CourseCard({
                   }}
                 />
                 {rank}
-              </span>
+              </span> */}
               <span className="me-1 text-my-black">
                 <BsClockFill style={{ padding: '5px', fontSize: '24px' }} />
                 {total_minute}分鐘

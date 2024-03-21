@@ -93,11 +93,8 @@ export default function CoursePage() {
         setNowPage={setNowPage}
         router={router}
       />
-      {data.length > 0 ? (
-        <CardGroup data={data} />
-      ) : (
-        <div className="text-h2">{`關鍵字: ${filterProps.filterSearch} 找不到相關課程或老師`}</div>
-      )}
+      {data.length > 0 ? <CardGroup data={data} /> : ''}
+      {/* <div className="text-h2">{`關鍵字: ${filterProps.filterSearch} 找不到相關課程或老師`}</div> */}
 
       <div className="d-flex justify-content-center">
         <Pagination>
