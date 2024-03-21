@@ -52,7 +52,7 @@ export default function NextBreadCrumbStatic({
       // 最後一個
       if (i === array.length - 1) {
         return (
-          <li key={i} className="breadcrumb-item active" aria-current="page">
+          <li key={i} className=" active" aria-current="page">
             {v}
           </li>
         )

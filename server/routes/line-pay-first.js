@@ -1,8 +1,9 @@
 import express, { query } from 'express'
 import moment from 'moment'
+import mydb from '../configs/mydb.js'
 
-//連接資料庫
-import mydb from '##/configs/mydb.js'
+// 引入認證中間件
+import authenticate from '../middlewares/Myauthenticate.js'
 
 // line pay使用npm套件 串接流程簡化成只要呼叫 SDK 的 API 就可以完成
 import { createLinePayClient } from 'line-pay-merchant'
@@ -28,6 +29,8 @@ const linePayClient = createLinePayClient({
   env: process.env.NODE_ENV,
 })
 
+const HOST = process.env.HOST
+
 const router = express.Router()
 
 /* GET home page */
@@ -36,16 +39,20 @@ router.get('/', (req, res) => {
 })
 
 // (1) 建立訂單路由
-router.post('/creatOrder', async (req, res) => {
+router.post('/creatOrder', authenticate, async (req, res) => {
   // 初始化 connection 變量，確保它在 try、catch 和 finally 塊中都可訪問
   let connection
 
-  // 會員id由authenticate中介軟體提供 （未完成）
-  const userId = 556
+  // 會員id由authenticate中介軟體提供
+  const userId = req.user.user_id
 
   //假設前端丟過來的checkout資料
   const clientOrder = req.body
-  console.log(clientOrder)
+
+  // 驗證購物車資料是否存在
+  if (!clientOrder.cart || clientOrder.cart.length === 0) {
+    return res.status(400).json({ status: 'error', message: '購物車是空的' })
+  }
 
   //要生成給資料庫的資料 進行formData解構
   const {
@@ -384,7 +391,7 @@ router.get('/confirm', async (req, res) => {
           MerchantTradeDate: transactionTime, // 請帶交易時間, ex: 2017/05/17 16:23:45, 為aiocheckout時所產生的
           LogisticsType: 'Home',
           LogisticsSubType: 'TCAT', //黑貓
-          GoodsAmount: ecPayData.amount.toString(), //商品價格 1元以上
+          GoodsAmount: '20000', //商品價格 1元以上 最高上限20000（指賠償）
           CollectionAmount: 'N',
           IsCollection: 'N',
           GoodsName: '墨韻雅筆', //品牌方店名
@@ -396,8 +403,7 @@ router.get('/confirm', async (req, res) => {
           ReceiverCellPhone: ecPayData.mobilephone,
           ReceiverEmail: ecPayData.email,
           TradeDesc: '',
-          ServerReplyURL:
-            'https://fdaf-2001-b400-e3d3-10c8-7dd8-737f-2fc3-94cc.ngrok-free.app/api/ecpay-shipping/shipment-status-notification', // 物流狀況會通知到此URL
+          ServerReplyURL: `${HOST}/api/ecpay-shipping/shipment-status-notification`, // 物流狀況會通知到此URL
           ClientReplyURL: '',
           LogisticsC2CReplyURL: '',
           Remark: '',
@@ -421,8 +427,8 @@ router.get('/confirm', async (req, res) => {
           MerchantTradeDate: transactionTime, // 請帶交易時間, ex: 2017/05/17 16:23:45, 為aiocheckout時所產生的
           LogisticsType: 'CVS', //超商取貨：CVS 宅配:Home
           LogisticsSubType: ecPayData.shipping, //四大超商物流UNIMART、FAMI、HILIFE、UNIMARTC2C、FAMIC2C、HILIFEC2C、OKMARTC2C  & 黑貓：TCAT
-          GoodsAmount: ecPayData.amount.toString(), //商品金額範圍為1~20000元。
-          CollectionAmount: ecPayData.amount.toString(), //同上
+          GoodsAmount: '20000', //商品金額範圍為1~20000元。 最高上限20000（指賠償） ,若貨到付款則為實際付款金額
+          CollectionAmount: '20000', //同上
           IsCollection: 'N', //Ｙ:貨到付款  ,預設值為N:純配送
           GoodsName: '墨韻雅筆', //品牌名
           SenderName: '墨韻雅筆', //品牌名
@@ -433,8 +439,7 @@ router.get('/confirm', async (req, res) => {
           ReceiverCellPhone: ecPayData.mobilephone,
           ReceiverEmail: ecPayData.email,
           TradeDesc: '',
-          ServerReplyURL:
-            'https://fdaf-2001-b400-e3d3-10c8-7dd8-737f-2fc3-94cc.ngrok-free.app/api/ecpay-shipping/shipment-status-notification', // 物流狀況會通知到此URL,因本地測試無法收到,透過電腦終端設置ngrok轉發過來
+          ServerReplyURL: `${HOST}/api/ecpay-shipping/shipment-status-notification`, // 物流狀況會通知到此URL,因本地測試無法收到,透過電腦終端設置ngrok轉發過來
           ClientReplyURL: '',
           LogisticsC2CReplyURL: 'http://localhost:3000/',
           Remark: '',
@@ -456,42 +461,48 @@ router.get('/confirm', async (req, res) => {
         // 檢查 API 返回的數據類型，確認它是字符串類型
         if (typeof resEcpay === 'string') {
           console.log('API 回應:', resEcpay)
+          if (resEcpay.startsWith('1|')) {
+            // 處理正常回應
+            // 假設字符串是一個查詢字符串，並使用 URLSearchParams 進行解析
+            // 由於字符串以 '1|' 開頭，我們使用 substring(2) 來去除這兩個字符
+            const params = new URLSearchParams(resEcpay.substring(2))
 
-          // 假設字符串是一個查詢字符串，並使用 URLSearchParams 進行解析
-          // 由於字符串以 '1|' 開頭，我們使用 substring(2) 來去除這兩個字符
-          const params = new URLSearchParams(resEcpay.substring(2))
+            // 從參數構造 ecPay 對象
+            const ecPay = {}
+            for (const [key, value] of params) {
+              ecPay[key] = decodeURIComponent(value)
+            }
 
-          // 從參數構造 ecPay 對象
-          const ecPay = {}
-          for (const [key, value] of params) {
-            ecPay[key] = decodeURIComponent(value)
-          }
+            console.log('構造的 ecPay 對象:', ecPay) // 輸出構造的 ecPay 對象
 
-          console.log('構造的 ecPay 對象:', ecPay) // 輸出構造的 ecPay 對象
-
-          //更新訂單資料庫狀態
-          let query = ''
-          let queryParams = []
-          if (ecPayData.shipping === '宅配') {
-            query =
-              'UPDATE order_info SET logistics_id = ?, paymentNo = ?, rtn_msg= ? WHERE id = ?'
-            queryParams = [
-              ecPay.AllPayLogisticsID,
-              ecPay.BookingNote,
-              ecPay.RtnMsg,
-              ecPayData.id,
-            ]
+            //更新訂單資料庫狀態
+            let query = ''
+            let queryParams = []
+            if (ecPayData.shipping === '宅配') {
+              query =
+                'UPDATE order_info SET logistics_id = ?, paymentNo = ?, rtn_msg= ? WHERE id = ?'
+              queryParams = [
+                ecPay.AllPayLogisticsID,
+                ecPay.BookingNote,
+                ecPay.RtnMsg,
+                ecPayData.id,
+              ]
+            } else {
+              query =
+                'UPDATE order_info SET logistics_id = ?, paymentNo = ?, rtn_msg= ? WHERE id = ?'
+              queryParams = [
+                ecPay.AllPayLogisticsID,
+                ecPay.CVSPaymentNo,
+                ecPay.RtnMsg,
+                ecPayData.id,
+              ]
+            }
+            const [result] = await mydb.execute(query, queryParams)
           } else {
-            query =
-              'UPDATE order_info SET logistics_id = ?, paymentNo = ?, rtn_msg= ? WHERE id = ?'
-            queryParams = [
-              ecPay.AllPayLogisticsID,
-              ecPay.CVSPaymentNo,
-              ecPay.RtnMsg,
-              ecPayData.id,
-            ]
+            // 處理錯誤回應
+            console.error('收到錯誤訊息:', resEcpay)
+            return // 提早結束函數執行
           }
-          const [result] = await mydb.execute(query, queryParams)
         } else {
           console.log('未預期的響應類型:', typeof resEcpay)
         }

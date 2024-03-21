@@ -10,7 +10,7 @@ function AccountActivation() {
   const handleActivation = async (e) => {
     e.preventDefault()
     try {
-      const response = await fetch('http://localhost:3001/api/verify', {
+      const response = await fetch('http://localhost:3005/api/verify', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -21,7 +21,7 @@ function AccountActivation() {
       setMessage(data.message)
       if (response.ok) {
         // 跳轉至會員中心頁面
-        router.push('/member/MemberProfile')
+        router.push('/member/profile')
       }
     } catch (error) {
       console.error('Error:', error)

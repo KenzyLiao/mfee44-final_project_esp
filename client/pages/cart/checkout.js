@@ -1,42 +1,67 @@
-import React, { useState } from 'react'
-
+import React, { useEffect, useState } from 'react'
+import ProgressBar from '@/components/myCart/progressBar'
 import CheckoutProcessForm from '@/components/myCart/checkoutProcessForm/checkoutProcessForm'
 
 import OrderSummary from '@/components/myCart/orderSummary'
 import SmallProductCart from '@/components/myCart/smallProductCart'
 import SmallCourseCart from '@/components/myCart/smallCourseCart'
 import ShippingRule from '@/components/myCart/shippingRule'
+import { jwtDecode } from 'jwt-decode'
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
+import { useCheckout } from '@/hooks/use-checkout'
+
 export default function Checkout() {
+  const { cartCourse, cartGeneral, formatPrice } = useCart()
+  const [token, setToken] = useState('')
+  const [user, setUser] = useState(null)
+
   const {
-    rawTotalPrice,
-    totalPrice,
-    cartCourse,
-    cartGeneral,
-    formatPrice,
-    selectCoupon,
-    handleChange,
-    handleSubmit,
     formData,
+    setFormData,
     countries,
     townships,
     postcodes,
-  } = useCart()
+    rawTotalPrice,
+    totalPrice,
+    selectCoupon,
+  } = useCheckout()
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token')
+    // console.log(storedToken)
+
+    if (storedToken) {
+      setToken(storedToken)
+      // 確保在token有效的情況下才進行解碼
+      try {
+        const decodedUser = jwtDecode(storedToken)
+        setUser(decodedUser)
+        // 這裡可以使用decodedUser進行其他操作
+      } catch (error) {
+        console.error('Token解碼錯誤', error)
+        // 處理無效token的情況
+      }
+    }
+  }, []) // 空依賴數組確保只在組件掛載時運行
 
   return (
     <>
+      <ProgressBar
+        percentage={75}
+        text={'結帳進度'}
+        textColor={'var(--my-white)'}
+      />
       <div className="row">
         {/* 左邊 */}
         <div className="col-lg-7">
           <CheckoutProcessForm
-            handleChange={handleChange}
-            handleSubmit={handleSubmit}
-            formData={formData}
             countries={countries}
             townships={townships}
             postcodes={postcodes}
+            selectCoupon={selectCoupon}
+            setFormData={setFormData}
           />
         </div>
         {/* 右邊 */}
@@ -49,14 +74,12 @@ export default function Checkout() {
               rawTotalPrice={rawTotalPrice}
               formatPrice={formatPrice}
               shippingFee={formData.shippingFee}
+              discount_value={selectCoupon.discount_value}
             />
           </div>
           <div className="text-h4 mb-4 ">我的購物車</div>
-          <SmallProductCart
-            cartGeneral={cartGeneral}
-            formatPrice={formatPrice}
-          />
-          <SmallCourseCart cartCourse={cartCourse} formatPrice={formatPrice} />
+          <SmallProductCart cartGeneral={cartGeneral} />
+          <SmallCourseCart cartCourse={cartCourse} />
           <div className="my-5">
             <ShippingRule />
           </div>

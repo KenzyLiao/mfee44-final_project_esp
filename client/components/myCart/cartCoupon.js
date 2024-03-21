@@ -11,9 +11,9 @@ export default function CartCoupon({
 }) {
   return (
     <>
-      <div className=" coupon-container">
-        <div>
-          <h3 className="text-h3 text-my-black d-flex align-content-center ">
+      <div className="coupon-container">
+        <div className="coupon-box d-flex flex-column ">
+          <h3 className="text-h3 text-my-black d-flex ">
             <HiOutlineTicket size="30px" color="#404040" />
             <div className="ms-3 ">可用優惠券</div>
           </h3>
@@ -53,10 +53,8 @@ export default function CartCoupon({
                 unmountOnExit
               >
                 <div className="card-body text-h6 text-my-black">
-                  <div>
-                    有效期限：{coupon.ValidFrom} 至 {coupon.ValidTo}
-                  </div>
-                  <div>最低消費：NT${coupon.MinimumSpend.toFixed(2)}</div>
+                  <div>有效期限： {coupon.end_at}</div>
+                  <div>{coupon.discount_title}</div>
                 </div>
               </CSSTransition>
             </div>
@@ -73,9 +71,13 @@ export default function CartCoupon({
           margin-top: 50px;
           margin-inline: auto;
           padding-bottom: 40px;
+          padding-inline: 25%;
           @media (max-width: 991px) {
             letter-spacing: 0.2rem;
           }
+        }
+        .coupon-box {
+          width: 100%;
         }
         .card-header input[type='radio'] {
           cursor: pointer;
@@ -87,7 +89,7 @@ export default function CartCoupon({
           background-color: var(--my-white); /* 給詳情部分一個淺色背景 */
           height: auto;
           padding: 10px;
-          border-radius: 10px;
+          border-radius: 5px;
         }
       `}</style>
     </>

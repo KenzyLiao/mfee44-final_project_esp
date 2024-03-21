@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { FaHandPointRight } from 'react-icons/fa'
 
 export default function EcpayShipment({ shipping = '' }) {
   const [formHtml, setFormHtml] = useState('')
@@ -44,8 +45,12 @@ export default function EcpayShipment({ shipping = '' }) {
       {/* 使用dangerouslySetInnerHTML顯示綠界的HTML表單 */}
       <div dangerouslySetInnerHTML={{ __html: formHtml }} />
 
-      <button className="btn btn-primary my-3" onClick={handleSubmit}>
-        選擇門市
+      <button
+        className="btn btn-primary  my-3   d-flex align-items-center"
+        onClick={handleSubmit}
+      >
+        <FaHandPointRight />
+        <span className="ms-2">選擇門市</span>
       </button>
     </div>
   )

@@ -14,7 +14,7 @@ export default function SearchForm({ onSearch }) {
         <input
           type="text"
           className="form-control border-end-1 bg-transparent"
-          placeholder="搜索"
+          placeholder="搜尋"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           aria-label="search"

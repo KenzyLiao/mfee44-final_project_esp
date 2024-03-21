@@ -37,6 +37,7 @@ export const pathsLocaleMap = {
   'service':'服務據點',
   'support':'線上預約',
   'confirmation':'檢查訂單',
-  'checkout':'收件人與運送資料'
+  'checkout':'收件人與運送資料',
+  'orders':'我的訂單記錄',
 }
 /* eslint-enable */
