@@ -98,6 +98,15 @@ export default function CoursePage() {
 
       <div className="d-flex justify-content-center">
         <Pagination>
+          <Pagination.Prev
+            onClick={() => {
+              if (nowPage - 1 >= 1) {
+                setNowPage(nowPage - 1)
+              } else {
+                setNowPage(1)
+              }
+            }}
+          />
           {Array.from({ length: totalPage }, (_, index) => index + 1).map(
             (number) => (
               <Pagination.Item
@@ -111,6 +120,15 @@ export default function CoursePage() {
               </Pagination.Item>
             )
           )}
+          <Pagination.Next
+            onClick={() => {
+              if (nowPage + 1 <= totalPage) {
+                setNowPage(nowPage + 1)
+              } else {
+                setNowPage(totalPage)
+              }
+            }}
+          />
         </Pagination>
       </div>
     </>
