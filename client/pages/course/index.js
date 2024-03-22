@@ -1,9 +1,10 @@
-import React, { useRef, useState, useEffect, use } from 'react'
+import React, { useRef, useState, useEffect,  } from 'react'
 import CourseCarousel from '@/components/course/course-carousel.js'
 import CardGroup from '@/components/course/card-group.js'
 import CardGroupTitle from '@/components/course/card-group-title.js'
 import MyCardGroup from '@/components/course/my-card-group.js'
 import { useAuth } from '@/hooks/useAuth'
+import Link from 'next/link'
 
 export default function CoursePage() {
   const titleData = [
@@ -167,6 +168,9 @@ export default function CoursePage() {
             subTitle={titleData[0].subTitle}
             linkUrl="http://localhost:3000/course/user"
           />
+          <Link href="http://localhost:3000/course/collection">
+            <p className="btn btn-primary mb-3">我的收藏</p>
+          </Link>
           <MyCardGroup data={myCourseALL.slice(0, 3)} />
         </div>
       )}

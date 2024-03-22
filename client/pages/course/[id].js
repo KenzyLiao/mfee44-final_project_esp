@@ -21,7 +21,6 @@ import {
 } from 'react-icons/bs'
 
 export default function CoursePage() {
-  const [reload, setReload] = useState(false)
   const [login, setLogin] = useState(false)
   const [courseOrder, setCourseOrder] = useState([])
   const [courseALL, setCourseALL] = useState([])
@@ -149,7 +148,11 @@ export default function CoursePage() {
       console.log('data', data)
       window.location.reload()
     }
-    handleCollection()
+    if (login === false) {
+      window.open('http://localhost:3000/member/login', '_self')
+    } else {
+      handleCollection()
+    }
   }
   function removeCollection() {
     const handleCollection = async () => {
@@ -498,7 +501,14 @@ export default function CoursePage() {
                     <div
                       className="text-decoration-none collect-btn border1 px-2 text-center addCart"
                       onClick={() => {
-                        addCartItem(data_send)
+                        if (login === false) {
+                          window.open(
+                            'http://localhost:3000/member/login',
+                            '_self'
+                          )
+                        } else {
+                          addCartItem(data_send)
+                        }
                       }}
                       onKeyDown={(event) => {
                         // Enter or Space key
@@ -668,7 +678,7 @@ export default function CoursePage() {
         .border1 {
           border: 1px solid #7c7477;
         }
-        .border2{
+        .border2 {
           border: 1px solid #7c7477;
           color: var(--my-white);
           background-color: #7c7477;
