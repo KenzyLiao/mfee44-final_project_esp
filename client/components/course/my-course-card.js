@@ -24,9 +24,14 @@ export default function MyCourseCard({
   category_name,
 }) {
   const [isHovered, setIsHovered] = useState(false)
-  let imageURL = `http://localhost:3005/course/images/course_${
-    image.split('_')[1].split('.')[0] % 25
-  }.jpg`
+  if (!image) {
+    image = ''
+  }
+  let imageURL =
+    image === '' ||
+    `http://localhost:3005/course/images/course_${
+      image.split('_')[1].split('.')[0] % 25
+    }.jpg`
   return (
     <>
       <Link href={`http://localhost:3000/course/user/${id}`}>
@@ -95,9 +100,9 @@ export default function MyCourseCard({
                 {category_name}
               </span>
             </Card.Text>
-            <Card.Text className="text-h4 text-my-notice">
-              {/* ${price.toLocaleString()} */}購買日期:2024/3/18
-            </Card.Text>
+            {/* <Card.Text className="text-h4 text-my-notice">
+              購買日期:2024/3/18
+            </Card.Text> */}
           </Card.Body>
         </Card>
       </Link>
