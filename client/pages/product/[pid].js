@@ -166,7 +166,7 @@ export default function Detail() {
                     </span>
                   </div>
                   <div className="d-flex justify-content-between align-items-center mt-5 px-1">
-                    <span className="text-h4">
+                    <span className="text-h4 text-my-notice">
                       <FavIcon
                         id={pid}
                         favorites={favorites}
@@ -175,10 +175,7 @@ export default function Detail() {
                       加到收藏
                     </span>
                     <a
-                      style={{
-                        color: '#ff0083',
-                        fontSize: '16px',
-                      }}
+                      className="styled-link text-h4"
                       id="a1"
                       data-bs-toggle="offcanvas"
                       href="#offcanvasExample"
@@ -319,6 +316,21 @@ export default function Detail() {
           </div>
         </>
       )}
+      <style jsx>{`
+        .styled-link {
+          color: #7c7477;
+          text-decoration: none;
+          transition: color 0.3s ease;
+        }
+
+        .styled-link:hover {
+          color: #ff0083;
+        }
+
+        .styled-link:focus {
+          outline: none;
+        }
+      `}</style>
     </>
   )
 }

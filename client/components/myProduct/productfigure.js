@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import FavIcon from '@/components/myProduct/fav-icon' // 請確保 FavIcon 的路徑正確
+import FavIcon from '@/components/myProduct/fav-icon'
 import Link from 'next/link'
 
 const ProductFigure = ({ pid, image, brand, name, price }) => {
   const formattedPrice = price.toLocaleString()
   const [isHovered, setIsHovered] = useState(false)
-  const [favorites, setFavorites] = useState([]) // 保存最爱列表的状态
+  const [favorites, setFavorites] = useState([])
 
   const fetchFavorites = async () => {
     try {
@@ -21,10 +21,9 @@ const ProductFigure = ({ pid, image, brand, name, price }) => {
     }
   }
 
-  // 模拟从服务器获取最爱列表的数据
   useEffect(() => {
-    fetchFavorites() // 调用获取最爱列表数据的函数
-  }, []) // 空依赖数组确保只在组件挂载时执行
+    fetchFavorites()
+  }, [])
 
   return (
     <div
@@ -32,14 +31,13 @@ const ProductFigure = ({ pid, image, brand, name, price }) => {
       style={{
         width: '100%',
         height: '500px',
-        position: 'relative', // 添加相對位置
+        position: 'relative',
         transform: isHovered ? 'scale(1.05)' : 'scale(1)',
         transition: 'transform 0.3s ease',
       }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* 放置 FavIcon 在右上角 */}
       <div style={{ position: 'absolute', top: '5%', left: '5%', zIndex: 1 }}>
         <FavIcon id={pid} favorites={favorites} setFavorites={setFavorites} />
       </div>
