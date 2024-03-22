@@ -1,8 +1,41 @@
-// import { useAuth } from '@/hooks/use-auth'
-// import { addFav, removeFav } from '@/services/user'
+import React, { useState, useEffect } from 'react'
 import toast from 'react-hot-toast'
 
-// 愛心圖示(svg)
+const addFav = async (pid) => {
+  try {
+    const response = await fetch('http://localhost:3005/api/addFavorite', {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ pid }),
+    })
+    return await response.json()
+  } catch (error) {
+    console.error('Error adding to favorites:', error)
+    return { status: 'error', message: 'Error adding to favorites' }
+  }
+}
+
+// 定義 removeFav 函數
+const removeFav = async (pid) => {
+  try {
+    const response = await fetch(`http://localhost:3005/api/deleteFavorite`, {
+      method: 'DELETE', // 使用 DELETE 方法
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ pid }),
+    })
+    return await response.json()
+  } catch (error) {
+    console.error('Error removing from favorites:', error)
+    return { status: 'error', message: 'Error removing from favorites' }
+  }
+}
+
 const Heart = ({ size = 20, color = 'red' }) => (
   <svg
     className="heart"
@@ -13,16 +46,41 @@ const Heart = ({ size = 20, color = 'red' }) => (
   </svg>
 )
 
-export default function FavFcon({ id }) {
-  // 由context取得auth-判斷是否能執行add或remove用，favorites決定愛心圖案用
-  const { auth, favorites, setFavorites } = useAuth()
+const FavFcon = ({ id, favorites, setFavorites }) => {
+  // 手動驗證當前token 確認燈狀態是否為訪客
+  const [user, setUser] = useState({
+    user_id: '',
+  })
+  console.log(user)
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('http://localhost:3005/api/profile', {
+          credentials: 'include',
+        })
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`)
+        }
+
+        const data = await response.json()
+
+        setUser({ user_id: data.user_id })
+      } catch (error) {
+        console.error('Failed to fetch user data:', error)
+      }
+    }
+
+    fetchUserData()
+  }, [])
+
+  const isLoggedIn = !!user.user_id
 
   const handleTriggerFav = (pid) => {
-    // 在陣列中->移出
     if (favorites.includes(pid)) {
       setFavorites(favorites.filter((v) => v !== pid))
     } else {
-      //不在陣列中加入
       setFavorites([...favorites, pid])
     }
   }
@@ -30,8 +88,7 @@ export default function FavFcon({ id }) {
   const handleAddFav = async (pid) => {
     const res = await addFav(pid)
 
-    if (res.data.status === 'success') {
-      // 伺服器成功後，更新context中favorites的狀態，頁面上的圖示才會對應更動
+    if (res.status === 'success') {
       handleTriggerFav(pid)
       toast.success(`商品 id=${pid} 新增成功!`)
     }
@@ -39,9 +96,8 @@ export default function FavFcon({ id }) {
 
   const handleRemoveFav = async (pid) => {
     const res = await removeFav(pid)
-
-    if (res.data.status === 'success') {
-      // 伺服器成功後，更新context中favorites的狀態，頁面上的圖示才會對應更動
+    console.log(res.status)
+    if (res.status === 'success') {
       handleTriggerFav(pid)
       toast.success(`商品 id=${pid} 刪除成功!`)
     }
@@ -49,16 +105,13 @@ export default function FavFcon({ id }) {
 
   return (
     <>
-      {/* 由favorites狀態決定呈現實心or空心愛愛圖示 */}
       {favorites.includes(id) ? (
         <button
           style={{ padding: 0, border: 'none', background: 'none' }}
           onClick={() => {
-            // 沒登入不能用
-            if (!auth.isAuth) {
+            if (!isLoggedIn) {
               return toast.error('會員才能使用!')
             }
-
             handleRemoveFav(id)
           }}
         >
@@ -68,11 +121,9 @@ export default function FavFcon({ id }) {
         <button
           style={{ padding: 0, border: 'none', background: 'none' }}
           onClick={() => {
-            // 沒登入不能用
-            if (!auth.isAuth) {
+            if (!isLoggedIn) {
               return toast.error('會員才能使用!')
             }
-
             handleAddFav(id)
           }}
         >
@@ -82,3 +133,5 @@ export default function FavFcon({ id }) {
     </>
   )
 }
+
+export default FavFcon

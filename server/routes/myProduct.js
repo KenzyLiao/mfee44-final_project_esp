@@ -21,7 +21,6 @@ router.get('/', async (req, res) => {
       INNER JOIN color AS c ON g.color_id = c.color_id
       WHERE product_type = 1`
 
-    // 构建筛选条件
     if (req.query.nibs) {
       const nibs = req.query.nibs
         .split(',')
@@ -54,8 +53,6 @@ router.get('/', async (req, res) => {
       const searchQuery = req.query.searchQuery
       sql += ` AND p.name LIKE '%${searchQuery}%'`
     }
-    console.log(sql)
-    // 构建排序条件
     if (req.query.sortingOption === 'newest') {
       sql += ` ORDER BY p.updated_at ASC`
     }
@@ -66,7 +63,6 @@ router.get('/', async (req, res) => {
       sql += ` ORDER BY p.price DESC`
     }
 
-    // 使用 Promise 包装数据库查询
     const [products] = await mydb.execute(sql)
 
     const [nibs] = await mydb.execute(`SELECT * FROM nib`)
@@ -75,7 +71,6 @@ router.get('/', async (req, res) => {
     const [materials] = await mydb.execute(`SELECT * FROM material`)
     const productsPerPage = 12
     const totalPages = Math.ceil(products.length / productsPerPage)
-    console.log(totalPages)
 
     res.send({
       products: products,
@@ -86,7 +81,6 @@ router.get('/', async (req, res) => {
       totalPages: totalPages,
     })
   } catch (err) {
-    // 发生错误时返回 500 错误
     console.error('查詢資料錯誤:', err)
     return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
   }

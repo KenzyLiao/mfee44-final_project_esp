@@ -5,17 +5,14 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     return null
   }
 
-  // 计算要显示的页码范围
   let startPage = Math.max(1, currentPage - 1)
   let endPage = Math.min(totalPages, startPage + 2)
 
-  // 如果当前页码靠近末尾，则调整页码范围
   if (endPage - startPage < 2) {
     endPage = Math.min(totalPages, currentPage + 1)
     startPage = Math.max(1, endPage - 2)
   }
 
-  // 生成页码列表
   const pages = Array.from(
     { length: endPage - startPage + 1 },
     (_, index) => startPage + index
