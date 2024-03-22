@@ -1,40 +1,112 @@
 import React from 'react'
-import UserCoupon from '@/components/myCoupon/UserCoupon'
-import couponData from '@/data/ianCoupon.json'
-import { useState } from 'react'
+import UsedCoupon from '@/components/myCoupon/UsedCoupon'
+import Tab from 'react-bootstrap/Tab'
+import Tabs from 'react-bootstrap/Tabs'
+// import couponData from '@/data/ianCoupon.json'
+import { useState, useEffect } from 'react'
 
 const CouponPage = () => {
-  const [coupon, setCoupon] = useState(couponData)
-  console.log(coupon)
+  // const [coupon, setCoupon] = useState(couponData)
+  // console.log(coupon)
+
+  const [data, setData] = useState([])
+  // const [dataMember, setDataMember] = useState([])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:3005/api/coupon/memberCoupon'
+        )
+        // const menberResponse = await fetch(
+        //   ''
+        // )
+        
+        const data = await response.json()
+        // const dataMember = await menberResponse.json()
+
+        setData(data) 
+        // setDataMember(dataMember)
+
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    }
+
+    fetchData()
+  }, [])
 
   return (
     <>
       <div className="coupon-container">
         <div className="coupon-content">
           <div className="coupon-content__title">我的優惠劵</div>
-          <div className="coupon-content__list">
-            {/* 可以使用 map 遍歷渲染 */}
-            <div className="coupon-content__item">
-              <div className="container">
-                <div className="row row-cols-lg-2">
-                  <div className="col-4 col-sm-12">
-                    {coupon.map((v, i) => {
-                      const { coupon_name, end_at, discount_title } = v
-
-                      return (
-                        <UserCoupon
-                          key={v.id}
-                          coupon_name={coupon_name}
-                          discount={discount_title}
-                          limit_time={end_at}
-                        />
-                      )
-                    })}
+          <Tabs
+            defaultActiveKey="home"
+            id="uncontrolled-tab-example"
+            className="mb-3"
+          >
+            <Tab eventKey="home" title="全部">
+              <div className="coupon-content__list">
+                {/* 可以使用 map 遍歷渲染 */}
+                <div className="coupon-content__item">
+                  <div className="container">
+                    <div className="row row-cols-lg-3">
+                      {data.map((v, i) => {
+                        return <UsedCoupon key={v.id} coupon={v} />
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </Tab>
+            <Tab eventKey="can_be_used" title="可使用">
+              <div className="coupon-content__list">
+                {/* 可以使用 map 遍歷渲染 */}
+                <div className="coupon-content__item">
+                  <div className="container">
+                    <div className="row row-cols-lg-3">
+                      {data.map((v, i) => {
+                        const now = Date.parse(new Date())
+                        const coupon_end = Date.parse(new Date(v.end_at))
+                        // 優惠券還有效 && 會員持有還有效
+                        if (
+                          v.valid === 1 &&  /* 這個是member_coupon資料裡的 會員存在的優惠劵 */
+                          v.coupon_valid !== 0 && /* 這個是mycoupon資料裡的 有效的優惠劵 */
+                          v.used_valid !== 0 && /* 這個是member_coupon資料裡的 會員裡未使用的優惠劵 */
+                          coupon_end >= now
+                        )
+                          return <UsedCoupon key={v.id} coupon={v} />
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Tab>
+            <Tab eventKey="contact" title="已逾期">
+              <div className="coupon-content__list">
+                {/* 可以使用 map 遍歷渲染 */}
+                <div className="coupon-content__item">
+                  <div className="container">
+                    <div className="row row-cols-lg-3">
+                      {data.map((v, i) => {
+                        const now = Date.parse(new Date())
+                        const coupon_end = Date.parse(new Date(v.end_at))
+                        // 會員還能使用 但 優惠券已無效 或 超過時間期限
+                        if (
+                          v.valid === 1 &&
+                          (v.coupon_valid === 0 || coupon_end < now || v.used_valid === 0)
+                        )
+                          return <UsedCoupon key={v.id} coupon={v} />
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </Tab>
+            {/* <Tab eventKey="contact" title="已使用" disabled>
+              Tab content for Contact
+            </Tab> */}
+          </Tabs>
         </div>
       </div>
 
