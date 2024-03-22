@@ -74,6 +74,7 @@ export default function CartIndex() {
             discount_value={selectCoupon.discount_value}
           />
           <CartCouppon
+            key={'0527'}
             coupons={coupons}
             selectedCouponID={selectedCouponID}
             handleRadioChange={handleRadioChange}
