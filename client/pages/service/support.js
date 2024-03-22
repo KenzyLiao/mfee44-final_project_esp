@@ -1,6 +1,54 @@
-import React from 'react'
+import React, { useState } from 'react'
 import InventorySearch from '@/components/myService/inventorySearch'
+
 export default function Support() {
+  const [formData, setFormData] = useState({
+    userName: '',
+    userPhone: '',
+    userEmail: '',
+    reservationDate: '',
+    serviceType: '',
+  })
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
+
+  const handleSubmit = (e, serviceType) => {
+    e.preventDefault()
+    // 更新 formData，包含服務項目信息
+    const updatedFormData = { ...formData, serviceType }; // 更新 formData，包含服務項目信息
+    // 發送表單數據到後端
+    fetch('http://localhost:3005/api/service/support', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedFormData), // 使用更新后的 formData
+    })
+      .then((response) => {
+        if (response.ok) {
+          // 表單成功提交，顯示成功消息或重定向等
+          alert('用戶預約成功。通知郵件已發送。')
+          setFormData({
+            userName: '',
+            userPhone: '',
+            userEmail: '',
+            reservationDate: '',
+          });
+          window.location.reload()
+        } else {
+          // 表單提交失敗，顯示錯誤消息等
+          alert('預約過程中發生錯誤。')
+        }
+      })
+      .catch((error) => {
+        console.error('Error submitting form:', error)
+        // 顯示錯誤消息
+        alert('預約過程中發生錯誤。')
+      })
+  }
+
   return (
     <>
       {/* 背景動畫 */}
@@ -13,15 +61,15 @@ export default function Support() {
         <div className="col">
           <h1 className="text-h1">線上預約</h1>
           <ul>
-            <li className='animated1 animatedFadeInUp fadeInUp'>
+            <li className="animated1 animatedFadeInUp fadeInUp">
               <span className="text-my-notice">政策和條款：</span>
               預約到府服務時，請務必閱讀並了解我們的政策和條款，包括付款方式、取消政策和責任聲明等內容。
             </li>
-            <li className='animated2 animatedFadeInUp fadeInUp'>
+            <li className="animated2 animatedFadeInUp fadeInUp">
               <span className="text-my-notice">客戶滿意度：</span>
               我們重視每一位客戶的滿意度。如果您對我們的服務有任何建議或意見，請隨時與我們聯系，我們將竭誠為您服務。
             </li>
-            <li className='animated3 animatedFadeInUp fadeInUp'>
+            <li className="animated3 animatedFadeInUp fadeInUp">
               <span className="text-my-notice">取消或修改預約：</span>
               如果您需要取消或修改預約，請提前通知我們，以便我們能夠為其他客戶提供時間段。您可以在預約確認郵件中找到相關的聯系方式。
             </li>
@@ -43,7 +91,7 @@ export default function Support() {
         <div className="col-md-7 px-4 flex-grow-1">
           <div className="card-body">
             <h4 className="card-title mb-2 py-2 text-h2">維修</h4>
-            <form action="">
+            <form onSubmit={(e) => handleSubmit(e, '維修')}>
               <div>
                 {/* 姓名 */}
                 <label htmlFor="userName">姓名</label>
@@ -51,7 +99,9 @@ export default function Support() {
                   className="form-control"
                   type="text"
                   id="userName"
-                  name=""
+                  name="userName"
+                  value={formData.userName}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -61,7 +111,9 @@ export default function Support() {
                   className="form-control"
                   type="phone"
                   id="userPhone"
-                  name=""
+                  name="userPhone"
+                  value={formData.userPhone}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -71,11 +123,21 @@ export default function Support() {
                   className="form-control"
                   type="email"
                   id="userEmail"
-                  name=""
+                  name="userEmail"
+                  value={formData.userEmail}
+                  onChange={handleChange}
                 />
               </div>
-              <input className="m-2" type="date" />
-              <button className="btn btn-secondary my-2">立即預約</button>
+              <input
+                className="m-2"
+                type="date"
+                name="reservationDate"
+                value={formData.reservationDate}
+                onChange={handleChange}
+              />
+              <button type="submit" className="btn btn-secondary my-2">
+                立即預約
+              </button>
             </form>
           </div>
         </div>
@@ -91,7 +153,7 @@ export default function Support() {
         <div className="col-md-7 px-4 flex-grow-1">
           <div className="card-body">
             <h4 className="card-title mb-2 py-2 text-h2">保養</h4>
-            <form action="">
+            <form onSubmit={(e) => handleSubmit(e, '保養')}>
               <div>
                 {/* 姓名 */}
                 <label htmlFor="userName">姓名</label>
@@ -99,7 +161,9 @@ export default function Support() {
                   className="form-control"
                   type="text"
                   id="userName"
-                  name=""
+                  name="userName"
+                  value={formData.userName}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -109,7 +173,9 @@ export default function Support() {
                   className="form-control"
                   type="phone"
                   id="userPhone"
-                  name=""
+                  name="userPhone"
+                  value={formData.userPhone}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -119,11 +185,21 @@ export default function Support() {
                   className="form-control"
                   type="email"
                   id="userEmail"
-                  name=""
+                  name="userEmail"
+                  value={formData.userEmail}
+                  onChange={handleChange}
                 />
               </div>
-              <input className="m-2" type="date" />
-              <button className="btn btn-secondary my-2">立即預約</button>
+              <input
+                className="m-2"
+                type="date"
+                name="reservationDate"
+                value={formData.reservationDate}
+                onChange={handleChange}
+              />
+              <button type="submit" className="btn btn-secondary my-2">
+                立即預約
+              </button>
             </form>
           </div>
         </div>
@@ -139,7 +215,7 @@ export default function Support() {
         <div className="col-md-7 px-4 flex-grow-1">
           <div className="card-body">
             <h4 className="card-title mb-2 py-2 text-h2">訂製</h4>
-            <form action="">
+            <form onSubmit={(e) => handleSubmit(e, '訂製')}>
               <div>
                 {/* 姓名 */}
                 <label htmlFor="userName">姓名</label>
@@ -147,7 +223,9 @@ export default function Support() {
                   className="form-control"
                   type="text"
                   id="userName"
-                  name=""
+                  name="userName"
+                  value={formData.userName}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -157,7 +235,9 @@ export default function Support() {
                   className="form-control"
                   type="phone"
                   id="userPhone"
-                  name=""
+                  name="userPhone"
+                  value={formData.userPhone}
+                  onChange={handleChange}
                 />
               </div>
               <div>
@@ -167,11 +247,21 @@ export default function Support() {
                   className="form-control"
                   type="email"
                   id="userEmail"
-                  name=""
+                  name="userEmail"
+                  value={formData.userEmail}
+                  onChange={handleChange}
                 />
               </div>
-              <input className="m-2" type="date" />
-              <button className="btn btn-secondary my-2">立即預約</button>
+              <input
+                className="m-2"
+                type="date"
+                name="reservationDate"
+                value={formData.reservationDate}
+                onChange={handleChange}
+              />
+              <button type="submit" className="btn btn-secondary my-2">
+                立即預約
+              </button>
             </form>
           </div>
         </div>
@@ -260,7 +350,7 @@ export default function Support() {
           }
         }
         /* 動畫 */
-        
+
         .animated1 {
           animation-duration: 1s;
           animation-fill-mode: both;
@@ -268,14 +358,14 @@ export default function Support() {
           -webkit-animation-fill-mode: both;
         }
         .animated2 {
-          animation-delay:1s;
+          animation-delay: 1s;
           animation-duration: 1s;
           animation-fill-mode: both;
           -webkit-animation-duration: 1s;
           -webkit-animation-fill-mode: both;
         }
         .animated3 {
-          animation-delay:2s;
+          animation-delay: 2s;
           animation-duration: 1s;
           animation-fill-mode: both;
           -webkit-animation-duration: 1s;

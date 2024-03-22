@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
+import { useAuth } from '@/hooks/useAuth' // 確保這是 useAuth Hook 正確的路徑
 
 const MemberProfile = () => {
+  useAuth() // 在組件開始處調用 useAuth 進行身份驗證
+
   const [user, setUser] = useState({
     title: '',
     firstname: '',
@@ -8,24 +11,26 @@ const MemberProfile = () => {
     email: '',
     phone: '',
     birthdate: '',
+    year: '',
+    month: '',
+    day: '',
   })
   const [loading, setLoading] = useState(true)
 
+  // 定義年份、月份、日期的選項數組
   const years = Array.from(
     new Array(100),
-    (val, index) => new Date().getFullYear() - index
+    (_, index) => new Date().getFullYear() - index
   )
-  const months = Array.from(new Array(12), (val, index) => index + 1)
-  const days = Array.from(new Array(31), (val, index) => index + 1)
+  const months = Array.from(new Array(12), (_, index) => index + 1)
+  const days = Array.from(new Array(31), (_, index) => index + 1)
 
+  // 在組件掛載時獲取用戶數據
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const token = localStorage.getItem('token')
         const response = await fetch('http://localhost:3005/api/profile', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          credentials: 'include',
         })
 
         if (!response.ok) {
@@ -33,27 +38,17 @@ const MemberProfile = () => {
         }
 
         const data = await response.json()
-        console.log('Received data:', data)
 
         const newUser = {
-          title: data.title || '',
-          firstname: data.firstname || '',
-          lastname: data.lastname || '',
-          email: data.email || '',
-          phone: data.phone || '',
-          birthdate: data.birthdate || '',
-        }
-
-        if (data.birthdate) {
-          const [year, month, day] = data.birthdate.split('-')
-          newUser.year = year
-          newUser.month = month
-          newUser.day = day
+          ...data,
+          year: data.birthdate ? data.birthdate.split('-')[0] : '',
+          month: data.birthdate ? data.birthdate.split('-')[1] : '',
+          day: data.birthdate ? data.birthdate.split('-')[2] : '',
         }
 
         setUser(newUser)
       } catch (error) {
-        console.error('Failed to fetch user data', error)
+        console.error('Failed to fetch user data:', error)
       } finally {
         setLoading(false)
       }
@@ -62,30 +57,31 @@ const MemberProfile = () => {
     fetchUserData()
   }, [])
 
+  // 處理表單字段更改
   const handleChange = (event) => {
     const { name, value } = event.target
     setUser({ ...user, [name]: value })
   }
 
+  // 保存個人資料更改
   const handleSaveProfile = async () => {
-    const profileData = { ...user }
-    if (!user.birthdate) {
-      profileData.birthdate = `${user.year}-${user.month.padStart(
-        2,
-        '0'
-      )}-${user.day.padStart(2, '0')}`
+    const birthdate = `${user.year}-${user.month.padStart(
+      2,
+      '0'
+    )}-${user.day.padStart(2, '0')}`
+
+    const profileData = {
+      ...user,
+      birthdate,
     }
 
-    console.log('Updating profile with data:', profileData)
-
     try {
-      const token = localStorage.getItem('token')
       const response = await fetch('http://localhost:3005/api/update', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
         },
+        credentials: 'include',
         body: JSON.stringify(profileData),
       })
 
@@ -96,14 +92,13 @@ const MemberProfile = () => {
       alert('個人檔案已更新！')
       window.location.reload()
     } catch (error) {
-      console.error('Failed to update profile', error)
+      console.error('Failed to update profile:', error)
       alert('更新個人檔案時發生錯誤。')
     }
   }
 
   if (loading) return <div>Loading...</div>
 
-  // 邏輯判斷：如果已設定生日，則禁用生日選項
   const birthdateSet = !!user.birthdate
   return (
     <>

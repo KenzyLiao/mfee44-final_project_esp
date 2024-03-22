@@ -1,9 +1,10 @@
 import jsonwebtoken from 'jsonwebtoken'
 
-// 後端：從Authorization頭獲取token
 export default function authenticate(req, res, next) {
-  const authHeader = req.headers.authorization
-  const token = authHeader && authHeader.split(' ')[1] // Bearer TOKEN_HERE
+  const token = req.cookies.authToken
+
+  // 输出 token 以验证是否成功获取
+  console.log('Token received:', token)
 
   if (!token) {
     return res.status(401).json({
@@ -14,11 +15,14 @@ export default function authenticate(req, res, next) {
 
   jsonwebtoken.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) {
+      console.error('Token verification error:', err)
       return res.status(403).json({
         status: 'error',
         message: '無效的訪問令牌',
       })
     }
+
+    console.log('Decoded user:', user)
 
     req.user = user
     next()

@@ -21,7 +21,7 @@ import {
 } from 'react-icons/bs'
 
 export default function CoursePage() {
-  const { addCartItem, Toaster } = useCart()
+  const { addCartItem } = useCart()
   // const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
   const router = useRouter()
   const { id } = router.query
@@ -89,27 +89,13 @@ export default function CoursePage() {
   const pen_id = pen.product_id
 
   let data_send = { ...data }
-  let image_name =
-    'course_' + (image.split('_')[1].split('.')[0] % 25) + '.jpg'
+  let image_name = 'course_' + (image.split('_')[1].split('.')[0] % 25) + '.jpg'
   data_send.image = 'http://localhost:3005/course/images/' + image_name
   data_send.url = 'http://localhost:3000/course/' + id
 
   const sub_units_num = units
     .map((v) => v.sub_units.length)
     .reduce((a, b) => a + b)
-
-  // let min = 0
-  // let sec = 0
-  // units.forEach((unit) => {
-  //   unit.sub_units.forEach((sub_unit) => {
-  //     min += Number(sub_unit.video_len.split(':')[0])
-  //     sec += Number(sub_unit.video_len.split(':')[1])
-  //   })
-  // })
-
-  // const total_video_minute = min + Math.floor(sec / 60)
-  // console.log(data[0])
-  console.log('data_send', data_send)
 
   return (
     <>
@@ -123,7 +109,7 @@ export default function CoursePage() {
               width="100%"
               height="100%"
               controls="true"
-              url={`http://localhost:3005/course/video/TRIAL____________${id}_intro.mp4`}
+              url={`http://localhost:3005/course/video/${id}_intro_1.mp4`}
               playing={true}
               muted={true}
             />
@@ -156,10 +142,10 @@ export default function CoursePage() {
             {/* 星、按鈕 */}
             <div className="d-flex justify-content-between">
               <div className="rank d-flex align-items-center">
-                <p className="mb-0 me-1">{rank}</p>
+                {/* <p className="mb-0 me-1">{rank}</p>
                 {Array.from({ length: rank }).map((_, index) => {
                   return <BsFillStarFill key={index} className="me-1" />
-                })}
+                })} */}
               </div>
               <div className="btn-group">
                 <a className=" text-decoration-none border1">
@@ -254,7 +240,6 @@ export default function CoursePage() {
                     } else {
                       setOpenList([])
                     }
-                    // console.log(openList)
                   }}
                   onKeyDown={() => setIsOpen(!isOpen)}
                   role="button"
@@ -378,7 +363,6 @@ export default function CoursePage() {
             </div>
           </aside>
         </div>
-        <Toaster />
       </div>
       <style jsx>{`
         h1 {
@@ -394,10 +378,10 @@ export default function CoursePage() {
         }
         @media (min-width: 992px) {
           .course_info {
-            width: 45%;
+            width: 40%;
           }
           .video {
-            width: 55%;
+            width: 60%;
           }
         }
         .teacher {

@@ -7,28 +7,19 @@ import SmallCourseCart from '@/components/myCart/smallCourseCart'
 import OrderConfirmList from '@/components/myCart/orderConfirmList'
 import ShippingRule from '@/components/myCart/shippingRule'
 import Link from 'next/link'
-import toast, { Toaster } from 'react-hot-toast'
-import { jwtDecode } from 'jwt-decode'
+import toast from 'react-hot-toast'
+import { useAuth } from '@/hooks/useAuth' // 確保這是 useAuth Hook 正確的路徑
 
 // //勾子context
 import { useCart } from '@/hooks/user-cart'
 import { useCheckout } from '@/hooks/use-checkout'
 
 export default function Confirmation() {
+  useAuth()
+
   const { rawTotalPrice, totalPrice, selectCoupon, formData } = useCheckout()
   console.log(formData)
   const { cart, cartCourse, cartGeneral, formatPrice } = useCart()
-
-  //取得token 令牌
-  const [token, setToken] = useState('')
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token')
-    // console.log(storedToken)
-    if (storedToken) {
-      setToken(storedToken)
-    }
-  }, []) // 空依賴數組確保只在組件掛載時運行
 
   //linePay資料使用
   const [linePayOrder, setLinePayOrder] = useState({})
@@ -45,8 +36,8 @@ export default function Confirmation() {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            Authorization: `Bearer ${token}`,
           },
+          credentials: 'include',
           body: JSON.stringify({
             amount: totalPrice,
             products: [
@@ -136,6 +127,7 @@ export default function Confirmation() {
       }
     }
   }, [router.isReady, router.query])
+
   return (
     <>
       <ProgressBar
@@ -186,7 +178,6 @@ export default function Confirmation() {
             付款
           </div>
         </div>
-        <Toaster />
       </div>
       <style jsx>{`
         .rwd-button {

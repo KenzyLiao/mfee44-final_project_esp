@@ -2,6 +2,7 @@ import express from 'express'
 import mydb from '../configs/mydb.js'
 
 const router = express.Router()
+import authenticate from '##/middlewares/Myauthenticate.js'
 
 // //coupon資料
 // router.get("/", async (req, res) => {
@@ -18,9 +19,9 @@ const router = express.Router()
 //     res.json("發生錯誤");
 //   }
 // });
-router.post('/userCoupon', async (req, res) => {
+router.get('/userCoupon', authenticate, async (req, res) => {
   try {
-    const Uid = 1 // req.body.uid
+    const Uid = req.user.user_id // req.body.uid
     console.log('uid', Uid)
 
     const [results] = await mydb.execute(
