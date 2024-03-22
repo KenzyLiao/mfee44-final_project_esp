@@ -6,7 +6,7 @@ export default function UsedCoupon({ coupon }) {
   const get_coupon = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3005/api/coupon/get/?id_coupon=${coupon.id}`
+        `http://localhost:3005/api/coupon/get/?id_coupon=${coupon.id}`,{credentials: 'include'}
       )
       const result = await response.json()
       Swal.fire({
