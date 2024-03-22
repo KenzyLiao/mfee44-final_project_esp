@@ -44,10 +44,9 @@ export default function Home() {
                 objectFit="cover"
                 alt="hero image"
               />
-              <Link href={'/product/list'}>
-                <div className={`my-button3 ${styles['hero-button']}`}>
-                  探索商品
-                </div>
+
+              <Link href="/product/list">
+                <div className="my-button2">探索商品</div>
               </Link>
             </div>
             {/* hero-content */}
@@ -81,7 +80,19 @@ export default function Home() {
         </div>
       </motion.div>
       {/* concept */}
-      <ConceptSection />
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{
+          type: 'tween',
+          delay: 0.5,
+          duration: 1,
+          ease: 'easeInOut',
+        }}
+      >
+        <ConceptSection />
+      </motion.div>
+
       <div className="row">
         <div className="col-lg-12 bg-my-white">
           <div className="text-h2 d-flex justify-content-center ">
