@@ -142,10 +142,10 @@ export default function CoursePage() {
             {/* 星、按鈕 */}
             <div className="d-flex justify-content-between">
               <div className="rank d-flex align-items-center">
-                <p className="mb-0 me-1">{rank}</p>
+                {/* <p className="mb-0 me-1">{rank}</p>
                 {Array.from({ length: rank }).map((_, index) => {
                   return <BsFillStarFill key={index} className="me-1" />
-                })}
+                })} */}
               </div>
               <div className="btn-group">
                 <a className=" text-decoration-none border1">
