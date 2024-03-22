@@ -89,8 +89,7 @@ export default function CoursePage() {
   const pen_id = pen.product_id
 
   let data_send = { ...data }
-  let image_name =
-    'course_' + (image.split('_')[1].split('.')[0] % 25) + '.jpg'
+  let image_name = 'course_' + (image.split('_')[1].split('.')[0] % 25) + '.jpg'
   data_send.image = 'http://localhost:3005/course/images/' + image_name
   data_send.url = 'http://localhost:3000/course/' + id
 

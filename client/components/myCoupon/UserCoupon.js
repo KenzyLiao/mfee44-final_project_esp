@@ -1,37 +1,35 @@
 import React from 'react'
+import Link from 'next/link'
 
-export default function UserCoupon({key,
-  coupon_name,
-  discount, 
-  limit_time}) {
-
-console.log(key);
+export default function UserCoupon({ key, coupon_name, discount, limit_time }) {
+  console.log(key)
   return (
     <>
-       <div className="coupon-background" key={key}>
-            <img src="/images/myCoupon/coupon_background.png" alt="" />
-            <div className="text-container">
-              <h3>
+      <div className="col-12 col-sm-4 d-flex justify-content-center align-items-center">
+        <div className="coupon-background" key={key}>
+          <img src="/images/myCoupon/coupon_background.png" alt="" />
+          <div className="text-container">
+            <h3>
               {/* 歡慶鋼筆盛典！ */}
               {coupon_name}
-              </h3>
-              <p className="discount m-0">
+            </h3>
+            <p className="discount m-0">
               {/* 85折優惠！ */}
               {discount}
-              </p>
-              <p className="expiration m-0">
+            </p>
+            <p className="expiration m-0">
               {/* 有效期限：2024.12.31 */}
               {limit_time}
-              </p>
-              <a href="#" className="button">
-                開始購物
-              </a>
-            </div>
+            </p>
+            <Link 
+            href={`/product/list`} className="button">
+              開始購物
+            </Link>
           </div>
+        </div>
+      </div>
       <style jsx>
         {`
-          
-          
           .coupon-background {
             text-align: center;
             width: 350px;
@@ -51,7 +49,7 @@ console.log(key);
             position: absolute;
             padding: 10px;
             width: 100%;
-              object-fit: cover;
+            object-fit: cover;
 
             h1 {
               font-size: 24px;
