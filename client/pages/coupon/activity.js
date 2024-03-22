@@ -16,17 +16,17 @@ export default function Home() {
         'http://localhost:3005/api/coupon/activity/?type=2'
       )
       // const menberResponse = await fetch(
-        //   ''
-        // )
+      //   ''
+      // )
       const result = await response.json()
       const result_2 = await response_2.json()
-       // const dataMember = await menberResponse.json()
+      // const dataMember = await menberResponse.json()
       console.log('res', result)
       console.log(result_2)
 
       setData(result)
       setData_2(result_2)
-       // setDataMember(dataMember)
+      // setDataMember(dataMember)
     } catch (error) {
       console.error('Error:', error)
     }
@@ -42,7 +42,7 @@ export default function Home() {
       {/* 3000折300$ */}
       <div className="p-activity">
         <ul>
-          <li>
+          <li className="banner1">
             <img src="/images/myCoupon/activity_banner.png" alt="" />
           </li>
         </ul>
@@ -70,7 +70,7 @@ export default function Home() {
 
         <ul>
           <li>
-            <div className="row cols-lg-3 ">
+            <div className="c3000 row cols-lg-3">
               {data.map((v, i) => {
                 if (v.coupon_valid === 1) {
                   return <UsedCoupon key={v.id} coupon={v} />
@@ -78,7 +78,7 @@ export default function Home() {
               })}
             </div>
           </li>
-          <li>
+          <li className="banner2">
             <img src="/images/myCoupon/banner2.png" alt="" />
           </li>
         </ul>
@@ -108,7 +108,7 @@ export default function Home() {
         </div>
         <ul>
           <li>
-            <div className="row row-cols-lg-3">
+            <div className="c5000 row row-cols-lg-3">
               {data_2.map((v, i) => {
                 if (v.coupon_valid === 1) {
                   return <UsedCoupon key={v.id} coupon={v} />
@@ -121,7 +121,6 @@ export default function Home() {
 
       <style jsx>{`
         .p-activity {
-          width: 1170px;
           margin: 0 auto;
 
           & img {
@@ -162,6 +161,76 @@ export default function Home() {
             width: 72px;
             height: 72px;
             top: 0;
+          }
+        }
+        @media (max-width: 375px) {
+          .c3000{
+            width:391px;
+          }
+          .c5000{
+            width:391px;
+          }
+        }
+        @media (max-width: 375px) {
+          .p-activity {
+            width: 375px;
+            margin: 0 auto;
+
+            & img {
+              width: 100%;
+              height: auto;
+            }
+            ul {
+              margin: 0px;
+              padding: 0px;
+              justify-content: non;
+              li {
+                margin: 10px 0;
+                list-style: none;
+              }
+            }
+          }
+          @media (max-width: 375px) {
+            .title_h2 {
+              /* background:url('/images/myCoupon/title.png')
+            no-repeat left center; */
+              /*margin: 0 auto;*/
+              /*text-align: center;*/
+              background: #ff0083;
+              width: fit-content;
+              background-size: cover;
+              height: 72px;
+              color: #fff;
+              font-size: 25px;
+              line-height: 72px;
+              padding: 0 10px;
+              position: relative;
+
+              &::after {
+                content: '';
+                display: block;
+                background: url('/images/myCoupon/title_2.png') no-repeat center
+                  left;
+                background-size: contain;
+                position: absolute;
+                right: -76px;
+                width: 72px;
+                height: 72px;
+                top: 0;
+              }
+            }
+            .main_h3 {
+              /*text-align: center;*/
+            }
+          }
+        }
+
+        @media (max-width: 391px) {
+          .banner1 {
+            width: 391px;
+          }
+          .banner2 {
+            width: 391px;
           }
         }
       `}</style>

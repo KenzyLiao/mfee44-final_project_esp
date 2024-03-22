@@ -25,7 +25,7 @@ export default function UsedCoupon({ coupon }) {
   }
   return (
     <>
-      <div className="col-xl-4 col-lg-6 col-sm-12 d-flex justify-content-center align-items-center">
+      <div className="coupon col-xl-4 col-lg-6 col-sm-12 d-flex justify-content-center align-items-center">
         <div className="coupon-background">
           {/* <img src="/images/myCoupon/coupon_background_02.png" alt="" /> */}
           <div className="text-container">
@@ -196,6 +196,13 @@ export default function UsedCoupon({ coupon }) {
           @media (max-width: 500px) {
             .coupon-background {
               background-size: cover;
+              width:30%;
+            }
+          }
+          @media (max-width: 375px) {
+            .coupon {
+              width:200px !import;
+              padding:0px !import;
             }
           }
         `}
