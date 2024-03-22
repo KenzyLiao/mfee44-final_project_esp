@@ -40,6 +40,14 @@ router.get('/set_total_minute', async (req, res) => {
   res.status(200).send(rows)
 })
 
+router.get('/my_course', async (req, res) => {
+  const user_id = req.query.user_id
+  const [rows] = await mydb.execute(
+    `SELECT * FROM product WHERE valid = 1 AND product_type = 2`
+  )
+  res.send(rows)
+})
+
 router.get('/teacher', async (req, res) => {
   const [rows] = await mydb.execute(`SELECT * FROM course_teacher`)
   res.status(200).send(rows)

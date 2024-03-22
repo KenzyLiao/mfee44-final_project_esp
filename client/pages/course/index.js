@@ -1,9 +1,9 @@
-import React, { useRef, useState, useEffect } from 'react'
+import React, { useRef, useState, useEffect, use } from 'react'
 import CourseCarousel from '@/components/course/course-carousel.js'
 import CardGroup from '@/components/course/card-group.js'
 import CardGroupTitle from '@/components/course/card-group-title.js'
 import MyCardGroup from '@/components/course/my-card-group.js'
-import { motion } from 'framer-motion'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function CoursePage() {
   const titleData = [
@@ -30,6 +30,9 @@ export default function CoursePage() {
   ]
   const [login, setLogin] = useState(false)
   const [data, setData] = useState([])
+  const [userCourse, setUserCourse] = useState([])
+
+  // 所有課程
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,6 +45,67 @@ export default function CoursePage() {
     }
     fetchData()
   }, [])
+
+  // 會員資料
+  const [user, setUser] = useState({
+    title: '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    phone: '',
+    birthdate: '',
+    year: '',
+    month: '',
+    day: '',
+  })
+  const [loading, setLoading] = useState(true)
+  console.log(user)
+  // 定義年份、月份、日期的選項數組
+  const years = Array.from(
+    new Array(100),
+    (_, index) => new Date().getFullYear() - index
+  )
+  const months = Array.from(new Array(12), (_, index) => index + 1)
+  const days = Array.from(new Array(31), (_, index) => index + 1)
+
+  // 載入時時獲取用戶數據
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('http://localhost:3005/api/profile', {
+          credentials: 'include',
+        })
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`)
+        }
+
+        const data = await response.json()
+
+        const newUser = {
+          ...data,
+          year: data.birthdate ? data.birthdate.split('-')[0] : '',
+          month: data.birthdate ? data.birthdate.split('-')[1] : '',
+          day: data.birthdate ? data.birthdate.split('-')[2] : '',
+        }
+
+        setUser(newUser)
+        if (newUser.firstname === '') {
+          setLogin(false)
+        } else {
+          setLogin(true)
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchUserData()
+  }, [])
+  console.log('user', user)
+  console.log('data', data);
+  
 
   return (
     <>
@@ -61,10 +125,7 @@ export default function CoursePage() {
         </div>
       )}
 
-      <div
-        
-        className="mb-5"
-      >
+      <div className="mb-5">
         <CardGroupTitle
           title={titleData[1].title}
           subTitle={titleData[1].subTitle}
