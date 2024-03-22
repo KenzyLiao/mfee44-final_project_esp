@@ -22,10 +22,10 @@ export default function Home() {
       </div>
       {/* hero-section */}
       <motion.div
-        // initial={{ opacity: 0, scale: 0.8 }}
-        // animate={{ opacity: 1, scale: 1 }}
-        initial={{ x: '-100%' }}
-        animate={{ x: 0 }}
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        // initial={{ x: '-100%' }}
+        // animate={{ x: 0 }}
         transition={{
           type: 'fade',
           delay: 0.5,

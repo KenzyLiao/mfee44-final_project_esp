@@ -4,11 +4,10 @@ import { useCart } from '@/hooks/user-cart'
 /* 資料庫資料 */
 //優惠卷(暫時)
 // import couponsData from '@/data/coupon.json'
-import ianCoupon from '@/data/ianCoupon.json'
+// import ianCoupon from '@/data/ianCoupon.json'
 
 //地區資料
 import { countries, townships, postcodes } from '@/data/data-townships'
-import { BsCheckLg } from 'react-icons/bs'
 
 //1.建立與導出
 export const CheckoutContext = createContext(null)
