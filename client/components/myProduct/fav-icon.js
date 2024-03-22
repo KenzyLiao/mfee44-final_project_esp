@@ -51,7 +51,6 @@ const FavFcon = ({ id, favorites, setFavorites }) => {
   const [user, setUser] = useState({
     user_id: '',
   })
-  console.log(user)
 
   useEffect(() => {
     const fetchUserData = async () => {

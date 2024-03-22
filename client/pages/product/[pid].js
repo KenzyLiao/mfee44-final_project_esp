@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Carousel from '@/components/myProduct/productcarousel'
 import QuantityButton from '@/components/myProduct/quantitybutton'
 import ProductFigure from '@/components/myProduct/productfigure'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { BsGlobe } from 'react-icons/bs'
 import { IoIosLock, IoMdCheckmarkCircleOutline } from 'react-icons/io'
@@ -283,19 +282,14 @@ export default function Detail() {
                     className="col"
                     style={{ width: '300px', margin: '10px' }}
                   >
-                    <Link
-                      href={`/product/${product.product_id}`}
-                      as={`/product/${product.product_id}`}
-                      style={{ textDecoration: `none` }}
-                    >
-                      <ProductFigure
-                        key={product.product_id}
-                        image={`/images/myProduct/${product.image}`}
-                        brand={product.brand_name}
-                        name={product.name}
-                        price={formatPrice(product.price)}
-                      />
-                    </Link>
+                    <ProductFigure
+                      key={product.product_id}
+                      pid={product.product_id}
+                      image={`/images/myProduct/${product.image}`}
+                      brand={product.brand_name}
+                      name={product.name}
+                      price={formatPrice(product.price)}
+                    />
                   </div>
                 </SwiperSlide>
               ))}

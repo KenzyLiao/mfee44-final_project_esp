@@ -51,8 +51,9 @@ const ProductFigure = ({ pid, image, brand, name, price }) => {
           src={image}
           className="card-img-top"
           alt={name}
-          style={{ width: 'auto', height: '300px', objectFit: 'cover' }}
+          style={{ width: '100%', height: '300px', objectFit: 'contain' }}
         />
+
         <div className="card-body no-space-x">
           <p className="text-p">{brand}</p>
           <p

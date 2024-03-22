@@ -10,7 +10,6 @@ import Typography from '@mui/material/Typography'
 import Slide from '@mui/material/Slide'
 import Pagination from '@/components/myProduct/pagination'
 import ScrollToTopButton from '@/components/myProduct/upbutton'
-import Link from 'next/link'
 import SearchForm from '@/components/myProduct/search-form'
 import { FaSliders } from 'react-icons/fa6'
 export default function List() {
