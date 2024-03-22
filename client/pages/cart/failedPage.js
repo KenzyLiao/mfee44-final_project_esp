@@ -3,29 +3,8 @@ import FluidLayout from '@/components/layout/fluid-layout'
 import { LuXCircle } from 'react-icons/lu'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
-import { jwtDecode } from 'jwt-decode'
 
 export default function ConfirmationPage() {
-  //token
-  const [token, setToken] = useState('')
-  const [user, setUser] = useState('')
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem('token')
-    // console.log(storedToken)
-    if (storedToken) {
-      setToken(storedToken)
-      // 確保在token有效的情況下才進行解碼
-      try {
-        const decodedUser = jwtDecode(storedToken)
-        setUser(decodedUser)
-        // 這裡可以使用decodedUser進行其他操作
-      } catch (error) {
-        console.error('Token解碼錯誤', error)
-        // 處理無效token的情況
-      }
-    }
-  }, []) // 空依賴數組確保只在組件掛載時運行
   return (
     <>
       <div className=" background-container my-3 ">
@@ -37,7 +16,7 @@ export default function ConfirmationPage() {
             已取消付款
           </h1>
           <p className="text-h4 text-my-notice my-2"></p>
-          <Link href={`http://localhost:3000/member/orders/${user.user_id}`}>
+          <Link href={`http://localhost:3000/member/orders`}>
             <div className="my-btn-check mt-3">查看訂單詳情</div>
           </Link>
         </div>
