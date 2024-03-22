@@ -6,9 +6,9 @@ import { useCart } from '@/hooks/user-cart'
 
 export default function Toolbar({ handleShow }) {
   const { totalItems } = useCart()
-  const [user, setUser] = useState(null) // 使用本地状态管理用户信息
+  const [user, setUser] = useState(null) // 使用本地狀態管理用戶訊息
 
-  // 获取用户信息
+  // 獲取用戶信息
   useEffect(() => {
     const fetchUser = async () => {
       try {
