@@ -34,7 +34,7 @@ export default function LearnPage() {
         const response = await fetch(`http://localhost:3005/api/course/${id}`)
         const data = await response.json()
         setData(data[0])
-        setVideoUrl(`${id}_intro.mp4`)
+        setVideoUrl(`${id}_intro_1.mp4`)
       } catch (error) {
         console.error('Error:', error)
         setError(error)
@@ -86,7 +86,7 @@ export default function LearnPage() {
               width="100%"
               height="100%"
               controls="true"
-              url={`http://localhost:3005/course/video/TRIAL____________${videoUrl}`}
+              url={`http://localhost:3005/course/video/${videoUrl}`}
               onReady={onReady}
             />
           </div>
@@ -107,13 +107,16 @@ export default function LearnPage() {
                         return (
                           <div
                             onClick={() => {
-                              setVideoUrl(v.video_path)
+                              setVideoUrl(v.video_path.split('.')[0] + '_1.mp4')
                               // 設定影片開始時間
-                              setStartAt(Number(v.video_len.split(':')[1]))
+                              // setStartAt(Number(v.video_len.split(':')[1]))
+                              setStartAt(0)
                               setIsReady(false)
                             }}
                             className={`cursor-pointer ${
-                              videoUrl === v.video_path ? 'active' : ''
+                              videoUrl === v.video_path.split('.')[0] + '_1.mp4'
+                                ? 'active'
+                                : ''
                             }`}
                           >
                             <Section
@@ -132,7 +135,7 @@ export default function LearnPage() {
             </Accordion>
           </div>
           {/* 手機板 */}
-          <div className="d-lg-none">
+          <div className="d-lg-none d-flex justify-content-center">
             <Button onClick={() => setLgShow(true)}>章節選擇</Button>
             <Modal
               size="lg"
@@ -165,14 +168,19 @@ export default function LearnPage() {
                             return (
                               <div
                                 onClick={() => {
-                                  setVideoUrl(v.video_path)
+                                  setVideoUrl(
+                                    v.video_path.split('.')[0] + '_1.mp4'
+                                  )
                                   // 設定影片開始時間
-                                  setStartAt(Number(v.video_len.split(':')[1]))
+                                  setStartAt(0)
                                   setIsReady(false)
                                   setLgShow(false)
                                 }}
                                 className={`cursor-pointer ${
-                                  videoUrl === v.video_path ? 'active' : ''
+                                  videoUrl ===
+                                  v.video_path.split('.')[0] + '_1.mp4'
+                                    ? 'active'
+                                    : ''
                                 }`}
                               >
                                 <Section
@@ -287,11 +295,29 @@ export default function LearnPage() {
 
       <style jsx>{`
         .scrollable {
-          max-height: 400px;
+          max-height: 500px;
           overflow: auto;
           width: 100%;
-          height: 100%;
           padding: 0;
+          @media (max-width: 1400px) {
+            max-height: 430px;
+          }
+          @media (max-width: 1200px) {
+            max-height: 360px;
+          }
+          &::-webkit-scrollbar {
+            width: 6px;
+            height: 1px;
+          }
+          &::-webkit-scrollbar-track {
+            background-color: white;
+            border-radius: 10px;
+            margin: 5px 130px;
+          }
+          &::-webkit-scrollbar-thumb {
+            border-radius: 10px;
+            background-color: var(--my-primary);
+          }
         }
         video {
           width: 100%;
