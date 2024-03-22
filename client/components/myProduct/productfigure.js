@@ -31,6 +31,7 @@ const ProductFigure = ({ pid, image, brand, name, price }) => {
       className="card border-0 shadow"
       style={{
         width: '100%',
+        height: '500px',
         position: 'relative', // 添加相對位置
         transform: isHovered ? 'scale(1.05)' : 'scale(1)',
         transition: 'transform 0.3s ease',
@@ -51,7 +52,7 @@ const ProductFigure = ({ pid, image, brand, name, price }) => {
           src={image}
           className="card-img-top"
           alt={name}
-          style={{ width: '100%', height: '300px', objectFit: 'contain' }}
+          style={{ width: '100%', height: '300px', objectFit: 'cover' }}
         />
 
         <div className="card-body no-space-x">

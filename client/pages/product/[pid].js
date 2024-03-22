@@ -116,7 +116,7 @@ export default function Detail() {
                 </h3>
                 <div className="mt-4">
                   <BsGlobe className="mx-3" />
-                  Worldwide shipping <br />
+                  Express Shipping <br />
                   <IoIosLock className="mx-3" />
                   Secure payments <br />
                   <IoMdCheckmarkCircleOutline className="mx-3" />
@@ -194,7 +194,7 @@ export default function Detail() {
                         className="accordion-collapse collapse"
                       >
                         <div className="accordion-body p-3">
-                          官網提供信用卡金流（支援VISA/MASTER/JCB等發卡組織）、超商貨到付款，金流系統為「綠界科技Ecpay」支援。
+                          官網提供信用卡金流（支援VISA/MASTER/JCB等發卡組織）、超商貨到付款(711/全家/OK)，金流系統為「綠界科技Ecpay」支援。
                           <br />
                           <br />
                           免息3期付款
@@ -226,12 +226,12 @@ export default function Detail() {
                         className="accordion-collapse collapse"
                       >
                         <div className="accordion-body p-3">
-                          順豐配送 (滿NT1000免費送貨，未滿須付NT80） •
+                          黑貓配送 (滿NT1000免費送貨，未滿須付NT200） •
                           出貨後1-2天內可送達
                           <br />
                           <br />
-                          超商取貨付款/不付款(滿NT1000免費送貨，未滿須付NT80） •
-                          出貨後2至3天後抵達指定超商門市 •
+                          超商取貨付款/不付款(滿NT1000免費送貨，未滿須付NT200）
+                          • 出貨後2至3天後抵達指定超商門市 •
                           超商取貨訂單於送達指定門市後將有7天取貨期限
                         </div>
                       </div>

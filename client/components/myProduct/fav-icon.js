@@ -89,7 +89,7 @@ const FavFcon = ({ id, favorites, setFavorites }) => {
 
     if (res.status === 'success') {
       handleTriggerFav(pid)
-      toast.success(`商品 id=${pid} 新增成功!`)
+      toast.success(`加入成功!`)
     }
   }
 
@@ -98,7 +98,7 @@ const FavFcon = ({ id, favorites, setFavorites }) => {
     console.log(res.status)
     if (res.status === 'success') {
       handleTriggerFav(pid)
-      toast.success(`商品 id=${pid} 刪除成功!`)
+      toast.success(`取消成功!`)
     }
   }
 
