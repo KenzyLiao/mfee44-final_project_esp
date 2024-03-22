@@ -22,14 +22,18 @@ export default function CourseCard({
   total_minute,
   student_num,
   category_name,
+  cms,
 }) {
+  const cardLink = cms
+    ? `http://localhost:3000/course/CMS/${id}`
+    : `http://localhost:3000/course/${id}`
   const [isHovered, setIsHovered] = useState(false)
   let imageURL = `http://localhost:3005/course/images/course_${
     image.split('_')[1].split('.')[0] % 25
   }.jpg`
   return (
     <>
-      <Link href={`http://localhost:3000/course/${id}`}>
+      <Link href={cardLink}>
         <Card
           style={{ width: '100%', borderRadius: 0 }}
           onMouseEnter={() => setIsHovered(true)}
@@ -66,7 +70,7 @@ export default function CourseCard({
               {description}
             </Card.Text>
             <Card.Text className="d-flex flex-lg-row align-items-lg-center">
-              <span className="me-1 text-my-black">
+              {/* <span className="me-1 text-my-black">
                 <BsFillStarFill
                   style={{
                     fontSize: '16px',
@@ -75,7 +79,7 @@ export default function CourseCard({
                   }}
                 />
                 {rank}
-              </span>
+              </span> */}
               <span className="me-1 text-my-black">
                 <BsClockFill style={{ padding: '5px', fontSize: '24px' }} />
                 {total_minute}分鐘

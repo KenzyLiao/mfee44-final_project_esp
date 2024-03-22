@@ -61,7 +61,7 @@ export default function Carosuel2() {
         pagination={{ clickable: true }}
         loop={true}
         autoplay={{
-          delay: 1000,
+          delay: 3000,
           disableOnInteraction: false,
         }}
         effect="fade" // 启用淡入淡出效果
@@ -91,8 +91,6 @@ export default function Carosuel2() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
-          
-          
           <Link href={'/coupon/activity'}>
             {/* pc */}
             <img
@@ -107,7 +105,6 @@ export default function Carosuel2() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
-
           {/* pc */}
           <img
             src="/images/common/banner2.png"
