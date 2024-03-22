@@ -1126,19 +1126,14 @@ export default function List() {
                 {displayedProducts.length > 0 ? (
                   displayedProducts.map((product) => (
                     <div className="col" key={product.product_id}>
-                      <Link
-                        href={`/product/${product.product_id}`}
-                        as={`/product/${product.product_id}`}
-                        style={{ textDecoration: `none` }}
-                      >
-                        <ProductFigure
-                          key={product.product_id}
-                          image={`/images/myProduct/${product.image}`}
-                          brand={product.brand_name}
-                          name={product.name}
-                          price={formatPrice(product.price)}
-                        />
-                      </Link>
+                      <ProductFigure
+                        key={product.product_id}
+                        pid={product.product_id}
+                        image={`/images/myProduct/${product.image}`}
+                        brand={product.brand_name}
+                        name={product.name}
+                        price={formatPrice(product.price)}
+                      />
                     </div>
                   ))
                 ) : (
