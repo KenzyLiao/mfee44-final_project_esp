@@ -4,7 +4,7 @@ import { LuCheckCircle2 } from 'react-icons/lu'
 import { useRouter } from 'next/router'
 import { useCart } from '@/hooks/user-cart'
 import Link from 'next/link'
-import jwtDecode from 'jwt-decode'
+import { jwtDecode } from 'jwt-decode'
 
 export default function ConfirmationPage() {
   const [token, setToken] = useState('')

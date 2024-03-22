@@ -5,6 +5,8 @@ import Footer from '@/components/layout/default-layout/myFooter/footer'
 
 import NextBreadCrumb from '@/components/common/next-breadcrumb'
 
+import ToasterProvider from '@/components/common/toasterProvider'
+
 export default function DefaultLayout({ title = '', children }) {
   return (
     <>
@@ -13,7 +15,9 @@ export default function DefaultLayout({ title = '', children }) {
         <meta name="viewport" content="width=device-width" />
       </Head>
       <Header />
+
       <main className="flex-shrink-0 mt-3">
+        <ToasterProvider />
         <div className="container">
           {/* 麵包屑 還在考慮要不要用 */}
           <NextBreadCrumb isHomeIcon isChevron bgClass="" />
