@@ -127,6 +127,22 @@ router.post('/return', async (req, res) => {
       )
       console.log('訂單更新成功:', updateResult)
 
+      // 更新優惠卷
+      const [resultCoupon] = await mydb.execute(
+        `SELECT * FROM \`order\`  WHERE ecpay_TradeNo = ?`,
+        [MerchantTradeNo]
+      )
+      const { user_id, coupon_id } = resultCoupon[0]
+
+      if (coupon_id) {
+        const [updateCouppon] = await mydb.execute(
+          `UPDATE \`member_coupon\` SET valid = '0' WHERE user_id = ? AND coupon_id = ?`,
+          [user_id, coupon_id]
+        )
+
+        console.log('優惠卷更新成功:', updateCouppon)
+      }
+
       /* 若ecpay支付成功 建立綠界物流訂單 */
       // 用來將ecpay物流傳到前端的容器
       let ecPay = {}
