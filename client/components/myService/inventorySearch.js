@@ -1,8 +1,6 @@
-import React, { useState,useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import Link from 'next/link'
-import { StoreContext } from '@/hooks/store-context';
-
-
+import { StoreContext } from '@/hooks/store-context'
 
 export default function InventorySearch({
   inventoryData,
@@ -13,11 +11,11 @@ export default function InventorySearch({
 }) {
   const [data, setData] = useState(null)
 
-  const { setSelectedStore } = useContext(StoreContext);
+  const { setSelectedStore } = useContext(StoreContext)
   const handleStoreClick = (storeName) => {
-    setSelectedStore(storeName);
+    setSelectedStore(storeName)
     // 在這裡您也可以執行其他操作，如導航到其他頁面等
-  };
+  }
 
   return (
     <>
@@ -27,7 +25,7 @@ export default function InventorySearch({
           tabIndex={-1}
           id="offcanvasExample"
           aria-labelledby="offcanvasExampleLabel"
-          data-bs-scroll='true'
+          data-bs-scroll="true"
         >
           <div className="offcanvas-header row me-2">
             <button
@@ -42,12 +40,16 @@ export default function InventorySearch({
               {inventoryData &&
                 inventoryData.map((item, index) => (
                   <li className="mt-3" key={index}>
-                    <Link href={`http://localhost:3000/service`}
-                        onClick={() => handleStoreClick(item.store_id)}
+                    <Link
+                      href={`http://localhost:3000/service`}
+                      onClick={() => handleStoreClick(item.store_id)}
                     >
-                        {item.store_id}
+                      {item.store_id}
                     </Link>
-                    <span id='span1'><span id='span2'>庫存尚餘:</span> <span id='span3'>{item.qty}</span></span>
+                    <span id="span1">
+                      <span id="span2">庫存尚餘:</span>{' '}
+                      <span id="span3">{item.qty}</span>
+                    </span>
                   </li>
                 ))}
             </ul>
@@ -55,9 +57,14 @@ export default function InventorySearch({
         </div>
       </div>
       <style jsx>{`
-       #span3{
-        color:#ff0083;
-       }
+        #span3 {
+          color: #ff0083;
+        }
+        .offcanvas {
+          transition: transform 0.3s ease, visibility 0.3s ease,
+            opacity 0.3s ease;
+        }
+
         @media (max-width: 767.98px) {
           .offcanvas.show {
             width: 100%;
