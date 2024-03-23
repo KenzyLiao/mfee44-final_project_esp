@@ -29,7 +29,7 @@ export default function Home() {
         transition={{
           type: 'fade',
           delay: 0.5,
-          duration: 1,
+          duration: 0.5,
           ease: 'easeInOut',
         }}
         className={`row  ${styles['hero-section']}`}
@@ -80,20 +80,32 @@ export default function Home() {
         </div>
       </motion.div>
       {/* concept */}
+      <div
+      // initial={{ opacity: 0 }}
+      // whileInView={{ opacity: 1 }}
+      // transition={{
+      //   type: 'tween',
+      //   delay: 0.5,
+      //   duration: 1,
+      //   ease: 'easeInOut',
+      // }}
+      // viewport={{ once: true }}
+      >
+        <ConceptSection />
+      </div>
+
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+        initial={{ x: '-10%', opacity: 0 }}
+        whileInView={{ x: 0, opacity: 1 }}
         transition={{
-          type: 'tween',
-          delay: 0.5,
+          type: 'fade',
+
+          delay: 0.3,
           duration: 1,
           ease: 'easeInOut',
         }}
+        className="row"
       >
-        <ConceptSection />
-      </motion.div>
-
-      <div className="row">
         <div className="col-lg-12 bg-my-white">
           <div className="text-h2 d-flex justify-content-center ">
             <div className="text-center ">
@@ -112,8 +124,8 @@ export default function Home() {
             </div>
           </Link>
         </div>
-        <div className="bg-warning col-lg-12">123</div>
-      </div>
+      </motion.div>
+      <div className="col-lg-12 bg-my-white"></div>
     </>
   )
 }

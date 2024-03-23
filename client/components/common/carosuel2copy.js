@@ -91,20 +91,6 @@ export default function Carosuel2() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
-          <Link href={'/coupon/activity'}>
-            {/* pc */}
-            <img
-              src="/images/common/activity_banner_c.png"
-              className="object-fit-cover pc-image"
-            />
-            {/* rwd */}
-            <img
-              src="/images/common/activity_banner_c2.png"
-              className="object-fit-cover rwd-image "
-            />
-          </Link>
-        </SwiperSlide>
-        <SwiperSlide>
           {/* pc */}
           <img
             src="/images/common/banner2.png"
@@ -128,7 +114,20 @@ export default function Carosuel2() {
             className="object-fit-cover rwd-image "
           />
         </SwiperSlide>
-
+        <SwiperSlide>
+          <Link href={'/coupon/activity'}>
+            {/* pc */}
+            <img
+              src="/images/common/activity_banner_c.png"
+              className="object-fit-cover pc-image"
+            />
+            {/* rwd */}
+            <img
+              src="/images/common/activity_banner_c2.png"
+              className="object-fit-cover rwd-image "
+            />
+          </Link>
+        </SwiperSlide>
         {/* Custom Navigation Buttons */}
         <div className={`custom-swiper-button-prev `}>
           <IoIosArrowBack size={30} />

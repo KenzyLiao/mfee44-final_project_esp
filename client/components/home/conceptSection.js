@@ -2,6 +2,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 
 import styles from '../../pages/index.module.scss'
+import { motion } from 'framer-motion'
 
 export default function ConceptSection() {
   //狀態1:設定內容
@@ -35,7 +36,15 @@ export default function ConceptSection() {
           <div className={`row `}>
             {/* 左：圖  */}
             <div className={`col-lg-3 d-flex ${styles['concept-left']}`}>
-              <div
+              <motion.div
+                initial={{ opacity: 0, y: 100 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{
+                  type: 'fade',
+                  delay: 0,
+                  duration: 1,
+                  ease: 'easeInOut',
+                }}
                 className="m-auto"
                 style={{
                   maxWidth: '336px',
@@ -50,10 +59,20 @@ export default function ConceptSection() {
                   objectFit="cover"
                   alt="hero image"
                 />
-              </div>
+              </motion.div>
             </div>
             {/* 中：內容 */}
-            <div className={`col-lg-6  ${styles['concept-medium']}`}>
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{
+                type: 'fade',
+                delay: 1,
+                duration: 2,
+                ease: 'easeInOut',
+              }}
+              className={`col-lg-6  ${styles['concept-medium']}`}
+            >
               <div className={`${styles['flex-container']}`}>
                 <div
                   className={`text-h3  ${styles['vertical-text']} ${styles.slogan}`}
@@ -111,9 +130,19 @@ export default function ConceptSection() {
               <div className={` text-my-white  ${styles['concept-content']}`}>
                 {content}
               </div>
-            </div>
+            </motion.div>
             {/* 右：圖 */}
-            <div className={`col-lg-3 d-flex ${styles['concept-right']}`}>
+            <motion.div
+              initial={{ opacity: 0, y: -100 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{
+                type: 'fade',
+                delay: 0,
+                duration: 1,
+                ease: 'easeInOut',
+              }}
+              className={`col-lg-3 d-flex ${styles['concept-right']}`}
+            >
               <div
                 className="m-auto"
                 style={{
@@ -130,7 +159,7 @@ export default function ConceptSection() {
                   alt="hero image"
                 />
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
         {/* rwd */}

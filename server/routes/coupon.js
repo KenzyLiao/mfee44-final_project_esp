@@ -29,9 +29,11 @@ router.get('/userCoupon', authenticate, async (req, res) => {
       [Uid]
     )
     let queries = results.map((result) => {
-      return mydb.execute(`SELECT * FROM mycoupon WHERE id=?`, [
-        result.coupon_id,
-      ])
+      return mydb.execute(
+        `SELECT *, DATE_FORMAT(end_at, '%Y-%m-%d ') AS formatted_end_at FROM mycoupon WHERE id = ?
+      `,
+        [result.coupon_id]
+      )
     })
     let couponResults = await Promise.all(queries)
     couponResults = couponResults.map((result) => result[0][0])
