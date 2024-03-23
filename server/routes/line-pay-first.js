@@ -79,9 +79,9 @@ router.post('/creatOrder', authenticate, async (req, res) => {
     coupon_id,
   } = clientOrder.formData
 
-  // if (!coupon_id) {
-  //   coupon_id = null
-  // }
+  if (!coupon_id) {
+    coupon_id = null
+  }
 
   //進行cart解構
   const cart = clientOrder.cart

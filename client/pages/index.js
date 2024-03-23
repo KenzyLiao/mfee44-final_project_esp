@@ -8,6 +8,7 @@ import styles from './index.module.scss'
 import ConceptSection from '@/components/home/conceptSection'
 import Carosuel2 from '@/components/common/carosuel2'
 import Carosuel2copy from '@/components/common/carosuel2copy'
+import ProjectSlider from '@/components/home/projectslider/projectSlider'
 
 import CardSection from '@/components/home/CardSection'
 
@@ -125,7 +126,20 @@ export default function Home() {
           </Link>
         </div>
       </motion.div>
-      <div className="col-lg-12 bg-my-white"></div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{
+          type: 'tween',
+          delay: 0.5,
+          duration: 1,
+          ease: 'easeInOut',
+        }}
+        viewport={{ once: true }}
+        className="col-lg-12 bg-my-white"
+      >
+        <ProjectSlider />
+      </motion.div>
     </>
   )
 }
