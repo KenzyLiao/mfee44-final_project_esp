@@ -27,11 +27,13 @@ export default function MyCourseCard({
   if (!image) {
     image = ''
   }
-  let imageURL =
-    image === '' ||
-    `http://localhost:3005/course/images/course_${
+  let imageURL = ''
+
+  if (image && image !== '') {
+    imageURL = `http://localhost:3005/course/images/course_${
       image.split('_')[1].split('.')[0] % 25
     }.jpg`
+  }
   return (
     <>
       <Link href={`http://localhost:3000/course/user/${id}`}>

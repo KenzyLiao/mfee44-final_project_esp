@@ -1,6 +1,7 @@
 import express from 'express'
 import mydb from '../configs/mydb.js'
 import mysql from 'mysql2'
+import authenticate from '##/middlewares/Myauthenticate.js'
 const router = express.Router()
 
 router.get('/set_total_minute', async (req, res) => {
@@ -40,9 +41,22 @@ router.get('/set_total_minute', async (req, res) => {
   res.status(200).send(rows)
 })
 
+router.get('/collectionBack', authenticate, async (req, res) => {
+  const user_id = req.user.user_id
+  const [rows] = await mydb.execute(
+    `SELECT *,teacher.name as teacher_name FROM course_collection 
+    JOIN product ON course_collection.pid=product.id
+    JOIN course_product ON product.id=course_product.product_id 
+    JOIN course_category ON course_product.category_id=course_category.id
+    JOIN course_teacher ON course_product.teacher_id=course_teacher.id
+    WHERE uid = ${user_id}`
+  )
+  res.send(rows)
+})
+
 router.get('/collection', async (req, res) => {
   const [rows] = await mydb.execute(`SELECT * FROM course_collection`)
-  res.status(200).send(rows)
+  res.send(rows)
 })
 
 router.get('/addCollection', async (req, res) => {

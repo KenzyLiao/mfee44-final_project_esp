@@ -125,8 +125,6 @@ export default function CoursePage() {
     let course = courseALL.filter((course) => course.id === item.pid)
     return course[0]
   })
-  console.log('myCourse', myCourse)
-
   return (
     <>
       <div className="text-h1 d-flex justify-content-center mb-5">我的收藏</div>

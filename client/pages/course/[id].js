@@ -501,14 +501,7 @@ export default function CoursePage() {
                     <div
                       className="text-decoration-none collect-btn border1 px-2 text-center addCart"
                       onClick={() => {
-                        if (login === false) {
-                          window.open(
-                            'http://localhost:3000/member/login',
-                            '_self'
-                          )
-                        } else {
-                          addCartItem(data_send)
-                        }
+                        addCartItem(data_send)
                       }}
                       onKeyDown={(event) => {
                         // Enter or Space key

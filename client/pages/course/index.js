@@ -167,10 +167,7 @@ export default function CoursePage() {
             title={titleData[0].title}
             subTitle={titleData[0].subTitle}
             linkUrl="http://localhost:3000/course/user"
-          />
-          <Link href="http://localhost:3000/course/collection">
-            <p className="btn btn-primary mb-3">我的收藏</p>
-          </Link>
+          />      
           <MyCardGroup data={myCourseALL.slice(0, 3)} />
         </div>
       )}
