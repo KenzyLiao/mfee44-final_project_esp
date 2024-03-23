@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import ProductFigure from './CardDetail'
+// import ProductFigure from '../myProduct/productfigure'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -193,6 +194,7 @@ export default function Detail() {
                           : product.name
                       }
                       price={formatPrice(product.price)}
+                      pid={product.product_id}
                     />
                   </Link>
                 </div>
