@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import Carousel from '@/components/myProduct/productcarousel'
 import QuantityButton from '@/components/myProduct/quantitybutton'
 import ProductFigure from '@/components/myProduct/productfigure'
-import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { BsGlobe } from 'react-icons/bs'
 import { IoIosLock, IoMdCheckmarkCircleOutline } from 'react-icons/io'
@@ -13,16 +12,34 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { Navigation } from 'swiper/modules'
+import FavIcon from '@/components/myProduct/fav-icon'
 
 export default function Detail() {
   const [products, setProducts] = useState([])
   const [displayedProducts, setDisplayedProducts] = useState([])
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [loading, setLoading] = useState(true)
-  const [inventoryData, setInventoryData] = useState(null) // Pollo新增用於存儲庫存資料的狀態
+  const [inventoryData, setInventoryData] = useState(null)
   const router = useRouter()
   const { pid } = router.query
+  const [favorites, setFavorites] = useState([])
 
+  const fetchFavorites = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/favorite', {
+        credentials: 'include',
+      })
+      const data = await response.json()
+      const productIds = data.favorites.map((item) => item.product_id)
+
+      setFavorites(productIds)
+    } catch (error) {
+      console.error('Error fetching favorites:', error)
+    }
+  }
+  useEffect(() => {
+    fetchFavorites()
+  }, [])
   useEffect(() => {
     fetch('http://localhost:3005/api/myProduct')
       .then((response) => response.json())
@@ -85,12 +102,10 @@ export default function Detail() {
   window.addEventListener('popstate', () => {
     window.location.reload()
   })
-  // Pollo獲取庫存資料的函數
   const fetchInventoryData = () => {
     fetch(`http://localhost:3005/api/inventory/${pid}`)
       .then((response) => response.json())
       .then((data) => {
-        // 將獲取的資料設置到狀態中
         setInventoryData(data)
       })
       .catch((error) => {
@@ -101,7 +116,6 @@ export default function Detail() {
     <>
       {selectedProduct && (
         <>
-          {/* Pollo子元件 */}
           <InventorySearch inventoryData={inventoryData} />
           <div className="row mt-5">
             <div className="col-lg-7 my-3">
@@ -117,7 +131,7 @@ export default function Detail() {
                 </h3>
                 <div className="mt-4">
                   <BsGlobe className="mx-3" />
-                  Worldwide shipping <br />
+                  Express Shipping <br />
                   <IoIosLock className="mx-3" />
                   Secure payments <br />
                   <IoMdCheckmarkCircleOutline className="mx-3" />
@@ -151,25 +165,29 @@ export default function Detail() {
                       {selectedProduct.nib_name}
                     </span>
                   </div>
-                  {/* Pollo子元件的按鈕 */}
-                  <a
-                    style={{
-                      color: '#ff0083',
-                      display: 'block',
-                      marginTop: '0.5rem',
-                      fontSize: '16px',
-                    }}
-                    id="a1"
-                    data-bs-toggle="offcanvas"
-                    href="#offcanvasExample"
-                    role="button"
-                    aria-controls="offcanvasExample"
-                    onClick={fetchInventoryData} // 將點擊事件綁定到父元件的函數上
-                  >
-                    庫存查詢
-                  </a>
+                  <div className="d-flex justify-content-between align-items-center mt-5 px-1">
+                    <span className="text-h4 text-my-notice">
+                      <FavIcon
+                        id={pid}
+                        favorites={favorites}
+                        setFavorites={setFavorites}
+                      />{' '}
+                      加到收藏
+                    </span>
+                    <a
+                      className="styled-link text-h4"
+                      id="a1"
+                      data-bs-toggle="offcanvas"
+                      href="#offcanvasExample"
+                      role="button"
+                      aria-controls="offcanvasExample"
+                      onClick={fetchInventoryData}
+                    >
+                      庫存查詢
+                    </a>
+                  </div>
                 </div>
-                <div style={{ marginTop: '2rem' }}>
+                <div style={{ marginTop: '10px' }}>
                   <QuantityButton products={products} pid={pid} />
 
                   <div
@@ -195,7 +213,7 @@ export default function Detail() {
                         className="accordion-collapse collapse"
                       >
                         <div className="accordion-body p-3">
-                          官網提供信用卡金流（支援VISA/MASTER/JCB等發卡組織）、超商貨到付款，金流系統為「綠界科技Ecpay」支援。
+                          官網提供信用卡金流（支援VISA/MASTER/JCB等發卡組織）、超商貨到付款(711/全家/OK)，金流系統為「綠界科技Ecpay」支援。
                           <br />
                           <br />
                           免息3期付款
@@ -227,12 +245,12 @@ export default function Detail() {
                         className="accordion-collapse collapse"
                       >
                         <div className="accordion-body p-3">
-                          順豐配送 (滿NT1000免費送貨，未滿須付NT80） •
+                          黑貓配送 (滿NT1000免費送貨，未滿須付NT200） •
                           出貨後1-2天內可送達
                           <br />
                           <br />
-                          超商取貨付款/不付款(滿NT1000免費送貨，未滿須付NT80） •
-                          出貨後2至3天後抵達指定超商門市 •
+                          超商取貨付款/不付款(滿NT1000免費送貨，未滿須付NT200）
+                          • 出貨後2至3天後抵達指定超商門市 •
                           超商取貨訂單於送達指定門市後將有7天取貨期限
                         </div>
                       </div>
@@ -283,19 +301,14 @@ export default function Detail() {
                     className="col"
                     style={{ width: '300px', margin: '10px' }}
                   >
-                    <Link
-                      href={`/product/${product.product_id}`}
-                      as={`/product/${product.product_id}`}
-                      style={{ textDecoration: `none` }}
-                    >
-                      <ProductFigure
-                        key={product.product_id}
-                        image={`/images/myProduct/${product.image}`}
-                        brand={product.brand_name}
-                        name={product.name}
-                        price={formatPrice(product.price)}
-                      />
-                    </Link>
+                    <ProductFigure
+                      key={product.product_id}
+                      pid={product.product_id}
+                      image={`/images/myProduct/${product.image}`}
+                      brand={product.brand_name}
+                      name={product.name}
+                      price={formatPrice(product.price)}
+                    />
                   </div>
                 </SwiperSlide>
               ))}
@@ -303,6 +316,21 @@ export default function Detail() {
           </div>
         </>
       )}
+      <style jsx>{`
+        .styled-link {
+          color: #7c7477;
+          text-decoration: none;
+          transition: color 0.3s ease;
+        }
+
+        .styled-link:hover {
+          color: #ff0083;
+        }
+
+        .styled-link:focus {
+          outline: none;
+        }
+      `}</style>
     </>
   )
 }
