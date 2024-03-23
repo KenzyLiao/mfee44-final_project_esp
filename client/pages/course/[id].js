@@ -21,6 +21,151 @@ import {
 } from 'react-icons/bs'
 
 export default function CoursePage() {
+  const [login, setLogin] = useState(false)
+  const [courseOrder, setCourseOrder] = useState([])
+  const [courseALL, setCourseALL] = useState([])
+  const [collection, setCollection] = useState([])
+
+  // 會員資料
+  const [user, setUser] = useState({
+    title: '',
+    firstname: '',
+    lastname: '',
+    email: '',
+    phone: '',
+    birthdate: '',
+    year: '',
+    month: '',
+    day: '',
+  })
+  const [loading, setLoading] = useState(true)
+  console.log(user)
+  // 定義年份、月份、日期的選項數組
+  const years = Array.from(
+    new Array(100),
+    (_, index) => new Date().getFullYear() - index
+  )
+  const months = Array.from(new Array(12), (_, index) => index + 1)
+  const days = Array.from(new Array(31), (_, index) => index + 1)
+
+  // 載入時時獲取用戶數據
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('http://localhost:3005/api/profile', {
+          credentials: 'include',
+        })
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`)
+        }
+
+        const data = await response.json()
+
+        const newUser = {
+          ...data,
+          year: data.birthdate ? data.birthdate.split('-')[0] : '',
+          month: data.birthdate ? data.birthdate.split('-')[1] : '',
+          day: data.birthdate ? data.birthdate.split('-')[2] : '',
+        }
+
+        setUser(newUser)
+        if (newUser.firstname === '') {
+          setLogin(false)
+        } else {
+          setLogin(true)
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchUserData()
+  }, [])
+
+  useEffect(() => {
+    const fetchUserCourse = async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:3005/api/course/my_course'
+        )
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`)
+        }
+
+        const data = await response.json()
+
+        setCourseOrder(data)
+      } catch (error) {
+        console.error('Failed to fetch user course:', error)
+      }
+    }
+    fetchUserCourse()
+  }, [])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:3005/api/course/courseALL'
+        )
+        const data = await response.json()
+        setCourseALL(data)
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    }
+    fetchData()
+  }, [])
+  let myCourse = courseOrder.filter((item) => item.user_id === user.user_id)
+  let myCourseALL = myCourse.map((item) => {
+    let course = courseALL.filter((course) => course.id === item.product_id)
+    return course[0]
+  })
+  useEffect(() => {
+    const fetchCollectionData = async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:3005/api/course/collection'
+        )
+        const data = await response.json()
+        setCollection(data)
+      } catch (error) {
+        console.error('Failed to fetch user data:', error)
+      }
+    }
+    fetchCollectionData()
+  }, [])
+  // user course end
+
+  function addCollection() {
+    const handleCollection = async () => {
+      const response = await fetch(
+        `http://localhost:3005/api/course/addCollection?user_id=${user.user_id}&product_id=${id}`
+      )
+      const data = await response.json()
+      console.log('data', data)
+      window.location.reload()
+    }
+    if (login === false) {
+      window.open('http://localhost:3000/member/login', '_self')
+    } else {
+      handleCollection()
+    }
+  }
+  function removeCollection() {
+    const handleCollection = async () => {
+      const response = await fetch(
+        `http://localhost:3005/api/course/removeCollection?user_id=${user.user_id}&product_id=${id}`
+      )
+      const data = await response.json()
+      console.log('data', data)
+      window.location.reload()
+    }
+    handleCollection()
+  }
+
   const { addCartItem } = useCart()
   // const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
   const router = useRouter()
@@ -97,6 +242,19 @@ export default function CoursePage() {
     .map((v) => v.sub_units.length)
     .reduce((a, b) => a + b)
 
+  const haveCourseList = myCourseALL.map((mycourse) => {
+    return mycourse.id === Number(id)
+  })
+  const haveCourse = haveCourseList.includes(true)
+  console.log('haveCourse', haveCourse)
+  console.log('id', id)
+  let myCollection = collection.filter((item) => item.uid === user.user_id)
+  let haveCollectionList = myCollection.map((item) => {
+    return item.pid
+  })
+  let haveCollection = haveCollectionList.includes(Number(id))
+  console.log('haveCollection', haveCollection)
+
   return (
     <>
       <div className="container">
@@ -148,10 +306,17 @@ export default function CoursePage() {
                 })} */}
               </div>
               <div className="btn-group">
-                <a className=" text-decoration-none border1">
-                  <BsBookmarkCheckFill className="mb-1 me-2" />
-                  收藏課程
-                </a>
+                {!haveCollection ? (
+                  <button className=" border2 px-3" onClick={addCollection}>
+                    <BsBookmarkCheckFill className="mb-1 me-2" />
+                    收藏課程
+                  </button>
+                ) : (
+                  <button className=" border2 px-3" onClick={removeCollection}>
+                    <BsBookmarkCheckFill className="mb-1 me-2" />
+                    已收藏課程
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -326,30 +491,37 @@ export default function CoursePage() {
           </main>
           <aside className="col-md-3 mb-5 ">
             <div className="right-sticky">
-              <div className="price border1 mb-4">
-                <p className="text-h4">購買課程</p>
-                <p className="text-h3 text-my-notice">
-                  NT${price.toLocaleString()}
-                </p>
-                <div className="d-flex flex-column flex-xl-row">
-                  <div
-                    className="text-decoration-none collect-btn border1 px-2 text-center addCart"
-                    onClick={() => {
-                      addCartItem(data_send)
-                    }}
-                    onKeyDown={(event) => {
-                      // Enter or Space key
-                      if (event.key === 'Enter') {
+              {!haveCourse ? (
+                <div className="price border1 mb-4">
+                  <p className="text-h4">購買課程</p>
+                  <p className="text-h3 text-my-notice">
+                    NT${price.toLocaleString()}
+                  </p>
+                  <div className="d-flex flex-column flex-xl-row">
+                    <div
+                      className="text-decoration-none collect-btn border1 px-2 text-center addCart"
+                      onClick={() => {
                         addCartItem(data_send)
-                      }
-                    }}
-                    tabIndex="0" // Make the div focusable
-                    role="button" // Indicate that the div is a button
-                  >
-                    <BsFillCartFill className="mb-1" /> 加入購物車
+                      }}
+                      onKeyDown={(event) => {
+                        // Enter or Space key
+                        if (event.key === 'Enter') {
+                          addCartItem(data_send)
+                        }
+                      }}
+                      tabIndex="0" // Make the div focusable
+                      role="button" // Indicate that the div is a button
+                    >
+                      <BsFillCartFill className="mb-1" /> 加入購物車
+                    </div>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="text-decoration-none collect-btn border1 px-2 text-center addCart mb-4 ">
+                  <BsFillCartFill className="mb-1" /> 已購買課程
+                </div>
+              )}
+
               <div className=" d-none d-lg-block">
                 <Link href={`http://localhost:3000/product/${pen_id}`}>
                   <ProductFigure
@@ -498,6 +670,19 @@ export default function CoursePage() {
         }
         .border1 {
           border: 1px solid #7c7477;
+        }
+        .border2 {
+          border: 1px solid #7c7477;
+          color: var(--my-white);
+          background-color: #7c7477;
+          font-size: 16px;
+          transition: 0.2s;
+          padding: 5px 10px;
+          border-radius: 20px;
+          &:hover {
+            background-color: white;
+            color: #7c7477;
+          }
         }
         .addCart {
           background-color: #7c7477;
