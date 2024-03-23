@@ -6,23 +6,38 @@ export default function UsedCoupon({ coupon }) {
   const get_coupon = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3005/api/coupon/get/?id_coupon=${coupon.id}`,{credentials: 'include'}
-      )
-      const result = await response.json()
-      Swal.fire({
-        icon: result.status,
-        title: result.msg,
-        timer: 1500,
-      }).then(() => {
-        if (result.status === 'success') {
-          location.reload()
-        }
-      })
-      
+        `http://localhost:3005/api/coupon/get/?id_coupon=${coupon.id}`,
+        { credentials: 'include' }
+      );
+      const result = await response.json();
+      if (response.status === 401) {
+        Swal.fire({
+          icon: 'error',
+          title: '請先登入後再領取',
+          showCancelButton: true,
+          confirmButtonText: '去登入',
+          cancelButtonText: '取消',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = 'http://localhost:3000/member/login';
+          }
+        });
+      } else {
+        Swal.fire({
+          icon: result.status,
+          title: result.msg,
+          timer: 1500,
+        }).then(() => {
+          if (result.status === 'success') {
+            location.reload();
+          }
+        });
+      }
     } catch (error) {
-      console.error('Error:', error)
+      console.error('Error:', error);
     }
-  }
+  };
+  
   return (
     <>
       <div className="coupon col-xl-4 col-lg-6 col-sm-12 d-flex justify-content-center align-items-center">
@@ -44,28 +59,27 @@ export default function UsedCoupon({ coupon }) {
               {/* 有效期限：2024.12.31 */}
               {coupon.end_at.split('T')[0]}
             </p>
-            <a className="rule_link" href="http://localhost:3000/coupon/activity_rule">
+            <a
+              className="rule_link"
+              href="http://localhost:3000/coupon/activity_rule"
+            >
               使用規則
             </a>
             {!coupon.coupon_id && (
               <a
                 onClick={get_coupon}
-                className={`${coupon.taked == null ? 'button' : 'be_used'}`}
+                className={`button ${coupon.status === 1 ? 'be_used' : ''}`}
               >
-                {coupon.status == 0 ? '' : '已'}領取
+                {coupon.status === 1 ? '已領取' : '領取'}
               </a>
             )}
             <div>
-            {coupon.used_valid === 0 ? (
-                <div className='be_used'>
-                    已使用
-                </div>
-            ) : (
-                <div>
-                    {/* 其他相關元素 */}
-                </div>
-            )}
-        </div>
+              {coupon.used_valid === 0 ? (
+                <div className="be_used">已使用</div>
+              ) : (
+                <div>{/* 其他相關元素 */}</div>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -79,7 +93,6 @@ export default function UsedCoupon({ coupon }) {
             width: 70%;
             height: 200px;
             margin: 10px 0;
-            
 
             display: flex; /* 使用 Flexbox */
             position: relative;
@@ -196,13 +209,13 @@ export default function UsedCoupon({ coupon }) {
           @media (max-width: 500px) {
             .coupon-background {
               background-size: cover;
-              width:30%;
+              width: 30%;
             }
           }
           @media (max-width: 375px) {
             .coupon {
-              width:200px !import;
-              padding:0px !import;
+              width: 200px !import;
+              padding: 0px !import;
             }
           }
         `}

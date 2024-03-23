@@ -1,42 +1,82 @@
-import React from 'react'
-import { useState, useEffect } from 'react'
-import UsedCoupon from '@/components/myCoupon/UsedCoupon'
+import React, { useState, useEffect } from 'react';
+import UsedCoupon from '@/components/myCoupon/UsedCoupon';
 
 export default function Home() {
-  // 引入資料
-  const [data, setData] = useState([])
-  const [data_2, setData_2] = useState([])
-  // const [dataMember, setDataMember] = useState([])
-  const fetchData = async () => {
+  const [data, setData] = useState([]);
+  const [data_2, setData_2] = useState([]);
+  const [error, setError] = useState(null);
+  const [user, setUser] = useState({
+    user_id: '',
+  });
+
+  const fetchUserData = async () => {
     try {
-      const response = await fetch(
-        'http://localhost:3005/api/coupon/activity/?type=1'
-      )
-      const response_2 = await fetch(
-        'http://localhost:3005/api/coupon/activity/?type=2'
-      )
-      // const menberResponse = await fetch(
-      //   ''
-      // )
-      const result = await response.json()
-      const result_2 = await response_2.json()
-      // const dataMember = await menberResponse.json()
-      console.log('res', result)
-      console.log(result_2)
+      const response = await fetch('http://localhost:3005/api/profile', {
+        credentials: 'include',
+      });
 
-      setData(result)
-      setData_2(result_2)
-      // setDataMember(dataMember)
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+
+      const userData = await response.json();
+      setUser({ user_id: userData.user_id });
     } catch (error) {
-      console.error('Error:', error)
+      console.error('Failed to fetch user data:', error);
     }
-  }
-  useEffect(() => {
-    fetchData()
-    console.log('data', data[0])
-  }, [])
+  };
 
-  console.log(data)
+  const fetchMemberData = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/coupon/activity/?type=1', { credentials: 'include' });
+      const response_2 = await fetch('http://localhost:3005/api/coupon/activity/?type=2', { credentials: 'include' });
+
+      if (!response.ok || !response_2.ok) {
+        throw new Error('Failed to fetch member data');
+      }
+
+      const result = await response.json();
+      const result_2 = await response_2.json();
+
+      setData(result);
+      setData_2(result_2);
+    } catch (error) {
+      setError('Error fetching member data');
+      console.error('Error:', error);
+    }
+  };
+
+  const fetchDefaultData = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/coupon/activityDef/?type=1');
+      const response_2 = await fetch('http://localhost:3005/api/coupon/activityDef/?type=2');
+
+      if (!response.ok || !response_2.ok) {
+        throw new Error('Failed to fetch member data');
+      }
+
+      const result = await response.json();
+      const result_2 = await response_2.json();
+      
+      setData(result);
+      setData_2(result_2);
+    } catch (error) {
+      setError('Error fetching default data');
+      console.error('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserData(); 
+  }, []);
+
+  useEffect(() => {
+    if (user.user_id) {
+      fetchMemberData(); 
+    } else {
+      fetchDefaultData(); 
+    }
+  }, [user]);
   return (
     <>
       {/* 3000折300$ */}
@@ -71,11 +111,9 @@ export default function Home() {
         <ul>
           <li>
             <div className="c3000 row cols-lg-3">
-              {data.map((v, i) => {
-                if (v.coupon_valid === 1) {
-                  return <UsedCoupon key={v.id} coupon={v} />
-                }
-              })}
+               {data.map((v, i) => (
+                <UsedCoupon key={v.id} coupon={v} />
+              ))}
             </div>
           </li>
           <li className="banner2">
