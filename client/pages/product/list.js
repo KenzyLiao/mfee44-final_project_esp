@@ -201,6 +201,18 @@ export default function List() {
       } else {
         newUrl.searchParams.delete('materials')
       }
+      if (
+        priceRange[0] !== initialPriceRange[0] ||
+        priceRange[1] !== initialPriceRange[1]
+      ) {
+        updatedFetchUrl += `priceRange=${priceRange[0]}-${priceRange[1]}&`
+        newUrl.searchParams.set(
+          'priceRange',
+          `${priceRange[0]}-${priceRange[1]}`
+        )
+      } else {
+        newUrl.searchParams.delete('priceRange')
+      }
       if (searchQuery.length > 0) {
         updatedFetchUrl += `searchQuery=${searchQuery}&`
         newUrl.searchParams.set('searchQuery', searchQuery)
@@ -236,6 +248,7 @@ export default function List() {
     selectedNibs,
     selectedMaterials,
     searchQuery,
+    priceRange,
   ])
   const [loading, setLoading] = useState(true)
   if (loading) {
