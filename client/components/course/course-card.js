@@ -24,13 +24,18 @@ export default function CourseCard({
   category_name,
   cms,
 }) {
+  price = price || 0
   const cardLink = cms
     ? `http://localhost:3000/course/CMS/${id}`
     : `http://localhost:3000/course/${id}`
   const [isHovered, setIsHovered] = useState(false)
-  let imageURL = `http://localhost:3005/course/images/course_${
-    image.split('_')[1].split('.')[0] % 25
-  }.jpg`
+  let imageURL = ''
+
+  if (image && image !== '') {
+    imageURL = `http://localhost:3005/course/images/course_${
+      image.split('_')[1].split('.')[0] % 25
+    }.jpg`
+  }
   return (
     <>
       <Link href={cardLink}>

@@ -9,8 +9,10 @@ import Section from '@/components/course/section'
 import New from '@/components/course/new'
 import { BsListOl, BsArrowDown, BsArrowUp } from 'react-icons/bs'
 import CourseSubInfo from '@/components/course/course-sub-info'
+import { useAuth } from '@/hooks/useAuth'
 
 export default function LearnPage() {
+  // useAuth()
   const router = useRouter()
   const { id } = router.query
   const [isReady, setIsReady] = useState(false)
