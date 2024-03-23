@@ -29,11 +29,9 @@ router.get('/userCoupon', authenticate, async (req, res) => {
       [Uid]
     )
     let queries = results.map((result) => {
-      return mydb.execute(
-        `SELECT *, DATE_FORMAT(end_at, '%Y-%m-%d ') AS formatted_end_at FROM mycoupon WHERE id = ?
-      `,
-        [result.coupon_id]
-      )
+      return mydb.execute(`SELECT *, DATE_FORMAT(end_at, '%Y-%m-%d ') AS formatted_end_at FROM mycoupon WHERE id=?`, [
+        result.coupon_id,
+      ])
     })
     let couponResults = await Promise.all(queries)
     couponResults = couponResults.map((result) => result[0][0])
@@ -56,61 +54,138 @@ router.get('/catchCoupon', async (req, res) => {
     return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
   }
 })
-// 領取優惠券資料
-router.get('/get', async (req, res) => {
-  try {
-    let output = { status: '', res: '' }
-    let [results] = await mydb.execute(
-      `SELECT count(*) as num FROM member_coupon WHERE user_id=1 AND coupon_id=${req.query.id_coupon}`
-    )
-    if (results[0].num > 0) {
-      output.status = 'error'
-      output.msg = '已經領過了!'
-    } else {
-      await mydb.execute(
-        `INSERT INTO member_coupon  (coupon_id,user_id,valid) VALUES (${req.query.id_coupon},1,1);`
-      )
-      output.status = 'success'
-      output.msg = '成功領取優惠券!'
-    }
 
-    res.json(output)
-    console.log(req.query.id_coupon)
-    console.log('4465')
-  } catch (err) {
-    console.error('查詢資料錯誤:', err)
-    return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
-  }
-})
-router.get('/activity', async (req, res) => {
+router.get('/get', authenticate, async (req, res) => {
   try {
-    let sql
+    const userId = req.user.user_id;
+    let output = { status: '', res: '' };
+
+    // 檢查使用者是否已經領取過該優惠券
+    const [results] = await mydb.execute(
+      `SELECT COUNT(*) as num FROM member_coupon WHERE user_id = ? AND coupon_id = ?`,
+      [userId, req.query.id_coupon]
+    );
+
+    if (!req.user) {
+      output.status = 'unauthorized';
+      output.msg = '請登入會員';
+    } else {
+      if (results.length > 0 && results[0].num > 0) {
+        output.status = 'error';
+        output.msg = '已經領過了!';
+      } else {
+        await mydb.execute(
+          `INSERT INTO member_coupon (coupon_id, user_id, valid) VALUES (?, ?, 1)`,
+          [req.query.id_coupon, userId]
+        );
+        output.status = 'success';
+        output.msg = '成功領取優惠券!';
+      }
+    }
+    
+
+    res.json(output);
+  } catch (err) {
+    console.error('查詢資料錯誤:', err);
+    return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' });
+  }
+});
+
+
+router.get('/activity', authenticate, async (req, res) => {
+  try {
+    let sql;
+    
     if (req.query.type == '1') {
-      sql =
-        'SELECT `c`.*,if(`mc`.`id` is not null,1,0) as `status` FROM `mycoupon` AS `c` LEFT JOIN `member_coupon` AS `mc` ON `c`.`id` = `mc`.`coupon_id` WHERE `c`.`id`<=4'
+      sql = `SELECT c.*, 
+      CASE 
+          WHEN ? IS NULL THEN 0 -- 未登入，將 status 設為 0
+          WHEN mc.coupon_id IS NOT NULL THEN 1 -- 已登入且 member_coupon 資料表存在該優惠券，將 status 設為 1
+          ELSE 0 -- 已登入但未領取，將 status 設為 0
+      END AS status 
+  FROM mycoupon AS c 
+  LEFT JOIN member_coupon AS mc 
+      ON c.id = mc.coupon_id AND mc.user_id = ?
+  WHERE c.id <= 4`;
     } else {
-      sql =
-        'SELECT `c`.*,if(`mc`.`id` is not null,1,0) as `status` FROM `mycoupon` AS `c` LEFT JOIN `member_coupon` AS `mc` ON `c`.`id` = `mc`.`coupon_id` WHERE `c`.`id` BETWEEN 5 AND 6'
+      sql = `SELECT c.*, 
+                    CASE 
+                      WHEN ? IS NULL THEN 0 -- 未登入，將 status 設為 0
+                      WHEN mc.id IS NOT NULL THEN 1 -- 已登入且領取過，將 status 設為 1
+                      ELSE 0 -- 已登入但未領取，將 status 設為 0
+                    END AS status 
+             FROM mycoupon AS c 
+             LEFT JOIN (SELECT * FROM member_coupon WHERE user_id = ?) AS mc 
+             ON c.id = mc.coupon_id
+             WHERE c.id BETWEEN 5 AND 6`;
     }
-    const [results] = await mydb.execute(sql)
-    console.log(results)
 
-    res.json(results)
+    const userId = req.user ? req.user.user_id : null;
+
+    const [results] = await mydb.execute(sql, [userId, userId]);
+    console.log(userId)
+    
+    res.json(results);
   } catch (err) {
-    console.error('查詢資料錯誤:', err)
-    return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
+    console.error('查詢資料錯誤:', err);
+    return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' });
   }
-})
+});
 
-router.get('/memberCoupon', async (req, res) => {
+
+router.get('/activityDef', async (req, res) => {
   try {
+    let sql;
+    
+    if (req.query.type == '1') {
+      sql = `SELECT c.*, 
+      CASE 
+          WHEN ? IS NULL THEN 0 -- 未登入，將 status 設為 0
+          WHEN mc.coupon_id IS NOT NULL THEN 1 -- 已登入且 member_coupon 資料表存在該優惠券，將 status 設為 1
+          ELSE 0 -- 已登入但未領取，將 status 設為 0
+      END AS status 
+  FROM mycoupon AS c 
+  LEFT JOIN member_coupon AS mc 
+      ON c.id = mc.coupon_id AND mc.user_id = ?
+  WHERE c.id <= 4`;
+    } else {
+      sql = `SELECT c.*, 
+                    CASE 
+                      WHEN ? IS NULL THEN 0 -- 未登入，將 status 設為 0
+                      WHEN mc.id IS NOT NULL THEN 1 -- 已登入且領取過，將 status 設為 1
+                      ELSE 0 -- 已登入但未領取，將 status 設為 0
+                    END AS status 
+             FROM mycoupon AS c 
+             LEFT JOIN (SELECT * FROM member_coupon WHERE user_id = ?) AS mc 
+             ON c.id = mc.coupon_id
+             WHERE c.id BETWEEN 5 AND 6`;
+    }
+
+    const userId = req.user ? req.user.user_id : null;
+
+    const [results] = await mydb.execute(sql, [userId, userId]);
+    console.log(userId)
+    
+    res.json(results);
+  } catch (err) {
+    console.error('查詢資料錯誤:', err);
+    return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' });
+  }
+});
+
+
+
+
+router.get('/memberCoupon', authenticate, async (req, res) => {
+  try {
+    const userId = req.user.user_id
     const [results] = await mydb.execute(
       `SELECT member_coupon.*, mycoupon.* FROM member_coupon JOIN
-        mycoupon ON member_coupon.coupon_id = mycoupon.id WHERE member_coupon.user_id = 1 ORDER BY member_coupon.used_valid DESC`
+        mycoupon ON member_coupon.coupon_id = mycoupon.id WHERE member_coupon.user_id = ? ORDER BY member_coupon.used_valid DESC`, [userId]
     )
-    console.log(results)
 
-    res.json(results)
+    res.send({results: results})
+    console.log(results);
   } catch (err) {
     console.error('查詢資料錯誤:', err)
     return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })
