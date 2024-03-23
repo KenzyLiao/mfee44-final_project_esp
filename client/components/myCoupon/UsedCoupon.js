@@ -50,7 +50,7 @@ export default function UsedCoupon({ coupon }) {
             {!coupon.coupon_id && (
               <a
                 onClick={get_coupon}
-                className={`${coupon.status == 0 ? 'button' : 'be_used'}`}
+                className={`${coupon.taked == null ? 'button' : 'be_used'}`}
               >
                 {coupon.status == 0 ? '' : '已'}領取
               </a>
