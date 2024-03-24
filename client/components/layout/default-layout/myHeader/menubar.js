@@ -17,25 +17,19 @@ const menuItems = [
     label: '課程',
     href: '/course',
   },
-  {   
+  {
     id: 3,
     label: '會員',
     href: '/member',
     children: [
       { id: 32, label: '登入', href: '/member/login' },
       { id: 33, label: '註冊', href: '/member/register' },
-      { id: 34, label: '忘記密碼', href: '/member/forget-password' },
     ],
   },
   {
     id: 4,
     label: '商品',
     href: '/product',
-    children: [
-      { id: 41, label: '列表', href: '/product/list' },
-      { id: 42, label: '詳細', href: '/product/01' },
-      { id: 43, label: '購物車', href: '/cart' },
-    ],
   },
   {
     id: 5,
