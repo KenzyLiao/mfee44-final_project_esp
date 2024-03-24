@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useAuth } from '@/hooks/useAuth' // 確保這是 useAuth Hook 正確的路徑
+import { useAuth } from '@/hooks/useAuth'
 
 const MemberProfile = () => {
   useAuth() // 在組件開始處調用 useAuth 進行身份驗證
