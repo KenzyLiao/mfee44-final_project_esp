@@ -5,13 +5,19 @@ import { useRouter } from 'next/router'
 
 function LoginContent() {
   const router = useRouter()
+  // 新增狀態來顯示登錄成功的消息
+  const [loginSuccessMessage, setLoginSuccessMessage] = useState('')
   const { email, setEmail, password, setPassword, error, handleLogin } =
     LoginLogic({
       onLoginSuccess: () => {
         console.log('登入成功')
-        router.push('./profile')
+        // 設置登錄成功的消息
+        setLoginSuccessMessage('登入成功！正在跳轉到個人資料頁面...')
+        setTimeout(() => {
+          router.push('./profile')
+        }, 2000) // 2秒後跳轉到個人資料頁面
       },
-      onLoginFail: (error) => console.error('登入失败：', error),
+      onLoginFail: (error) => console.error('登入失敗：', error),
     })
 
   const handleGoogleLogin = () => {
@@ -31,6 +37,9 @@ function LoginContent() {
   return (
     <>
       <div className="login-container">
+        {loginSuccessMessage && (
+          <div className="login-success-message">{loginSuccessMessage}</div>
+        )}
         <div className="login-content">
           <div className="login-header">
             <div className="login-heading">登入</div>

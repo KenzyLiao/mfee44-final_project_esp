@@ -24,10 +24,7 @@ export default function CourseCard({
   category_name,
   cms,
 }) {
-<<<<<<< HEAD
-=======
   price = price || 0
->>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
   const cardLink = cms
     ? `http://localhost:3000/course/CMS/${id}`
     : `http://localhost:3000/course/${id}`

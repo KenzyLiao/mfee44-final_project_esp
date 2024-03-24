@@ -46,9 +46,35 @@ const Heart = ({ size = 20, color = 'red' }) => (
   </svg>
 )
 
-export default function FavFcon({ id }) {
-  // 由context取得auth-判斷是否能執行add或remove用，favorites決定愛心圖案用
-  const { auth, favorites, setFavorites } = useAuth()
+const FavFcon = ({ id, favorites, setFavorites }) => {
+  // 手動驗證當前token 確認燈狀態是否為訪客
+  const [user, setUser] = useState({
+    user_id: '',
+  })
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch('http://localhost:3005/api/profile', {
+          credentials: 'include',
+        })
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`)
+        }
+
+        const data = await response.json()
+
+        setUser({ user_id: data.user_id })
+      } catch (error) {
+        console.error('Failed to fetch user data:', error)
+      }
+    }
+
+    fetchUserData()
+  }, [])
+
+  const isLoggedIn = !!user.user_id
 
   const handleTriggerFav = (pid) => {
     if (favorites.includes(pid)) {
