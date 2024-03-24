@@ -127,6 +127,7 @@ export default function Detail() {
         console.error('Error fetching inventory data:', error)
       })
   }
+  console.log(favorites)
   return (
     <>
       {selectedProduct && (
@@ -206,7 +207,7 @@ export default function Detail() {
                   <div className="d-flex justify-content-between align-items-center mt-5 px-1">
                     <span className="text-h4 text-my-notice">
                       <FavIcon
-                        id={pid}
+                        id={Number(pid)}
                         favorites={favorites}
                         setFavorites={setFavorites}
                       />{' '}
