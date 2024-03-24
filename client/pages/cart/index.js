@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from 'react'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import Button from '@mui/material/Button'
 
 import ProductCart from '@/components/myCart/productCart'
 import CourseCart from '@/components/myCart/courseCart'
@@ -14,6 +20,9 @@ import { useCart } from '@/hooks/user-cart'
 import { useCheckout } from '@/hooks/use-checkout'
 
 export default function CartIndex() {
+  //Mui modal
+  const [openDialog, setOpenDialog] = useState(false)
+
   const {
     // 購物車
     cart,
@@ -38,7 +47,7 @@ export default function CartIndex() {
 
   const handleNextSteap = () => {
     if (cart.length < 1) {
-      alert('購物車中沒有任何商品')
+      setOpenDialog(true)
       return false
     }
     router.push('/cart/checkout')
@@ -91,6 +100,22 @@ export default function CartIndex() {
           </div>
         </div>
       </div>
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'購物車'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description" className="">
+            請先添加商品到購物車,再進行操作
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>確認</Button>
+        </DialogActions>
+      </Dialog>
       <style jsx>{`
         .rwd-button {
           display: none;

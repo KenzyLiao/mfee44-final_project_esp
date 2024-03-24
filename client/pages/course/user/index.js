@@ -1,53 +1,11 @@
-import React, { useRef, useState, useEffect,  } from 'react'
-import CourseCarousel from '@/components/course/course-carousel.js'
-import CardGroup from '@/components/course/card-group.js'
-import CardGroupTitle from '@/components/course/card-group-title.js'
+import React, { useState, useEffect } from 'react'
 import MyCardGroup from '@/components/course/my-card-group.js'
-import { useAuth } from '@/hooks/useAuth'
-import Link from 'next/link'
 
-export default function CoursePage() {
-  const titleData = [
-    {
-      title: '我的課程',
-      subTitle: '新的一天持續學習',
-    },
-    {
-      title: '最新課程',
-      subTitle: '學習最新的知識',
-    },
-    {
-      title: '熱門課程',
-      subTitle: '與大家一同學習',
-    },
-    {
-      title: '手寫字課程',
-      subTitle: '提升你的書寫能力',
-    },
-    {
-      title: '繪畫課程',
-      subTitle: '發揮你的創意',
-    },
-  ]
-  const [data, setData] = useState([])
-
+export default function CourseUserPage() {
+  // user course
   const [login, setLogin] = useState(false)
   const [courseOrder, setCourseOrder] = useState([])
   const [courseALL, setCourseALL] = useState([])
-
-  // 所有課程
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:3005/api/course')
-        const data = await response.json()
-        setData(data)
-      } catch (error) {
-        console.error('Error:', error)
-      }
-    }
-    fetchData()
-  }, [])
 
   // 會員資料
   const [user, setUser] = useState({
@@ -146,64 +104,15 @@ export default function CoursePage() {
     let course = courseALL.filter((course) => course.id === item.product_id)
     return course[0]
   })
-  console.log('user', user)
-  // console.log('data', data)
-  // console.log('courseOrder', courseOrder)
-  // console.log('myCourse', myCourse)
-  // console.log('courseALL', courseALL)
   console.log('myCourseALL', myCourseALL)
-
+  // user course end
 
   return (
     <>
-      <div className="mb-5">
-        <CourseCarousel />
+      <div>
+        <p className="text-h1 d-flex justify-content-center mb-5">我的課程</p>
       </div>
-
-      {/* 我的學習 */}
-      {login && myCourseALL.length > 0 && (
-        <div>
-          <CardGroupTitle
-            title={titleData[0].title}
-            subTitle={titleData[0].subTitle}
-            linkUrl="http://localhost:3000/course/user"
-          />      
-          <MyCardGroup data={myCourseALL.slice(0, 3)} />
-        </div>
-      )}
-
-      <div className="mb-5">
-        <CardGroupTitle
-          title={titleData[1].title}
-          subTitle={titleData[1].subTitle}
-          linkUrl="http://localhost:3000/course/overview?state=3"
-        />
-        <CardGroup data={data[0]} />
-      </div>
-      <div className="mb-5">
-        <CardGroupTitle
-          title={titleData[2].title}
-          subTitle={titleData[2].subTitle}
-          linkUrl="http://localhost:3000/course/overview?state=1"
-        />
-        <CardGroup data={data[1]} />
-      </div>
-      <div className="mb-5">
-        <CardGroupTitle
-          title={titleData[3].title}
-          subTitle={titleData[3].subTitle}
-          linkUrl="http://localhost:3000/course/overview?type=1"
-        />
-        <CardGroup data={data[2]} />
-      </div>
-      <div className="mb-5">
-        <CardGroupTitle
-          title={titleData[4].title}
-          subTitle={titleData[4].subTitle}
-          linkUrl="http://localhost:3000/course/overview?type=2"
-        />
-        <CardGroup data={data[3]} />
-      </div>
+      <MyCardGroup data={myCourseALL} />
     </>
   )
 }

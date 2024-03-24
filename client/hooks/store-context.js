@@ -1,13 +1,13 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState } from 'react'
 
-export const StoreContext = createContext();
+export const StoreContext = createContext()
 
 export const StoreProvider = ({ children }) => {
-  const [selectedStore, setSelectedStore] = useState(null);
+  const [selectedStore, setSelectedStore] = useState(null)
 
   return (
     <StoreContext.Provider value={{ selectedStore, setSelectedStore }}>
       {children}
     </StoreContext.Provider>
-  );
-};
+  )
+}

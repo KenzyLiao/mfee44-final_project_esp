@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
+
 import ProgressBar from '@/components/myCart/progressBar'
 import CheckoutProcessForm from '@/components/myCart/checkoutProcessForm/checkoutProcessForm'
-
 import OrderSummary from '@/components/myCart/orderSummary'
 import SmallProductCart from '@/components/myCart/smallProductCart'
 import SmallCourseCart from '@/components/myCart/smallCourseCart'
@@ -14,6 +14,7 @@ import { useAuth } from '@/hooks/useAuth'
 
 export default function Checkout() {
   useAuth()
+
   const { cartCourse, cartGeneral, formatPrice } = useCart()
 
   const {
@@ -67,6 +68,7 @@ export default function Checkout() {
           {/* <div className="my-button1 my-3 ">下一步</div> */}
         </div>
       </div>
+
       <style jsx>{`
         .OrderSummary-container {
           position: sticky;
