@@ -53,7 +53,7 @@ export default function CartCoupon({
                 unmountOnExit
               >
                 <div className="card-body text-h6 text-my-black">
-                  <div>有效期限： {coupon.end_at}</div>
+                  <div>有效期限： {coupon.formatted_end_at}</div>
                   <div>{coupon.discount_title}</div>
                 </div>
               </CSSTransition>

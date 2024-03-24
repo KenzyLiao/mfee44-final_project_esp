@@ -1,4 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, forwardRef } from 'react'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import Button from '@mui/material/Button'
+
 import { useRouter } from 'next/router'
 import ProgressBar from '@/components/myCart/progressBar'
 import OrderSummary from '@/components/myCart/orderSummary'
@@ -6,8 +13,10 @@ import SmallProductCart from '@/components/myCart/smallProductCart'
 import SmallCourseCart from '@/components/myCart/smallCourseCart'
 import OrderConfirmList from '@/components/myCart/orderConfirmList'
 import ShippingRule from '@/components/myCart/shippingRule'
+
 import Link from 'next/link'
 import toast from 'react-hot-toast'
+
 import { useAuth } from '@/hooks/useAuth' // 確保這是 useAuth Hook 正確的路徑
 
 // //勾子context
@@ -18,8 +27,10 @@ export default function Confirmation() {
   useAuth()
 
   const { rawTotalPrice, totalPrice, selectCoupon, formData } = useCheckout()
-  console.log(formData)
+
   const { cart, cartCourse, cartGeneral, formatPrice } = useCart()
+  //Mui modal
+  const [openDialog, setOpenDialog] = useState(false)
 
   //linePay資料使用
   const [linePayOrder, setLinePayOrder] = useState({})
@@ -68,25 +79,21 @@ export default function Confirmation() {
     }
   }
 
-  /* 向後端請求付款  導向至LINE Pay付款頁面 */
+  //付款的api請求
   const goLinePay = async (orderId) => {
-    if (window.confirm('請確認導向至LINE PAY進行付款嗎？')) {
-      window.location.href = `http://localhost:3005/api/line-pay-first/reserve?orderId=${orderId}`
-      localStorage.removeItem('checkout_info')
-      localStorage.removeItem('check_info')
-      localStorage.removeItem('selectedCouponID')
-      localStorage.removeItem('cart')
-    }
+    window.location.href = `http://localhost:3005/api/line-pay-first/reserve?orderId=${orderId}`
+    localStorage.removeItem('checkout_info')
+    localStorage.removeItem('check_info')
+    localStorage.removeItem('selectedCouponID')
+    localStorage.removeItem('cart')
   }
 
   const goEcPay = async (orderId) => {
-    if (window.confirm('請確認導向至ECPAY進行付款嗎？')) {
-      window.location.href = `http://localhost:3005/api/ecpay?orderId=${orderId}`
-      localStorage.removeItem('checkout_info')
-      localStorage.removeItem('check_info')
-      localStorage.removeItem('selectedCouponID')
-      localStorage.removeItem('cart')
-    }
+    window.location.href = `http://localhost:3005/api/ecpay?orderId=${orderId}`
+    localStorage.removeItem('checkout_info')
+    localStorage.removeItem('check_info')
+    localStorage.removeItem('selectedCouponID')
+    localStorage.removeItem('cart')
   }
 
   //點擊付款行為＝創建訂單+請求linePay API
@@ -99,11 +106,7 @@ export default function Confirmation() {
         await toast.success('已成功建立訂單')
 
         setTimeout(() => {
-          if (formData.payType === 'LinePay') {
-            goLinePay(orderResponse.data.order.orderId)
-          } else if (formData.payType === 'EcPay') {
-            goEcPay(orderResponse.data.order.orderId)
-          }
+          handlePayment()
         }, 1500)
       } else {
         toast.error(orderResponse.message, {
@@ -111,6 +114,21 @@ export default function Confirmation() {
         })
       }
     }
+  }
+
+  const handlePayment = () => {
+    setOpenDialog(true)
+  }
+
+  //MUI-confirm
+  /* 向後端請求付款  導向至LINE Pay or ECPAY付款頁面 */
+  const handleConfirm = () => {
+    if (formData.payType === 'LinePay') {
+      goLinePay(linePayOrder.orderId)
+    } else if (formData.payType === 'EcPay') {
+      goEcPay(linePayOrder.orderId)
+    }
+    setOpenDialog(false)
   }
 
   //confirm 用戶付款成功後，跳轉回來的行為，
@@ -179,6 +197,23 @@ export default function Confirmation() {
           </div>
         </div>
       </div>
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'確認付款'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description" className="">
+            您確定要進行此付款嗎？
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)}>取消</Button>
+          <Button onClick={handleConfirm}>確認</Button>
+        </DialogActions>
+      </Dialog>
       <style jsx>{`
         .rwd-button {
           display: none;

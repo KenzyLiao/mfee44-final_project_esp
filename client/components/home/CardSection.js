@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-
-import ProductFigure from '@/components/myProduct/productfigure'
+import ProductFigure from './CardDetail'
+// import ProductFigure from '../myProduct/productfigure'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 
@@ -174,7 +174,7 @@ export default function Detail() {
             }}
           >
             {/* 在 SwiperSlide 中放置产品信息 */}
-            {displayedProducts.map((product) => (
+            {displayedProducts.map((product, i) => (
               <SwiperSlide key={product.product_id}>
                 {/* ProductFigure 组件 */}
                 <div className="col" style={{ width: '100%', padding: '20px' }}>
@@ -184,7 +184,8 @@ export default function Detail() {
                     style={{ textDecoration: `none` }}
                   >
                     <ProductFigure
-                      key={product.product_id}
+                      key={i}
+                      order={i}
                       image={`/images/myProduct/${product.image}`}
                       brand={product.brand_name}
                       name={
@@ -193,6 +194,7 @@ export default function Detail() {
                           : product.name
                       }
                       price={formatPrice(product.price)}
+                      pid={product.product_id}
                     />
                   </Link>
                 </div>
