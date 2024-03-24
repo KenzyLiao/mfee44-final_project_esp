@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '@/hooks/useAuth'
 
+import ProductCard from '@/components/myProduct/favorites'
+
 const MemberProfile = () => {
   useAuth() // 在組件開始處調用 useAuth 進行身份驗證
 
@@ -215,10 +217,24 @@ const MemberProfile = () => {
               <div className="section-additional">
                 <div className="additional-info">
                   <div className="category-address">
-                    <div className="title-address">我的地址</div>
-                    <div className="no-address">沒有已儲存地址</div>
-                    <div className="add-address">新增地址</div>
+                    <div className="title-address">我的收藏</div>
+
+                    <div
+                      className="card border-0 "
+                      style={{
+                        width: '400px',
+                        height: 'auto',
+                        display: 'inline-block',
+                        margin: '0 10px',
+                      }}
+                    >
+                      <ProductCard />
+                    </div>
+
+                    {/* <div className="no-address">沒有已儲存地址</div> */}
+                    {/* <div className="add-address">新增地址</div> */}
                   </div>
+
                   <div className="category-orders">
                     <div className="title-orders">我的訂單</div>
                     <div className="no-orders">沒有訂單</div>
