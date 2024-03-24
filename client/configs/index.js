@@ -39,5 +39,8 @@ export const pathsLocaleMap = {
   'confirmation':'檢查訂單',
   'checkout':'收件人與運送資料',
   'orders':'我的訂單記錄',
+  'profile':'個人資料',
+  'overview':'課程總覽',
+  'collection':'課程收藏'
 }
 /* eslint-enable */

@@ -4,6 +4,9 @@ import Footer from '@/components/layout/default-layout/myFooter/footer'
 import NextBreadCrumb from '@/components/common/next-breadcrumb'
 import { useState, useEffect, useRef } from 'react'
 
+import ScrollToTopButton from '@/components/myProduct/upbutton'
+
+
 export default function FluidLayout({ title = '', children }) {
   const [headerHeight, setHeaderHeight] = useState(0)
   const headerRef = useRef(null) // 創建一個ref來引用Header組件
@@ -44,6 +47,7 @@ export default function FluidLayout({ title = '', children }) {
         style={{ marginTop: `${headerHeight}px` }} // 根據header的高度動態調整主體內容的marginTop
       >
         <div className="container-fluid">{children}</div>
+        <ScrollToTopButton />
       </main>
       <Footer />
     </>
