@@ -56,7 +56,7 @@ export default function CartIndex() {
   return (
     <>
       <ProgressBar
-        percentage={30}
+        percentage={35}
         text={'結帳進度'}
         textColor={'var(--my-white)'}
       />
