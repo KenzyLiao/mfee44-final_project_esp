@@ -4,11 +4,10 @@ import { useCart } from '@/hooks/user-cart'
 /* 資料庫資料 */
 //優惠卷(暫時)
 // import couponsData from '@/data/coupon.json'
-import ianCoupon from '@/data/ianCoupon.json'
+// import ianCoupon from '@/data/ianCoupon.json'
 
 //地區資料
 import { countries, townships, postcodes } from '@/data/data-townships'
-import { BsCheckLg } from 'react-icons/bs'
 
 //1.建立與導出
 export const CheckoutContext = createContext(null)
@@ -59,16 +58,30 @@ export function CheckoutProvider({ children }) {
 
   //處理資料庫過來的優惠卷資料
   useEffect(() => {
-    const fetchData = async () => {
-      let newcouponsData = await ianCoupon
-      if (newcouponsData) {
-        newcouponsData = newcouponsData.filter((v) => v.coupon_valid !== 0)
-        setCoupons(newcouponsData)
-      }
-    }
     fetchData()
   }, [])
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch(
+        'http://localhost:3005/api/coupon/userCoupon',
+        {
+          method: 'GET',
+          credentials: 'include',
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      const newCouponsData = await response.json()
+      const validCoupons = newCouponsData.filter((v) => v.coupon_valid !== 0)
+      setCoupons(validCoupons)
+    } catch (error) {
+      console.error('Error fetching coupons:', error)
+    }
+  }
+  console.log(coupons)
   //初始化 localstorage資料提取到selectCoupon
   useEffect(() => {
     if (localStorage.getItem('selectedCouponID')) {

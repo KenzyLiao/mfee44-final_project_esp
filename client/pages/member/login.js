@@ -14,6 +14,20 @@ function LoginContent() {
       onLoginFail: (error) => console.error('登入失败：', error),
     })
 
+  const handleGoogleLogin = () => {
+    // 构造 Google OAuth URL 并重定向
+    const clientId =
+      '970712749451-atles9m33gi0df30v5jtkqa24pirma4i.apps.googleusercontent.com'
+    const redirectUri = 'http://localhost:3005/api/myGoogle-Login' // 确保与后端设置匹配
+    const scope = 'email profile'
+    const responseType = 'code'
+
+    const googleUrl = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${clientId}&redirect_uri=${encodeURIComponent(
+      redirectUri
+    )}&response_type=${responseType}&scope=${scope}`
+    window.location.href = googleUrl
+  }
+
   return (
     <>
       <div className="login-container">
@@ -47,7 +61,13 @@ function LoginContent() {
             <button type="submit" className="login-button">
               登入
             </button>
-            <div className="google-login">使用GOOGLE帳號登入</div>
+            <button
+              type="button"
+              className="google-login"
+              onClick={handleGoogleLogin}
+            >
+              <span>使用GOOGLE帳號登入</span>
+            </button>
             <button
               className="line-login"
               onClick={() => {
@@ -62,7 +82,7 @@ function LoginContent() {
                 window.location.href = authUrl
               }}
             >
-              使用LINE帳號登入
+              <span>使用LINE帳號登入</span>
             </button>
           </form>
         </div>
@@ -242,12 +262,41 @@ function LoginContent() {
           backdrop-filter: blur(7.5px);
           background-color: rgba(255, 255, 255, 0.2);
           margin-top: 8px;
-          color: #19110b;
+          color: #19110b; /* Initial text color */
           white-space: nowrap;
           text-align: center;
           padding: 18px 60px;
           font: 14px Inter, sans-serif;
+          width: 100%;
+          position: relative;
+          overflow: hidden;
         }
+
+        .google-login::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          right: 100%; /* Start from the right outside of the button */
+          width: 100%; /* Equal width to the button */
+          height: 100%;
+          background-color: #4285f4;
+          transition: right 0.5s ease; /* Smooth transition for sliding effect */
+          z-index: 1;
+        }
+
+        .google-login:hover::before {
+          right: 0;
+        }
+        .google-login span {
+          position: relative;
+          z-index: 2; /* Ensures text is above the green background */
+          display: block;
+        }
+
+        .google-login:hover span {
+          color: #ffffff; /* Change text color to white on hover */
+        }
+
         .line-login {
           justify-content: center;
           align-items: center;
@@ -256,12 +305,40 @@ function LoginContent() {
           backdrop-filter: blur(7.5px);
           background-color: rgba(255, 255, 255, 0.2);
           margin-top: 8px;
-          color: #19110b;
+          color: #19110b; /* Initial text color */
           white-space: nowrap;
           text-align: center;
           padding: 18px 60px;
           font: 14px Inter, sans-serif;
           width: 100%;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .line-login:before {
+          content: '';
+          position: absolute;
+          top: 0;
+          right: 100%; /* Start from the right outside of the button */
+          width: 100%; /* Equal width to the button */
+          height: 100%;
+          background-color: #00b900; /* Green background */
+          transition: right 0.5s ease; /* Smooth transition for sliding effect */
+          z-index: 1;
+        }
+
+        .line-login:hover:before {
+          right: 0; /* Slide in to fill the button on hover */
+        }
+
+        .line-login span {
+          position: relative;
+          z-index: 2; /* Ensures text is above the green background */
+          display: block;
+        }
+
+        .line-login:hover span {
+          color: #ffffff; /* Change text color to white on hover */
         }
 
         .create-account {

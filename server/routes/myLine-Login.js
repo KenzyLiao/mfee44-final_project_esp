@@ -19,6 +19,7 @@ router.get('/', async (req, res) => {
   }
 
   try {
+    // 取得 LINE 授權碼換取存取權杖
     const tokenResponse = await axios.post(
       LINE_TOKEN_ENDPOINT,
       new URLSearchParams({
@@ -37,6 +38,7 @@ router.get('/', async (req, res) => {
 
     const accessToken = tokenResponse.data.access_token
 
+    // 使用存取權杖取得用戶資訊
     const profileResponse = await axios.get(LINE_PROFILE_ENDPOINT, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -45,28 +47,39 @@ router.get('/', async (req, res) => {
 
     const { userId, displayName } = profileResponse.data
 
+    // 將用戶資訊插入或更新至資料庫
     await mydb.query(
       'INSERT INTO users (line_id, firstname, auth_provider) VALUES (?, ?, "line") ON DUPLICATE KEY UPDATE firstname = ?',
-      [userId, displayName, displayName] //
+      [userId, displayName, displayName]
     )
 
+    // 取得用戶 ID
+    const [rows] = await mydb.query(
+      'SELECT user_id FROM users WHERE line_id = ?',
+      [userId]
+    )
+    const user_id = rows[0].user_id
+
+    // 構建 JWT 負載
     const tokenPayload = {
       line_id: userId,
+      user_id: user_id, // 包括 user_id
       firstname: displayName,
     }
 
+    // 簽發 JWT
     const token = jwt.sign(tokenPayload, JWT_SECRET, {
       expiresIn: '1h',
     })
 
-    // 将JWT设置到HttpOnly cookie中
+    // 將 JWT 設置到 HttpOnly cookie 中
     res.cookie('authToken', token, {
       httpOnly: true,
       secure: true,
       maxAge: 3600000,
     })
 
-    // 重定向到前端的某个路由
+    // 重定向到前端的某個路由
     res.redirect('http://localhost:3000/member/profile')
   } catch (error) {
     console.error('LINE 登入過程出錯:', error)

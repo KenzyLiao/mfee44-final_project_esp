@@ -2,14 +2,12 @@ import React from 'react'
 import FluidLayout from '@/components/layout/fluid-layout'
 import Image from 'next/image'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
 import styles from './index.module.scss'
 
 import ConceptSection from '@/components/home/conceptSection'
 import Carosuel2 from '@/components/common/carosuel2'
 import Carosuel2copy from '@/components/common/carosuel2copy'
-
-import Section4 from '@/components/home/section4'
-import Section5 from '@/components/home/section5'
 
 import CardSection from '@/components/home/CardSection'
 
@@ -23,7 +21,19 @@ export default function Home() {
         </div>
       </div>
       {/* hero-section */}
-      <div className={`row ${styles['hero-section']}`}>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        // initial={{ x: '-100%' }}
+        // animate={{ x: 0 }}
+        transition={{
+          type: 'fade',
+          delay: 0.5,
+          duration: 1,
+          ease: 'easeInOut',
+        }}
+        className={`row  ${styles['hero-section']}`}
+      >
         <div className="bg-primary col-lg-12">
           <div className="row">
             {/* hero-img */}
@@ -34,10 +44,9 @@ export default function Home() {
                 objectFit="cover"
                 alt="hero image"
               />
-              <Link href={'/product/list'}>
-                <div className={`my-button3 ${styles['hero-button']}`}>
-                  探索商品
-                </div>
+
+              <Link href="/product/list">
+                <div className="my-button2">探索商品</div>
               </Link>
             </div>
             {/* hero-content */}
@@ -69,15 +78,39 @@ export default function Home() {
             </div>
           </div>
         </div>
-      </div>
+      </motion.div>
       {/* concept */}
-      <ConceptSection />
+      <motion.div
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        transition={{
+          type: 'tween',
+          delay: 0.5,
+          duration: 1,
+          ease: 'easeInOut',
+        }}
+      >
+        <ConceptSection />
+      </motion.div>
+
       <div className="row">
         <div className="col-lg-12 bg-my-white">
-          <div className="text-h2 my-3">極品工藝</div>
+          <div className="text-h2 d-flex justify-content-center ">
+            <div className="text-center ">
+              <p className="text-my-secondary text-h4 my-2">- 職人推薦 -</p>
+              極品工藝
+            </div>
+          </div>
           <div className="d-flex justify-content-center">
             <CardSection />
           </div>
+          <Link href={'/product/list'}>
+            <div
+              className={`my-button2 my-3  mx-auto ${styles['card-button']}`}
+            >
+              查看更多
+            </div>
+          </Link>
         </div>
         <div className="bg-warning col-lg-12">123</div>
       </div>
