@@ -38,7 +38,7 @@ export default function Home() {
         }}
         className={`row  ${styles['hero-section']}`}
       >
-        <div className="bg-primary col-lg-12">
+        <div className="bg-primary col-lg-12 ">
           <div className="row">
             {/* hero-img */}
             <div className={`col-lg-6 bg-black ${styles['image-container']}`}>
@@ -143,7 +143,7 @@ export default function Home() {
           </Link>
         </div>
       </motion.div>
-      <div className="row ">
+      <div className="row  d-md-block d-none">
         <motion.div
           initial={{ backgroundColor: 'var(--my-white)', opacity: 0 }}
           whileInView={{ backgroundColor: 'var(--my-black)', opacity: 1 }}
@@ -158,18 +158,6 @@ export default function Home() {
           <Index />
         </motion.div>
       </div>
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{
-          type: 'tween',
-          delay: 0.5,
-          duration: 1,
-          ease: 'easeInOut',
-        }}
-        viewport={{ once: true }}
-        className="col-lg-12 bg-my-white"
-      ></motion.div>
     </>
   )
 }
