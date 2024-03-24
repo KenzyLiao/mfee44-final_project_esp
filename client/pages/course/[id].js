@@ -21,6 +21,8 @@ import {
 } from 'react-icons/bs'
 
 export default function CoursePage() {
+<<<<<<< HEAD
+=======
   const [login, setLogin] = useState(false)
   const [courseOrder, setCourseOrder] = useState([])
   const [courseALL, setCourseALL] = useState([])
@@ -166,6 +168,7 @@ export default function CoursePage() {
     handleCollection()
   }
 
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
   const { addCartItem } = useCart()
   // const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
   const router = useRouter()
@@ -242,6 +245,8 @@ export default function CoursePage() {
     .map((v) => v.sub_units.length)
     .reduce((a, b) => a + b)
 
+<<<<<<< HEAD
+=======
   const haveCourseList = myCourseALL.map((mycourse) => {
     return mycourse.id === Number(id)
   })
@@ -255,6 +260,7 @@ export default function CoursePage() {
   let haveCollection = haveCollectionList.includes(Number(id))
   console.log('haveCollection', haveCollection)
 
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
   return (
     <>
       <div className="container">

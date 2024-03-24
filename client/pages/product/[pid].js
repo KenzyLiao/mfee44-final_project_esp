@@ -12,14 +12,21 @@ import 'swiper/css/navigation'
 import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { Navigation } from 'swiper/modules'
+<<<<<<< HEAD
+=======
 import FavIcon from '@/components/myProduct/fav-icon'
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
 
 export default function Detail() {
   const [products, setProducts] = useState([])
   const [displayedProducts, setDisplayedProducts] = useState([])
   const [selectedProduct, setSelectedProduct] = useState(null)
   const [loading, setLoading] = useState(true)
+<<<<<<< HEAD
+  const [inventoryData, setInventoryData] = useState(null) // Pollo新增用於存儲庫存資料的狀態
+=======
   const [inventoryData, setInventoryData] = useState(null)
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
   const router = useRouter()
   const { pid } = router.query
   const [favorites, setFavorites] = useState([])
@@ -102,10 +109,18 @@ export default function Detail() {
   window.addEventListener('popstate', () => {
     window.location.reload()
   })
+<<<<<<< HEAD
+  // Pollo獲取庫存資料的函數
+=======
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
   const fetchInventoryData = () => {
     fetch(`http://localhost:3005/api/inventory/${pid}`)
       .then((response) => response.json())
       .then((data) => {
+<<<<<<< HEAD
+        // 將獲取的資料設置到狀態中
+=======
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
         setInventoryData(data)
       })
       .catch((error) => {
@@ -116,6 +131,10 @@ export default function Detail() {
     <>
       {selectedProduct && (
         <>
+<<<<<<< HEAD
+          {/* Pollo子元件 */}
+=======
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
           <InventorySearch inventoryData={inventoryData} />
           <div className="row mt-5">
             <div className="col-lg-7 my-3">
@@ -165,6 +184,25 @@ export default function Detail() {
                       {selectedProduct.nib_name}
                     </span>
                   </div>
+<<<<<<< HEAD
+                  {/* Pollo子元件的按鈕 */}
+                  <a
+                    style={{
+                      color: '#ff0083',
+                      display: 'block',
+                      marginTop: '0.5rem',
+                      fontSize: '16px',
+                    }}
+                    id="a1"
+                    data-bs-toggle="offcanvas"
+                    href="#offcanvasExample"
+                    role="button"
+                    aria-controls="offcanvasExample"
+                    onClick={fetchInventoryData} // 將點擊事件綁定到父元件的函數上
+                  >
+                    庫存查詢
+                  </a>
+=======
                   <div className="d-flex justify-content-between align-items-center mt-5 px-1">
                     <span className="text-h4 text-my-notice">
                       <FavIcon
@@ -186,6 +224,7 @@ export default function Detail() {
                       庫存查詢
                     </a>
                   </div>
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
                 </div>
                 <div style={{ marginTop: '10px' }}>
                   <QuantityButton products={products} pid={pid} />
@@ -301,6 +340,21 @@ export default function Detail() {
                     className="col"
                     style={{ width: '300px', margin: '10px' }}
                   >
+<<<<<<< HEAD
+                    <Link
+                      href={`/product/${product.product_id}`}
+                      as={`/product/${product.product_id}`}
+                      style={{ textDecoration: `none` }}
+                    >
+                      <ProductFigure
+                        key={product.product_id}
+                        image={`/images/myProduct/${product.image}`}
+                        brand={product.brand_name}
+                        name={product.name}
+                        price={formatPrice(product.price)}
+                      />
+                    </Link>
+=======
                     <ProductFigure
                       key={product.product_id}
                       pid={product.product_id}
@@ -309,6 +363,7 @@ export default function Detail() {
                       name={product.name}
                       price={formatPrice(product.price)}
                     />
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
                   </div>
                 </SwiperSlide>
               ))}

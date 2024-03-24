@@ -1,7 +1,6 @@
 import express from 'express'
 import mydb from '##/configs/mydb.js'
 import authenticate from '../middlewares/Myauthenticate.js'
-
 const router = express.Router()
 
 router.get('/', authenticate, async (req, res) => {

@@ -1,10 +1,17 @@
+<<<<<<< HEAD
+import React, { useRef, useState, useEffect, use } from 'react'
+=======
 import React, { useRef, useState, useEffect,  } from 'react'
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
 import CourseCarousel from '@/components/course/course-carousel.js'
 import CardGroup from '@/components/course/card-group.js'
 import CardGroupTitle from '@/components/course/card-group-title.js'
 import MyCardGroup from '@/components/course/my-card-group.js'
 import { useAuth } from '@/hooks/useAuth'
+<<<<<<< HEAD
+=======
 import Link from 'next/link'
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
 
 export default function CoursePage() {
   const titleData = [
@@ -29,11 +36,17 @@ export default function CoursePage() {
       subTitle: '發揮你的創意',
     },
   ]
+<<<<<<< HEAD
+  const [login, setLogin] = useState(false)
+  const [data, setData] = useState([])
+  const [userCourse, setUserCourse] = useState([])
+=======
   const [data, setData] = useState([])
 
   const [login, setLogin] = useState(false)
   const [courseOrder, setCourseOrder] = useState([])
   const [courseALL, setCourseALL] = useState([])
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
 
   // 所有課程
   useEffect(() => {
@@ -106,6 +119,11 @@ export default function CoursePage() {
     }
     fetchUserData()
   }, [])
+<<<<<<< HEAD
+  console.log('user', user)
+  console.log('data', data);
+  
+=======
 
   useEffect(() => {
     const fetchUserCourse = async () => {
@@ -153,6 +171,7 @@ export default function CoursePage() {
   // console.log('courseALL', courseALL)
   console.log('myCourseALL', myCourseALL)
 
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
 
   return (
     <>
