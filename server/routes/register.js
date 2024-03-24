@@ -48,6 +48,14 @@ router.post('/', async (req, res) => {
     const payload = { email, user_id: result.insertId }
     const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' })
 
+    // 在這裡設置 HTTP Only Cookie
+    res.cookie('authToken', token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 3600000,
+    })
+
     // 設定郵件發送器
     const transporter = nodemailer.createTransport({
       service: 'gmail',
@@ -63,23 +71,23 @@ router.post('/', async (req, res) => {
       to: email,
       subject: '墨韻雅筆 個人帳號認證信',
       html: `
-    <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; color: #333;">
-      <h2>感謝閣下在墨韻雅筆官方網站註冊</h2>
-      <p>登入您的個人帳號便可尊享以下服務：</p>
-      <ul>
-        <li>管理您的個人資料</li>
-        <li>訂閱墨韻雅筆最新電子通訊</li>
-        <li>儲存您的願望錄</li>
-      </ul>
-      <p>請輸入以下啟用帳號金鑰以完成建立您的墨韻雅筆個人帳號：</p>
-      <p style="background-color: #f0f0f0; padding: 10px; font-weight: bold;">${verificationCode}</p>
-    </div>`,
+      <div style="font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; color: #333;">
+        <h2>感謝閣下在墨韻雅筆官方網站註冊</h2>
+        <p>登入您的個人帳號便可尊享以下服務：</p>
+        <ul>
+          <li>管理您的個人資料</li>
+          <li>訂閱墨韻雅筆最新電子通訊</li>
+          <li>儲存您的願望錄</li>
+        </ul>
+        <p>請輸入以下啟用帳號金鑰以完成建立您的墨韻雅筆個人帳號：</p>
+        <p style="background-color: #f0f0f0; padding: 10px; font-weight: bold;">${verificationCode}</p>
+      </div>`,
     }
 
     // 等待發送郵件
     await transporter.sendMail(mailOptions)
     // 回應用戶註冊成功
-    res.status(200).json({ message: '用戶註冊成功。驗證郵件已發送。', token })
+    res.status(200).json({ message: '用戶註冊成功。驗證郵件已發送。' })
   } catch (err) {
     // 錯誤處理
     console.error('錯誤：', err)

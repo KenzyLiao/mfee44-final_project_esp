@@ -38,10 +38,12 @@ const ProductCard = () => {
         <div>
           <div className="d-flex justify-content-center mt-4">沒有收藏商品</div>
           <div className="d-flex justify-content-center mt-4">
-            <button>前往購物</button>
+          <a href="http://localhost:3000/product/list" className="start-shopping">前往購物</a>
+
           </div>
         </div>
       ) : (
+        <div className='my-3 '>
         <Swiper
           spaceBetween={10}
           slidesPerView={2}
@@ -52,11 +54,12 @@ const ProductCard = () => {
           {products.map((product, index) => (
             <SwiperSlide key={index}>
               <div
-                className="card border-0 "
+                className="card border-0  "
                 style={{
                   width: '100%',
                   height: 'auto',
-                  margin: '0 10px',
+                  paddingBlock:'10px',
+                  marginInline: ' 10px',
                   display: 'flex',
                   justifyContent: 'center',
                 }}
@@ -117,7 +120,28 @@ const ProductCard = () => {
             </SwiperSlide>
           ))}
         </Swiper>
+        </div>
+        
       )}
+      <style jsx>{`.start-shopping {
+          justify-content: center;
+          align-items: center;
+          border-radius: 50px;
+          background-color: #7c7477;
+          margin-top: 26px;
+          width: 241px;
+          max-width: 100%;
+          color: #fff;
+          text-align: center;
+          padding: 19px 60px;
+          font: 14px Inter, sans-serif;
+        }
+        @media (max-width: 991px) {
+          .start-shopping {
+            white-space: initial;
+            padding: 0 20px;
+          }
+        }`}</style>
     </>
   )
 }
