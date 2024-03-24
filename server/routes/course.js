@@ -41,12 +41,6 @@ router.get('/set_total_minute', async (req, res) => {
   res.status(200).send(rows)
 })
 
-<<<<<<< HEAD
-router.get('/my_course', async (req, res) => {
-  const user_id = req.query.user_id
-  const [rows] = await mydb.execute(
-    `SELECT * FROM product WHERE valid = 1 AND product_type = 2`
-=======
 router.get('/collectionBack', authenticate, async (req, res) => {
   const user_id = req.user.user_id
   const [rows] = await mydb.execute(
@@ -104,7 +98,6 @@ router.get('/courseALL', async (req, res) => {
 router.get('/my_course', async (req, res) => {
   const [rows] = await mydb.execute(
     `SELECT * FROM \`order\` JOIN order_item ON order_item.order_id = \`order\`.id WHERE product_id BETWEEN 214 AND 273`
->>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
   )
   res.send(rows)
 })

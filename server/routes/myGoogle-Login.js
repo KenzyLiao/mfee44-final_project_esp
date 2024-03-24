@@ -82,7 +82,7 @@ router.get('/', async (req, res) => {
     })
 
     // 重定向到前端的某个路由
-    res.redirect('http://localhost:3000/member/profile')
+    res.redirect(`http://localhost:3000/member/profile?login=success`)
   } catch (error) {
     console.error('Google 登录过程出错:', error)
     res.status(500).send('内部服务器错误')

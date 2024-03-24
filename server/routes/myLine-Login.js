@@ -80,7 +80,7 @@ router.get('/', async (req, res) => {
     })
 
     // 重定向到前端的某個路由
-    res.redirect('http://localhost:3000/member/profile')
+    res.redirect(`http://localhost:3000/member/profile?login=success`)
   } catch (error) {
     console.error('LINE 登入過程出錯:', error)
     res.status(500).send('內部伺服器錯誤')

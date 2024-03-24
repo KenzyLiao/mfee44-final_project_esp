@@ -1,22 +1,11 @@
 import express from 'express'
 import mydb from '##/configs/mydb.js'
 import authenticate from '../middlewares/Myauthenticate.js'
-<<<<<<< HEAD
-=======
-
->>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
 const router = express.Router()
 
 router.get('/', authenticate, async (req, res) => {
   try {
     const userId = req.user.user_id
-<<<<<<< HEAD
-    const [favorites] = await mydb.execute(
-      'SELECT product_id FROM favorite WHERE user_id = ? ORDER BY created_at',
-      [userId]
-    )
-    res.send({ favorites: favorites })
-=======
 
     const [favorites] = await mydb.execute(
       'SELECT product_id FROM favorite WHERE user_id = ? ORDER BY created_at DESC',
@@ -36,7 +25,6 @@ router.get('/', authenticate, async (req, res) => {
     )
 
     res.send({ favorites, products })
->>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
   } catch (err) {
     console.error('查詢資料錯誤:', err)
     return res.status(500).json({ status: 'error', message: '資料庫查詢失敗' })

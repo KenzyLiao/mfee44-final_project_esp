@@ -1,24 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
-import LoginLogic from '@/components/member/useLogin'
 import { useRouter } from 'next/router'
+import LoginLogic from '@/components/member/useLogin'
+import { toast, ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css' // 导入样式
 
 function LoginContent() {
   const router = useRouter()
-  // 新增狀態來顯示登錄成功的消息
-  const [loginSuccessMessage, setLoginSuccessMessage] = useState('')
-  const { email, setEmail, password, setPassword, error, handleLogin } =
-    LoginLogic({
-      onLoginSuccess: () => {
-        console.log('登入成功')
-        // 設置登錄成功的消息
-        setLoginSuccessMessage('登入成功！正在跳轉到個人資料頁面...')
-        setTimeout(() => {
-          router.push('./profile')
-        }, 2000) // 2秒後跳轉到個人資料頁面
-      },
-      onLoginFail: (error) => console.error('登入失敗：', error),
-    })
+  const { email, setEmail, password, setPassword, handleLogin } = LoginLogic({
+    onLoginSuccess: () => {
+      // 直接使用toast来显示登录成功的消息
+      toast.success('登入成功！正在跳轉到個人資料頁面...')
+      setTimeout(() => {
+        router.push('./profile')
+      }, 2000) // 2秒后跳转到个人资料页面
+    },
+    onLoginFail: (error) => {
+      console.error('登入失敗：', error)
+      toast.error('登入失敗，请重试。') // 也可以在失败时显示错误消息
+    },
+  })
 
   const handleGoogleLogin = () => {
     // 构造 Google OAuth URL 并重定向
@@ -36,10 +37,8 @@ function LoginContent() {
 
   return (
     <>
+    <ToastContainer />
       <div className="login-container">
-        {loginSuccessMessage && (
-          <div className="login-success-message">{loginSuccessMessage}</div>
-        )}
         <div className="login-content">
           <div className="login-header">
             <div className="login-heading">登入</div>
