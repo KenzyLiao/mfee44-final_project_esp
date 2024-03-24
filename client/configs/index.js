@@ -41,6 +41,8 @@ export const pathsLocaleMap = {
   'orders':'我的訂單記錄',
   'profile':'個人資料',
   'overview':'課程總覽',
-  'collection':'課程收藏'
+  'collection':'課程收藏',
+  'coupon':'優惠卷',
+  'activity':'當前活動'
 }
 /* eslint-enable */
