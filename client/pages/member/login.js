@@ -10,7 +10,8 @@ function LoginContent() {
   const { email, setEmail, password, setPassword, handleLogin } = LoginLogic({
     onLoginSuccess: () => {
       
-      toast.success('登入成功！正在跳轉到個人資料頁面...')
+      toast.success('登入成功！正在跳轉到個人資料頁面...')   
+      
       setTimeout(() => {
         router.push('./profile')
       }, 2000)
