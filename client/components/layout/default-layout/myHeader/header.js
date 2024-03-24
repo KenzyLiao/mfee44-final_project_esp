@@ -73,7 +73,11 @@ export default function Header() {
               <div className="offcanvas-body">
                 <Menubar currentRoute={currentRoute} />
                 {/* <SearchForm /> */}
-                <Toolbar currentRoute={currentRoute} handleShow={handleShow} />
+                <Toolbar
+                  currentRoute={currentRoute}
+                  handleShow={handleShow}
+                  onClick={handleClose}
+                />
               </div>
             </div>
           </div>
