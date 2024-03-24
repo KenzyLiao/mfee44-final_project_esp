@@ -94,7 +94,6 @@ export default function ConfirmationPage() {
             <div className="my-btn-check mt-3">查看訂單詳情</div>
           </Link>
         </div>
-        <Toaster />
       </div>
 
       <style jsx>{`

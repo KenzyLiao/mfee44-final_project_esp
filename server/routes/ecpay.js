@@ -136,7 +136,7 @@ router.post('/return', async (req, res) => {
 
       if (coupon_id) {
         const [updateCouppon] = await mydb.execute(
-          `UPDATE \`member_coupon\` SET valid = '0' WHERE user_id = ? AND coupon_id = ?`,
+          `UPDATE \`member_coupon\` SET used_valid = '0' WHERE user_id = ? AND coupon_id = ?`,
           [user_id, coupon_id]
         )
 
