@@ -54,17 +54,16 @@ export default function MyOrderList({ cName = '', orderData = [] }) {
               <div className="container-myOrderList  mb-3 shadow-sm ">
                 <div className="d-flex justify-content-around align-items-center ">
                   <div className="order-head ">
-                    <h5 className="mb-0 text-h4 me-5 ">
-                      訂單:
-                      <span className="text-h4 text-my-black ">
-                        {index + 1}
+                    <h5 className="mb-0 text-h6 me-5 ">
+                      <span className="text-h6 text-my-black d-none d-md-block">
+                        【{index + 1}】
                       </span>
                     </h5>
-                    <p className="mb-0 text-muted  me-5 text-h5 text-my-black ">
+                    <p className="mb-0 text-muted  me-5 text-h6 text-my-black d-none d-md-block ">
                       {order.order_created_at}
                     </p>
                     <p
-                      className={`mb-0  me-5 text-h5 text-my-black ${
+                      className={`mb-0  me-5 text-h6 text-my-black ${
                         order.payment_status === '付款成功'
                           ? 'text-success'
                           : 'text-danger'
@@ -74,7 +73,7 @@ export default function MyOrderList({ cName = '', orderData = [] }) {
                     </p>
                   </div>
                   <p
-                    className={`mb-0  mx-auto me-5 text-h5 text-my-black ${
+                    className={`mb-0 flex-shrink-0 mx-auto me-5 text-h6 text-my-black d-none d-md-block ${
                       order.rtn_msg === '收貨訂單處理異常,請聯繫客服'
                         ? 'text-danger'
                         : 'text-success'
@@ -84,10 +83,13 @@ export default function MyOrderList({ cName = '', orderData = [] }) {
                       ? '未成立'
                       : order.rtn_msg}
                   </p>
-                  <p className="mb-0 text-h5 text-my-black  ms-auto">
-                    <span className="font-weight-bold  me-5 text-h4 text-my-notice">
+                  <p className="mb-0 text-h6 text-my-black  ms-auto text-center">
+                    <span className="font-weight-bold  me-5 text-h6 text-my-notice ">
                       {formatPrice(order.amount)}
                     </span>
+                    <p className="mb-0 text-muted  me-5 text-p text-center text-my-black d-md-none  ">
+                      {order.order_created_at}
+                    </p>
                   </p>
                   <Button
                     className="flex-shrink-0"
@@ -151,6 +153,22 @@ export default function MyOrderList({ cName = '', orderData = [] }) {
                         <div className="payType">{order.order_id}</div>
                         <h4 className="text-h3 mt-3">貨物訂單號</h4>
                         <div className="payType">{order.paymentNo}</div>
+                      </div>
+                      <div className="text-h6 d-md-none">
+                        <h4 className="text-h3">貨物狀態</h4>
+                        <div className="payType">
+                          <p
+                            className={`mb-0 flex-shrink-0 mx-auto me-5 text-h6 text-my-black  ${
+                              order.rtn_msg === '收貨訂單處理異常,請聯繫客服'
+                                ? 'text-danger'
+                                : 'text-success'
+                            }`}
+                          >
+                            {order.payment_status === '未付款成功'
+                              ? '未成立'
+                              : order.rtn_msg}
+                          </p>
+                        </div>
                       </div>
                     </div>
                     <div className="">
