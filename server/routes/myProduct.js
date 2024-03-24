@@ -49,6 +49,10 @@ router.get('/', async (req, res) => {
         .join(',')
       sql += ` AND material_name IN (${materials})`
     }
+    if (req.query.priceRange) {
+      const [minPrice, maxPrice] = req.query.priceRange.split('-')
+      sql += ` AND p.price BETWEEN ${minPrice} AND ${maxPrice}`
+    }
     if (req.query.searchQuery) {
       const searchQuery = req.query.searchQuery
       sql += ` AND p.name LIKE '%${searchQuery}%'`
