@@ -3,29 +3,29 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import LoginLogic from '@/components/member/useLogin'
 import { toast, ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css' // 导入样式
+import 'react-toastify/dist/ReactToastify.css'
 
 function LoginContent() {
   const router = useRouter()
   const { email, setEmail, password, setPassword, handleLogin } = LoginLogic({
     onLoginSuccess: () => {
-      // 直接使用toast来显示登录成功的消息
+      
       toast.success('登入成功！正在跳轉到個人資料頁面...')
       setTimeout(() => {
         router.push('./profile')
-      }, 2000) // 2秒后跳转到个人资料页面
+      }, 2000)
     },
     onLoginFail: (error) => {
       console.error('登入失敗：', error)
-      toast.error('登入失敗，请重试。') // 也可以在失败时显示错误消息
+      toast.error('登入失敗，请重试。') 
     },
   })
 
   const handleGoogleLogin = () => {
-    // 构造 Google OAuth URL 并重定向
+   
     const clientId =
       '970712749451-atles9m33gi0df30v5jtkqa24pirma4i.apps.googleusercontent.com'
-    const redirectUri = 'http://localhost:3005/api/myGoogle-Login' // 确保与后端设置匹配
+    const redirectUri = 'http://localhost:3005/api/myGoogle-Login' 
     const scope = 'email profile'
     const responseType = 'code'
 
