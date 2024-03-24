@@ -21,8 +21,6 @@ import {
 } from 'react-icons/bs'
 
 export default function CoursePage() {
-<<<<<<< HEAD
-=======
   const [login, setLogin] = useState(false)
   const [courseOrder, setCourseOrder] = useState([])
   const [courseALL, setCourseALL] = useState([])
@@ -168,7 +166,6 @@ export default function CoursePage() {
     handleCollection()
   }
 
->>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
   const { addCartItem } = useCart()
   // const ReactPlayer = dynamic(() => import('react-player'), { ssr: false })
   const router = useRouter()
