@@ -1,6 +1,7 @@
 import express from 'express'
 import mydb from '../configs/mydb.js'
 import mysql from 'mysql2'
+import authenticate from '##/middlewares/Myauthenticate.js'
 const router = express.Router()
 
 router.get('/set_total_minute', async (req, res) => {
@@ -40,10 +41,70 @@ router.get('/set_total_minute', async (req, res) => {
   res.status(200).send(rows)
 })
 
+<<<<<<< HEAD
 router.get('/my_course', async (req, res) => {
   const user_id = req.query.user_id
   const [rows] = await mydb.execute(
     `SELECT * FROM product WHERE valid = 1 AND product_type = 2`
+=======
+router.get('/collectionBack', authenticate, async (req, res) => {
+  const user_id = req.user.user_id
+  const [rows] = await mydb.execute(
+    `SELECT *,teacher.name as teacher_name FROM course_collection 
+    JOIN product ON course_collection.pid=product.id
+    JOIN course_product ON product.id=course_product.product_id 
+    JOIN course_category ON course_product.category_id=course_category.id
+    JOIN course_teacher ON course_product.teacher_id=course_teacher.id
+    WHERE uid = ${user_id}`
+  )
+  res.send(rows)
+})
+
+router.get('/collection', async (req, res) => {
+  const [rows] = await mydb.execute(`SELECT * FROM course_collection`)
+  res.send(rows)
+})
+
+router.get('/addCollection', async (req, res) => {
+  const { user_id, product_id } = req.query
+  const [rows] = await mydb.execute(
+    `SELECT * FROM course_collection WHERE uid = ${user_id} AND pid = ${product_id}`
+  )
+  if (rows.length === 0) {
+    await mydb.execute(
+      `INSERT INTO course_collection (uid, pid) VALUES (${user_id}, ${product_id})`
+    )
+    res.status(200).send({ message: 'add collection success' })
+  } else {
+    res.status(400).send({ message: 'already add collection' })
+  }
+})
+
+router.get('/removeCollection', async (req, res) => {
+  const { user_id, product_id } = req.query
+  await mydb.execute(
+    `DELETE FROM course_collection WHERE uid = ${user_id} AND pid = ${product_id}`
+  )
+  res.status(200).send({ message: 'remove collection success' })
+})
+
+router.get('/courseALL', async (req, res) => {
+  const [rows] = await mydb.execute(
+    `SELECT product.*, course_product.*, course_category.category_name, course_teacher.name AS teacher_name
+    FROM product
+    JOIN course_product ON product.id = course_product.product_id
+    JOIN course_category ON course_product.category_id = course_category.id
+    JOIN course_teacher ON course_product.teacher_id = course_teacher.id
+    WHERE product.product_type = 2
+    AND product.valid = 1`
+  )
+  res.status(200).send(rows)
+})
+
+router.get('/my_course', async (req, res) => {
+  const [rows] = await mydb.execute(
+    `SELECT * FROM \`order\` JOIN order_item ON order_item.order_id = \`order\`.id WHERE product_id BETWEEN 214 AND 273`
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
   )
   res.send(rows)
 })

@@ -9,31 +9,30 @@ const CouponPage = () => {
   // const [coupon, setCoupon] = useState(couponData)
   // console.log(coupon)
 
-  const [data, setData] = useState([])
-  // const [dataMember, setDataMember] = useState([])
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          'http://localhost:3005/api/coupon/memberCoupon'
-        )
-        // const menberResponse = await fetch(
-        //   ''
-        // )
-        
-        const data = await response.json()
-        // const dataMember = await menberResponse.json()
+  const [data, setData] = useState([]);
 
-        setData(data) 
-        // setDataMember(dataMember)
-
-      } catch (error) {
-        console.error('Error:', error)
+  const fetchData = async () => {
+    try {
+      const response = await fetch('http://localhost:3005/api/coupon/memberCoupon', {
+        method: 'GET',
+        credentials: 'include',
+      });
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
       }
-    }
 
-    fetchData()
-  }, [])
+      const responseData = await response.json();
+      setData(responseData.results);
+      console.log(responseData.results);
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <>
@@ -93,8 +92,8 @@ const CouponPage = () => {
                         const coupon_end = Date.parse(new Date(v.end_at))
                         // 會員還能使用 但 優惠券已無效 或 超過時間期限
                         if (
-                          v.valid === 1 &&
-                          (v.coupon_valid === 0 || coupon_end < now || v.used_valid === 0)
+                          v.valid === 1 && (v.used_valid === 0 ||
+                          (v.coupon_valid === 0 || coupon_end < now) )
                         )
                           return <UsedCoupon key={v.id} coupon={v} />
                       })}

@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 import React, { useRef, useState, useEffect, use } from 'react'
+=======
+import React, { useRef, useState, useEffect,  } from 'react'
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
 import CourseCarousel from '@/components/course/course-carousel.js'
 import CardGroup from '@/components/course/card-group.js'
 import CardGroupTitle from '@/components/course/card-group-title.js'
 import MyCardGroup from '@/components/course/my-card-group.js'
 import { useAuth } from '@/hooks/useAuth'
+<<<<<<< HEAD
+=======
+import Link from 'next/link'
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
 
 export default function CoursePage() {
   const titleData = [
@@ -28,9 +36,17 @@ export default function CoursePage() {
       subTitle: '發揮你的創意',
     },
   ]
+<<<<<<< HEAD
   const [login, setLogin] = useState(false)
   const [data, setData] = useState([])
   const [userCourse, setUserCourse] = useState([])
+=======
+  const [data, setData] = useState([])
+
+  const [login, setLogin] = useState(false)
+  const [courseOrder, setCourseOrder] = useState([])
+  const [courseALL, setCourseALL] = useState([])
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
 
   // 所有課程
   useEffect(() => {
@@ -103,9 +119,59 @@ export default function CoursePage() {
     }
     fetchUserData()
   }, [])
+<<<<<<< HEAD
   console.log('user', user)
   console.log('data', data);
   
+=======
+
+  useEffect(() => {
+    const fetchUserCourse = async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:3005/api/course/my_course'
+        )
+
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status}`)
+        }
+
+        const data = await response.json()
+
+        setCourseOrder(data)
+      } catch (error) {
+        console.error('Failed to fetch user course:', error)
+      }
+    }
+    fetchUserCourse()
+  }, [])
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          'http://localhost:3005/api/course/courseALL'
+        )
+        const data = await response.json()
+        setCourseALL(data)
+      } catch (error) {
+        console.error('Error:', error)
+      }
+    }
+    fetchData()
+  }, [])
+  let myCourse = courseOrder.filter((item) => item.user_id === user.user_id)
+  let myCourseALL = myCourse.map((item) => {
+    let course = courseALL.filter((course) => course.id === item.product_id)
+    return course[0]
+  })
+  console.log('user', user)
+  // console.log('data', data)
+  // console.log('courseOrder', courseOrder)
+  // console.log('myCourse', myCourse)
+  // console.log('courseALL', courseALL)
+  console.log('myCourseALL', myCourseALL)
+
+>>>>>>> e33ee64938c1117e4a7a70a69bcbfc8dc32b4b59
 
   return (
     <>
@@ -114,14 +180,14 @@ export default function CoursePage() {
       </div>
 
       {/* 我的學習 */}
-      {login && (
+      {login && myCourseALL.length > 0 && (
         <div>
           <CardGroupTitle
             title={titleData[0].title}
             subTitle={titleData[0].subTitle}
-            linkUrl="http://localhost:3000/course/overview?state=3"
-          />
-          <MyCardGroup data={data[1]} />
+            linkUrl="http://localhost:3000/course/user"
+          />      
+          <MyCardGroup data={myCourseALL.slice(0, 3)} />
         </div>
       )}
 

@@ -46,36 +46,9 @@ const Heart = ({ size = 20, color = 'red' }) => (
   </svg>
 )
 
-const FavFcon = ({ id, favorites, setFavorites }) => {
-  // 手動驗證當前token 確認燈狀態是否為訪客
-  const [user, setUser] = useState({
-    user_id: '',
-  })
-  console.log(user)
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch('http://localhost:3005/api/profile', {
-          credentials: 'include',
-        })
-
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status}`)
-        }
-
-        const data = await response.json()
-
-        setUser({ user_id: data.user_id })
-      } catch (error) {
-        console.error('Failed to fetch user data:', error)
-      }
-    }
-
-    fetchUserData()
-  }, [])
-
-  const isLoggedIn = !!user.user_id
+export default function FavFcon({ id }) {
+  // 由context取得auth-判斷是否能執行add或remove用，favorites決定愛心圖案用
+  const { auth, favorites, setFavorites } = useAuth()
 
   const handleTriggerFav = (pid) => {
     if (favorites.includes(pid)) {
@@ -90,7 +63,7 @@ const FavFcon = ({ id, favorites, setFavorites }) => {
 
     if (res.status === 'success') {
       handleTriggerFav(pid)
-      toast.success(`商品 id=${pid} 新增成功!`)
+      toast.success(`加入成功!`)
     }
   }
 
@@ -99,7 +72,7 @@ const FavFcon = ({ id, favorites, setFavorites }) => {
     console.log(res.status)
     if (res.status === 'success') {
       handleTriggerFav(pid)
-      toast.success(`商品 id=${pid} 刪除成功!`)
+      toast.success(`取消成功!`)
     }
   }
 

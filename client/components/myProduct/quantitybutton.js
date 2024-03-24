@@ -1,19 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useCart } from '@/hooks/user-cart'
 
 export default function QuantityButton({ products, pid }) {
-  const [qty, setQuantity] = useState(1)
   const { addCartItem } = useCart()
-
-  const decreaseQuantity = () => {
-    if (qty > 1) {
-      setQuantity(qty - 1)
-    }
-  }
-
-  const increaseQuantity = () => {
-    setQuantity(qty + 1)
-  }
 
   const addToCart = () => {
     const selectedProduct = products.find(
@@ -40,18 +29,6 @@ export default function QuantityButton({ products, pid }) {
 
   return (
     <>
-      {/* <div className="d-flex justify-content-between align-items-center m-3">
-        <div className="quantity-selector">
-          <button className="btn" onClick={decreaseQuantity}>
-            -
-          </button>
-          <div className="my-auto">{qty}</div>
-          <button className="btn" onClick={increaseQuantity}>
-            +
-          </button>
-        </div>
-      </div> */}
-
       <button
         className="btn btn-primary w-100 my-3 rounded-pill"
         onClick={addToCart}
