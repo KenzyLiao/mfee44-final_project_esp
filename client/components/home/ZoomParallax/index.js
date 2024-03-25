@@ -1,5 +1,5 @@
 import styles from './styles.module.scss'
-import Picture1 from '@/public/images/common/banner-2.png'
+import Picture1 from '@/public/images/common/banner2.png'
 import Picture2 from '@/public/images/common/zoom/image1.png'
 import Picture3 from '@/public/images/common/zoom/image2.png'
 import Picture4 from '@/public/images/common/zoom/image3.png'
