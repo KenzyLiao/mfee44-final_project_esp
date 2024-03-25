@@ -96,7 +96,7 @@ export default function Carosuel2() {
             src="/images/common/banner2.png"
             className="object-fit-cover pc-image"
           />
-          {/* rwd */}
+          {/* rwd123 */}
           <img
             src="/images/common/banner2-rwd.png"
             className="object-fit-cover rwd-image "
