@@ -56,7 +56,7 @@ export default function MyOrderList({ cName = '', orderData = [] }) {
                   <div className="order-head ">
                     <h5 className="mb-0 text-h6 me-5 ">
                       <span className="text-h6 text-my-black d-none d-md-block">
-                        【{index + 1}】
+                        訂單{index + 1}
                       </span>
                     </h5>
                     <p className="mb-0 text-muted  me-5 text-h6 text-my-black d-none d-md-block ">
