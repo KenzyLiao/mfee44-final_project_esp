@@ -523,14 +523,15 @@ export default function CoursePage() {
               )}
 
               <div className=" d-none d-lg-block">
-                <Link href={`http://localhost:3000/product/${pen_id}`}>
+                
                   <ProductFigure
+                  pid={pen_id}
                     image={`/images/myProduct/${productImage}`}
                     brand={brand_name}
                     name={pen_name}
                     price={pen_price}
                   />
-                </Link>
+                
               </div>
             </div>
           </aside>
