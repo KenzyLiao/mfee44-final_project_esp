@@ -85,7 +85,7 @@ export default function Carosuel2() {
             />
             {/* rwd */}
             <img
-              src="/images/common/banner-1600-1.png"
+              src="/images/common/banner1-rwd.png"
               className="object-fit-cover rwd-image "
             />
           </Link>
@@ -98,7 +98,7 @@ export default function Carosuel2() {
           />
           {/* rwd */}
           <img
-            src="/images/common/banner-1600-2.png"
+            src="/images/common/banner2-rwd.png"
             className="object-fit-cover rwd-image "
           />
         </SwiperSlide>
