@@ -17,22 +17,14 @@ const menuItems = [
     label: '課程',
     href: '/course',
   },
+
   {
     id: 3,
-    label: '會員',
-    href: '/member',
-    children: [
-      { id: 32, label: '登入', href: '/member/login' },
-      { id: 33, label: '註冊', href: '/member/register' },
-    ],
-  },
-  {
-    id: 4,
     label: '商品',
     href: '/product',
   },
   {
-    id: 5,
+    id: 4,
     label: '維修與服務',
     href: '/service',
     children: [
@@ -41,7 +33,7 @@ const menuItems = [
     ],
   },
   {
-    id: 6,
+    id: 5,
     label: '關於我們',
     href: '/about',
   },

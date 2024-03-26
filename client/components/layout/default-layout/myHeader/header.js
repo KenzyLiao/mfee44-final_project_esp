@@ -52,6 +52,7 @@ export default function Header() {
               tabIndex="-1"
               id="offcanvasNavbar"
               aria-labelledby="offcanvasNavbarLabel"
+              data-bs-scroll="true"
             >
               <div className="offcanvas-header">
                 <h5 className="offcanvas-title" id="offcanvasNavbarLabel">
@@ -76,7 +77,7 @@ export default function Header() {
                 <Toolbar
                   currentRoute={currentRoute}
                   handleShow={handleShow}
-                  onClick={handleClose}
+                  // onClick={handleClose}
                 />
               </div>
             </div>

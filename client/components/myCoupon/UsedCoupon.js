@@ -8,8 +8,8 @@ export default function UsedCoupon({ coupon }) {
       const response = await fetch(
         `http://localhost:3005/api/coupon/get/?id_coupon=${coupon.id}`,
         { credentials: 'include' }
-      );
-      const result = await response.json();
+      )
+      const result = await response.json()
       if (response.status === 401) {
         Swal.fire({
           icon: 'error',
@@ -19,9 +19,9 @@ export default function UsedCoupon({ coupon }) {
           cancelButtonText: '取消',
         }).then((result) => {
           if (result.isConfirmed) {
-            window.location.href = 'http://localhost:3000/member/login';
+            window.location.href = 'http://localhost:3000/member/login'
           }
-        });
+        })
       } else {
         Swal.fire({
           icon: result.status,
@@ -29,15 +29,15 @@ export default function UsedCoupon({ coupon }) {
           timer: 1500,
         }).then(() => {
           if (result.status === 'success') {
-            location.reload();
+            location.reload()
           }
-        });
+        })
       }
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error)
     }
-  };
-  
+  }
+
   return (
     <>
       <div className="coupon col-xl-4 col-lg-6 col-sm-12 d-flex justify-content-center align-items-center">
