@@ -271,7 +271,7 @@ router.post('/return', async (req, res) => {
                 'UPDATE order_info SET logistics_id = ?, paymentNo = ?, rtn_msg= ? WHERE id = ?'
               queryParams = [
                 ecPay.AllPayLogisticsID,
-                ecPay.CVSPaymentNo,
+                ecPay.CVSPaymentNo + ecPay.CVSValidationNo,
                 ecPay.RtnMsg,
                 ecPayData.id,
               ]

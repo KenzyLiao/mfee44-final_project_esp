@@ -43,6 +43,7 @@ export const pathsLocaleMap = {
   'overview':'課程總覽',
   'collection':'課程收藏',
   'coupon':'優惠卷',
-  'activity':'當前活動'
+  'activity':'當前活動',
+  'Mycoupon':'我的優惠卷'
 }
 /* eslint-enable */

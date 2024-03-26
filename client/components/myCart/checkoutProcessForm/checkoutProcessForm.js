@@ -212,13 +212,39 @@ export default function CheckoutProcessForm({
     }
   }, [])
 
+  // const handleConfirm = () => {
+  //   setOpenDialog(false)
+  //   const storedData = localStorage.getItem('check_info')
+  //   if (storedData) {
+  //     const formData = JSON.parse(storedData)
+  //     reset(formData)
+  //   }
+  // }
+
   const handleConfirm = () => {
     setOpenDialog(false)
+
+    // 从 localStorage 中恢复之前的表单数据
     const storedData = localStorage.getItem('check_info')
-    if (storedData) {
-      const formData = JSON.parse(storedData)
-      reset(formData)
+    let formData = storedData ? JSON.parse(storedData) : {}
+
+    // 从URL查询参数中获取新的门市信息
+    const { storeType, storeID, storeName, storeAddress } = router.query
+
+    // 如果URL中有门市信息，这意味着用户刚从电子地图选择了门市
+    if (storeType || storeID || storeName || storeAddress) {
+      // 使用URL中的门市信息更新表单数据
+      formData = {
+        ...formData,
+        ...(storeType && { shipping: storeType }),
+        ...(storeID && { storeID }),
+        ...(storeName && { storeName }),
+        ...(storeAddress && { storeAddress }),
+      }
     }
+
+    // 使用更新后的表单数据来重置表单
+    reset(formData)
   }
 
   const handleCancel = () => {
