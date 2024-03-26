@@ -17,7 +17,7 @@ export default function Support() {
   const handleSubmit = (e, serviceType) => {
     e.preventDefault()
     // 更新 formData，包含服務項目信息
-    const updatedFormData = { ...formData, serviceType }; // 更新 formData，包含服務項目信息
+    const updatedFormData = { ...formData, serviceType } // 更新 formData，包含服務項目信息
     // 發送表單數據到後端
     fetch('http://localhost:3005/api/service/support', {
       method: 'POST',
@@ -35,7 +35,7 @@ export default function Support() {
             userPhone: '',
             userEmail: '',
             reservationDate: '',
-          });
+          })
           window.location.reload()
         } else {
           // 表單提交失敗，顯示錯誤消息等
@@ -337,7 +337,12 @@ export default function Support() {
         }
 
         h1 {
-          font-family: monospace;
+          font-family: 'Noto Serif TC', 'Noto Sans TC Regular', Helvetica, Arial,
+            'PingFang TC', '苹方-繁', 'Heiti TC', '黑體-繁',
+            'Microsoft JhengHei', '微軟正黑體', system-ui, -apple-system,
+            'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+            'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+            'Segoe UI Symbol', 'Noto Color Emoji';
         }
 
         @keyframes slide {
