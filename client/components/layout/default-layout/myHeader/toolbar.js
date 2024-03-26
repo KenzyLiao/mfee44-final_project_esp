@@ -42,6 +42,11 @@ export default function Toolbar({ handleShow }) {
       if (response.ok) {
         // 登出成功後將用戶狀態設為 null
         setUser(null)
+        //清空localstorage的購物車與收件人資料
+        localStorage.removeItem('cart')
+        localStorage.removeItem('check_info')
+        localStorage.removeItem('selectedCouponID')
+
         // 登出成功後重定向到登入頁面
         window.location.href = '/member/login'
       } else {

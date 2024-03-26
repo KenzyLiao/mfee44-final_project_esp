@@ -15,11 +15,18 @@ export function useAuth() {
 
         // 如果認證不成功，則重定向到登入頁面
         if (data.status !== 'success') {
-          Router.push('../member/login')
+          //清空localstorage的購物車與收件人資料
+          localStorage.removeItem('check_info')
+          localStorage.removeItem('selectedCouponID')
+          window.location.href = '/member/login'
         }
       } catch (error) {
         console.error('Error in token verification:', error)
-        Router.push('../member/login')
+        //清空localstorage的購物車與收件人資料
+        localStorage.removeItem('cart')
+        localStorage.removeItem('check_info')
+        localStorage.removeItem('selectedCouponID')
+        window.location.href = '/member/login'
       }
     }
 

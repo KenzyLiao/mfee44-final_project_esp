@@ -9,24 +9,22 @@ function LoginContent() {
   const router = useRouter()
   const { email, setEmail, password, setPassword, handleLogin } = LoginLogic({
     onLoginSuccess: () => {
-      
-      toast.success('登入成功！正在跳轉到個人資料頁面...')   
-      
+      toast.success('登入成功！正在跳轉到個人資料頁面...')
+
       setTimeout(() => {
         router.push('./profile')
       }, 2000)
     },
     onLoginFail: (error) => {
       console.error('登入失敗：', error)
-      toast.error('登入失敗，请重试。') 
+      toast.error('登入失敗，请重试。')
     },
   })
 
   const handleGoogleLogin = () => {
-   
     const clientId =
       '970712749451-atles9m33gi0df30v5jtkqa24pirma4i.apps.googleusercontent.com'
-    const redirectUri = 'http://localhost:3005/api/myGoogle-Login' 
+    const redirectUri = 'http://localhost:3005/api/myGoogle-Login'
     const scope = 'email profile'
     const responseType = 'code'
 
@@ -38,7 +36,7 @@ function LoginContent() {
 
   return (
     <>
-    <ToastContainer />
+      <ToastContainer />
       <div className="login-container">
         <div className="login-content">
           <div className="login-header">
