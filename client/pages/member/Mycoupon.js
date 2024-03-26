@@ -9,30 +9,33 @@ const CouponPage = () => {
   // const [coupon, setCoupon] = useState(couponData)
   // console.log(coupon)
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([])
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://localhost:3005/api/coupon/memberCoupon', {
-        method: 'GET',
-        credentials: 'include',
-      });
-      
+      const response = await fetch(
+        'http://localhost:3005/api/coupon/memberCoupon',
+        {
+          method: 'GET',
+          credentials: 'include',
+        }
+      )
+
       if (!response.ok) {
-        throw new Error('Failed to fetch data');
+        throw new Error('Failed to fetch data')
       }
 
-      const responseData = await response.json();
-      setData(responseData.results);
-      console.log(responseData.results);
+      const responseData = await response.json()
+      setData(responseData.results)
+      console.log(responseData.results)
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error:', error)
     }
-  };
+  }
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData()
+  }, [])
 
   return (
     <>
@@ -69,9 +72,12 @@ const CouponPage = () => {
                         const coupon_end = Date.parse(new Date(v.end_at))
                         // 優惠券還有效 && 會員持有還有效
                         if (
-                          v.valid === 1 &&  /* 這個是member_coupon資料裡的 會員存在的優惠劵 */
-                          v.coupon_valid !== 0 && /* 這個是mycoupon資料裡的 有效的優惠劵 */
-                          v.used_valid !== 0 && /* 這個是member_coupon資料裡的 會員裡未使用的優惠劵 */
+                          v.valid ===
+                            1 /* 這個是member_coupon資料裡的 會員存在的優惠劵 */ &&
+                          v.coupon_valid !==
+                            0 /* 這個是mycoupon資料裡的 有效的優惠劵 */ &&
+                          v.used_valid !==
+                            0 /* 這個是member_coupon資料裡的 會員裡未使用的優惠劵 */ &&
                           coupon_end >= now
                         )
                           return <UsedCoupon key={v.id} coupon={v} />
@@ -81,7 +87,7 @@ const CouponPage = () => {
                 </div>
               </div>
             </Tab>
-            <Tab eventKey="contact" title="已逾期">
+            <Tab eventKey="contact" title="已使用/已逾期">
               <div className="coupon-content__list">
                 {/* 可以使用 map 遍歷渲染 */}
                 <div className="coupon-content__item">
@@ -92,8 +98,10 @@ const CouponPage = () => {
                         const coupon_end = Date.parse(new Date(v.end_at))
                         // 會員還能使用 但 優惠券已無效 或 超過時間期限
                         if (
-                          v.valid === 1 && (v.used_valid === 0 ||
-                          (v.coupon_valid === 0 || coupon_end < now) )
+                          v.valid === 1 &&
+                          (v.used_valid === 0 ||
+                            v.coupon_valid === 0 ||
+                            coupon_end < now)
                         )
                           return <UsedCoupon key={v.id} coupon={v} />
                       })}

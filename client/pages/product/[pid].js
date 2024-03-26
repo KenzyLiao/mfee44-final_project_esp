@@ -304,7 +304,7 @@ export default function Detail() {
                   >
                     <ProductFigure
                       key={product.product_id}
-                      pid={product.product_id}
+                      pid={pid}
                       image={`/images/myProduct/${product.image}`}
                       brand={product.brand_name}
                       name={product.name}
