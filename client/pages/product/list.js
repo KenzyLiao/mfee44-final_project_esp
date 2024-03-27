@@ -12,6 +12,8 @@ import Pagination from '@/components/myProduct/pagination'
 // import ScrollToTopButton from '@/components/myProduct/upbutton'
 import SearchForm from '@/components/myProduct/search-form'
 import { FaSliders } from 'react-icons/fa6'
+import Lottie from 'react-lottie'
+import animationData from '../../data/Animation-pen.json'
 export default function List() {
   const [isMobile, setIsMobile] = useState(false)
   const [open, setOpen] = useState(false)
@@ -233,8 +235,11 @@ export default function List() {
         setMaterial(data.materials)
         setTotalPages(data.totalPages)
         setCurrentPage(1)
-        setLoading(false)
+        const timer = setTimeout(() => {
+          setLoading(false)
+        }, 2000)
         window.history.pushState({}, '', newUrl.toString())
+        return () => clearTimeout(timer)
       } catch (error) {
         console.error('Error:', error)
       }
@@ -251,8 +256,61 @@ export default function List() {
     priceRange,
   ])
   const [loading, setLoading] = useState(true)
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  }
   if (loading) {
-    return <div id="loading">Loading . . .</div>
+    return (
+      <>
+        <div className=" background-container my-3 ">
+          <div className="confirm-box">
+            <div className="lottie-container">
+              <div className="lottie-animation">
+                <Lottie
+                  options={defaultOptions}
+                  height={'200px'}
+                  width={'200px'}
+                />
+                <h1 className="text-h2 text-my-primary ">處理中...</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        <style jsx>{`
+          .lottie-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+          }
+
+          .background-container {
+            min-height: 80svh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+          }
+          .confirm-box {
+            width: 1000svh;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #fff;
+          }
+        `}</style>
+      </>
+    )
   }
   return (
     <>
