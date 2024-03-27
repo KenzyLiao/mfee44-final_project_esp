@@ -99,7 +99,7 @@ export default function MyCourseCard({
                 ) : (
                   <BsFillEasel2Fill className="mb-1 me-1" />
                 )}
-                {category_name}
+                {category_name==='手寫字'?'文字':'繪畫'}
               </span>
             </Card.Text>
             {/* <Card.Text className="text-h4 text-my-notice">

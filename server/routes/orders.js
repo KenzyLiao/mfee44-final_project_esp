@@ -101,7 +101,7 @@ router.get('/', (req, res) => {
 
 router.get('/orders', authenticate, async (req, res) => {
   const uid = req.user.user_id
-  console.log('資料', uid)
+ 
 
   if (isNaN(uid)) {
     res.status(400).send({ message: 'Invalid ID' })
@@ -144,7 +144,7 @@ router.get('/orders', authenticate, async (req, res) => {
   `,
       [uid]
     )
-    console.log(results)
+    
 
     const ordersMap = new Map()
 
