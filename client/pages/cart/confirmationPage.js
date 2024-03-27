@@ -100,46 +100,48 @@ export default function ConfirmationPage() {
   if (loading) {
     return (
       <>
-<div className=" background-container my-3 ">
-        <div className="confirm-box">
-        <div className="lottie-container">
-    <div className="lottie-animation">
-      <Lottie options={defaultOptions} height={'200px'} width={'200px'}/>
-      <h1 className="text-h2 text-my-primary ">
-            訂單處理中...
-          </h1>
-    </div>
-  </div>
+        <div className=" background-container my-3 ">
+          <div className="confirm-box">
+            <div className="lottie-container">
+              <div className="lottie-animation">
+                <Lottie
+                  options={defaultOptions}
+                  height={'200px'}
+                  width={'200px'}
+                />
+                <h1 className="text-h2 text-my-primary ">訂單處理中...</h1>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <style jsx>{`
-      .lottie-container {
-        display: flex;
-        justify-content: center; /* 水平居中 */
-        align-items: center; /* 垂直居中 */
-        height: 100vh; /* 使容器高度为视口高度，确保垂直居中有足够的空间 */
-        width: 100%; /* 使容器宽度充满屏幕 */
-      }
+        <style jsx>{`
+          .lottie-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+          }
 
-      .background-container {
-        min-height: 100svh;
-        background-image: url('/images/common/cis-bg1.svg');
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-      }
-      .confirm-box {
-        width: 1000svh;
-        height: 300px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        background-color: #fff;
-      }
-      `}</style>
+          .background-container {
+            min-height: 80svh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+          }
+          .confirm-box {
+            width: 1000svh;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #fff;
+          }
+        `}</style>
       </>
     )
   }

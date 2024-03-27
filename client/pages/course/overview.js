@@ -4,8 +4,13 @@ import CardGroup from '@/components/course/card-group.js'
 import FilterBar from '@/components/course/filter-bar'
 import Pagination from 'react-bootstrap/Pagination'
 
+import Lottie from 'react-lottie'
+import animationData from '../../data/Animation-pen.json'
+
 export default function CoursePage() {
+  const [loading, setLoading] = useState(false)
   const router = useRouter()
+
 
   const [filterProps, setFilterProps] = useState({
     filterType: '',
@@ -73,6 +78,7 @@ export default function CoursePage() {
       setFilterProps({ ...filterProps, filterState: '依時間' })
     }
     const fetchData = async () => {
+      setLoading(true)
       try {
         const response = await fetch(fetchUrl)
         const data = await response.json()
@@ -80,10 +86,73 @@ export default function CoursePage() {
         setTotalPage(data.totalPage)
       } catch (error) {
         console.error('Error:', error)
+      } finally {
+        const timer = setTimeout(() => {
+          setLoading(false)
+        }, 1000)
+        return () => clearTimeout(timer)
       }
     }
     fetchData()
   }, [])
+
+    // 動畫
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
+}
+if (loading) {
+  return (
+    <>
+      <div className=" background-container my-3 ">
+        <div className="confirm-box">
+          <div className="lottie-container">
+            <div className="lottie-animation">
+              <Lottie
+                options={defaultOptions}
+                height={'200px'}
+                width={'200px'}
+              />
+              <h1 className="text-h2 text-my-primary ">處理中...</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style jsx>{`
+        .lottie-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          width: 100%;
+        }
+
+        .background-container {
+          min-height: 80svh;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        }
+        .confirm-box {
+          width: 1000svh;
+          height: 300px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          background-color: #fff;
+        }
+      `}</style>
+    </>
+  )
+}
 
   return (
     <>

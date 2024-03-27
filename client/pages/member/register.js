@@ -522,13 +522,13 @@ function RegistrationPage() {
 
         .lastname-label {
           font-family: Inter, sans-serif;
-          margin-top: 42px;
+          margin-top: 30px;
         }
 
         @media (max-width: 991px) {
           .lastname-label {
             max-width: 100%;
-            margin-top: 40px;
+            margin-top: 10px;
           }
         }
 
@@ -543,6 +543,7 @@ function RegistrationPage() {
         @media (max-width: 991px) {
           .lastname-input {
             max-width: 100%;
+            margin:10px 0px;
           }
         }
 
