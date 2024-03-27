@@ -43,7 +43,7 @@ export function CheckoutProvider({ children }) {
   const [coupons, setCoupons] = useState([])
   const [selectedCouponID, setSelectedCouponID] = useState('none')
   const [selectCoupon, setSelectCoupon] = useState({})
-  console.log(selectCoupon.discount_value)
+  // console.log(selectCoupon.discount_value)
 
   /* 處理formData */
   //初始化 localstorage資料提取到cart
@@ -84,7 +84,7 @@ export function CheckoutProvider({ children }) {
       console.error('Error fetching coupons:', error)
     }
   }
-  console.log(coupons)
+  // console.log(coupons)
 
   useEffect(() => {
     handleSelectCoupon(coupons, selectedCouponID)

@@ -5,13 +5,26 @@ import { useRouter } from 'next/router'
 import toast, { Toaster } from 'react-hot-toast'
 import Link from 'next/link'
 
+import Lottie from 'react-lottie';
+import animationData from '../../data/Animation-pen.json';
+
 //勾子context
 import { useCart } from '@/hooks/user-cart'
 
 export default function ConfirmationPage() {
   const router = useRouter()
-
+  const [loading, setLoading] = useState(false);
   const { formatPrice } = useCart()
+
+  // 動畫
+  const defaultOptions = {
+    loop: true,
+    autoplay: true, 
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice'
+    }
+  };
 
   // confirm回來用的，在記錄確認之後，line-pay回傳訊息與代碼，例如
   // {returnCode: '1172', returnMessage: 'Existing same orderId.'}
@@ -31,6 +44,10 @@ export default function ConfirmationPage() {
       const savePrice = JSON.parse(sessionStorage.getItem('successOrderPrice'))
       setTotalPrice(savePrice)
     }
+    return ()=>{
+      sessionStorage.removeItem('successOrderPrice')
+      setTotalPrice('')
+    }
   }, [])
 
   useEffect(() => {
@@ -39,6 +56,7 @@ export default function ConfirmationPage() {
 
   // 確認交易，處理伺服器通知line pay已確認付款，為必要流程
   const handleConfirm = async (transactionId) => {
+    setLoading(true); // 開始加載數據
     try {
       const res = await fetch(
         `http://localhost:3005/api/line-pay-first/confirm?transactionId=${transactionId}`
@@ -59,6 +77,7 @@ export default function ConfirmationPage() {
     } catch (error) {
       console.error('處理linPay訂單發生成錯誤', error)
     }
+    setLoading(false); // 結束加載
   }
 
   //confirm 用戶付款成功後，跳轉回來的行為，
@@ -77,6 +96,53 @@ export default function ConfirmationPage() {
       handleConfirm(transactionId)
     }
   }, [router.isReady, router.query])
+
+  if (loading) {
+    return (
+      <>
+<div className=" background-container my-3 ">
+        <div className="confirm-box">
+        <div className="lottie-container">
+    <div className="lottie-animation">
+      <Lottie options={defaultOptions} height={'200px'} width={'200px'}/>
+      <h1 className="text-h2 text-my-primary ">
+            訂單處理中...
+          </h1>
+    </div>
+  </div>
+        </div>
+      </div>
+      <style jsx>{`
+      .lottie-container {
+        display: flex;
+        justify-content: center; /* 水平居中 */
+        align-items: center; /* 垂直居中 */
+        height: 100vh; /* 使容器高度为视口高度，确保垂直居中有足够的空间 */
+        width: 100%; /* 使容器宽度充满屏幕 */
+      }
+
+      .background-container {
+        min-height: 100svh;
+        background-image: url('/images/common/cis-bg1.svg');
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      .confirm-box {
+        width: 1000svh;
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: #fff;
+      }
+      `}</style>
+      </>
+    )
+  }
   return (
     <>
       <div className=" background-container my-3 ">
@@ -97,6 +163,8 @@ export default function ConfirmationPage() {
       </div>
 
       <style jsx>{`
+
+
         .background-container {
           min-height: 100svh;
           background-image: url('/images/common/cis-bg1.svg');
@@ -148,6 +216,7 @@ export default function ConfirmationPage() {
         .loader {
           animation: spin 1.5s ease-in-out infinite; /* 應用旋轉動畫 */
         }
+        
       `}</style>
     </>
   )
