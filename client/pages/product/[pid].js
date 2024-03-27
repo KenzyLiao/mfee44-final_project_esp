@@ -13,6 +13,8 @@ import 'swiper/css/pagination'
 import 'swiper/css/scrollbar'
 import { Navigation } from 'swiper/modules'
 import FavIcon from '@/components/myProduct/fav-icon'
+import Lottie from 'react-lottie'
+import animationData from '../../data/Animation-pen.json'
 
 export default function Detail() {
   const [products, setProducts] = useState([])
@@ -45,7 +47,10 @@ export default function Detail() {
       .then((response) => response.json())
       .then((data) => {
         setProducts(data.products)
-        setLoading(false)
+        const timer = setTimeout(() => {
+          setLoading(false)
+        }, 1500)
+        return () => clearTimeout(timer)
       })
       .catch((error) => console.error('Error:', error))
   }, [])
@@ -91,12 +96,61 @@ export default function Detail() {
     const numericPrice = parseFloat(price)
     return numericPrice.toLocaleString()
   }
-
+  // 動畫
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: 'xMidYMid slice',
+    },
+  }
   if (loading) {
     return (
-      <div className="load" id="loading">
-        Loading . . .
-      </div>
+      <>
+        <div className=" background-container my-3 ">
+          <div className="confirm-box">
+            <div className="lottie-container">
+              <div className="lottie-animation">
+                <Lottie
+                  options={defaultOptions}
+                  height={'200px'}
+                  width={'200px'}
+                />
+                <h1 className="text-h2 text-my-primary ">處理中...</h1>
+              </div>
+            </div>
+          </div>
+        </div>
+        <style jsx>{`
+          .lottie-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+          }
+
+          .background-container {
+            min-height: 80svh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+          }
+          .confirm-box {
+            width: 1000svh;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #fff;
+          }
+        `}</style>
+      </>
     )
   }
   window.addEventListener('popstate', () => {
