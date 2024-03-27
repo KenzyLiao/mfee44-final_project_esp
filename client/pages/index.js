@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import FluidLayout from '@/components/layout/fluid-layout'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -10,6 +10,10 @@ import Carosuel2 from '@/components/common/carosuel2'
 import Carosuel2copy from '@/components/common/carosuel2copy'
 
 import CardSection from '@/components/home/CardSection'
+
+// 一些動畫
+import Index from '@/components/home/ZoomParallax'
+import Paragraph from '@/components/home/text-opacity-scroll'
 
 export default function Home() {
   return (
@@ -29,12 +33,12 @@ export default function Home() {
         transition={{
           type: 'fade',
           delay: 0.5,
-          duration: 1,
+          duration: 0.5,
           ease: 'easeInOut',
         }}
         className={`row  ${styles['hero-section']}`}
       >
-        <div className="bg-primary col-lg-12">
+        <div className="bg-primary col-lg-12 ">
           <div className="row">
             {/* hero-img */}
             <div className={`col-lg-6 bg-black ${styles['image-container']}`}>
@@ -80,20 +84,46 @@ export default function Home() {
         </div>
       </motion.div>
       {/* concept */}
+      <div
+      // initial={{ opacity: 0 }}
+      // whileInView={{ opacity: 1 }}
+      // transition={{
+      //   type: 'tween',
+      //   delay: 0.5,
+      //   duration: 1,
+      //   ease: 'easeInOut',
+      // }}
+      // viewport={{ once: true }}
+      >
+        <ConceptSection />
+      </div>
+      <div className="row">
+        <div className="col-lg-12 bg-my-black text-h1">
+          <motion.div
+            initial={{ x: -100 }}
+            whileInView={{ x: 0 }}
+            transition={{ type: 'slide', delay: 0, duration: 1 }}
+          >
+            <Paragraph
+              paragraph={
+                '書寫，非筆墨所致，而心靈所至 —— 墨韻雅筆，透過每一滴墨水，連結每一次思考的深度'
+              }
+            />
+          </motion.div>
+        </div>
+      </div>
       <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
+        initial={{ x: '-10%', opacity: 0 }}
+        whileInView={{ x: 0, opacity: 1 }}
         transition={{
-          type: 'tween',
-          delay: 0.5,
+          type: 'fade',
+
+          delay: 0.3,
           duration: 1,
           ease: 'easeInOut',
         }}
+        className="row"
       >
-        <ConceptSection />
-      </motion.div>
-
-      <div className="row">
         <div className="col-lg-12 bg-my-white">
           <div className="text-h2 d-flex justify-content-center ">
             <div className="text-center ">
@@ -112,7 +142,21 @@ export default function Home() {
             </div>
           </Link>
         </div>
-        <div className="bg-warning col-lg-12">123</div>
+      </motion.div>
+      <div className="row  d-md-block d-none">
+        <motion.div
+          initial={{ backgroundColor: 'var(--my-white)', opacity: 0 }}
+          whileInView={{ backgroundColor: 'var(--my-black)', opacity: 1 }}
+          transition={{
+            type: 'tween',
+            delay: 0,
+            duration: 1,
+          }}
+          className="col-lg-12 "
+        >
+          <p className="text-h3 py-3 text-my-white"> 墨韻藝廊</p>
+          <Index />
+        </motion.div>
       </div>
     </>
   )

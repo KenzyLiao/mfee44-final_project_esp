@@ -6,9 +6,9 @@ import { useCart } from '@/hooks/user-cart'
 
 export default function Toolbar({ handleShow }) {
   const { totalItems } = useCart()
-  const [user, setUser] = useState(null) // 使用本地状态管理用户信息
+  const [user, setUser] = useState(null) // 使用本地狀態管理用戶訊息
 
-  // 获取用户信息
+  // 獲取用戶信息
   useEffect(() => {
     const fetchUser = async () => {
       try {
@@ -42,6 +42,11 @@ export default function Toolbar({ handleShow }) {
       if (response.ok) {
         // 登出成功後將用戶狀態設為 null
         setUser(null)
+        //清空localstorage的購物車與收件人資料
+        localStorage.removeItem('cart')
+        localStorage.removeItem('check_info')
+        localStorage.removeItem('selectedCouponID')
+
         // 登出成功後重定向到登入頁面
         window.location.href = '/member/login'
       } else {
@@ -122,7 +127,7 @@ export default function Toolbar({ handleShow }) {
           )}
         </ul>
       </li>
-      <li className="nav-item">
+      {/* <li className="nav-item">
         <span
           className="nav-link btn btn-outline-light"
           role="presentation"
@@ -135,7 +140,7 @@ export default function Toolbar({ handleShow }) {
           <i className="bi bi-mortarboard-fill"></i>
           <p className="d-none d-md-inline d-lg-none"> 展示</p>
         </span>
-      </li>
+      </li> */}
     </ul>
   )
 }

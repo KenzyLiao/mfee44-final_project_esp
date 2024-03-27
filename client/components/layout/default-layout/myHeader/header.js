@@ -1,8 +1,9 @@
 import React from 'react'
 import Menubar from './menubar'
-import SearchForm from './search-form'
+// import SearchForm from './search-form'
+
 import Toolbar from './toolbar'
-import ToturialPanel from './tutorial-panel'
+// import ToturialPanel from './tutorial-panel'
 
 import { useRouter } from 'next/router'
 import { useState } from 'react'
@@ -51,6 +52,7 @@ export default function Header() {
               tabIndex="-1"
               id="offcanvasNavbar"
               aria-labelledby="offcanvasNavbarLabel"
+              data-bs-scroll="true"
             >
               <div className="offcanvas-header">
                 <h5 className="offcanvas-title" id="offcanvasNavbarLabel">
@@ -71,13 +73,17 @@ export default function Header() {
               </div>
               <div className="offcanvas-body">
                 <Menubar currentRoute={currentRoute} />
-                <SearchForm />
-                <Toolbar currentRoute={currentRoute} handleShow={handleShow} />
+                {/* <SearchForm /> */}
+                <Toolbar
+                  currentRoute={currentRoute}
+                  handleShow={handleShow}
+                  // onClick={handleClose}
+                />
               </div>
             </div>
           </div>
         </nav>
-        <ToturialPanel show={show} handleClose={handleClose} />
+        {/* <ToturialPanel show={show} handleClose={handleClose} /> */}
       </header>
       <style global jsx>{`
         @media screen and (min-width: 992px) {

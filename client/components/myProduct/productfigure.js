@@ -44,7 +44,7 @@ const ProductFigure = ({ pid, image, brand, name, price }) => {
       <Link
         href={`/product/${pid}`}
         as={`/product/${pid}`}
-        style={{ textDecoration: `none` }}
+        style={{ textDecoration: 'none' }}
       >
         <img
           src={image}

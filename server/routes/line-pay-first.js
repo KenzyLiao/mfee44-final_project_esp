@@ -79,9 +79,9 @@ router.post('/creatOrder', authenticate, async (req, res) => {
     coupon_id,
   } = clientOrder.formData
 
-  // if (!coupon_id) {
-  //   coupon_id = null
-  // }
+  if (!coupon_id) {
+    coupon_id = null
+  }
 
   //進行cart解構
   const cart = clientOrder.cart
@@ -382,7 +382,7 @@ router.get('/confirm', async (req, res) => {
 
     if (coupon_id) {
       const [updateCouppon] = await mydb.execute(
-        `UPDATE \`member_coupon\` SET valid = '0' WHERE user_id = ? AND coupon_id = ?`,
+        `UPDATE \`member_coupon\` SET used_valid = '0' WHERE user_id = ? AND coupon_id = ?`,
         [user_id, coupon_id]
       )
 
@@ -513,7 +513,7 @@ router.get('/confirm', async (req, res) => {
                 'UPDATE order_info SET logistics_id = ?, paymentNo = ?, rtn_msg= ? WHERE id = ?'
               queryParams = [
                 ecPay.AllPayLogisticsID,
-                ecPay.CVSPaymentNo,
+                ecPay.CVSPaymentNo + ecPay.CVSValidationNo,
                 ecPay.RtnMsg,
                 ecPayData.id,
               ]

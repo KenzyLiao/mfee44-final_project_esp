@@ -9,7 +9,7 @@ import DialogContent from '@mui/material/DialogContent'
 import Typography from '@mui/material/Typography'
 import Slide from '@mui/material/Slide'
 import Pagination from '@/components/myProduct/pagination'
-import ScrollToTopButton from '@/components/myProduct/upbutton'
+// import ScrollToTopButton from '@/components/myProduct/upbutton'
 import SearchForm from '@/components/myProduct/search-form'
 import { FaSliders } from 'react-icons/fa6'
 export default function List() {
@@ -201,6 +201,18 @@ export default function List() {
       } else {
         newUrl.searchParams.delete('materials')
       }
+      if (
+        priceRange[0] !== initialPriceRange[0] ||
+        priceRange[1] !== initialPriceRange[1]
+      ) {
+        updatedFetchUrl += `priceRange=${priceRange[0]}-${priceRange[1]}&`
+        newUrl.searchParams.set(
+          'priceRange',
+          `${priceRange[0]}-${priceRange[1]}`
+        )
+      } else {
+        newUrl.searchParams.delete('priceRange')
+      }
       if (searchQuery.length > 0) {
         updatedFetchUrl += `searchQuery=${searchQuery}&`
         newUrl.searchParams.set('searchQuery', searchQuery)
@@ -236,6 +248,7 @@ export default function List() {
     selectedNibs,
     selectedMaterials,
     searchQuery,
+    priceRange,
   ])
   const [loading, setLoading] = useState(true)
   if (loading) {
@@ -1152,7 +1165,7 @@ export default function List() {
             </div>
           </div>
         </div>
-        <ScrollToTopButton />
+        {/* <ScrollToTopButton /> */}
       </div>
       <style jsx>{`
         .btnColor {

@@ -1,5 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useAuth } from '@/hooks/useAuth' // 確保這是 useAuth Hook 正確的路徑
+import { useAuth } from '@/hooks/useAuth'
+import Link from 'next/link'
+
+import ProductCard from '@/components/myProduct/favorites'
 
 const MemberProfile = () => {
   useAuth() // 在組件開始處調用 useAuth 進行身份驗證
@@ -215,19 +218,54 @@ const MemberProfile = () => {
               <div className="section-additional">
                 <div className="additional-info">
                   <div className="category-address">
-                    <div className="title-address">我的地址</div>
-                    <div className="no-address">沒有已儲存地址</div>
-                    <div className="add-address">新增地址</div>
+                    <div className="title-address d-flex">
+                      <p className="mb-0 me-4">我的收藏</p>
+                      <Link
+                        href="http://localhost:3000/course/collection"
+                        className="mb-0"
+                      >
+                        <p className="mb-0">課程收藏</p>
+                      </Link>
+                    </div>
+
+                    <div
+                      className="card border-0 "
+                      style={{
+                        width: '400px',
+                        height: 'auto',
+                        display: 'inline-block',
+                        margin: '0 10px',
+                      }}
+                    >
+                      <ProductCard />
+                    </div>
+
+                    {/* <div className="no-address">沒有已儲存地址</div> */}
+                    {/* <div className="add-address">新增地址</div> */}
                   </div>
+
                   <div className="category-orders">
                     <div className="title-orders">我的訂單</div>
-                    <div className="no-orders">沒有訂單</div>
-                    <div className="start-shopping">開始購物</div>
+                    <div className="no-orders"></div>
+                    <div className="start-shopping">
+                      <Link
+                        href="http://localhost:3000/member/orders"
+                        className="mb-0"
+                      >
+                       <div className="text-my-white">查看訂單</div>
+                      </Link>
+                    </div>
                   </div>
                   <div className="category-coupons">
-                    <div className="title-coupons">我的優惠卷</div>
-                    <div className="no-coupons">沒有優惠卷</div>
-                    <div className="get-coupons">去獲取</div>
+                    <div className="title-coupons">查看優惠卷</div>
+                    <div className="start-shopping">
+                      <Link
+                        href="http://localhost:3000/member/Mycoupon"
+                        className="mb-0"
+                      >
+                       <div className="text-my-white">我的優惠卷</div>
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -564,6 +602,7 @@ const MemberProfile = () => {
           }
         }
         .category-address {
+          width: 100%;
           padding-bottom: 34px;
           align-items: center;
           background-color: #fff;

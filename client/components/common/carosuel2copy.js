@@ -85,21 +85,7 @@ export default function Carosuel2() {
             />
             {/* rwd */}
             <img
-              src="/images/common/banner-1600-1.png"
-              className="object-fit-cover rwd-image "
-            />
-          </Link>
-        </SwiperSlide>
-        <SwiperSlide>
-          <Link href={'/coupon/activity'}>
-            {/* pc */}
-            <img
-              src="/images/common/activity_banner_c.png"
-              className="object-fit-cover pc-image"
-            />
-            {/* rwd */}
-            <img
-              src="/images/common/activity_banner_c2.png"
+              src="/images/common/banner1-rwd.png"
               className="object-fit-cover rwd-image "
             />
           </Link>
@@ -110,9 +96,9 @@ export default function Carosuel2() {
             src="/images/common/banner2.png"
             className="object-fit-cover pc-image"
           />
-          {/* rwd */}
+          {/* rwd123 */}
           <img
-            src="/images/common/banner-1600-2.png"
+            src="/images/common/banner2-rwd.png"
             className="object-fit-cover rwd-image "
           />
         </SwiperSlide>
@@ -128,7 +114,20 @@ export default function Carosuel2() {
             className="object-fit-cover rwd-image "
           />
         </SwiperSlide>
-
+        <SwiperSlide>
+          <Link href={'/coupon/activity'}>
+            {/* pc */}
+            <img
+              src="/images/common/activity_banner_c.png"
+              className="object-fit-cover pc-image"
+            />
+            {/* rwd */}
+            <img
+              src="/images/common/activity_banner_c2.png"
+              className="object-fit-cover rwd-image "
+            />
+          </Link>
+        </SwiperSlide>
         {/* Custom Navigation Buttons */}
         <div className={`custom-swiper-button-prev `}>
           <IoIosArrowBack size={30} />

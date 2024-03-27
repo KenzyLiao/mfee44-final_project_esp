@@ -1,6 +1,5 @@
 import { createContext, useState, useContext, useEffect } from 'react'
 import { useCart } from '@/hooks/user-cart'
-
 /* 資料庫資料 */
 //優惠卷(暫時)
 // import couponsData from '@/data/coupon.json'
@@ -41,6 +40,11 @@ export function CheckoutProvider({ children }) {
     payType: '', //支付類型
   })
 
+  const [coupons, setCoupons] = useState([])
+  const [selectedCouponID, setSelectedCouponID] = useState('none')
+  const [selectCoupon, setSelectCoupon] = useState({})
+  console.log(selectCoupon.discount_value)
+
   /* 處理formData */
   //初始化 localstorage資料提取到cart
   useEffect(() => {
@@ -48,19 +52,18 @@ export function CheckoutProvider({ children }) {
       const clientFormData = JSON.parse(localStorage.getItem('check_info'))
       setFormData(clientFormData)
     }
-  }, [])
-  /* 處理優惠卷 */
-
-  const [coupons, setCoupons] = useState([])
-  const [selectedCouponID, setSelectedCouponID] = useState('none')
-  const [selectCoupon, setSelectCoupon] = useState({})
-  console.log(selectCoupon.discount_value)
-
-  //處理資料庫過來的優惠卷資料
-  useEffect(() => {
+    //處理資料庫過來的優惠卷資料
     fetchData()
+
+    //初始化 localstorage資料提取到selectCoupon
+    if (localStorage.getItem('selectedCouponID')) {
+      const clientSelectedCouponID =
+        localStorage.getItem('selectedCouponID') || 'none'
+      setSelectedCouponID(clientSelectedCouponID)
+    }
   }, [])
 
+  /* 處理優惠卷 */
   const fetchData = async () => {
     try {
       const response = await fetch(
@@ -82,14 +85,6 @@ export function CheckoutProvider({ children }) {
     }
   }
   console.log(coupons)
-  //初始化 localstorage資料提取到selectCoupon
-  useEffect(() => {
-    if (localStorage.getItem('selectedCouponID')) {
-      const clientSelectedCouponID =
-        localStorage.getItem('selectedCouponID') || 'none'
-      setSelectedCouponID(clientSelectedCouponID)
-    }
-  }, [])
 
   useEffect(() => {
     handleSelectCoupon(coupons, selectedCouponID)

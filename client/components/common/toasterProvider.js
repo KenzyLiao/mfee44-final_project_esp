@@ -35,7 +35,7 @@ const ToasterProvider = () => {
             border: '1px solid #713200',
             marginRight: '5%',
             padding: '16px',
-            color: '#713200',
+            color: 'var(--my-black)',
           },
         },
         error: {
@@ -43,7 +43,7 @@ const ToasterProvider = () => {
             border: '1px solid #713200',
             marginRight: '5%',
             padding: '16px',
-            color: '#713200',
+            color: 'var(--my-notice)',
           },
         },
         success: {
@@ -51,7 +51,7 @@ const ToasterProvider = () => {
             border: '1px solid #713200',
             marginRight: '5%',
             padding: '16px',
-            color: '#713200',
+            color: 'var(--my-black)',
           },
         },
       }}

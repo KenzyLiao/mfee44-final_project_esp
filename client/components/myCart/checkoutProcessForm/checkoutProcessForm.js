@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react'
+
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import DialogTitle from '@mui/material/DialogTitle'
+import Button from '@mui/material/Button'
+
 import { Form, Container, Collapse } from 'react-bootstrap'
 import { useForm, Controller } from 'react-hook-form'
 import styles from './checkoutProcessForm.module.scss'
 import Link from 'next/link'
 
 import { useRouter } from 'next/router'
-
-//hook
-// import { useCheckout } from '@/hooks/use-checkout'
 
 //地區資料
 import { countries, townships, postcodes } from '@/data/data-townships'
@@ -28,9 +33,10 @@ export default function CheckoutProcessForm({
   selectCoupon = {},
   setFormData = () => {},
 }) {
-  // const { setFormData } = useCheckout()
-
   const router = useRouter()
+
+  //Mui modal staus
+  const [openDialog, setOpenDialog] = useState(false)
 
   const initialFormData = {
     shipping: '宅配', //默認宅配,後續新增7-11物流
@@ -71,7 +77,6 @@ export default function CheckoutProcessForm({
   })
 
   const formData = watch()
-  console.log(formData)
 
   // 使用 watch 監控整個表單的變化
   useEffect(() => {
@@ -201,26 +206,52 @@ export default function CheckoutProcessForm({
   }, [selectCoupon, router.isReady])
 
   useEffect(() => {
-    // 從 localStorage 讀取表單數據
     const storedData = localStorage.getItem('check_info')
-
     if (storedData) {
-      // 諮詢用戶是否恢復資料
-      const confirmRestore =
-        window.confirm('您有未完成的表單資料，是否要恢復？')
+      setOpenDialog(true)
+    }
+  }, [])
 
-      if (confirmRestore) {
-        // 如果用戶選擇恢復，則解析並設置表單數據
-        const formData = JSON.parse(storedData)
+  // const handleConfirm = () => {
+  //   setOpenDialog(false)
+  //   const storedData = localStorage.getItem('check_info')
+  //   if (storedData) {
+  //     const formData = JSON.parse(storedData)
+  //     reset(formData)
+  //   }
+  // }
 
-        // 使用 reset 函數來恢復表單數據
-        reset(formData)
-      } else {
-        // 如果用戶選擇不恢復，可以選擇清除 localStorage 中的數據
-        localStorage.removeItem('check_info')
+  const handleConfirm = () => {
+    setOpenDialog(false)
+
+    // 从 localStorage 中恢复之前的表单数据
+    const storedData = localStorage.getItem('check_info')
+    let formData = storedData ? JSON.parse(storedData) : {}
+
+    // 从URL查询参数中获取新的门市信息
+    const { storeType, storeID, storeName, storeAddress } = router.query
+
+    // 如果URL中有门市信息，这意味着用户刚从电子地图选择了门市
+    if (storeType || storeID || storeName || storeAddress) {
+      // 使用URL中的门市信息更新表单数据
+      formData = {
+        ...formData,
+        ...(storeType && { shipping: storeType }),
+        ...(storeID && { storeID }),
+        ...(storeName && { storeName }),
+        ...(storeAddress && { storeAddress }),
       }
     }
-  }, [reset])
+
+    // 使用更新后的表单数据来重置表单
+    reset(formData)
+  }
+
+  const handleCancel = () => {
+    setOpenDialog(false)
+    localStorage.removeItem('check_info')
+    reset(initialFormData)
+  }
 
   const onSubmit = (data) => {
     localStorage.setItem('check_info', JSON.stringify(data))
@@ -806,6 +837,23 @@ export default function CheckoutProcessForm({
           </div>
         </Form>
       </Container>
+      <Dialog
+        open={openDialog}
+        onClose={() => setOpenDialog(false)}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">{'收件資料'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description" className="">
+            您有未完成的表單資料，是否要恢復
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCancel}>取消</Button>
+          <Button onClick={handleConfirm}>確認</Button>
+        </DialogActions>
+      </Dialog>
       <style jsx>{`
         .icon-box {
           width: 200px;
