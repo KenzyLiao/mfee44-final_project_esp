@@ -11,9 +11,13 @@ import { BsListOl, BsArrowDown, BsArrowUp } from 'react-icons/bs'
 import CourseSubInfo from '@/components/course/course-sub-info'
 import { useAuth } from '@/hooks/useAuth'
 
+import Lottie from 'react-lottie'
+import animationData from '../../../data/Animation-pen.json'
+
 export default function LearnPage() {
   // useAuth()
   const router = useRouter()
+  const [loading, setLoading] = useState(false)
   const { id } = router.query
   const [isReady, setIsReady] = useState(false)
   const [lgShow, setLgShow] = useState(false)
@@ -33,6 +37,7 @@ export default function LearnPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true)
         const response = await fetch(`http://localhost:3005/api/course/${id}`)
         const data = await response.json()
         setData(data[0])
@@ -40,6 +45,11 @@ export default function LearnPage() {
       } catch (error) {
         console.error('Error:', error)
         setError(error)
+      } finally {
+        const timer = setTimeout(() => {
+          setLoading(false)
+        }, 1000)
+        return () => clearTimeout(timer)
       }
     }
     fetchData()
@@ -73,6 +83,65 @@ export default function LearnPage() {
   const sub_units_num = units
     .map((v) => v.sub_units.length)
     .reduce((a, b) => a + b)
+
+    
+    // 動畫
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
+}
+if (loading) {
+  return (
+    <>
+      <div className=" background-container my-3 ">
+        <div className="confirm-box">
+          <div className="lottie-container">
+            <div className="lottie-animation">
+              <Lottie
+                options={defaultOptions}
+                height={'200px'}
+                width={'200px'}
+              />
+              <h1 className="text-h2 text-my-primary ">處理中...</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style jsx>{`
+        .lottie-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          width: 100%;
+        }
+
+        .background-container {
+          min-height: 80svh;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        }
+        .confirm-box {
+          width: 1000svh;
+          height: 300px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          background-color: #fff;
+        }
+      `}</style>
+    </>
+  )
+}
 
   return (
     <>

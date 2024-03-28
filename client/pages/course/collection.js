@@ -2,6 +2,10 @@ import React, { useRef, useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import CardGroup from '@/components/course/card-group.js'
 
+
+import Lottie from 'react-lottie'
+import animationData from '../../data/Animation-pen.json'
+
 export default function CoursePage() {
   const [login, setLogin] = useState(false)
   const [courseOrder, setCourseOrder] = useState([])
@@ -32,6 +36,7 @@ export default function CoursePage() {
 
   // 載入時時獲取用戶數據
   useEffect(() => {
+    setLoading(true)
     const fetchUserData = async () => {
       try {
         const response = await fetch('http://localhost:3005/api/profile', {
@@ -60,7 +65,10 @@ export default function CoursePage() {
       } catch (error) {
         console.error('Failed to fetch user data:', error)
       } finally {
-        setLoading(false)
+        const timer = setTimeout(() => {
+          setLoading(false)
+        }, 500)
+        return () => clearTimeout(timer)
       }
     }
     fetchUserData()
@@ -125,6 +133,65 @@ export default function CoursePage() {
     let course = courseALL.filter((course) => course.id === item.pid)
     return course[0]
   })
+
+      // 動畫
+      const defaultOptions = {
+        loop: true,
+        autoplay: true,
+        animationData: animationData,
+        rendererSettings: {
+          preserveAspectRatio: 'xMidYMid slice',
+        },
+      }
+      if (loading) {
+        return (
+          <>
+            <div className=" background-container my-3 ">
+              <div className="confirm-box">
+                <div className="lottie-container">
+                  <div className="lottie-animation">
+                    <Lottie
+                      options={defaultOptions}
+                      height={'200px'}
+                      width={'200px'}
+                    />
+                    <h1 className="text-h2 text-my-primary ">處理中...</h1>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <style jsx>{`
+              .lottie-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                width: 100%;
+              }
+      
+              .background-container {
+                min-height: 80svh;
+      
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+              }
+              .confirm-box {
+                width: 1000svh;
+                height: 300px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                text-align: center;
+                background-color: #fff;
+              }
+            `}</style>
+          </>
+        )
+      }
+
   return (
     <>
       <div className="text-h1 d-flex justify-content-center mb-5">我的收藏</div>

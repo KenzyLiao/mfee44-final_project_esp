@@ -237,7 +237,7 @@ export default function List() {
         setCurrentPage(1)
         const timer = setTimeout(() => {
           setLoading(false)
-        }, 2000)
+        }, 1000)
         window.history.pushState({}, '', newUrl.toString())
         return () => clearTimeout(timer)
       } catch (error) {

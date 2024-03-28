@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import MyCardGroup from '@/components/course/my-card-group.js'
 
+import Lottie from 'react-lottie'
+import animationData from '../../../data/Animation-pen.json'
+
 export default function CourseUserPage() {
   // user course
   const [login, setLogin] = useState(false)
+  
   const [courseOrder, setCourseOrder] = useState([])
   const [courseALL, setCourseALL] = useState([])
 
@@ -33,6 +37,7 @@ export default function CourseUserPage() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
+        setLoading(true)
         const response = await fetch('http://localhost:3005/api/profile', {
           credentials: 'include',
         })
@@ -59,7 +64,10 @@ export default function CourseUserPage() {
       } catch (error) {
         console.error('Failed to fetch user data:', error)
       } finally {
-        setLoading(false)
+        const timer = setTimeout(() => {
+          setLoading(false)
+        }, 1000)
+        return () => clearTimeout(timer)
       }
     }
     fetchUserData()
@@ -106,6 +114,64 @@ export default function CourseUserPage() {
   })
   console.log('myCourseALL', myCourseALL)
   // user course end
+
+      // 動畫
+const defaultOptions = {
+  loop: true,
+  autoplay: true,
+  animationData: animationData,
+  rendererSettings: {
+    preserveAspectRatio: 'xMidYMid slice',
+  },
+}
+if (loading) {
+  return (
+    <>
+      <div className=" background-container my-3 ">
+        <div className="confirm-box">
+          <div className="lottie-container">
+            <div className="lottie-animation">
+              <Lottie
+                options={defaultOptions}
+                height={'200px'}
+                width={'200px'}
+              />
+              <h1 className="text-h2 text-my-primary ">處理中...</h1>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style jsx>{`
+        .lottie-container {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+          width: 100%;
+        }
+
+        .background-container {
+          min-height: 80svh;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+        }
+        .confirm-box {
+          width: 1000svh;
+          height: 300px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          background-color: #fff;
+        }
+      `}</style>
+    </>
+  )
+}
 
   return (
     <>

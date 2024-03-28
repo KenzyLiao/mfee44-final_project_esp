@@ -290,7 +290,7 @@ function AccountActivation() {
           @media (max-width: 991px) {
             .activation-button {
               white-space: initial;
-              padding: 0 20px;
+              padding: 10px 20px;
             }
           }
           .side-column {
@@ -303,6 +303,7 @@ function AccountActivation() {
           @media (max-width: 991px) {
             .side-column {
               width: 100%;
+              display: none;
             }
           }
           .customer-service-section {

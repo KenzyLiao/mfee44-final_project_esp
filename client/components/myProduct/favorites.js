@@ -35,10 +35,10 @@ const ProductCard = () => {
       {loading ? (
         <div>Loading...</div>
       ) : favorites.length === 0 ? (
-        <div>
+        <div className='overflow-auto'>
           <div className="d-flex justify-content-center mt-4">沒有收藏商品</div>
           <div className="d-flex justify-content-center mt-4">
-          <a href="http://localhost:3000/product/list" className="start-shopping">前往購物</a>
+          <a href="http://localhost:3000/product/list" className="go-shopping">前往購物</a>
 
           </div>
         </div>
@@ -123,7 +123,7 @@ const ProductCard = () => {
         </div>
         
       )}
-      <style jsx>{`.start-shopping {
+      <style jsx>{`.go-shopping {
           justify-content: center;
           align-items: center;
           border-radius: 50px;
@@ -137,9 +137,9 @@ const ProductCard = () => {
           font: 14px Inter, sans-serif;
         }
         @media (max-width: 991px) {
-          .start-shopping {
+          .go-shopping {
             white-space: initial;
-            padding: 0 20px;
+            padding: 5px 20px;
           }
         }`}</style>
     </>

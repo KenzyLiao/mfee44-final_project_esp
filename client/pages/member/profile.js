@@ -217,7 +217,7 @@ const MemberProfile = () => {
               </div>
               <div className="section-additional">
                 <div className="additional-info">
-                  <div className="category-address">
+                  <div className="category-address overflow-hidden">
                     <div className="title-address d-flex">
                       <p className="mb-0 me-4">我的收藏</p>
                       <Link
@@ -509,7 +509,7 @@ const MemberProfile = () => {
         @media (max-width: 991px) {
           .change-password {
             white-space: initial;
-            padding: 0 20px;
+            padding: 10px 20px;
           }
         }
         .field-birthday {
@@ -570,7 +570,7 @@ const MemberProfile = () => {
           .save-profile {
             max-width: 100%;
             white-space: initial;
-            padding: 0 20px;
+            padding: 10px 20px;
           }
         }
         .section-additional {
@@ -578,7 +578,6 @@ const MemberProfile = () => {
           flex-direction: column;
           line-height: normal;
           width: 50%;
-          margin-left: 20px;
         }
         @media (max-width: 991px) {
           .section-additional {
@@ -652,7 +651,7 @@ const MemberProfile = () => {
         @media (max-width: 991px) {
           .add-address {
             white-space: initial;
-            padding: 0 20px;
+            padding: 10px 20px;
           }
         }
         .category-orders {
@@ -708,7 +707,7 @@ const MemberProfile = () => {
         @media (max-width: 991px) {
           .start-shopping {
             white-space: initial;
-            padding: 0 20px;
+            padding: 5px 20px;
           }
         }
         .category-coupons {
