@@ -48,7 +48,7 @@ export default function MyOrderList({ cName = '', orderData = [] }) {
               }.jpg`,
               url: 'http://localhost:3000/course/' + item.order_item_id,
             }))
-          console.log(courseItems)
+          // console.log(courseItems)
           return (
             <React.Fragment key={index}>
               <div className="container-myOrderList  mb-3 shadow-sm ">
